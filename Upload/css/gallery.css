@@ -1,0 +1,134 @@
+.container2 {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+@media (max-width:430px){
+    .container2 {
+  
+    max-width: 410px;
+    }
+}
+.content {
+    display: flex;
+    gap: 20px;
+}
+.slider {
+    flex: 1;
+    position: relative;
+   
+}
+.slider img {
+    width: 100%;
+    border-radius: 5px;
+    max-height: 400px;
+    max-width: 450px;
+   
+    
+    object-fit: cover; /* Ensures consistent image display */
+}
+.slider .prev, .slider .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2; /* Ensures the arrows are above the images */
+}
+.slider .prev {
+    left: 10px;
+}
+.slider .next {
+    right: 10px;
+}
+.details {
+    flex: 2;
+}
+.tabs {
+    display: flex;
+    gap: 0px;
+    margin-bottom: 10px;
+}
+.tab {
+    flex: 1;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+    
+}
+.tab.active {
+    background-color: #394464;
+    color: #fff;
+    border-color: #394464;
+}
+.tab-content {
+    padding: 10px;
+    font-size: 15px;
+    color: #333;
+    font-family: var(--theme-font-family);
+}
+.tab-content p {
+    margin: 0 0 10px;
+    font-family: "Gill Sans", sans-serif;
+}
+p{
+    font-family: "Gill Sans", sans-serif;
+}
+
+
+@media (min-width:523px) and (max-width: 768px) {
+    .content {
+        flex-direction: column; /* Stack elements */
+        align-items: center; /* Center items */
+       
+    }
+
+    .slider {
+        width: 100%  !important; /* Full width */
+        position: relative; /* Ensure arrows stay within the slider */
+    }
+
+    .slider img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .slider .prev,
+    .slider .next {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .details {
+        width: 100%;
+        padding-top: 20px; /* Add spacing for clarity */
+    }
+
+    .tabs {
+        flex-direction: column; /* Stack tabs vertically */
+    }
+}
+@media (max-width: 523px) {
+    .slider img {
+        width: 100%;
+        max-width:450px;
+        height: auto;
+    }
+    .content {
+        flex-direction: column; /* Stack elements */
+        align-items: center; /* Center items */
+        max-width: 400px;
+      
+    }
+  
+}

@@ -1,0 +1,366 @@
+@media (max-width: 1000px) {
+  
+
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+	
+.img-fluid{
+    height: 400px !important;
+    width: 500px;
+}
+
+.photo-gallery{
+   background-color: #F0F5FF;
+    width: 100%;
+    height: auto;
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.photo-gallery h1{
+color: #1B54FF;
+font-family: var(--theme-font-family);
+text-align: center;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
+font-size: 25px;
+
+font-weight: bold;
+justify-content: center; /* Horizontally center */
+align-items: center; /* Vertically center */
+}
+
+/* Scoped styles for the custom container */
+.custom-container {
+    display: flex;
+    flex-direction: column; /* Stack rows vertically */
+    gap: 10px; /* Space between rows */
+    padding: 20px 20px;
+    width: 85%;
+}
+  
+  /* Scoped row styles */
+  .custom-container .custom-row {
+    display: flex;
+    justify-content: space-between; /* Distribute child divs evenly */
+    gap: 10px; /* Space between divs within a row */
+  }
+  
+  /* Scoped child div styles */
+  .custom-container .custom-div,
+  .custom-container .custom-div-private {
+    flex: 1; /* Make all child divs equal width */
+    height: auto; /* Adjust height as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white; /* Background color */
+    color: black; /* Text color */
+    font-size: 16px;
+   
+    text-align: center;
+    padding: 30px 5px;
+    border: none;
+  }
+  
+  .custom-container .custom-div,
+  .custom-container .custom-div-private{
+    position: relative; /* Make the div the positioning context */
+    transition: border-bottom 0.3s ease; /* Smooth transition for the border */
+  }
+  
+  .custom-container .custom-div:hover {
+    border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
+  }
+  .custom-container .custom-div-private:hover {
+    border-bottom: 3px solid red; /* Add blue border-bottom on hover */
+  }
+
+  /* First row: Override to ensure 5 divs fit */
+  .custom-container .first-row .custom-div,
+  .custom-container .first-row .custom-div-private {
+    flex-basis: calc((100% - 4 * 10px) / 5); /* Divide row into 5 equal parts */
+  }
+  
+  /* Second row: Override to ensure 4 divs fit */
+  .custom-container .second-row .custom-div,
+  .custom-container .second-row .custom-div-private {
+    flex-basis: calc((100% - 3 * 10px) / 4); /* Divide row into 4 equal parts */
+  }
+  @media (max-width: 768px) {
+    .custom-container .custom-row {
+      flex-wrap: wrap; /* Allow wrapping */
+      justify-content: center; /* Center align */
+    }
+  
+    .custom-container .custom-div,
+    .custom-container .custom-div-private {
+      flex-basis: 100%; /* Full width for each div */
+    }
+  }
+  .custom-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  /* Styling each div */
+  .custom-div,
+  .custom-div-private {
+    display: flex; /* Enable Flexbox for horizontal alignment */
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Center items horizontally */
+    gap: 0px; /* Space between the image and text */
+    padding: 10px !important;
+    background-color: #f5f5f5; /* Light background for visibility */
+    border: 1px solid #ddd; /* Optional border */
+    border-radius: 5px; /* Rounded corners */
+   
+   
+  }
+  
+     .icons{
+        height: 100px;
+        width: 90px;
+        object-fit: contain;
+
+    }
+    .custom-div p,
+    .custom-div-private p {
+        margin: 0; /* Remove default margin */
+  padding: 0;
+        font-size: 16px; /* Adjust text size */
+        color: #4D4D4D; /* Set text color */
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .custom-div,
+        .custom-div-private {
+          flex-direction: column; /* Stack items vertically */
+          align-items: center; /* Center align items */
+        }
+      
+        .icons {
+          margin-bottom: 2px; /* Add spacing below the image */
+        }
+      }
+      
+
+      .moving-background2 {
+        position: relative;
+        width: 100%;
+        height: 300px; /* Adjust height as needed */
+        overflow: hidden;
+        background-image: url('../images/before2.jpg'); /* Replace with your image path */
+        background-size: cover; /* Ensure the image covers the div */
+        background-position: center;
+        background-attachment: fixed; /* Keep the background fixed during scrolling */
+        background-repeat: no-repeat;
+        padding: 200px 20px;
+        
+      }
+
+      .content {
+        height: 100vh; }
+      
+      .modal2 {
+        border-radius: 7px;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.6); 
+        z-index: 3000 !important; /* Set a high z-index */
+        position: fixed; /* Ensure it stays fixed on the viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* Ensure no scrolling issues */
+      }
+        .modal2 .logo a img {
+          width: 30px; }
+        .modal2 .modal-content {
+          background-color: transparent;
+          border: none;
+          border-radius: 7px; }
+          .modal2 .modal-content .modal-body {
+            border-radius: 7px;
+            overflow: hidden;
+            background-color: #fff;
+            padding-left: 0px;
+            padding-right: 0px;
+            -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); }
+            .modal2 .modal-content .modal-body h2 {
+              font-size: 18px; }
+            .modal2 .modal-content .modal-body p {
+              color: #777;
+              font-size: 14px; }
+            .modal2 .modal-content .modal-body h3 {
+              color: #000;
+              font-size: 22px; }
+            .modal2 .modal-content .modal-body .close-btn {
+              color: #000; }
+            .modal2 .modal-content .modal-body .promo-img {
+              -webkit-box-flex: 0;
+              -ms-flex: 0 0 50%;
+              flex: 0 0 50%; }
+              .modal2 .modal-content .modal-body .promo-img .price {
+                top: 20px;
+                left: 20px;
+                position: absolute;
+                color: #fff; }
+        .modal2 .btn {
+          border-radius: 30px; }
+        .modal2 .warp-icon {
+          width: 80px;
+          height: 80px;
+          margin: 0 auto;
+          position: relative;
+          background: rgba(62, 100, 255, 0.05);
+          color: #3e64ff;
+          border-radius: 50%; }
+          .modal2 .warp-icon span {
+            font-size: 40px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
+      
+      .form-control {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #ccc;
+        padding-left: 0;
+        padding-right: 0; }
+        .form-control:active, .form-control:focus, .form-control:hover {
+          border-bottom: 1px solid #000;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          outline: none; }
+      
+      .btn {
+        border-radius: 4px;
+        border: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 30px;
+        padding-right: 30px; }
+        .btn:active, .btn:focus {
+          outline: none;
+          -webkit-box-shadow: none !important;
+          box-shadow: none !important; }
+      
+      .close-btn {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 20px; }
+        .close-btn span {
+          color: #ccc; }
+        .close-btn:hover span {
+          color: #000; }
+      
+
+          @media (max-width: 768px) {
+            .custom-container {
+              display: flex;
+              flex-wrap: wrap; /* Allow items to wrap */
+              gap: 10px; /* Space between items */
+            }
+          
+            /* Default style: 2 divs per row (50% width each) */
+            .custom-container .custom-div,
+            .custom-container .custom-div-private {
+              flex: 1 1 calc(50% - 10px); /* Half width minus gap */
+              
+              min-width: calc(50% - 10px);
+              box-sizing: border-box; /* Account for padding/borders */
+            }
+          
+            /* Every 5th div spans full width (1 div per row) */
+            .custom-container .custom-div:nth-child(5n),
+            .custom-container .custom-div-private:nth-child(5n) {
+              flex: 1 1 100% !important; /* Full width */
+              max-width: 100% ;
+              min-width: 100%;
+            }
+            .custom-container{
+              width: 100%;
+            }
+            .photo-gallery h1 {
+              font-size: 20px;
+            }
+          }
+          
+          @media (max-width: 545px) {
+            .custom-container {
+              display: flex;
+              flex-wrap: wrap; /* Allow items to wrap */
+              gap: 5px; /* Smaller gap for smaller screens */
+            }
+          .custom-div,.custom-div-private{
+            min-width: 100px;
+          }
+            /* Default style: 2 divs per row (50% width each) */
+            .custom-container .custom-div,
+            .custom-container .custom-div-private {
+              flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
+             
+              min-width: calc(50% - 5px) !important;
+              box-sizing: border-box; /* Account for padding/borders */
+            }
+          
+            /* Every 5th div spans full width (1 div per row) */
+            .custom-container .custom-div:nth-child(5n),
+            .custom-container .custom-div-private:nth-child(5n) {
+              flex: 1 1 100%; /* Full width */
+              max-width: 100%;
+              
+            }
+            .custom-container{
+              width: 100%;
+            }
+            .photo-gallery h1 {
+              font-size: 18px;
+              display: block; /* Ensure the heading behaves like a block-level element */
+    width: 100%; /* Make sure the heading stretches across the full width */
+    text-align: center; /* Center the text */
+    white-space: normal; /* Allow text to wrap onto new lines */
+    word-wrap: break-word !important; /* Ensure text breaks within the container width */
+    margin: 0; /* Remove any default margins */
+            }
+          }
+             .col-lg-5 p{
+            font-weight: 350;
+    
+    font-size: 18px;
+    text-align: justify;
+    text-align-last: justify; /* Ensures the last line is also justified */
+    text-align: left !important;
+    word-wrap: break-word !important; /* Ensure text breaks within the container width */
+
+          }

@@ -1,0 +1,356 @@
+@media (max-width: 1000px) {
+  
+
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+	
+.img-fluid{
+  height: 100% !important;
+  width: 100%;
+}
+
+
+.photo-gallery{
+  background-color: #F0F5FF;
+   width: 100%;
+   height: auto;
+   padding: 30px 60px;
+   justify-content: center; /* Horizontally center */
+
+}
+.photo-gallery h1{
+  color: #1B54FF;
+  font-family: var(--theme-font-family);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
+  font-size: 25px;
+  font-weight: bold;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+ 
+  }
+  
+  /* Scoped styles for the custom container */
+  .custom-container {
+      display: flex;
+      flex-direction: column; /* Stack rows vertically */
+      gap: 20px; /* Space between rows */
+      padding: 20px 100px;
+  }
+    
+    /* Scoped row styles */
+    .custom-container .custom-row {
+      display: flex;
+      justify-content: space-between; /* Distribute child divs evenly */
+      gap: 10px; /* Space between divs within a row */
+    }
+    
+    /* Scoped child div styles */
+    .custom-container .custom-div,
+    .custom-container .custom-div-private,
+    .custom-container .custom-div-height,
+    .custom-container .custom-div-width
+     {
+      flex: 1; /* Make all child divs equal width */
+      height: auto; /* Adjust height as needed */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: white; /* Background color */
+      color: black; /* Text color */
+      font-size: 16px;
+      border-radius: 5px; /* Optional: Rounded corners */
+      text-align: center;
+      padding-left: 0px !important;
+      padding-right: 0px;
+      border: none;
+      padding-bottom: 30px;
+      width: auto;
+    }
+
+   
+    
+    .custom-container .custom-div,
+    .custom-container .custom-div-private{
+      position: relative; /* Make the div the positioning context */
+      transition: border-bottom 0.3s ease; /* Smooth transition for the border */
+    }
+    
+    .custom-container .custom-div:hover {
+      border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
+      width: auto;
+    }
+    .custom-container .custom-div-private:hover {
+      border-bottom: 3px solid red; /* Add blue border-bottom on hover */
+    }
+  
+    /* First row: Override to ensure 5 divs fit */
+    .custom-container .first-row .custom-div,
+    .custom-container .first-row .custom-div-private {
+      flex-basis: calc((100% - 5 * 10px) / 6); /* Divide row into 5 equal parts */
+    }
+
+    
+    .custom-container .first-row .custom-div-height,
+     .custom-container .first-row .custom-div-width {
+      flex-basis: calc((100% - 4 * 10px) / 5); /* Divide row into 5 equal parts */
+    }
+    
+   
+    @media (max-width: 768px) {
+      .custom-container .custom-row {
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: center; /* Center align */
+        min-width: 100%;
+      }
+    
+      .custom-container .custom-div,
+      .custom-container .custom-div-private,
+          .custom-container .custom-div-height,
+          .custom-container .custom-div-width {
+        flex-basis: 100%; /* Full width for each div */
+      }
+    }
+    .custom-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    
+    /* Styling each div */
+    .custom-div,
+    .custom-div-private,
+    .custom-div-height,
+    .custom-div-width{
+      display: flex; /* Enable Flexbox for horizontal alignment */
+      align-items: center; /* Vertically align items */
+      justify-content: center; /* Center items horizontally */
+      gap: 0px; /* Space between the image and text */
+      padding: 10px;
+      background-color: #f5f5f5; /* Light background for visibility */
+      border: 1px solid #ddd; /* Optional border */
+      border-radius: 5px; /* Rounded corners */
+     
+    }
+    
+       .icons{
+          height: 120px;
+          width: 90%!important;
+          padding-bottom: 20px;
+      }
+      .custom-div-height{
+          gap: 10px  !important;
+          padding-bottom: 10px !important; 
+        }
+      
+      .icons-height{
+          height: 100%px;
+          width: 80% !important;
+          padding-bottom: 10px;
+      }
+      .custom-div-width{
+          background-color:#F0F5FF !important ;
+        }
+      .icons-width{
+          height: 70%px;
+          width: 90% !important;
+          padding-bottom: 10px;
+      }
+      .custom-div-height p,
+      .custom-div-width p {
+          margin: 0; /* Remove default margin */
+    padding: 0;
+          font-size: 16px; /* Adjust text size */
+          color: #4D4D4D; /* Set text color */
+          font-weight: bold;
+        }
+  
+        @media (max-width: 768px) {
+          .custom-div,
+          .custom-div-private,
+          .custom-div-height,
+          .custom-div-width {
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center align items */
+          }
+        
+          .icons,
+          .icons-height {
+            margin-bottom: 2px; /* Add spacing below the image */
+            min-height: 100px;
+            min-width: 100px;
+          }
+        }
+
+  .guidelines{
+      text-decoration: none;
+      color: #4D4D4D;
+      font-size: 18px;
+     font-weight: 500;
+  }
+
+  
+  .moving-background2 {
+      position: relative;
+      width: 100%;
+      height: 500px; /* Adjust height as needed */
+      overflow: hidden;
+      background-image: url('../images/before3.jpg'); /* Replace with your image path */
+      background-size: cover; /* Ensure the image covers the div */
+      background-position: center;
+      background-attachment: fixed; /* Keep the background fixed during scrolling */
+      background-repeat: no-repeat;
+      padding: 200px 20px;
+      
+    }
+
+    @media (min-width:405px) and (max-width:410px){
+      .section{
+        max-width:90%;
+       
+      }
+     
+    }
+    @media (min-width:411px) and (max-width:460px){
+      .section{
+        max-width:90%;
+        
+      }
+     
+    }
+    @media (max-width:405px) {
+      .section{
+        max-width:90%;
+        
+      }
+      
+    }
+.col-lg-5 p, .points{
+      font-weight: 350;
+font-size: 18px;
+text-align: justify;
+text-align: left !important;
+word-wrap: break-word !important; /* Ensure text breaks within the container width */
+word-spacing:normal !important;
+
+    }
+
+.custom-container{
+  width: 70% ;
+}
+    @media (max-width: 768px) {
+      .custom-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap */
+        gap: 10px; /* Space between items */
+        padding: 20px 15px;
+      }
+    
+      /* Default style: 2 divs per row (50% width each) */
+      .custom-container .custom-div-width,
+      .custom-container .custom-div-height {
+        flex: 1 1 calc(50% - 10px); /* Half width minus gap */
+        
+        min-width: calc(50% - 10px);
+        box-sizing: border-box; /* Account for padding/borders */
+      }
+    
+      /* Every 5th div spans full width (1 div per row) */
+      .custom-container .custom-div-width:nth-child(3n),
+      .custom-container .custom-div-height:nth-child(3n) {
+        flex: 1 1 100% !important; /* Full width */
+        max-width: 100% ;
+        min-width: 100%;
+      }
+      .custom-container{
+        width: 100%;
+      }
+      .photo-gallery {
+        padding: 0px 0px;
+      }
+      .icons-width{
+max-width: 100px;
+max-height: 130px;
+      }
+      .icons-height{
+        max-width: 10px;
+        max-height: 170px;
+
+      }
+      .custom-container .custom-div{
+        flex: 1 1 calc(100% - 10px); /* Half width minus gap */
+        min-width: calc(100% - 10px);
+        height: 300px;
+    }
+    .icons{
+      min-width: 95%;
+      min-height: 90%;
+    }
+  }
+    @media (max-width: 545px) {
+      .custom-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap */
+        gap: 5px; /* Smaller gap for smaller screens */
+      }
+    .custom-div-width,.custom-div-height{
+      min-width: 100px;
+    }
+      /* Default style: 2 divs per row (50% width each) */
+      .custom-container .custom-div-width,
+      .custom-container .custom-div-height {
+        flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
+       
+        min-width: calc(50% - 5px) !important;
+        box-sizing: border-box; /* Account for padding/borders */
+      }
+    
+      /* Every 5th div spans full width (1 div per row) */
+      .custom-container .custom-div-height:nth-child(3n),
+      .custom-container .custom-div-width:nth-child(3n) {
+        flex: 1 1 100%; /* Full width */
+        max-width: 100%;
+        
+      }
+      .custom-container{
+        width: 100%;
+      }
+      .photo-gallery h1 {
+        font-size: 18px;
+        display: block; /* Ensure the heading behaves like a block-level element */
+width: 100%; /* Make sure the heading stretches across the full width */
+text-align: center; /* Center the text */
+white-space: normal; /* Allow text to wrap onto new lines */
+word-wrap: break-word !important; /* Ensure text breaks within the container width */
+margin: 0; /* Remove any default margins */
+      }
+    }
+    
+    .col-lg-5 p{
+      font-weight: 350;
+font-size: 18px;
+text-align: justify;
+text-align-last: justify; /* Ensures the last line is also justified */
+text-align: left !important;
+word-wrap: break-word !important; /* Ensure text breaks within the container width */
+
+    }

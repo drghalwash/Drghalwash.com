@@ -1,0 +1,186 @@
+
+
+.scroll-container {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    position: relative;
+    width: 100%;
+    background-color: #F0F5FF;
+    justify-content: center;   /* Centers content horizontally */
+    align-items: center; 
+  }
+  .scroll-container1 {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    position: relative;
+    width: 100% !important;
+    justify-content: center;   /* Centers content horizontally */
+    align-items: center; 
+  }
+  
+  .inner-scroll-container{
+   
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    position: relative;
+   width: 88% !important;
+    padding: 30px 100px;
+  }
+  
+  .text {
+    flex: 1; /* Takes up remaining space */
+    padding-right: 30px;
+    width: 70%;
+    font-family: var(--theme-font-family);
+
+  }
+  
+  .heading{
+    color: #1B54FF;
+   
+  }
+  h4{
+    padding: 15px 0px;
+  }
+  li,.p{
+    font-weight: 350;
+    color: #555555;
+    font-size: 18px;
+    
+    text-align: justify;
+  }
+  .scroll-image,.scroll-image1 {
+    position: sticky !important; /* Keeps the image "movable" as you scroll */
+    top: 10px; /* Distance from the top when scrolling */
+  }
+  
+  .scroll-image img {
+    position: sticky !important; /* Keeps the image "movable" as you scroll */
+    min-width:200px; /* Adjust image size */
+    max-width: 400px;
+    height: auto;
+    min-height: 200px;
+    border-radius: 20px;
+    margin-top: 60px;
+  }
+  .scroll-image1 img {
+    position: sticky !important; /* Keeps the image "movable" as you scroll */
+    min-width:400px; /* Adjust image size */
+    max-width: 500px;
+    height: auto;
+    min-height: 300px;
+    border-radius: 20px;
+    margin-top: 60px;
+    margin-right: 20px;
+  }
+  image1 {
+    position: sticky !important;
+    top: 10px;
+}
+
+  .dotted-list {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 20px;    /* Optional: Add some space for the dots */
+    margin: 0;
+  }
+  
+  .dotted-list li {
+    position: relative; /* Enable positioning for the custom dot */
+    margin-bottom: 10px; /* Space between items */
+  }
+  
+  .dotted-list li::before {
+    content: "●";        /* Use a dot as the bullet */
+    position: absolute;  /* Position it to the left of the text */
+    left: -15px;         /* Adjust horizontal position */
+    font-size: 12px;     /* Adjust size of the dot */
+    color: black;        /* Change dot color if needed */
+  }
+  
+  h3,h4,li{
+    font-family: var(--theme-font-family);
+  }
+
+  .moving-background2 {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Adjust height as needed */
+    overflow: hidden;
+    background-image: url('../images/choose-contact.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensure the image covers the div */
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    background-repeat: no-repeat;
+    padding: 200px 20px;
+      display: flex;
+  justify-content: center;
+  align-items: center;
+    
+  }
+
+  /* General Mobile View Adjustments */
+@media (max-width: 1000px) {
+  .scroll-container, .scroll-container1 {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align content */
+    
+  }
+
+  .inner-scroll-container {
+    flex-direction: column; /* Stack items vertically */
+    padding: 20px; /* Reduce padding for smaller screens */
+    width: 100% !important;
+  }
+
+  .text {
+    width: 100%; /* Make text take full width */
+    padding: 0; /* Remove side padding */
+  }
+
+  .scroll-image, .scroll-image1 {
+    position: static !important; /* Remove sticky behavior for smaller screens */
+    margin: 10px 0; /* Add margin around the image for spacing */
+    width: 100%;
+   
+  }
+ .scroll-image1 img{
+         min-width: 300px;
+    max-width: 400px;
+ }
+  .scroll-image img, .scroll-image1 img {
+    max-width: 100%; /* Scale images to fit within the screen width */
+    height: auto; /* Maintain aspect ratio */
+    
+    margin: 0 auto; /* Center align images */
+  }
+
+  iframe{
+    min-height: 400px;
+  }
+
+  .dotted-list li::before {
+    left: -10px; /* Adjust bullet positioning */
+  }
+
+  .dotted-list {
+    padding-left: 10px; /* Adjust padding for mobile screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .heading-pages h1 {
+    font-size: 20px !important; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 12px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 12px; /* Ensure link text matches breadcrumb size */
+  }
+}
+.scroll-container {
+  overflow: visible !important;
+}

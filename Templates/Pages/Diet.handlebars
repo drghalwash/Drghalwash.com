@@ -1,0 +1,836 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="/favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/diet.css">
+	<link rel="stylesheet" href="/css/guidelines.css">
+	<link rel="stylesheet" href="css/header.css">
+
+
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	@media (max-width: 700px) {
+  .heading-pages h1 {
+    font-size: 29px; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 14px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 14px; /* Ensure link text matches breadcrumb size */
+  }
+}
+	/* Ensure images are sticky on larger screens */
+@media (min-width: 1001px) {
+  .scroll-image img, .scroll-image1 img {
+    position: sticky !important;
+    top: 10px !important;
+    z-index: 10; /* Optional, to keep them above overlapping elements */
+  }
+
+  /* Ensure the parent container does not interfere */
+  .scroll-container, .scroll-container1 {
+    overflow: visible !important;
+  }
+
+  /* Ensure all ancestor elements allow sticky positioning */
+  html, body, .scroll-container, .scroll-container1 {
+    overflow: unset !important;
+    position: relative !important;
+  }
+}
+
+/* Reset images for smaller screens */
+@media (max-width: 1000px) {
+  .scroll-image img, .scroll-image1 img {
+    position: static !important;
+  }
+}
+
+	 .photo-gallery {
+      display: flex; /* Enable flexbox for alignment */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      flex-direction: column; /* Stack content vertically */
+      text-align: center; /* Ensure text aligns centrally */
+      padding: 20px; /* Add some space inside the container */
+      position: relative; /* For further positioning if needed */
+    }
+    .custom-container {
+      display: flex; /* Enable flexbox for internal alignment */
+      flex-wrap: wrap; /* Allow items to wrap if necessary */
+      justify-content: center; /* Center horizontally inside the parent */
+      align-items: center; /* Center vertically inside the parent */
+      gap: 20px; /* Add space between child elements */
+    }
+    .icons {
+      height: 100% !important;
+      width: 90% !important;
+      padding-bottom: 20px;
+    }
+    .photo-gallery .custom-container{
+      width: 90%;
+    }
+</style>
+	<title>Diet and Nutrition </title>
+</head>
+<body>
+<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each Photo_Gallary}}
+					<li><a href="/Photo_Gallary/{{_id}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+       <!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+        
+       
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+	<div class="heading-pages">
+		<h1>Diet and Nutrition</h1>
+		<p><a href="/Home">Home </a>> Patient Info > Diet and Nutrition</p>
+	</div>
+
+
+
+	<div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Diet/diet3.jpg" alt="Descriptive Text" />
+	  
+			  </div>
+		<div class="text">
+			<h4 class="heading">Overview</h4>
+			<p  class="p" style="font-weight: 500;">There are distinct and well-known features of healing that underscore the need for excellent and adequate dietary preparation prior to your surgery. Swelling, edema, time healing, bruising, discoloration, scar formation, and redness all are influenced by your diet, especially in the several weeks prior to surgery. The role of carbohydrates is critical. The Zone Diet is a great preparation. Please look at these sections in the tabs above to learn more.</p>
+			<p class="p">As an integral component of our anti-aging program, Dr. Romano has researched a specific dietary plan with the recommendations presented below. Many of our patients who have followed this plan closely report that, in addition to the healing benefits, they have enjoyed weight loss, much better energy levels, and mental clarity. They often continue this diet as part of their postoperative lifestyle. Dr. Romano personally participates in this diet on a daily basis. It is nothing mysterious, trendy, or difficult, but follows the basics of the Zone Diet.</p>
+			<p class="p">This page will introduce the theory and concept and summarize what you need to do. For better detail you should read The Zone Diet by Dr. Barry Sears and visit <a> www.zoneperfect.com</a>. The Zone Diet goes beyond mere “wellness”; simply put, the Zone is a metabolic state of optimal health in which your body works at peak efficiency. The Zone Diet focuses on the intricate biochemical linkage between diet and the body’s hormone insulin. Since insulin production is influenced greatly by diet, Dr. Sears reasoned that eating the appropriate balance of carbohydrates, protein, and fat would induce the body to produce ideal levels of this hormone. Individuals utilizing this diet to maintain insulin levels in a therapeutic zone could avoid the most common deleterious effects of too much insulin—constant weight gain and consistently low energy levels.</p>
+            <p class="p">Most mammals, including humans, have essentially the same biochemical responses to dietary macronutrients. These body responses have been genetically maintained throughout evolutionary time and are not likely to change. The evolution of our digestive system over the last 100,000 years has been based upon the consumption of just two food groups: (1) lean protein and (2) natural carbohydrates, such as fruits and fiber-rich vegetables. This is important; our bodies are not designed to accommodate the large amounts of unfavorable carbohydrates we often consume! (Remember, 80,000 years ago there were no domesticated grains, bread, or pasta.) From a genetic standpoint, most humans have yet to evolve to a stage in which excessive amounts of high-density unfavorable carbohydrates, such as grains, can be consumed without adverse biochemical consequences. The Zone Diet takes all of this into consideration, and it is designed to fuel our current genetic makeup! The concept of the Zone Diet is a simple one: Your genes have changed very little during the past 100,000 years.</p>
+            <p class="p">Realizing the central role insulin plays in human physiology is the key to understanding why being in the Zone is so critical. Because insulin production is controlled to a large extent by diet, the composition of every meal determines whether you will maintain a favorable insulin level for the next three to five hours. In essence, by following a Zone Diet, you start treating food as if it were a medication that requires controlled dosages throughout the day.</p>
+            <p class="p">The overriding principles of the Zone Diet are: first, ensure that the body receives an adequate supply of low-fat protein at each meal; second, eat proteins, fats, and fiber-rich vegetables and fruits in a ratio for which the body is genetically programmed. By consuming the proper ratio of low-density carbohydrates to fat to protein, an individual can begin controlling his or her insulin production with amazing precision. By maintaining insulin levels within a therapeutic zone, one is often able to burn excess body fat—and keep it off permanently—as well as enjoy increased energy, improved mental acuity, and increased vitality. According to Dr. Sears, the ideal ratio of carbohydrates, proteins, and fats is 40-30-30 respectively. Ideally, a Zone-favorable meal or snack will be composed of this caloric ratio at every meal, snack, or drink.</p>
+            <p class="p">Here is a basic outline.</p>
+            
+            
+            <div class="two-column-layout">
+                <!-- Left Column -->
+                <div class="column">
+                  <h3>Protein:</h3>
+                  <div class="section">
+                    <p class="section-title">Best choices:</p>
+                    <ul>
+                      <li>Fish</li>
+                      <li>Egg whites</li>
+                      <li>Turkey</li>
+                      <li>Chicken</li>
+                      <li>Soy</li>
+                    </ul>
+                    <p class="section-title">Fair choices:</p>
+                    <ul>
+                      <li>Lean red meat</li>
+                    </ul>
+                    <p class="section-title">Poor choices:</p>
+                    <ul>
+                      <li>Bacon</li>
+                      <li>Hot dogs</li>
+                      <li>Fatty meats</li>
+                      <li>Salami</li>
+                      <li>Sausage</li>
+                      <li>Cheeses</li>
+                    </ul>
+                    <p class="section-title">Favorable Carbohydrates:</p>
+                    <ul>
+                      <li>Certain raw vegetables</li>
+                      <li>Certain cooked vegetables</li>
+                      <li>Fruits</li>
+                    </ul>
+                    <p class="section-title">Unfavorable Carbohydrates:</p>
+                    <ul>
+                      <li><b>Certain cooked vegetables:</b></li>
+                      <li>Squash, carrots, beans, potatoes, peas, corn and others</li>
+                      <li><b>Certain fruits:</b></li>
+                      <li>Bananas, figs, dates, mango, papaya and others</li>
+                      <li>Grains and breads</li>
+                      <li>Fruit juices</li>
+                      <li>Alcohol</li>
+                      <li>Others</li>
+                    </ul>
+                  </div>
+                </div>
+            
+                <!-- Right Column -->
+                <div class="column">
+                  <h3>Fat:</h3>
+                  <div class="section">
+                    <p class="section-title">Best choices:</p>
+                    <ul>
+                      <li>Olive oil</li>
+                      <li>Avocado</li>
+                    </ul>
+                    <p class="section-title">Fair choices:</p>
+                    <ul>
+                      <li>Soybean oil</li>
+                      <li>Sesame oil</li>
+                    </ul>
+                    <p class="section-title">Poor choices:</p>
+                    <ul>
+                      <li>Mayonnaise</li>
+                      <li>Sour cream</li>
+                      <li>Butter</li>
+                      <li>Cream</li>
+                      <li>Cream cheese</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <p class="p">All Zone meals begin with protein; this is a basic fact. If you don’t have protein, you can’t have a Zone meal. The question is, how much protein do you need in each meal? Luckily, your hand is a good guideline. The amount of protein portion should be equal to the size and thickness of your palm.</p>
+              <p class="p">Once you determine the amount of protein that you should have at breakfast, lunch, and dinner, you need to determine the amount of carbohydrates that go along with it, because the Zone Diet is a 40:30:30 program. The carbohydrates are determined by the size of your fist. If you’re going to choose favorable carbohydrates, you get two big fists’ worth of it—two big, loose fists. If you’re going to use an unfavorable carbohydrate like pasta, you only get one tight fist’s worth, or about a cup. Therefore, if you’re going to have a chicken stir-fry with pasta, the chicken size will be the size of the palm of your hand, and you get one fist’s worth of pasta. But if you’re going to have chicken stir-fry with broccoli or cauliflower, which are favorable carbohydrates, you get two fists’ worth. In summary, eat protein the size of the palm of your hand, carbohydrates the size of your fist. Don’t worry about the fat. The required amount of fat is already contained in most foods, such as chicken.</p>
+              <p class="p">So how do you know what’s favorable and unfavorable? This is the foundation of high- and low-glycemic index carbohydrates, and you need to learn these foods. You know broccoli and cauliflower are favorable, and bananas are unfavorable, because it said so above. However, it is not necessary to do this caloric math at every meal. It is done for you at several websites, and you can order a complete product line of nutrition bars, meals, and drinks in this precise ratio of carbohydrates, proteins, and fats. As for the rest, favorable and unfavorable carbohydrates are described in several places online. They are also listed in Dr. Sears’ book Zone Food Blocks.</p>
+              <p class="p"  style="font-weight: 500;">Zone Diet</p>
+              <p class="p" style="font-weight: 500;">Modulation of the Aging Process Using the Zone Diet</p>
+              <p class="p">Aging is associated with premature mortality caused by the breakdown in physiological communication, much of which is controlled by hormones. Thus, aging can be viewed as decreasing hormonal control over the physiological processes that are necessary for maximum life span. During the aging process, the levels of many hormones will decrease. However, other hormones will increase with age, insulin and eicosanoids in particular. The elevated levels of these two hormones can be brought into an appropriate zone consistent with a reduction of premature mortality by following the appropriate diet.</p>
+              <p class="p" style="font-weight: 500;">Introduction</p>
+              <p class="p">It is increasingly apparent that 21st-century medicine will emphasize the role of hormonal control, especially in altering the aging process. This should not be surprising when you consider that hormones are the primary messengers of biological information, and the quantity and quality of that information determine how well the body ultimately functions.</p>
+              <p class="p">One of the major problems inherent in anti-aging medicine is the lack of appropriate definitions for this new field. Obviously, such definitions must be more quantifiable than simply looking younger and feeling better. I believe that an appropriate definition for anti-aging medicine is the reduction of premature mortality. Such a definition sets the foundation for conducting evidence-based research that conclusively determines whether or not a proposed anti-aging intervention will have a real impact on longevity.</p>
+              <p class="p">Since the primary cause of premature mortality in the Western world is cardiovascular disease, the reduction of those risk factors that have the greatest predictive value for the development of future cardiovascular disease becomes an excellent clinical endpoint to judge the efficacy of any proposed anti-aging intervention.</p>
+              <p class="p">Much of current anti-aging research is focused on the role of hormone replacement because those hormones can be restored by pharmaceutical intervention. However, the other hormones that actually increase as we age can only be reduced by dietary intervention. It is those hormones—primarily insulin and eicosanoids—that play a key role in the aging process because of their impact on cardiovascular disease (1, 2). Therefore, the goal of an appropriate anti-aging diet is to bring these hormone levels into a therapeutic zone that is consistent with optimal health—neither too high nor too low. This is what is termed the Zone.</p>
+              <p class="p" style="font-weight: 500;">Physiological Description of the Zone</p>
+              <p class="p">This Zone is not some mystical place or concept, since it can easily be measured and quantified by blood testing. Furthermore, the boundaries of this Zone are based upon data derived from prospective studies on the development of cardiovascular disease. Based on such prospective human studies, it is apparent that the three best predictors of future cardiovascular risk are hyperinsulinemia (3, 4), an increased triglyceride-to-HDL cholesterol (TG/HDL) ratio (5, 6), and an increased ratio of arachidonic acid (AA) to eicosapentaenoic acid (EPA) in the plasma phospholipids(7). The first two risk factors are related to elevated insulin levels, and the last is related to increased eicosanoid levels.</p>
+              <p class="p">The TG/HDL ratio is a surrogate marker for hyperinsulinemia, thus explaining why prospective studies link a high ratio with increased likelihood of cardiovascular mortality. Decreasing insulin lowers the TG/HDL ratio, which results in a corresponding decrease in the number of small atherogenic LDL particles (8). It is also increasingly apparent that cardiovascular disease has a significant inflammatory component associated with its incidence (9, 10). This can be measured by nonspecific markers of inflammation such as C-reactive proteins. However, since inflammation is an eicosanoid-mediated event, it can be measured more directly by the ratio of AA/EPA in the plasma phospholipids. Pro-inflammatory eicosanoids are derived from AA, whereas anti-inflammatory eicosanoids are derived from EPA. Thus the AA/EPA ratio in the blood will provide direct information on the precursor balance of both inflammatory (AA-derived) and anti-inflammatory (EPA-derived) eicosanoids. In intervention trials with cardiovascular patients, the reduction of the AA/EPA ratio resulted in dramatic reductions in cardiovascular mortality (6, 11). This new understanding on the role of the inflammatory process helps to explain why any drug therapy that reduces inflammation, such as aspirin (12), and even the statins (13, 14) have such a significant impact on reducing cardiovascular mortality because of their reduction of systematic inflammation.</p>
+              <p class="p">Therefore, any proposed anti-aging intervention should definitely demonstrate reduction of these risk parameters; it should result in lowered insulin levels, a decreased TG/HDL ratio, and a lowered AA/EPA ratio. In Table 1, Dr. Romano has listed some of the levels that are consistent with reduced premature cardiovascular mortality.</p>
+
+              <div class="custom-table-container">
+                <div class="table-caption">Table 1: Clinical Guidelines that Define the Zone</div>
+                <table class="custom-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Good</th>
+                      <th>Ideal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>AA/EPA</td>
+                      <td>3</td>
+                      <td>1.5</td>
+                    </tr>
+                    <tr>
+                      <td>Fasting insulin (uU/ml)</td>
+                      <td>10</td>
+                      <td>5</td>
+                    </tr>
+                    <tr>
+                      <td>TG/HDL</td>
+                      <td>2</td>
+                      <td>1</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="p" >In addition more than 40 years of gerontology research has identified several universal markers of human aging that must also be reversed with an appropriate intervention in order to be touted as useful in anti-aging medicine. These biological markers of aging are shown in Table 2.</p>
+
+              <div class="custom-table-container">
+                <div class="table-caption">Table 2: Universal Markers of Aging</div>
+                <table class="custom-table">
+                 
+                  <tbody>
+                    <tr>
+                      <td>Markers that Increase</td>
+                      <td>Markers that Decrease</td>
+                    
+                    </tr>
+                    <tr>
+                      <td>Body fat</td>
+                      <td>Aerobic capacity</td>
+                     
+                    </tr>
+                    <tr>
+                      <td>Insulin</td>
+                      <td>Muscle mass</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Hypertension</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p  class="p">Each of these markers is directly or indirectly associated with changes in insulin or eicosanoid levels. For example, elevated insulin levels precede the accumulation of excess body fat (15, 16). Therefore, an age-related increase of insulin would result in the incidence of obesity. In addition elevated insulin decreases glucose tolerance (by increasing insulin resistance) and also inhibits the release of growth hormones from the pituitary gland, resulting in decreased muscle mass. Increased eicosanoid levels increase blood pressure and decrease aerobic capacity by decreasing blood flow to the lungs. If those biological markers of aging, along with the appropriate changes in blood chemistry, can be reversed through an anti-aging intervention, then dissociation of biological age from chronological age becomes a real possibility. Since these biological markers of aging are strongly associated with hormones that can be altered by the diet, then it is likely that dietary intervention should become the first line of treatment for any anti-aging program.</p>
+              <p class="p"  style="font-weight: 500;">Dietary Approaches to Reach the Zone</p>
+              <p class="p">The only known “drug” to increase maximum lifespan is calorie restriction. Calorie restriction has also been shown to reverse both the risk factors of premature cardiovascular mortality and the biological markers of aging (2). Bear in mind that calorie restriction is not malnutrition; it must also supply adequate levels of vitamins, minerals, and essential amino and fatty acids. However, if calorie consumption is decreased by some 30–40% compared to ad libitum consumption, then not only is maximum lifespan increased, but a wide variety of physiological markers associated with aging are also modified (see Table 3).</p>
+             
+              <div class="custom-table-container">
+                <div class="table-caption">Table 3: Physiological Changes Induced by Calorie Restriction</div>
+                <table class="custom-table">
+                 
+                  <tbody>
+                    <tr>
+                      <td>Increased</td>
+                      <td>Decreased</td>
+                    
+                    </tr>
+                    <tr>
+                      <td>Maximum life span</td>
+                      <td>Fat accumulation</td>
+                     
+                    </tr>
+                    <tr>
+                      <td>Learning ability</td>
+                      <td>Bone loss</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Immune system function</td>
+                        <td>Insulin levels</td>
+                      </tr>
+
+                      <tr>
+                        <td>Kidney function</td>
+                        <td>Heart disease</td>
+                      </tr>
+
+                      <tr>
+                        <td>Female fertility</td>
+                        <td>Diabetes</td>
+                      </tr>
+
+                      <tr>
+                        <td></td>
+                        <td>Cancer</td>
+                      </tr>
+
+                      <tr>
+                        <td></td>
+                        <td>Autoimmune disease</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="p">The physiological changes associated with calorie restriction are exactly those that are the stated goals of many proponents of anti-aging medicine. However, restricting calories must also be accomplished in the context of improved insulin control. This is why the protein-to-carbohydrate ratio at each meal is critical to maintain insulin levels. Finally, the benefits of calorie restriction can only be achieved if the diet is characterized as one without constant hunger or deprivation. This will only be achieved if a constant level of blood sugar is being maintained, which is also a consequence of stable insulin levels, which are controlled by the protein-to-carbohydrate ratio at every meal.</p>
+
+		</div>
+		</div>
+	  </div>
+
+
+
+
+	<div class="scroll-container">
+		<div class="inner-scroll-container">
+		<div class="text2">
+			<h4 class="heading">Zone Diet</h4>
+			
+			<p class="p">The Zone Diet was developed to reduce elevated insulin and eicosanoid levels while maintaining calorie restriction without hunger or deprivation. The Zone Diet consists of three distinct parts. The first is the consistent control of the protein-to-carbohydrate ratio at each meal to lower elevated insulin levels. The second is supplementation with high-dose fish oil (rich in EPA) to alter eicosanoid balance. And the third is the restriction of total calorie intake, but without hunger or deprivation, to promote the physiological benefits of calorie restriction.</p>
+            <p class="p">Surprisingly, the effort required by the patient to follow the Zone Diet is quite simple; the Zone Diet requires only the use of what Dr. Romano terms the “hand-eye” method. At each meal, you only eat enough low-fat protein (fish, poultry, low-fat dairy products, egg whites, or soy imitation-meat products) to fit in the palm of your hand. This would be about 3 oz. (20 grams of protein) for a typical female, and about 4 oz. (30 grams of protein) for a typical male. Then you divide your plate at each meal into three sections. One third of the plate contains the appropriate amount of low-fat protein (20-30 grams), and the other two-thirds of the plate would be filled to overflowing with fruits and vegetables (this is be the equivalent of 3-5 servings of fruits and vegetables). Then you add a dash (3-5 grams) of heart-healthy monounsaturated fat. This described meal will control insulin levels for the next four to six hours. The only trick is to continue to make all of your meals in the same relative proportions on a lifetime basis. This means you consume between 10-15 servings of fruits and vegetables per day. Although this appears to be a formidable volume of food, the low carbohydrate density of fruits and vegetables ensures that excess insulin is not secreted at each meal since the absolute amounts of carbohydrates being consumed are restricted. In addition the calorie content of such a meal would be 30-40% less than typically consumed because of the lowered glycemic load coming from the restriction of high-density carbohydrates such as breads, pasta, and starches. In addition these levels of fruits and vegetables provide massive levels of vitamins, minerals, and fiber. The final component of the Zone Diet is to supplement the diet with a suitable amount of pharmaceutical-grade fish oil, providing 2-5 grams of long-chain Omega-3 fatty acids. This provides the necessary long-chain essential fatty acids, such as EPA, that are required to modulate the AA/EPA ratio.</p>
+            <p class="p">The reason that there is no hunger or deprivation on the Zone diet (even though it is a calorie-restricted diet) is blood sugar stabilization. This can only be achieved when the secretion of insulin (stimulated by the dietary intake of carbohydrates) is appropriately counter-balanced by the secretion of glucagon (stimulated by the dietary intake of protein). Insulin drives down blood sugar levels, whereas glucagon restores blood sugar levels. The balancing of this hormonal system by the diet ensures blood sugar maintenance for the 4–6 hour postprandial period. In essence, the goal of the Zone Diet is to maintain both insulin and glucagon within a therapeutic zone that is neither too high nor too low. If the ratio of protein to carbohydrate in the diet is too low, excess insulin will be secreted, thereby driving down blood sugar and creating hunger. On the other hand, if the protein-to-carbohydrate ratio is too high, excess glucagon will be secreted, which can generate a state of ketosis. Therefore, the ideal protein-to-carbohydrate ratio would be in a range that is just beyond that which would generate ketosis, but less than that which would create hyperinsulinemia. Dr. Romano’s research indicates that the appropriate protein-to-carbohydrate ratio to maintain insulin in the Zone is greater than 0.5 but less than 1.0. Such a mathematical relationship also allows for a more precise definition of high-carbohydrate and high-protein diets.</p>
+            <p class="p">Using this definition, a high-carbohydrate diet is one that contains more than twice as many grams of carbohydrates as grams of protein (a protein-to-carbohydrate ratio of less than 0.5). A high-protein diet would contain more protein than carbohydrates (a protein-to-carbohydrate ratio greater than 1.0). The Zone Diet maintains the protein-to-carbohydrate ratio between these two extremes.</p>
+            <p class="p">Finally, the Zone Diet also restricts omega-6 fatty acids (by using primarily monounsaturated fats in the meals) and increasing the levels of long-chain omega-3 fatty acids by supplementing meals with pharmaceutical-grade fish oils rich in EPA. This results in a significantly lowered AA/EPA ratio.</p>
+            <p class="p">Recent work from Harvard Medical School has confirmed the ability of the protein-to-carbohydrate ratio found in the Zone Diet to favorably alter the hormonal responses of both insulin and glucagon compared to diets such as the USDA or American Heart Association diets (17, 18). Using a crossover protocol employing isocaloric diets, hyperinsulinemic adolescents (17) or overweight adults (18) were provided with meals consisting of different protein-to-carbohydrate ratios. The Zone Diet demonstrated a decreased insulin response and elevated glucagon response with the result that 20–25 percent fewer calories were consumed at the next meal (17) or at the end of the study period (18). This focus on maintaining hormonal control makes it possible to restrict total calories without hunger or deprivation. Other studies, which also used isocaloric protocols, have demonstrated that maintaining the same protein-to-carbohydrate ratio advocated by the Zone Diet improves lipid profiles (19) and increases the rate of fat loss (20) when compared to high-carbohydrate diets under isocaloric conditions.</p>
+		    <p class="p">Diabetics have double the rates of cardiovascular mortality and all-cause mortality (21). Thus reducing risk factors associated with diabetes will also have a significant impact on longevity. My own studies with Type 2 diabetics (who account for more than 90 percent of all diabetics) confirms the success of using all three components of the Zone Diet (insulin and eicosanoid control coupled with calorie restriction) to generate a significant reduction of those risk factors (hyperinsulinemia and glycosylated hemoglobin) associated with future adverse events in Type 2 diabetes.</p>
+            <p class="p">The results of one six-week trial with Type 2 diabetics following the Zone Diet are shown in Table 4.</p>
+
+
+            <div class="custom-table-container">
+                <div class="table-caption">Table 4. Effects of Zone Diet in Type 2 Diabetics (n=68)</div>
+                <table class="custom-table">
+               
+                  <tbody>
+                    <tr>
+                      <td>Parameter</td>
+                      <td>Start</td>
+                      <td>End</td>
+                      <td>% Change</td>
+                      <td>Significance</td>
+                    </tr>
+                    <tr>
+                      <td>Maximum life span</td>
+                      <td>28</td>
+                      <td>21</td>
+                      <td>-23</td>
+                      <td>p< 0.0001</td>
+                    </tr>
+                    <tr>
+                      <td>HbA1C (%)</td>
+                      <td>7.8</td>
+                      <td>7.3</td>
+                      <td>-7</td>
+                      <td>p< 0.0001</td>
+                    </tr>
+                    <tr>
+                        <td>Fat mass (lbs.)</td>
+                        <td>72</td>
+                        <td>70</td>
+                        <td>-3</td>
+                        <td>p< 0.0001</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            <p class="p">As can be seen in Table 4, in the Type 2 diabetic patients, the risk factors that are associated with premature development of diabetic complications and increased cardiovascular mortality were reduced with an extraordinarily high degree of statistical significance by following the Zone Diet.</p>
+            <p class="p"  style="font-weight: 500;">Summary</p>
+            <p class="p">In the final analysis, anti-aging medicine will ultimately be focused on hormonal modulation that results in the reduction of those risk factors that are the most predictive of premature cardiovascular mortality. The necessary first step is the reduction of those hormones that increase as we age (insulin and eicosanoids) by dietary intervention. Does this mean that hormonal replacement has no impact in anti-aging medicine? No, but without an appropriate hormonal baseline established with the Zone Diet, many of the potential benefits hoped for with hormone replacement therapy may not be observed. All hormonal replacement should follow this basic rule: start low and go slow. The greater hormonal control achieved by application of the Zone Diet, the less hormonal replacement will be required to reach the Zone as determined by blood testing. It is that Zone of hormonal balance that will ultimately be the key to evidence-based anti-aging medicine.</p>
+            <p class="p" style="font-weight: 500;">References</p>
+            <ul>
+                <li>Sears, B. The Zone. New York: Regan Books, 1995. Print.</li>
+                <li>Sears, B. The Anti-Aging Zone. New York: Regan Books, 1999. Print</li>
+                <li>Lamarche, Tchernot, et al. “Fasting insulin and apolipoprotein B levels and low density particle size as risk factors for ischemic heart disease.” JAMA 279 (1998): 1955-1961. Print.</li>
+                <li>Despres, Lamarche, et al. “Hyperinsulinemia as an independent risk factor for ischemic heart disease.” N Eng J Med 334 (1996): 952-957. Print.</li>
+                <li>Gaziano, Hennekens, et al. “Fasting triglycerides, high-density lipoproteins, and risk of myocardial infarction.” Circulation 96 (1997): 2520-2525. Print.</li>
+                <li>Lamarche, B., I. Lemieux, and J.P. Despres. “The small dense phenotype and the risk of coronary heart disease: epidemiology, pathophysiology and therapeutic aspects.” Diabetes Metab 25 (1999): 199-211. Print.</li>
+                <li>de Lorgeril, Renaud, et al. “Mediterranean alpha linolenic acid-rich diet in secondary prevention of coronary heart disease.” Lancet 343 (1994): 1454-1459. Print.</li>
+                <li>Ross, Russell. “Atherosclerosis—an inflammatory disease.” N Eng J Med 340 (1999): 115-126. Print.</li>
+                <li>Ridker, Cushman, et al. “Inflammation, aspirin, and the risk of cardiovascular disease in apparently healthy men.” N Eng J Med 336 (1997): 973-979. Print.</li>
+                <li>Steering Committee of the Physician Health Study Research Group. “Final report findings from the aspirin component of the ongoing Physician’s Health Study.” N Eng J Med 321 (1989): 129-135. Print.</li>
+                <li>Ridker, Rifai, et al. “Inflammation, pravastatin, and the risk of coronary events after myocardial infarction in patients with average cholesterol levels. Cholesterol and Recurrent Events (CARE) Investigators.” Circulation 98 (1998): 839-844. Print.</li>
+                <li>Bellosta, Ferri, et al. “Non-lipid related effects of statins.” Ann Med 32 (2000): 164-176. Print.</li>
+                <li>Odeleye, de Courten, et al. “Fasting hyperinsulinemia is a predictor of increased body weight gain and obesity in Pima Indian children.” Diabetes 46 (1997): 1341-1345. Print.</li>
+                <li>Boyko, Leonetti, et al. “Low insulin secretion and high fasting insulin and C-peptide predict increased visceral adiposity.” Diabetes 45 (1996): 1010-1015. Print.</li>
+                <li>Ludwig, Majzoub, et al. “High glycemic index foods, overeating, and obesity.” Pediatrics 103 (1999): E26. Print.</li>
+                <li>Agus, Swain, et al. “Dietary composition and physiologic adaptations to energy restriction.” Am J Clin Nutr 71 (2000): 901-907. Print.</li>
+                <li>Wolfe, B.M., and L.A. Piché. “Replacement of carbohydrate by protein in a conventional-fat diet reduces cholesterol and triglyceride concentrations in healthy normolipidemic subjects.” Clin Invest Med 22 (1999): 140-148. Print.</li>
+                <li>Skov, Toubro, et al. “Randomized trial on protein vs carbohydrate in ad libitum fat reduced diet for the treatment of obesity.” Int’l J Obes Relat Metab Disord 23 (1999): 528-536. Print.</li>
+                <li>Lotufo, Gaziano, et al. “Diabetes and all-cause mortality and coronary heart disease mortality among U.S. male physicians.” Arch Intern Med 161 (2001): 242-247. Print.</li>
+            </ul>
+        
+        </div>
+		<div class="scroll-image">
+		  <img class="scrollable" src="/images/Diet/diet-plan.jpg" alt="Descriptive Text" />
+
+		</div>
+		</div>
+	  </div>
+	  
+
+
+      <div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Diet/diet4.jpg" alt="Descriptive Text" />
+	  
+			  </div>
+		<div class="text">
+			<h4 class="heading">Carbs</h4>
+			<p class="p" style="font-weight: 500;">The Problems with Carbohydrates</p>
+            <p class="p">The main source of energy in our body is carbohydrates. In the early 1980s a Canadian group devised a system for ranking carbohydrates on a scale of 1 to 100. This is based on how quickly the body converts carbohydrates to glucose, which is reflected in how quickly the blood glucose rises and how quickly insulin is released. Rapid increases in blood glucose are very bad for the body. For example, whole grains contain lots of fiber and rank low on the scale, whereas starchy foods with little or no fiber rank extremely high. Potatoes rate 93 while fiber-rich beans rate 27. This ranking system has become known as the glycemic index, with unfavorable (high glycemic index) and favorable (low glycemic index) carbohydrates respectively.</p>
+            <p class="p">Research at the Harvard School of Public Health studied 65,000 nurses and found that women who ate little fiber and many high glycemic index carbohydrates (pasta, bread, rice) were 2.5 times more likely to develop diabetes than those who ate less of these foods. Additionally, epidemiologist Simin Liu, also at Harvard, noted that women whose diet included mostly high glycemic index carbohydrates doubled their risk of heart attack, even more so than eating saturated fats. Another study of 1,400 middle-aged adults found that people who ate sweet, starchy foods had the lowest levels of HDL (good cholesterol), a condition known to increase the risk of heart attacks. Carbohydrates make you gain weight and get fat. They also retain water and make you bloated. In summary, all of this is not so much related to the carbohydrate alone, as it is to our body’s inability to process higher insulin levels produced by the rapid rise in this glucose. Increased intake of unfavorable carbohydrates leads to insulin resistance, which leads to diabetes and increased risk of heart attack, not to mention weight gain.</p>
+            <p class="p">Many of these progressive ideas came from Canada and Australia, but American dieticians, government agencies, and food manufacturers have been slow to respond and have resisted this information, mostly for economic reasons. It is very likely that in the future you will hear the surgeon general declare that cutting back on potatoes, bread, rice, and pasta will be very beneficial for your health.</p>
+
+            <div class="custom-table-container">
+                <div class="table-caption">Favorable Carbohydrates(LOW GLYCEMIC INDEX)
+
+                    Better to eat these:</div>
+                <table class="custom-table">
+                 
+                  <tbody>
+                    <tr>
+                      <td>Green vegetables</td>
+                      <td>Small “new” potatoes</td>
+                    
+                    </tr>
+                    <tr>
+                      <td>Most fresh fruit</td>
+                      <td>Sweet potatoes</td>
+                     
+                    </tr>
+                    <tr>
+                      <td>High-fiber cereals</td>
+                      <td>Semolina pasta</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Whole-grain breads</td>
+                        <td>Basmati rice</td>
+                      </tr>
+                      <tr>
+                        <td>Nuts</td>
+                        
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="custom-table-container">
+                <div class="table-caption">Unfavorable Carbohydrates(HIGH GLYCEMIC INDEX)
+
+                    Try to avoid these, but if you must, eat very little:</div>
+                <table class="custom-table">
+                 
+                  <tbody>
+                    <tr>
+                      <td>White potatoes</td>
+                      <td>Cakes, candy</td>
+                    
+                    </tr>
+                    <tr>
+                      <td>Pasta</td>
+                      <td>Rice</td>
+                     
+                    </tr>
+                    <tr>
+                      <td>Oatmeal</td>
+                      <td>Cereals</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Bagels, muffins</td>
+                        <td>Cookies</td>
+                       
+                      </tr>
+                      <tr>
+                        <td>Donuts</td>
+                        <td>Bananas</td>
+                       
+                      </tr>
+                    <tr>
+                        <td>Carrots</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+			  
+		</div>
+		</div>
+	  </div>
+
+
+      <div class="photo-gallery">
+        <div>
+    <h1>New Patient Information</h1>
+    </div>
+    <div class="custom-container">
+    <!-- First Row -->
+    <div class="custom-row first-row">
+     
+	<div class="custom-div">
+			<img class="icons" src="/images/Public/camera.jpg">
+			 <a class="guidelines" href="/Guidelines">Photography Guidelines</a>
+			</div>
+      <div class="custom-div">
+        <img class="icons" src="/images/Public/laptop2.jpg">
+		<a class="guidelines" href="/Policies">Policies &  Guidelines</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/financial.jpg">
+		<a class="guidelines" href="/Finance">Financing</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/diet.jpg">
+		<a class="guidelines" href="/Diet">Diet And Nutrition</a>
+	</div>
+	  <div class="custom-div">
+		<img class="icons" src="/images/Public/blood.jpg">
+		<a class="guidelines" href="/Drain_Care">Drain Care</a>
+	</div>
+    </div>
+  
+</div>
+      
+    </div>
+
+
+
+	  <div class="moving-background2">
+		<div class="overlay"></div>
+		<div class="content-of-moving-background">
+		<h1>Get Started</h1>
+		<p>We’re here to answer your questions and guide you on your journey. Reach out to us today.</p>
+		<div class="button-of-moving-background">
+			<a href="/Contact">Contact Us</a>
+		</div>
+	</div>
+	</div>
+
+
+
+	<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">123 Main St, Anytown, USA 12345</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">01011111111</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each Photo_Gallary}}
+							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/tiny-slider.js"></script>
+		<script src="/js/aos.js"></script>
+		<script src="/js/navbar.js"></script>
+		<script src="/js/counter.js"></script>
+		<script src="/js/rellax.js"></script>
+		<script src="/js/flatpickr.js"></script>
+		<script src="/js/glightbox.min.js"></script>
+		<script src="/js/custom.js"></script>
+		<script src="/https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="js/header.js"></script>
+<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Select the navbar, logo, links, and toggle spans
+  const navbar = document.querySelector(".unique-navbar");
+  const logo = document.querySelector(".distinct-logo img");
+  const links = document.querySelectorAll(".uncommon-link");
+  const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
+
+  // Paths for the original and scrolled state logos
+  const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
+  const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
+
+  // Function to handle scroll behavior
+  function handleScroll() {
+    if (window.scrollY > 0) {
+      // Add scrolled class when the user scrolls down
+      navbar.classList.add("scrolled");
+
+      // Update logo for scrolled state
+      logo.src = scrolledLogoSrc;
+
+      // Update link colors
+      links.forEach((link) => {
+        link.style.color = "#4c4b4b"; // Dark links for scrolled state
+      });
+
+      // Update toggle span colors
+      toggleSpans.forEach((span) => {
+        span.style.backgroundColor = "#4c4b4b"; // Black for scrolled state
+      });
+    } else {
+      // Remove scrolled class when at the top of the page
+      navbar.classList.remove("scrolled");
+
+      // Ensure the logo is white when at the top
+      logo.src = originalLogoSrc;
+
+      // Reset link colors to inherit the default color
+      links.forEach((link) => {
+        link.style.color = "white";
+      });
+
+      // Reset toggle span colors
+      toggleSpans.forEach((span) => {
+        span.style.backgroundColor = "white"; // White for default state
+      });
+    }
+  }
+
+  // Ensure the logo is white when the page loads
+  window.addEventListener("DOMContentLoaded", () => {
+    if (window.scrollY === 0) {
+      logo.src = originalLogoSrc;
+    }
+  });
+
+  // Attach the scroll event listener
+  window.addEventListener("scroll", handleScroll);
+</script>
+
+			
+	</body>
+	</html>

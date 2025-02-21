@@ -1,0 +1,490 @@
+.dropdown-link:hover{
+  text-decoration: none;
+}
+/* Menu Toggle Styling */
+.menu-toggle {
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.menu-toggle .toggle-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-right: 10px; /* Space between lines and text */
+  
+}
+
+.menu-toggle .toggle-lines span {
+  display: block;
+  /* Adjust line width */
+  height: 3px; /* Line thickness */
+  background-color: white; /* Line color */
+  border-radius: 3px; /* Rounded edges */
+}
+
+.menu-toggle .menu-text {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  
+}
+
+.menu-toggle .toggle-lines span:first-child {
+  margin-left: auto; /* Align the first line to the right */
+  width: 15px; /* Optional: Adjust the width of the first line */
+}
+
+/* Responsive Styling: Show Menu Toggle in Mobile View */
+@media (max-width: 1000px) {
+  .menu-toggle {
+    display: flex; /* Show the toggle only in mobile view */
+  }
+}
+
+
+.unique-navbar {
+    display: flex !important;
+    position: sticky !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 120px;
+    background-color: transparent !important;
+    color: white;
+    width: 100%;
+    height: 60px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    position: fixed !important; 
+  }
+
+  
+  .unique-navbar:hover {
+    color: white;
+  }
+  /* Default transparent navbar */
+.unique-navbar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 100px;
+  background-color: transparent; /* Transparent at the top */
+ 
+  width: 100%;
+  height: 60px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Link colors */
+.uncommon-link {
+  text-decoration: none;
+  color: inherit; /* Inherit navbar color */
+  transition: color 0.3s ease;
+}
+
+.unique-navbar.scrolled .uncommon-link {
+  color: #525252 !important; /* Darker color for links when scrolled */
+}
+
+
+
+  /* Menu Styles */
+  .rare-menu {
+    display: none; /* Default hidden for mobile view */
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: #565656;
+    position: fixed;
+    top: 0;
+    right: -100%; /* Initially off-screen */
+    height: 100vh;
+    width: 250px;
+    padding: 2rem;
+    transition: right 0.3s ease-in-out; /* Smooth slide-in effect */
+    z-index: 1000;
+  }
+  
+  .rare-menu.active {
+    right: 0; /* Slide into view */
+    display: flex; /* Make the menu visible when active */
+  }
+  
+  .uncommon-link {
+    text-decoration: none;
+    
+    font-family: var(--theme-font-family) !important;
+    font-weight: 500 !important;
+    font-style: var(--theme-font-style, inherit);
+    line-height: var(--theme-line-height);
+    letter-spacing: var(--theme-letter-spacing);
+    text-transform: var(--theme-text-transform);
+    -webkit-text-decoration: var(--theme-text-decoration);
+    text-decoration: var(--theme-text-decoration);
+  }
+  
+  
+  /* Toggle Button */
+  .exclusive-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 0.3rem;
+    cursor: pointer;
+  }
+  
+ 
+
+  
+  /* Mobile View */
+  @media (max-width: 1000px) and (min-width: 667px)  {
+    .exclusive-toggle {
+      display: flex; /* Show the toggle button on mobile view */
+    }
+  
+    .rare-menu {
+        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+       
+    }
+  
+    .uncommon-link {
+      color: #FFF; /* White text color for better visibility */
+    }
+    
+  }
+  @media (max-width: 667px) and (min-width:610px)  {
+    .exclusive-toggle {
+      display: flex; /* Show the toggle button on mobile view */
+    }
+  
+    .rare-menu {
+        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+        
+    }
+  
+    .uncommon-link {
+      color: #FFF; /* White text color for better visibility */
+    }
+   
+  }
+  @media (max-width: 610px)  {
+    .exclusive-toggle {
+      display: flex; /* Show the toggle button on mobile view */
+    }
+  
+    .rare-menu {
+        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+        height: 100%;
+    }
+  
+    .uncommon-link {
+      color: #FFF; /* White text color for better visibility */
+    }
+   
+  }
+  
+  /* Desktop View */
+  @media (min-width: 1001px) {
+    .rare-menu {
+      display: flex; /* Ensure the menu is visible in desktop view */
+      flex-direction: row; /* Align items horizontally */
+      gap: 2rem; /* Add spacing between links */
+      position: static; /* Normal flow for desktop */
+      background-color: transparent; /* Transparent background */
+      height: auto; /* Reset height */
+      width: auto; /* Reset width */
+      padding: 0; /* Reset padding */
+    }
+  }
+  /* Further shrink the navbar for even smaller desktop screens */
+@media (max-width: 1100px) and (min-width: 1001px) {
+    .unique-navbar {
+      padding: 0 30px; /* Further reduce padding */
+    }
+  
+   
+    .rare-menu {
+      gap: 0.8rem; /* Tighten spacing further */
+    }
+  
+    .uncommon-link {
+      font-size: 0.9rem; /* Scale down font size further */
+    }
+  }
+   /* Further shrink the navbar for even smaller desktop screens */
+@media (max-width:1200px) and (min-width: 1100px) {
+    .unique-navbar {
+      padding: 0 30px; /* Further reduce padding */
+    }
+  
+   
+    .rare-menu {
+      gap: 1rem; /* Tighten spacing further */
+    }
+  
+    .uncommon-link {
+      font-size: 1rem; /* Scale down font size further */
+    }
+  }
+
+    /* Further shrink the navbar for even smaller desktop screens */
+@media (max-width:1300px) and (min-width: 1200px) {
+    .unique-navbar {
+      padding: 0 30px; /* Further reduce padding */
+    }
+  
+    .distinct-logo img {
+      max-width: 300px; /* Further reduce logo size */
+      max-height: 250px;
+    }
+  
+    .rare-menu {
+      gap: 1rem; /* Tighten spacing further */
+    }
+  
+    .uncommon-link {
+      font-size: 1rem; /* Scale down font size further */
+    }
+  }
+
+  /* Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block; /* Aligns dropdown inline with other elements */
+  }
+  
+  /* Hide Dropdown Menu by Default */
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Positions menu below the link */
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px; /* Set width as needed */
+    z-index: 1000;
+  }
+  
+  /* Dropdown Links */
+  .dropdown-menu li {
+    border-bottom: 1px solid #eaeaea; /* Optional: Add a divider */
+  }
+  
+  .dropdown-menu li:last-child {
+    border-bottom: none; /* Remove divider for last item */
+  }
+  .dropdown-menu a {
+    font-size: 15.5px;
+  }
+  
+  .dropdown-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .dropdown-link:hover {
+    background-color: #f0f0f0; /* Highlight effect */
+    color: #1b54ff;
+  }
+  
+  /* Show Dropdown on Hover */
+  .dropdown:hover > .dropdown-menu {
+    display: block;
+}
+  
+
+
+  .modal2 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    right: 0 !important;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    padding-right: 0px !important;
+  }
+  
+/* Modal desktop Content */
+.desktop-content {
+    background-color: transparent;
+    margin: auto;
+    padding: 20px;
+    width: 100%; /* Ensures the modal content takes up full width */
+    max-width: 800px; /* Limits the width of modal content */
+    box-sizing: border-box; /* Includes padding in width calculation */
+    display: flex; /* Flexbox for horizontal alignment of content-pair divs */
+    justify-content: space-between; /* Space out content-pair divs */
+    gap: 0.5rem; /* Optional: Space between the content-pair divs */
+    right: 0 !important;
+margin-right: 40px;
+  }
+  
+  /* Style for the container pairing img and p */
+  .content-pair {
+    /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
+    align-items: right;     /* Vertically align the image and text */
+    gap: 0.5rem;               /* Space between image and text */
+    margin-bottom: 1.5rem;   /* Space between pairs of content */
+    flex: 1;                 /* Ensure the content-pair div takes equal width */
+    max-width: 40%;          /* Limit the width of each pair for side-by-side layout */
+  }
+  
+  /* Style for the image */
+  .arrow-desktop {
+    height: 80px;
+    width: 80px;
+  }
+  
+  /* Style for the text */
+  .content-pair p {
+    font-size: 1rem; /* Adjust font size */
+    color: #fff; /* Ensure text contrasts well with background */
+    margin: 15px; /* Remove default margins */
+    font-family: cursive;
+
+  }
+  
+
+/* mobile modal */
+  .mobile-content {
+    background-color: transparent;
+    margin: auto;
+    padding: 0 ;
+    padding-right: 5%;
+    right: 0 !important; /* Align to the right of the page */
+    position: absolute;
+    /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
+    gap: 0.5rem;  
+  margin-right: 0px !important;
+  }
+  .mobile-content p{
+    color: white;
+    font-family: cursive;
+  }
+  .arrow-mobile{
+    height: 80px;
+    width: 80px;
+  margin-left: 50%;
+  }
+
+
+
+
+  .unique-navbar.scrolled {
+    background-color: white !important;
+    color: #4c4b4b !important; /* Dark text color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for effect */
+  }
+  
+  .unique-navbar.scrolled .distinct-logo img {
+    filter: invert(1); /* Invert logo color */
+  }
+  
+  .unique-navbar.scrolled .uncommon-link {
+    color: #555555 !important; /* Update link color */
+  }
+  
+  .distinct-logo img {
+    filter: none !important; /* Ensure no filter is applied */
+  }
+  @media (max-width: 1000px) {
+    .unique-navbar.scrolled .uncommon-link {
+      color: white !important; /* Color for mobile when scrolled */
+    }
+  }
+
+  /* Default logo size */
+.distinct-logo img {
+  max-width: 320px; /* Default width */
+  max-height: 300px; /* Default height */
+  transition: max-width 0.3s ease, max-height 0.3s ease; /* Smooth transition */
+  margin-right: 10px;
+}
+
+/* Medium screen size */
+@media (max-width: 1200px) {
+  .distinct-logo img {
+      max-width: 300px !important; /* Adjust width */
+      max-height: 260px !important ; /* Adjust height */
+      
+  }
+}
+
+/* Small screen size */
+@media (max-width: 900px) {
+  .distinct-logo img {
+      max-width: 280px !important; /* Adjust width */
+      max-height: 220px !important; /* Adjust height */
+  }
+}
+
+/* Extra small screen size (e.g., mobile) */
+@media (max-width: 600px) {
+.distinct-logo img {
+      max-width: 260px !important; /* Adjust width */
+      max-height: 190px !important; /* Adjust height */
+      margin-left: -70px;
+      margin-right: 20px;
+  }
+}
+.distinct-logo img {
+  transition: max-width 0.3s ease, max-height 0.3s ease !important;
+}
+
+.dropdown .dropdown .dropdown-menu {
+  left: 100%; /* Position the nested dropdown to the right */
+  top: 0;
+  margin-left: 0.1rem;
+}
+/* Mobile View: Adjust nested dropdown positioning */
+@media (max-width: 1000px) {
+  .dropdown .dropdown .dropdown-menu {
+    left: 0; /* Align nested dropdown to the left */
+    top: 100%; /* Position below the parent item */
+    margin-left: 0; /* Remove margin */
+    width: 100%; /* Full width for better visibility */
+  }
+
+  
+}
+/* Mobile View: Stack dropdown menus vertically */
+@media (max-width: 1000px) {
+  .dropdown-menu {
+    position: static; /* Reset position for mobile */
+    display: none; /* Hide by default */
+
+  }
+
+  .dropdown:hover > .dropdown-menu {
+    display: block; /* Show dropdown on hover */
+  }
+
+}
+/* Mobile View: Adjust nested dropdown for "Out of Town Patients" */
+@media (max-width: 1000px) {
+  .dropdown .dropdown .dropdown-menu {
+    left: 0; /* Align nested dropdown to the left */
+    top: 100%; /* Position below the parent item */
+    margin-left: 0; /* Remove margin */
+    width: 100%; /* Full width for better visibility */
+  }
+
+  .dropdown.open > .dropdown-menu {
+    display: block; /* Show dropdown when parent has the 'open' class */
+  }
+}

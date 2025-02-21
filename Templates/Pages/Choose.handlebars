@@ -1,0 +1,505 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="/favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/choose.css">
+	<link rel="stylesheet" href="/css/header.css">
+	<link rel="stylesheet" href="/css/style.css">
+
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	@media (max-width: 1000px) {
+  
+
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+	
+
+	@media (max-width: 700px) {
+  .heading-pages h1 {
+    font-size: 22px; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 12px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 12px; /* Ensure link text matches breadcrumb size */
+  }
+}
+	/* Ensure images are sticky on larger screens */
+@media (min-width: 1001px) {
+  .scroll-image img, .scroll-image1 img {
+    position: sticky !important;
+    top: 10px !important;
+    z-index: 10; /* Optional, to keep them above overlapping elements */
+  }
+
+  /* Ensure the parent container does not interfere */
+  .scroll-container, .scroll-container1 {
+    overflow: visible !important;
+  }
+
+  /* Ensure all ancestor elements allow sticky positioning */
+  html, body, .scroll-container, .scroll-container1 {
+    overflow: unset !important;
+    position: relative !important;
+  }
+}
+
+/* Reset images for smaller screens */
+@media (max-width: 1000px) {
+  .scroll-image img, .scroll-image1 img {
+    position: static !important;
+  }
+	.moving-background2{
+	display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  }
+	 .content-of-moving-background {
+  left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+</style>
+	<title>How to Choose A Plastic Surgeon </title>
+</head>
+<body>
+	<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each Photo_Gallary}}
+					<li><a href="/Photo_Gallary/{{_id}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+		<!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+        
+        
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+	
+
+	<div class="heading-pages">
+		<h1>How to Choose A Plastic Surgeon</h1>
+		<p><a href="/Home">Home </a>> About Us > How to Choose A Plastic Surgeon</p>
+	</div>
+
+
+
+	<div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Choose/choose3.jpg" alt="Descriptive Text" />
+	  
+			  </div>
+		<div class="text">
+			<h4 class="heading">How to Choose A Plastic Surgeon?</h4>
+			
+			<p class="p">A discussion about plastic surgery should start with physician selection. Selecting the surgeon is the single most important factor in the success of your plastic surgery. Of equal, if not of greater, significance than the rapidly escalating number of patients seeking plastic surgery is the explosion in the ranks of physicians not trained as plastic surgeons performing plastic surgery procedures. Lawmakers in several states are taking aim at this issue. The growth is fueled in large part by physicians from many different specialties trying to escape some of the insurance reimbursement limits imposed by managed care on their practices; they seek higher fee-generating procedures such as liposuction, which is not regulated by insurance companies. Despite this, there are still many qualified physicians in different specialties performing very good plastic surgery, and your search should not be limited to one specialty or board-certification category.</p>
+			<p class="p">As a patient, you should seek to qualified physicians and establish a professional relationship with one who offers the procedure you are interested in.</p>
+
+			  
+		</div>
+		
+		</div>
+	  </div>
+
+
+
+
+	<div class="scroll-container">
+		<div class="inner-scroll-container">
+		<div class="text">
+			<h4 class="heading">When Choosing a Plastic Surgeon Be Aware of</h4>
+			<h4>Credentials & Board Certification</h4>
+			<ol class="dotted-list">
+				<li>Just as important as where your plastic surgeon went to school is the specific type of plastic surgery training he or she received. Has your surgeon completed an accredited residency program specifically in plastic surgery? Such a Programs includes an intensive two- to three-year training in the full spectrum of reconstructive and cosmetic surgical procedures. Was the plastic surgery training a shorter “fellowship,” and was it only in a specific area?</li>
+				<li>Specific board certification. Be perceptive about this. Understand that the American Society of Medical Specialists (ASMS) recognizes only one board of plastic surgery: the American Board of Plastic Surgery (ABPS). Patients are encouraged to consider a doctor certified by the ABPS. This certification guarantees that the doctor has graduated from an accredited medical school and completed at least three to five years of general surgery and two years of plastic surgery. To be certified by the ABPS, a doctor must also practice plastic surgery for two years as well as pass comprehensive written and oral examinations. The other groups formed their own board. There are some “certifications” that are not boards at all and do not require any testing or peer review. Also, be aware that some references and Internet sites list board-certified doctors only if they pay to advertise. So don’t rule out the possibility that your doctor may still be certified, just not listed. Many doctors have board certification in more than one specialty, so ask about this as well.</li>
+				<li>Local and state medical societies and memberships. Check your doctor’s membership and make sure no grievances or complaints have been filed against him or her.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Experience and Background</h4>
+			  <ol class="dotted-list">
+				<li>The number of specific procedures performed.</li>
+				<li>The length of time performing that specific procedure.</li>
+				<li>Ask the plastic surgeon about the number of complications and lawsuits filed, pending, or settled. All of this information is now available to the public through many state licensing boards, so don’t be shy about asking about this issue.</li>
+				<li>Be aware that just because a doctor has performed any procedure many times, this does not mean he or she is good at it or has the same “artistic perspective” that you do. Ask a lot of questions to satisfy yourself of this qualification.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Hospital Affiliations</h4>
+			  <ol class="dotted-list">
+				<li>Inquire about hospital admitting and surgical privileges. This is important because occasionally doctors who operate only in their office do so because they may not have hospital admitting privileges. Also, make sure the doctor has surgical privileges, especially in the procedure you are choosing.</li>
+				<li>Call a respected hospital in your community and ask for the names of board-certified plastic surgeons on staff. Be sure to ask for the names of doctors who have privileges to do the particular procedure you are interested in. See if your doctor is on the list.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Hospital Affiliations</h4>
+			  <ol class="dotted-list">
+				<li>Anyone can set aside a room and call it an operating suite. This has only recently begun to fall under government regulation.</li>
+				<li>Make sure the operating suite and facility is accredited, and check which agency gave the accreditation.</li>
+				<li>If you are planning surgery in the office, ask what will happen and where you will go if there is a problem.</li>
+				<li>Have a clear understanding about the policy for complications and revisions.</li>
+			  </ol>
+
+			  <br>
+			  <h4>References</h4>
+			  <ol class="dotted-list">
+				<li>Don’t merely rely on word-of-mouth.</li>
+				<li>Ask the plastic surgeon for references and a list of his or her patients. Call these references and talk to them.</li>
+				<li>Ask to see some of the photographs of patients who underwent similar procedures. Make sure these are his or her patients and not copied photographs or models.</li>
+				<li>Ask doctors and nurses. Your family doctor or an operating room nurse may be able to recommend a surgeon.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Your Consultation</h4>
+			  <ol class="dotted-list">
+			<li>Make sure your doctor will answer all of your questions thoroughly in an understandable way.</li>
+			<li>Make sure you spend ample time with your doctor and not just his nurse or counselor.</li>
+			<li>Discuss your motivations and expectations.</li>
+			<li>Make sure the doctor welcomes questions, especially about qualifications, experience, costs, payments, and complications.</li>
+			<li>Make sure the doctor offers alternatives, or even other doctors’ names for a second opinion, without pressuring you to book surgery.</li>
+			<li>You should discuss with your surgeon your expectations and any related matters that may affect your recovery, such as the nature of your job, smoking or drinking habits, other diseases or medications you are using, and any related personal matters.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Paid Advertising</h4>
+			  <ol class="dotted-list">
+		<li>You can find plenty of physicians’ names in the yellow pages and other advertising sources. Keep in mind that that doctors can list themselves under any specialty heading they like and advertise any services they want to sell, regardless of their training and credentials.</li>
+			  </ol>
+
+			  <br>
+			  <h4>Artistic Perspective</h4>
+			  <ol>
+				<li>Very important. Make sure your doctor sees what you see and knows what you want, and that he or she will provide the sort of result that you are both focused on.</li>
+			  </ol>
+
+			  
+		</div>
+		<div class="scroll-image">
+		  <img class="scrollable" src="/images/Choose/choose3.jpg" alt="Descriptive Text" />
+
+		</div>
+		</div>
+	  </div>
+	  
+
+
+
+	  <div class="moving-background2">
+		<div class="overlay"></div>
+		<div class="content-of-moving-background">
+		<h1 style="font-family:Ubuntu, sans-serif;"><b>Get Started</b></h1>
+		<p>We’re here to answer your questions and guide you on your journey. Reach out to us today.</p>
+		<div class="button-of-moving-background">
+			<a href="/Contact">Contact Us</a>
+		</div>
+	</div>
+	</div>
+
+
+
+	<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">123 Main St, Anytown, USA 12345</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">01011111111</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each Photo_Gallary}}
+							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/tiny-slider.js"></script>
+		<script src="/js/aos.js"></script>
+		<script src="/js/navbar.js"></script>
+		<script src="/js/counter.js"></script>
+		<script src="/js/rellax.js"></script>
+		<script src="/js/flatpickr.js"></script>
+		<script src="/js/glightbox.min.js"></script>
+		<script src="/js/custom.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="/js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Select the navbar, logo, links, and toggle spans
+  const navbar = document.querySelector(".unique-navbar");
+  const logo = document.querySelector(".distinct-logo img");
+  const links = document.querySelectorAll(".uncommon-link");
+  const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
+
+  // Paths for the original and scrolled state logos
+  const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
+  const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
+
+  // Function to handle scroll behavior
+  function handleScroll() {
+    if (window.scrollY > 0) {
+      // Add scrolled class when the user scrolls down
+      navbar.classList.add("scrolled");
+
+      // Update logo for scrolled state
+      logo.src = scrolledLogoSrc;
+
+      // Update link colors
+      links.forEach((link) => {
+        link.style.color = "#4c4b4b"; // Dark links for scrolled state
+      });
+
+      // Update toggle span colors
+      toggleSpans.forEach((span) => {
+        span.style.backgroundColor = "#4c4b4b"; // Black for scrolled state
+      });
+    } else {
+      // Remove scrolled class when at the top of the page
+      navbar.classList.remove("scrolled");
+
+      // Ensure the logo is white when at the top
+      logo.src = originalLogoSrc;
+
+      // Reset link colors to inherit the default color
+      links.forEach((link) => {
+        link.style.color = "white";
+      });
+
+      // Reset toggle span colors
+      toggleSpans.forEach((span) => {
+        span.style.backgroundColor = "white"; // White for default state
+      });
+    }
+  }
+
+  // Ensure the logo is white when the page loads
+  window.addEventListener("DOMContentLoaded", () => {
+    if (window.scrollY === 0) {
+      logo.src = originalLogoSrc;
+    }
+  });
+
+  // Attach the scroll event listener
+  window.addEventListener("scroll", handleScroll);
+</script>
+	</body>
+	</html>
