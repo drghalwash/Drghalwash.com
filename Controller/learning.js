@@ -7,38 +7,26 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Create learning table
 const createTable = async () => {
-  console.log('Starting table creation...');
-  const { data, error } = await supabase
+  console.log('Creating learning table...');
+  const { error } = await supabase
     .from('learning')
-    .select()
-    .limit(1);
+    .insert([
+      { 
+        q: 'test question',
+        a: 'test answer',
+        d: new Date().toISOString().split('T')[0]
+      }
+    ])
+    .select();
 
-  if (error && error.code === '42P01') {
-    console.log('Table does not exist, creating...');
-    const { error: createError } = await supabase
-      .rpc('create_table_learning', {
-        sql: `
-          CREATE TABLE learning (
-            id SERIAL PRIMARY KEY,
-            q TEXT NOT NULL,
-            a TEXT NOT NULL,
-            d DATE NOT NULL DEFAULT CURRENT_DATE,
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-          );
-        `
-      });
-    
-    if (createError) {
-      console.error('Error creating table:', createError);
-    } else {
-      console.log('Table created successfully!');
-    }
+  if (error) {
+    console.error('Error with learning table:', error);
   } else {
-    console.log('Table already exists');
+    console.log('Learning table is ready');
   }
 };
 
-// Run table creation
+// Initialize table
 createTable().catch(console.error);
 
 // Create learning table if it doesn't exist
