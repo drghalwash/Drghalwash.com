@@ -103,6 +103,7 @@ app.use('/Blog', Blog_route);
 app.use('/Read_More', Read_More_route);
 app.use('/galleries', gallery_route);
 app.use('/Out_of_town', Out_of_town_route);
+app.use('/learning', learning_route);
 
 const PORT = 5000; // Hardcode the port to 5000
 app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`); });
