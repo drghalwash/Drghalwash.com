@@ -112,7 +112,7 @@ export const index = async (req, res) => {
       }
     });
 
-    res.render('Pages/gallery', { gallery, galleries, rowsHtml, movingBackground2: true, 'site-footer': true });
+    res.render('Pages/gallery', { gallery, galleries, rowsHtml });
   } catch (error) {
     console.error('[Error] Index controller:', error.message);
     res.status(500).render('error', { error: 'An unexpected error occurred.' });
