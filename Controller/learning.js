@@ -12,17 +12,30 @@ const processQAFile = async (filePath) => {
   console.log('Processing file:', filePath);
   try {
     if (!filePath || typeof filePath !== 'string') {
-      throw new Error('Invalid file path');
+      console.warn('Invalid file path provided');
+      return [];
     }
 
-    const fileBuffer = await fs.readFile(filePath);
+    const resolvedPath = path.resolve(process.cwd(), filePath);
+    const exists = await fs.access(resolvedPath).then(() => true).catch(() => false);
+    
+    if (!exists) {
+      console.warn(`File not found: ${resolvedPath}`);
+      return [];
+    }
+
+    const fileBuffer = await fs.readFile(resolvedPath);
     let content;
 
-    if (path.extname(filePath).toLowerCase() === '.pdf') {
+    const ext = path.extname(resolvedPath).toLowerCase();
+    if (ext === '.pdf') {
       const pdfData = await pdf(fileBuffer);
       content = pdfData.text;
-    } else {
+    } else if (ext === '.txt') {
       content = fileBuffer.toString('utf-8');
+    } else {
+      console.warn(`Unsupported file type: ${ext}`);
+      return [];
     }
 
     const lines = content.split('\n')
@@ -98,6 +111,16 @@ const insertQAPairs = async (qaPairs) => {
 const startProcessor = async () => {
   console.log('Starting learning processor...');
   try {
+    const { data: dbCheck, error: dbError } = await supabase
+      .from('unsorted')
+      .select('count(*)')
+      .single();
+      
+    if (dbError) {
+      console.error('Database connection error:', dbError);
+      return null;
+    }
+
     const subscription = supabase
       .channel('unsorted-changes')
       .on('postgres_changes', 
