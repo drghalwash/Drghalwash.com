@@ -27,8 +27,6 @@
 	<link rel="stylesheet" href="css/glightbox.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/header.css">
-<link rel="stylesheet" href="css/infi.css">
-
 
 	<!-- In the <head> -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -138,6 +136,41 @@
 		a {
 			text-decoration: none;
 		}
+
+        .tag-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-row {
+            display: flex;
+            animation: scrollTags 20s linear infinite;
+        }
+
+        .tag-row div {
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #333;
+        }
+
+        @keyframes scrollTags {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .tag-row:hover {
+            animation-play-state: paused;
+        }
 	</style>
 	<title>The best is here </title>
 </head>
@@ -218,33 +251,11 @@
 
 
 	<!-- Mobile Modal -->
-	{{!-- <div id="mobileModal" class="modal2">
-		<div class="modal-content2 mobile-content">
-			<img class="arrow-mobile" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
-			<p>Welcome to our mobile site! Tap here for more..</p>
-		</div>
-	</div> --}}
+
 
 	<!-- Desktop Modal -->
-	{{!-- <div id="desktopModal" class="modal2">
-		<div class="modal-content2 desktop-content">
-			<div class="content-pair">
-				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
-				<p>Explore our site on desktop! Click here for more..</p>
-			</div>
-			<div class="content-pair">
-				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
-				<p>Explore our site on desktop! Click here for more..</p>
-			</div>
-			<div class="content-pair">
-				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
-				<p>Explore our site on desktop! Click here for more..</p>
-			</div>
-		</div>
-	</div> --}}
 
 
-	<script src="js/infi.js"></script>
 
 	<div class="video-container">
 		<iframe width="100%" height="auto" src="{{Home.video_link}}" title="YouTube video player" frameborder="0"
@@ -253,16 +264,7 @@
 		</iframe>
 	</div>
 
-	
 
-
-    
-        
-        
-				
-        
-
-	<!-- start  -->
 	<div class="home-slider">
 		<h1 style="text-align: center;">{{Home.title}}</h1>
 		<div class="container1">
@@ -312,7 +314,7 @@
 
 	</div>
 	<!--  end of container -->
- 
+
 		 <div style="margin-top: 35px;" class="section">
 			 <div class="container">
 				 <div class="row">
@@ -576,7 +578,7 @@
 		 }
 		 </style>
 
-	
+
 	<div class="site-footer">
 		<div class="container">
 			<div class="row">
@@ -678,8 +680,8 @@
 	<script src="js/flatpickr.js"></script>
 	<script src="js/glightbox.min.js"></script>
 	<script src="js/custom.js"></script>
-	{{!--
-	<script src="js/header.js"></script> --}}
+
+
 	<script>
 		const toggleButton = document.getElementById('toggle-button');
 		const menu = document.getElementById('menu');
@@ -687,7 +689,7 @@
 		// Toggle the menu visibility on button click
 		toggleButton.addEventListener('click', (event) => {
 			event.stopPropagation(); // Prevent click from propagating to the document
-			menu.classList.toggle('active');
+			menu.classListtoggle('active');
 		});
 
 		// Close the menu when clicking outside of it
@@ -747,8 +749,6 @@
 		});
 	</script>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 	<script>
 		// Select the navbar, logo, links, and toggle spans
 		const navbar = document.querySelector(".unique-navbar");
@@ -757,8 +757,8 @@
 		const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
 
 		// Paths for the original and scrolled state logos
-		const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
-		const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
+		const originalLogoSrc = "/images/white-logo.png"; 
+		const scrolledLogoSrc = "/images/black-logo.png"; 
 
 		// Function to handle scroll behavior
 		function handleScroll() {
@@ -771,12 +771,12 @@
 
 				// Update link colors
 				links.forEach((link) => {
-					link.style.color = "#4c4b4b"; // Dark links for scrolled state
+					link.style.color = "#4c4b4b"; 
 				});
 
 				// Update toggle span colors
 				toggleSpans.forEach((span) => {
-					span.style.backgroundColor = "#4c4b4b"; // Black for scrolled state
+					span.style.backgroundColor = "#4c4b4b"; 
 				});
 			} else {
 				// Remove scrolled class when at the top of the page
@@ -792,7 +792,7 @@
 
 				// Reset toggle span colors
 				toggleSpans.forEach((span) => {
-					span.style.backgroundColor = "white"; // White for default state
+					span.style.backgroundColor = "white"; 
 				});
 			}
 		}
@@ -807,6 +807,7 @@
 		// Attach the scroll event listener
 		window.addEventListener("scroll", handleScroll);
 	</script>
+
 
 
 	{{!-- Carousel --}}
@@ -861,4 +862,3 @@
 </body>
 
 </html>
-
