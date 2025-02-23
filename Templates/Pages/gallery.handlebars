@@ -130,26 +130,7 @@
   </h1>
   <div class="custom-container">
     {{#if rowsHtml}}
-      <div class="main-content">
-  {{{rowsHtml}}}
-</div>
-
-{{#if movingBackground2}}
-<div class="moving-background2">
-  <div class="overlay"></div>
-  <div class="content-of-moving-background">
-    <h1>Gallery</h1>
-    <p>Explore our collection of before and after photos</p>
-  </div>
-</div>
-{{/if}}
-
-{{#if site-footer}}
-<div class="site-footer">
-  <!-- Footer content from main layout -->
-  {{> footer galleries=galleries}}
-</div>
-{{/if}}
+      {{{rowsHtml}}}
     {{else}}
       <p>No images are available for this gallery.</p>
     {{/if}}
