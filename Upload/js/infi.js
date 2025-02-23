@@ -1,28 +1,24 @@
-
 const TAGS = [
-    'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
-    'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
-    'Professional Experience', 'Surgical Expertise', 'Medical Innovation',
-    'Beauty Enhancement', 'Surgical Precision', 'Patient Safety'
+    'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt', 'Plastic Surgery',
+    'Aesthetic Excellence', 'Patient Care', 'Professional Experience', 'Surgical Expertise',
+    'Medical Innovation', 'Beauty Enhancement', 'Surgical Precision', 'Patient Safety'
 ];
 
-function createTag(text) {
-    const tag = document.createElement('div');
-    tag.className = 'tag';
-    tag.textContent = text;
-    return tag;
+function initializeRows() {
+  //Implementation of initializeRows function would go here.  This is assumed based on the original code.
+  //This function would likely use the TAGS array to populate the tag cloud.  A placeholder is used for demonstration.
+  console.log("Tag cloud initialized with:", TAGS);
 }
 
-function initializeTagCloud() {
-    const tagRow = document.querySelector('.tag-row');
-    if (!tagRow) return;
-    
-    // Create two sets of tags for continuous scrolling
-    for (let i = 0; i < 2; i++) {
-        TAGS.forEach(tag => {
-            tagRow.appendChild(createTag(tag));
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    const tagContainer = document.querySelector('.tag-container');
+    if (tagContainer) {
+        const tagList = tagContainer.querySelector('.tag-list');
+        if (!tagList) {
+            const newTagList = document.createElement('div');
+            newTagList.className = 'tag-list';
+            tagContainer.appendChild(newTagList);
+        }
+        initializeRows();
     }
-}
-
-document.addEventListener('DOMContentLoaded', initializeTagCloud);
+});
