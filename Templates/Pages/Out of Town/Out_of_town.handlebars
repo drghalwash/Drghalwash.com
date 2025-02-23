@@ -1,249 +1,92 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<meta name="author" content="Untree.co">
-	<link rel="shortcut icon" href="/favicon.png">
-
-	<meta name="description" content="" />
-	<meta name="keywords" content="bootstrap, bootstrap5" />
-	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-
-	<link rel="stylesheet" href="fonts/icomoon/style.css">
-	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-
-	<link rel="stylesheet" href="css/tiny-slider.css">
-	<link rel="stylesheet" href="css/aos.css">
-	<link rel="stylesheet" href="css/flatpickr.min.css">
-	<link rel="stylesheet" href="css/glightbox.min.css">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/guidelines.css">
-	<link rel="stylesheet" href="css/choose.css">
-	<link rel="stylesheet" href="css/header.css">
-
-
-    <!-- <link rel="stylesheet" href="css/photo-gallery.css"> -->
-
-
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-	@media (max-width: 700px) {
-  .heading-pages h1 {
-    font-size: 29px; /* Reduce font size for the main heading */
-    line-height: 1.2; /* Adjust line height for better spacing */
-  }
-
-  .heading-pages p {
-    font-size: 14px; /* Reduce breadcrumb font size */
-  }
-
-  .heading-pages a {
-    font-size: 14px; /* Ensure link text matches breadcrumb size */
-  }
-}
-
-	/* Ensure images are sticky on larger screens */
-@media (min-width: 1001px) {
-  .scroll-image img, .scroll-image1 img {
-    position: sticky !important;
-    top: 10px !important;
-    z-index: 10; /* Optional, to keep them above overlapping elements */
-  }
-
-  /* Ensure the parent container does not interfere */
-  .scroll-container, .scroll-container1 {
-    overflow: visible !important;
-  }
-
-  /* Ensure all ancestor elements allow sticky positioning */
-  html, body, .scroll-container, .scroll-container1 {
-    overflow: unset !important;
-    position: relative !important;
-  }
-}
-
-/* Reset images for smaller screens */
-@media (max-width: 1000px) {
-  .scroll-image img, .scroll-image1 img {
-    position: static !important;
-  }
-}
-	
-	 .photo-gallery {
-      display: flex; /* Enable flexbox for alignment */
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
-      flex-direction: column; /* Stack content vertically */
-      text-align: center; /* Ensure text aligns centrally */
-      padding: 20px; /* Add some space inside the container */
-      position: relative; /* For further positioning if needed */
-    }
-    .custom-container {
-      display: flex; /* Enable flexbox for internal alignment */
-      flex-wrap: wrap; /* Allow items to wrap if necessary */
-      justify-content: center; /* Center horizontally inside the parent */
-      align-items: center; /* Center vertically inside the parent */
-      gap: 20px; /* Add space between child elements */
-    }
-    .icons {
-      height: 100% !important;
-      width: 90% !important;
-      padding-bottom: 20px;
-    }
-    .photo-gallery .custom-container{
-      width: 90%;
-    }
-
-	.heading{
-		    margin-top: 40px;
-	}
-</style>
-	<title>Out of Town Patients </title>
-</head>
+{{> header}}
 <body>
 
-<nav class="unique-navbar">
-		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
-		<div class="menu-toggle" id="toggle-button">
-			<div class="toggle-lines">
-				<span style=" width: 15px; "></span>
-				<span style=" width: 20px;"></span>
-				<span style=" width: 15px;"></span>
-			</div>
-			<span class="menu-text">Menu</span>
-		</div>
-		<div class="rare-menu" id="menu">
-			<a href="/Home" class="uncommon-link">HOME</a>
-			<div class="dropdown">
-				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
-					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
-					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					{{#each galleries}}
-					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
-					{{/each}}
-					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
-				</ul>
-			</div>
-			<div class="dropdown">
-    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
-    <ul class="dropdown-menu">
-		<!-- Out of Town Patients -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
-                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
-                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
-                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
-                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
-            </ul>
-        </li>
-        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
-        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
-        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
-        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
-        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
-        
-        
-    </ul>
+<div class="heading-pages">
+    <h1>Welcome to Alexandria</h1>
+    <p><a href="/">Home</a> > Patient Info > Out of Town</p>
 </div>
 
-			<div class="dropdown">
-				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
-					<li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
-				</ul>
-			</div>
+<div class="section">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <img src="/images/alexandria-view.jpg" alt="Alexandria View" class="img-fluid rounded">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="heading mb-4"><strong>A Message from Dr. Khaled & Dr. Mohammed Ghalwash</strong></h2>
+                <p class="text-black" style="font-size: 17px;">Dear valued patients from afar,</p>
 
-			<a href="/Contact" class="uncommon-link">CONTACT US</a>
-		</div>
-	</nav>
+                <p class="text-black" style="font-size: 17px;"><strong>We extend our warmest welcome to you from the heart of Alexandria</strong>, where ancient wisdom meets modern medical excellence. As you consider your journey to our clinic, we want you to know that you're not just coming for a medical procedure – you're becoming part of our extended family.</p>
 
-	
-
-	<div class="heading-pages">
-		<h1>
-			Out of Town Patients</h1>
-		<p><a href="/Home">Home </a> > Patient Info > 
-			Out of Town Patients</p>
-	</div>
-
-
-
-
-		
-	
-	<div class="scroll-container1">
-		<div class="inner-scroll-container">
-			<div class="scroll-image1">
-				<img class="scrollable" src="/images/Out of Town/Out of Town Patients.png" alt="Descriptive Text" />
-	  
-			  </div>
-		<div class="text">
-			<h4 class="heading" >Out of Town Patients</h4>
-			
-			<p class="p">There are many good reasons to travel long distances for plastic surgery as long as it is organized and thoroughly planned out in advance. Dr. Romano, together with his entire staff, will make this journey safe, comfortable and fulfilling for you.</p>
-			<p class="p">Initial evaluation and screening is done very thoroughly prior to visiting the office. This involves Dr. Romano’s personal and thorough review of your medical history, photographs, old records and any other pertinent information.</p>
-			<p class="p">This is followed by a personal telephone call with Dr. Romano and a virtual consultation during which you are both reviewing your photographs as you talk.</p>
-			<p class="p">Once a thorough discussion has occurred and you are both satisfied, plans can be made to visit the office. This may be in one trip for consultation and surgery at the same time, or it may be split into two visits. You and Dr. Romano will mutually decide on this.</p>
-			
-			  
-		</div>
-		
-		</div>
-	  </div>
-
-	
-
-
-
-<div class="photo-gallery">
-<div>
-<h1>Links for Out-of-Town Patients</h1>
-</div>
-<div class="custom-container">
-    <!-- First Row -->
-    <div class="custom-row first-row">
-	<div class="custom-div" onclick="navigateTo('/Out_of_town/Concierge_Services')">
-        <img class="icons" src="/images/Out of Town/Concierge Services.png">
-        <a class="guidelines" href="/Out_of_town/Concierge_Services">Concierge Services</a>
-    </div>
-    <div class="custom-div" onclick="navigateTo('/Out_of_town/Consultation_Process')">
-        <img class="icons" src="/images/Out of Town/Consultation Process.png">
-        <a class="guidelines" href="/Out_of_town/Consultation_Process">Consultation Process</a>
-    </div>
-    <div class="custom-div" onclick="navigateTo('/Out_of_town/Hotels_Accommodations')">
-        <img class="icons" src="/images/Out of Town/Hotels & Accommodations.png">
-        <a class="guidelines" href="/Out_of_town/Hotels_Accommodations">Hotels & Accommodations</a>
-    </div>
-    <div class="custom-div" onclick="navigateTo('/Guidelines')">
-        <img class="icons" src="/images/Out of Town/photography.jpg">
-        <a class="guidelines" href="/Guidelines">Photography Guidelines</a>
-    </div>
-    <div class="custom-div" onclick="navigateTo('/Out_of_town/Alexandria_Attractions')">
-        <img class="icons" src="/images/Out of Town/Alexandria Attractions.png">
-        <a class="guidelines" href="/Out_of_town/Alexandria_Attractions">Alexandria Attractions</a>
-    </div>
+                <p class="text-black" style="font-size: 17px;">Our commitment goes beyond the operating room. We understand that traveling for medical care can feel daunting, which is why we've designed a comprehensive care program that embraces both your medical needs and your comfort as our guest in Alexandria.</p>
+            </div>
+        </div>
     </div>
 </div>
+
+<div class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="service-card p-4 bg-white rounded shadow-sm">
+                    <h3 class="mb-3"><strong>Your Medical Journey</strong></h3>
+                    <p>From your first consultation to your final follow-up, we provide:</p>
+                    <ul class="list-unstyled">
+                        <li>✓ Personalized treatment plans</li>
+                        <li>✓ Virtual pre-consultation options</li>
+                        <li>✓ Dedicated patient coordinator</li>
+                        <li>✓ Comprehensive aftercare support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="service-card p-4 bg-white rounded shadow-sm">
+                    <h3 class="mb-3"><strong>Experience Alexandria</strong></h3>
+                    <p>During your recovery, immerse yourself in our city's rich heritage:</p>
+                    <ul class="list-unstyled">
+                        <li>✓ Visit the historic Bibliotheca Alexandrina</li>
+                        <li>✓ Stroll along the Mediterranean Corniche</li>
+                        <li>✓ Explore ancient Roman theaters</li>
+                        <li>✓ Taste authentic Egyptian cuisine</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-   <script>
+
+<div class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="mb-4"><strong>Let Us Guide Your Journey</strong></h3>
+                <p class="mb-4">We invite you to explore our comprehensive support services designed specifically for our out-of-town patients:</p>
+
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-3">
+                        <a href="/Out_of_town/Concierge_Services" class="btn btn-outline-primary btn-block">Concierge Services</a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/Out_of_town/Hotels_Accommodations" class="btn btn-outline-primary btn-block">Accommodations</a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/Out_of_town/Alexandria_Attractions" class="btn btn-outline-primary btn-block">City Attractions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}}
+
+</body>
+</html>
+
+<script>
         function navigateTo(url) {
             window.location.href = url;
         }
@@ -352,7 +195,6 @@
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
 
 
-
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>
 		<script src="js/aos.js"></script>
@@ -364,10 +206,9 @@
 		<script src="js/custom.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-		
-		
 
-<script src="js/header.js"></script>
+
+		<script src="js/header.js"></script>
 <script>
   const toggleButton = document.getElementById('toggle-button');
   const menu = document.getElementById('menu');
@@ -468,5 +309,3 @@
   // Attach the scroll event listener
   window.addEventListener("scroll", handleScroll);
 </script>
-	</body>
-	</html>
