@@ -2,22 +2,23 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
 import pdf from 'pdf-parse';
+import { PDFDocument } from 'pdf-lib';
+import natural from 'natural';
+import fse from 'fs-extra';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 
-let supabase = null;
+const tokenizer = new natural.WordTokenizer();
 
 const initSupabase = async () => {
   try {
-    if (!supabase) {
-      supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-      await supabase.from('learning').select('count');
-    }
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    await supabase.from('learning').select('count');
     return supabase;
   } catch (err) {
-    console.error('Supabase initialization failed:', err);
-    throw new Error('Database connection failed');
+    console.error('Database connection error:', err);
+    throw new Error('Failed to initialize database');
   }
 };
 
@@ -39,58 +40,87 @@ const retryOperation = async (operation, maxRetries = 5, delay = 1000) => {
 
 const processPDF = async (buffer) => {
   try {
-    const result = await pdf(buffer);
-    return result.text;
-  } catch (err) {
-    console.error('PDF processing error:', err);
-    return '';
-  }
-};
+    console.log('Starting enhanced PDF processing...');
 
-const processFile = async (filePath) => {
-  try {
-    const resolvedPath = path.resolve(process.cwd(), filePath);
-    const buffer = await fs.readFile(resolvedPath);
-    const ext = path.extname(resolvedPath).toLowerCase();
+    // Load PDF document for structure analysis
+    const pdfDoc = await PDFDocument.load(buffer);
+    const result = await pdf(buffer, {
+      pagerender: async (pageData) => {
+        const renderOptions = {
+          normalizeWhitespace: true,
+          disableCombineTextItems: false
+        };
+        return pageData.getTextContent(renderOptions);
+      }
+    });
 
-    const content = ext === '.pdf' ? 
-      await processPDF(buffer) : 
-      buffer.toString('utf-8');
-
-    return content.split('\n')
+    // Extract and clean text
+    const lines = result.text.split('\n')
       .map(line => line.trim())
-      .filter(Boolean);
+      .filter(line => line.length > 0)
+      .filter(line => line.match(/^Q[0-9]+:|^[A-E]\)/i));
+
+    console.log(`Extracted ${lines.length} potential QA lines`);
+    return lines;
   } catch (err) {
-    console.error(`File processing error (${filePath}):`, err);
+    console.error('PDF processing error:', err.message);
     return [];
   }
 };
 
 const parseQAPairs = (lines) => {
-  const pairs = [];
-  let currentQ = '';
-  let currentChoices = [];
+  try {
+    console.log('Parsing QA pairs with enhanced validation...');
+    const pairs = [];
+    let currentQ = '';
+    let currentChoices = [];
+    let questionCount = 0;
 
-  for (const line of lines) {
-    if (line.match(/^Q[0-9]+:/i)) {
-      if (currentQ && currentChoices.length) {
-        pairs.push({ question: currentQ, choices: [...currentChoices] });
+    for (const line of lines) {
+      const questionMatch = line.match(/^Q[0-9]+:\s*(.+)/i);
+      const choiceMatch = line.match(/^[A-E]\)\s*(.+)/i);
+
+      if (questionMatch) {
+        if (currentQ && currentChoices.length >= 2) {
+          pairs.push({
+            question: currentQ.trim(),
+            choices: currentChoices.map(c => c.trim()),
+            metadata: {
+              tokens: tokenizer.tokenize(currentQ),
+              choiceCount: currentChoices.length
+            }
+          });
+          questionCount++;
+        }
+        currentQ = questionMatch[1];
+        currentChoices = [];
+      } else if (choiceMatch && currentQ) {
+        currentChoices.push(choiceMatch[0]);
       }
-      currentQ = line.replace(/^Q[0-9]+:\s*/i, '').trim();
-      currentChoices = [];
-    } else if (line.match(/^[A-E]\)/)) {
-      currentChoices.push(line.trim());
     }
-  }
 
-  if (currentQ && currentChoices.length) {
-    pairs.push({ question: currentQ, choices: [...currentChoices] });
-  }
+    // Add the last pair if valid
+    if (currentQ && currentChoices.length >= 2) {
+      pairs.push({
+        question: currentQ.trim(),
+        choices: currentChoices.map(c => c.trim()),
+        metadata: {
+          tokens: tokenizer.tokenize(currentQ),
+          choiceCount: currentChoices.length
+        }
+      });
+      questionCount++;
+    }
 
-  return pairs;
+    console.log(`Successfully parsed ${questionCount} valid QA pairs`);
+    return pairs;
+  } catch (err) {
+    console.error('QA parsing error:', err.message);
+    return [];
+  }
 };
 
-const batchInsert = async (pairs, batchSize = 50) => {
+const batchInsert = async (pairs, batchSize = 25) => {
   const db = await initSupabase();
   const batches = [];
 
@@ -98,9 +128,12 @@ const batchInsert = async (pairs, batchSize = 50) => {
     batches.push(pairs.slice(i, i + batchSize));
   }
 
-  await Promise.all(batches.map(async (batch) => {
-    await retryOperation(async () => {
-      const { error } = await db.from('learning').insert(
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const batch of batches) {
+    try {
+      const { data, error } = await db.from('learning').insert(
         batch.map(pair => ({
           question: pair.question,
           choices: pair.choices.join('\n'),
@@ -108,9 +141,40 @@ const batchInsert = async (pairs, batchSize = 50) => {
           updated_at: new Date().toISOString()
         }))
       );
+
       if (error) throw error;
-    });
-  }));
+      successCount += batch.length;
+      console.log(`Inserted batch of ${batch.length} questions successfully`);
+    } catch (err) {
+      failCount += batch.length;
+      console.error(`Batch insert error:`, err.message);
+    }
+  }
+
+  return { successCount, failCount };
+};
+
+const processFile = async (filePath) => {
+  try {
+    console.log(`Processing file: ${filePath}`);
+    const resolvedPath = path.resolve(process.cwd(), filePath);
+    await fse.access(resolvedPath);
+
+    const buffer = await fse.readFile(resolvedPath);
+    const ext = path.extname(resolvedPath).toLowerCase();
+
+    if (ext === '.pdf') {
+      return await processPDF(buffer);
+    }
+
+    return buffer.toString('utf-8')
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.match(/^Q[0-9]+:|^[A-E]\)/i));
+  } catch (err) {
+    console.error(`File processing error (${filePath}):`, err.message);
+    return [];
+  }
 };
 
 const startProcessor = async () => {
@@ -120,7 +184,7 @@ const startProcessor = async () => {
     const db = await initSupabase();
 
     return db.channel('unsorted-changes')
-      .on('postgres_changes', 
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'unsorted' },
         async (payload) => {
           try {
@@ -139,7 +203,7 @@ const startProcessor = async () => {
             const rootDir = process.cwd();
             const files = await fs.readdir(rootDir);
 
-            const supportedFiles = files.filter(f => 
+            const supportedFiles = files.filter(f =>
               ['.txt', '.pdf'].includes(path.extname(f).toLowerCase())
             );
 
@@ -152,7 +216,8 @@ const startProcessor = async () => {
               .slice(0, questionLimit);
 
             if (allQAPairs.length > 0) {
-              await batchInsert(allQAPairs);
+              const result = await batchInsert(allQAPairs);
+              console.log(`Batch insert summary: Success - ${result.successCount}, Failure - ${result.failCount}`);
             }
           } catch (err) {
             console.error('Change handler error:', err);
