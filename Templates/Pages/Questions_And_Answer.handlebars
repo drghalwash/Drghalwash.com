@@ -1,17 +1,16 @@
- 
 <!doctype html>
 <html lang="en">
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 	<meta name="author" content="Untree.co">
 	<link rel="shortcut icon" href="favicon.png">
 
 	<meta name="description" content="" />
 	<meta name="keywords" content="bootstrap, bootstrap5" />
-	
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -39,7 +38,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/faqs/faq-3/assets/css/faq-3.css">
 
-	
+
 {{!-- <style>
 	/* Basic Styling */
 .qa-container {
@@ -139,8 +138,8 @@ font-family: Verdana, sans-serif;
 
 .accordion-body{
    text-align: justify; /* Ensures even spacing between words */
-  
-   
+
+
 }
 
 /* Accordion Components */
@@ -239,7 +238,7 @@ font-family: Verdana, sans-serif;
 </style>
 
 		<style>
-			
+
 
 			.modal {
     display: none; /* Hidden by default popup cat*/
@@ -493,7 +492,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
     transition: width 0.3s ease;
 }
 		</style>
-	
+
 	<title> Q&As </title>
 </head>
 <body>
@@ -547,8 +546,8 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         <li><a href="/Finance" class="dropdown-link">Financing</a></li>
         <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
         <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
-        
-        
+
+
     </ul>
 </div>
 
@@ -563,28 +562,28 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 			<a href="/Contact" class="uncommon-link">CONTACT US</a>
 		</div>
 	</nav>
-	
+
 
 	<div class="heading-pages">
 		<h1> Q&As</h1>
 		<p><a href="/Home">Home </a> >  Discussion Corner > Q&As </p>
 	</div>
- 
+
     {{!-- <section class="light">
         <div class="container py-2">
             <div class="h1 text-center text-dark" id="pageHeaderTitle">Q & A</div>
-    
+
             <article class="postcard light blue">
                 <a class="postcard__img_link" href="#">
                     <img class="postcard__img" src="https://picsum.photos/1000/1000" alt="Image Title" />
                 </a>
                 <div class="postcard__text t-dark">
                     <h1 class="postcard__title blue"><a href="#">Podcast Title</a></h1>
-                  
+
                     <div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
                     <div class="postcard__bar"></div>
 
-                   
+
                 </div>
             </article>
             <article class="postcard light red">
@@ -596,15 +595,15 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
                     <div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
                     <div class="postcard__bar"></div>
 
-                    
+
                 </div>
-            
+
         </div>
     </section>
      --}}
 
 	 {{!-- <div class="qa-container">
-  
+
   <div class="qa-category">
     <div class="qa-heading" onclick="toggleQA(this)">Category 1</div>
     <div class="qa-content">
@@ -619,7 +618,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
     </div>
   </div>
 
- 
+
   <div class="qa-category">
     <div class="qa-heading" onclick="toggleQA(this)">Category 2</div>
     <div class="qa-content">
@@ -641,7 +640,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   </script>
 <!-- Include search.js for search functionality -->
 <script src="/js/search.js"></script>
-	
+
 <!-- Search Bar -->
 <div class="search-container">
     <div class="search-wrapper">
@@ -703,7 +702,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   </div>
 </section>
 
-		
+
 
 
 
@@ -762,7 +761,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 });
 </script>
 
-   
+
 <!-- Back to Top and Bottom Button -->
 <div class="scroll-buttons">
     <button id="scrollTopBtn">⬆ </button>
@@ -822,8 +821,8 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 					<div class="widget">
 						<h3 class="footer-headers">Procedures</h3>
 						<ul class="list-unstyled float-left links">
-							{{#each Photo_Gallary}}
-							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
 							{{/each}}
 							<li><a href="/Guidelines">Photography Guidelines</a></li>
 						</ul>
@@ -872,8 +871,8 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 		<script src="js/custom.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-		
-		
+
+
 <script src="js/header.js"></script>
 <script>
   const toggleButton = document.getElementById('toggle-button');
@@ -938,7 +937,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         behavior: "smooth", // Smooth scrolling
       });
     });
-    
+
     // Scroll to the Bottom
     document.getElementById("scrollBottomBtn").addEventListener("click", function () {
       window.scrollTo({
@@ -1010,6 +1009,6 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 
 
 
-	
+
 	</body>
 	</html>

@@ -1,17 +1,16 @@
-
 <!doctype html>
 <html lang="en">
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 	<meta name="author" content="Untree.co">
 	<link rel="shortcut icon" href="/favicon.png">
 
 	<meta name="description" content="" />
 	<meta name="keywords" content="bootstrap, bootstrap5" />
-	
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -82,10 +81,10 @@
 			<div class="dropdown">
 				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
 				<ul class="dropdown-menu">
-					{{#each Photo_Gallary}}
-					<li><a style="font-size: 14.7px;" href="/Photo_Gallary/{{_id}}" class="dropdown-link">{{name}}</a></li>
+					{{#each galleries}}
+					<li><a style="font-size: 14.7px;" href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
 					{{/each}}
-					<li><a style="font-size: 14.7px;"  href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+					<li><a style="font-size: 14.7px;" href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
 				</ul>
 			</div>
 			<div class="dropdown">
@@ -107,8 +106,8 @@
         <li><a style="font-size: 14.7px;" href="/Finance" class="dropdown-link">Financing</a></li>
         <li><a style="font-size: 14.7px;" href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
         <li><a style="font-size: 14.7px;" href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
-        
-       
+
+
     </ul>
 </div>
 
@@ -137,12 +136,12 @@
                     <img src="/images/Meet our patients/thanks.jpg" alt="Image" class="img-fluid">
                 </div>
                 <div style="padding: 20px;" class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
-                    
+
                     <h6 style="font-size: 20px;" class="heading mb-4">Meet Our Patients – I consider this one of the most powerful yet humbling sections of my entire website.</h6>
                     <p >Shown here is but a very small sample out of hundreds of typical “thank you” letters received. These testimonials are all totally unsolicited and “from the heart” of my patients. These and many more are all original and in binders in my office, which you can read on your visit.</p>
-    
+
                     <p>Please take a few moments to review and appreciate how cosmetic surgery, in my safe, medical, and nurturing environment, can change your life. I never lose sight of this.</p>
-                        
+
                 </div>	
             </div>
         </div>
@@ -154,9 +153,9 @@
  <div data-key="Google Reviews Light Carousel Three Rows" class="ft" id="ft0aa2unk">
  </div>
  <script src="https://cdn.fouita.com/widgets/0x1f3e06.js"></script>
- 
 
-    
+
+
     <div class="slider-container">
         <div class="slider">
           <!-- Slide 1 -->
@@ -169,7 +168,7 @@
               <p>Please take a few moments to review and appreciate how cosmetic surgery, in my safe, medical, and nurturing environment, can change your life. I never lose sight of this.</p>
             </div>
             </div>
-            
+
           </div>
           <!-- Slide 2 -->
           <div class="slide">
@@ -194,11 +193,11 @@
             </div>
           </div>
         </div>
-      
+
         <!-- Navigation Arrows -->
         <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
         <button class="next" onclick="changeSlide(1)">&#10095;</button>
-      
+
         <!-- Navigation Dots -->
         <div class="dots-container">
           <span class="dot" onclick="currentSlide(1)"></span>
@@ -206,7 +205,7 @@
           <span class="dot" onclick="currentSlide(3)"></span>
         </div>
       </div>
-      
+
 
 
 
@@ -238,12 +237,12 @@
           <p>Paragraph 6</p>
         </div>
       </div>
-      
+
  -->
 
 
 
-  
+
 
 <div class="moving-background2">
 	<div class="overlay"></div>
@@ -309,8 +308,8 @@
 					<div class="widget">
 						<h3 class="footer-headers">Procedures</h3>
 						<ul class="list-unstyled float-left links">
-							{{#each Photo_Gallary}}
-							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
 							{{/each}}
 							<li><a href="/Guidelines">Photography Guidelines</a></li>
 						</ul>
@@ -363,7 +362,7 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 
-		
+
 <script src="js/header.js"></script>
 <script>
   const toggleButton = document.getElementById('toggle-button');
