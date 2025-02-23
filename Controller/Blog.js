@@ -107,19 +107,19 @@ const fetchLatestBlogs = async () => {
 };
 
 /**
- * Fetch gallery data for sidebar.
+ * Fetch galleries data for sidebar.
  */
-const fetchGalleryData = async () => {
+const fetchGalleries = async () => {
   try {
-    console.log('[Gallery] Fetching gallery data...');
-    const { data: galleryData, error } = await supabase
+    console.log('[Gallery] Fetching galleries data...');
+    const { data: galleries, error } = await supabase
       .from('gallery')
       .select('*');
 
-    if (error) throw new Error(`Error fetching gallery data: ${error.message}`);
-    return galleryData;
+    if (error) throw new Error(`Error fetching galleries: ${error.message}`);
+    return galleries;
   } catch (error) {
-    console.error('[Error] Fetching gallery data:', error.message);
+    console.error('[Error] Fetching galleries:', error.message);
     throw error;
   }
 };
@@ -132,10 +132,10 @@ export const index = async (req, res) => {
     console.log('[Request] Blog index page requested');
 
     // Fetch all required data in parallel
-    const [allBlogs, latestBlogs, galleryData] = await Promise.all([
+    const [allBlogs, latestBlogs, galleries] = await Promise.all([
       fetchAllBlogs(),
       fetchLatestBlogs(),
-      fetchGalleryData(),
+      fetchGalleries(),
     ]);
 
     // Group blogs by category for rendering
@@ -150,7 +150,7 @@ export const index = async (req, res) => {
     }, {});
 
     // Render the Blogs page with grouped data and additional metadata
-    res.render('Pages/Blog', { groupedBlogs, latestBlogs, Photo_Gallary: galleryData });
+    res.render('Pages/Blog', { groupedBlogs, latestBlogs, Photo_Gallary: galleries });
 
     console.log('[Success] Rendered Blogs page');
   } catch (error) {
@@ -180,14 +180,14 @@ export const readMore = async (req, res) => {
     }));
 
     // Fetch related blogs and other required data in parallel
-    const [relatedBlogs, latestBlogs, galleryData] = await Promise.all([
+    const [relatedBlogs, latestBlogs, galleries] = await Promise.all([
       fetchRelatedBlogs(Blog.category_technical_id, Blog.id),
       fetchLatestBlogs(),
-      fetchGalleryData(),
+      fetchGalleries(),
     ]);
 
     // Render the "Read More" page with all required data
-    res.render('Pages/Read_More', { Blog, randomBlogs: relatedBlogs, latestBlogs, Photo_Gallary: galleryData });
+    res.render('Pages/Read_More', { Blog, randomBlogs: relatedBlogs, latestBlogs, Photo_Gallary: galleries });
     
     console.log(`[Success] Rendered Read More page for blog slug: ${slug}`);
   } catch (error) {
@@ -199,3 +199,5 @@ export const readMore = async (req, res) => {
      });
   }
 };
+
+export { fetchGalleries }
