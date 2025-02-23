@@ -101,13 +101,62 @@ const startProcessor = async () => {
     .channel('unsorted-changes')
     .on('postgres_changes', 
       { event: '*', schema: 'public', table: 'unsorted' },
-      async () => {
-        console.log('Detected change in unsorted table, processing Qapartials...');
-        await processQapartialsFolder();
-        console.log('Finished processing Qapartials folder.');
-      })
-    .subscribe();
+      async (payload) => {
+        console.log('Detected change in unsorted table:', payload);
+        try {
+          // Get the latest row
+          const { data: latestRow, error } = await supabase
+            .from('unsorted')
+            .select('qc')
+            .order('id', { ascending: false })
+            .limit(1)
+            .single();
 
+          if (error) {
+            console.error('Error fetching latest unsorted row:', error);
+            return;
+          }
+
+          console.log('Processing latest unsorted row:', latestRow);
+          const questionLimit = parseInt(latestRow.qc);
+
+          if (isNaN(questionLimit)) {
+            console.error('Invalid question limit value:', latestRow.qc);
+            return;
+          }
+
+          console.log(`Will process ${questionLimit} questions from Qapartials`);
+          let processedCount = 0;
+
+          const qapartialsPath = path.join(process.cwd(), 'Qapartials');
+          const files = await fs.readdir(qapartialsPath);
+
+          for (const file of files) {
+            if (processedCount >= questionLimit) {
+              console.log(`Reached question limit of ${questionLimit}`);
+              break;
+            }
+
+            if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
+              console.log(`Processing file: ${file}`);
+              const filePath = path.join(qapartialsPath, file);
+              const qaPairs = await processQAFile(filePath);
+
+              // Only process up to the remaining limit
+              const pairsToProcess = qaPairs.slice(0, questionLimit - processedCount);
+              console.log(`Processing ${pairsToProcess.length} pairs from ${file}`);
+
+              await insertQAPairs(pairsToProcess);
+              processedCount += pairsToProcess.length;
+            }
+          }
+
+          console.log(`Successfully processed ${processedCount} QA pairs`);
+        } catch (err) {
+          console.error('Error in QA processing:', err);
+        }
+    })
+    .subscribe();
 
   return subscription;
 };
