@@ -40,6 +40,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+// Start learning processor
+import { startProcessor } from './Controller/learning.js';
+startProcessor().catch(err => console.error('Failed to start learning processor:', err));
+
 // Handlebars Helpers
 Handlebars.registerHelper("hasQuestions", function (categories) {
   return categories.some(category => category.questions && category.questions.length > 0);
