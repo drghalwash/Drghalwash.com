@@ -35,63 +35,44 @@
 <body>
 
 	<nav class="unique-navbar">
-    <div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
-    <div class="menu-toggle" id="toggle-button">
-        <div class="toggle-lines">
-            <span style=" width: 15px; "></span>
-            <span style=" width: 20px;"></span>
-            <span style=" width: 15px;"></span>
-        </div>
-        <span class="menu-text">Menu</span>
+  <div class="logo">
+    <a href="/"><img src="/Upload/images/logo1.png" width="50" height="50"></a>
+  </div>
+  <div class="menu-links">
+    <a href="/">Home</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">About Us</a>
+      <div class="dropdown-menu">
+        <a href="/why_choose_us">Why Choose Us</a>
+        <a href="/meet_our_patients">Meet Our Patients</a>
+        <a href="/out_of_town_patients">Out Of Town Patients</a>
+        <a href="/learning_center">Learning Center</a>
+        <a href="/Blog">Blog</a>
+      </div>
     </div>
-    <div class="rare-menu" id="menu">
-        <a href="/Home" class="uncommon-link">HOME</a>
-        <div class="dropdown">
-            <a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                <li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
-                <li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
-                <li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
-            </ul>
-        </div>
-        <div class="dropdown">
-            <a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                {{#each galleries}}
-                <li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
-                {{/each}}
-                <li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
-            </ul>
-        </div>
-        <div class="dropdown">
-            <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
-                        <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
-                        <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
-                        <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
-                        <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
-                    </ul>
-                </li>
-                <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
-                <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
-                <li><a href="/Finance" class="dropdown-link">Financing</a></li>
-                <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
-                <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
-            </ul>
-        </div>
-        <div class="dropdown">
-            <a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                <li><a href="/Blog" class="dropdown-link">Blog</a></li>
-                <li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
-            </ul>
-        </div>
-        <a href="/Contact" class="uncommon-link">CONTACT US</a>
+    <a href="/contact">Contact Us</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Patient Resources</a>
+      <div class="dropdown-menu">
+        <a href="/policies">Policies</a>
+        <a href="/patient_forms">Patient Forms</a>
+        <a href="/pre_surgery_guidelines">Pre Surgery Guidelines</a>
+        <a href="/post_surgery_care">Post Surgery Care</a>
+        <a href="/drain_care">Drain Care</a>
+        <a href="/post_surgery_diet">Post Surgery Diet</a>
+      </div>
     </div>
+    <a href="/Photo_Gallary">Photo Gallery</a>
+    <a href="/financing_options">Financing Options</a>
+    <a href="/Questions_And_Answer">Questions & Answers</a>
+  </div>
+  <div class="menu-toggle">
+    <div class="toggle-lines">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 </nav>
 
 
