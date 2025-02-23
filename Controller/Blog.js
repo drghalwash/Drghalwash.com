@@ -150,7 +150,7 @@ export const index = async (req, res) => {
     }, {});
 
     // Render the Blogs page with grouped data and additional metadata
-    res.render('Pages/Blog', { groupedBlogs, latestBlogs, Photo_Gallary: galleries });
+    res.render('Pages/Blog', { groupedBlogs, latestBlogs, galleries });
 
     console.log('[Success] Rendered Blogs page');
   } catch (error) {
@@ -187,7 +187,7 @@ export const readMore = async (req, res) => {
     ]);
 
     // Render the "Read More" page with all required data
-    res.render('Pages/Read_More', { Blog, randomBlogs: relatedBlogs, latestBlogs, Photo_Gallary: galleries });
+    res.render('Pages/Read_More', { Blog, randomBlogs: relatedBlogs, latestBlogs, galleries });
     
     console.log(`[Success] Rendered Read More page for blog slug: ${slug}`);
   } catch (error) {
