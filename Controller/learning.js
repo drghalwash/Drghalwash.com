@@ -155,10 +155,8 @@ const batchInsert = async (pairs, batchSize = 25) => {
 };
 
 const processFile = async (filePath) => {
-  console.log('File processing is currently paused');
-  return []; // Return empty array to prevent processing
-  /*try {
-    console.log(`Processing file: ${filePath}`);*/
+  try {
+    console.log(`Processing file: ${filePath}`);
     const resolvedPath = path.resolve(process.cwd(), filePath);
     
     // Create directory if it doesn't exist
@@ -193,17 +191,13 @@ const processFile = async (filePath) => {
 };
 
 const startProcessor = async () => {
-  console.log('Learning processor is currently paused');
-  return null; // Return null to prevent processing
-  
-  // Commented out processing logic
-  /*try {
+  try {
     const db = await initSupabase();
 
     return db.channel('unsorted-changes')
       .on('postgres_changes',
         { event: '*', schema: 'public', table: 'unsorted' },
-        async (payload) => {*/
+        async (payload) => {
           try {
             const { data: latestRow } = await db
               .from('unsorted')
