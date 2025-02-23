@@ -34,69 +34,68 @@
 </head>
 <body>
 
-	<nav class="unique-navbar">
-		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
-		<div class="menu-toggle" id="toggle-button">
-			<div class="toggle-lines">
-				<span style=" width: 15px; "></span>
-				<span style=" width: 20px;"></span>
-				<span style=" width: 15px;"></span>
-			</div>
-			<span class="menu-text">Menu</span>
-		</div>
-		<div class="rare-menu" id="menu">
-			<a href="/Home" class="uncommon-link">HOME</a>
-			<div class="dropdown">
-				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
-					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
-					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					{{#each galleries}}
-					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
-					{{/each}}
-					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
-				</ul>
-			</div>
-			<div class="dropdown">
-    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
-    <ul class="dropdown-menu">
-		<!-- Out of Town Patients -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
-                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
-                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
-                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
-                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
-            </ul>
-        </li>
-        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
-        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
-        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
-        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
-        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
-    </ul>
-</div>
-
-			<div class="dropdown">
-				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
-				<ul class="dropdown-menu">
-					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
-					<li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
-				</ul>
-			</div>
-
-			<a href="/Contact" class="uncommon-link">CONTACT US</a>
-		</div>
-	</nav>
+	<nav class="site-nav">
+    <div class="container">
+      <div class="menu-bg-wrap">
+        <div class="site-navigation">
+          <div class="logo m-0 float-start">
+            <a href="/Home"> <img src="/images/new-logo.png" alt="Logo"></a>
+          </div>
+          <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end" id="menu">
+			<li><a href="/Home" class="nav-link">HOME</a></li>
+            <li class="has-children">
+              <a href="#" class="nav-link">ABOUT US</a>
+              <ul class="dropdown">
+                <li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+                <li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+                <li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+              </ul>
+            </li>
+            <li class="has-children">
+              <a href="#" class="nav-link">PHOTO GALLERY</a>
+              <ul class="dropdown">
+                {{#each galleries}}
+                <li><a href="/galleries/{{slug}}">{{name}}</a></li>
+                {{/each}}
+                <li><a href="/Guidelines">Photography Guidelines</a></li>
+              </ul>
+            </li>
+            <li class="has-children">
+              <a href="#" class="nav-link">PATIENT INFO</a>
+              <ul class="dropdown">
+                <li class="has-children">
+                  <a href="#">Out of Town Patients</a>
+                  <ul class="dropdown">
+                    <li><a href="/Out_of_town">Out of Town</a></li>
+                    <li><a href="/Out_of_town/Concierge_Services">Concierge Services</a></li>
+                    <li><a href="/Out_of_town/Consultation_Process">Consultation Process</a></li>
+                    <li><a href="/Out_of_town/Hotels_Accommodations">Hotels & Accommodations</a></li>
+                    <li><a href="/Out_of_town/Alexandria_Attractions">Alexandria Attractions</a></li>
+                  </ul>
+                </li>
+                <li><a href="/Diet">Diet and Nutrition</a></li>
+                <li><a href="/Drain_Care">Drain Care</a></li>
+                <li><a href="/Finance">Financing</a></li>
+                <li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+                <li><a href="/Policies">Policies & Guidelines</a></li>
+              </ul>
+            </li>
+            <li class="has-children">
+              <a href="#" class="nav-link">DISCUSSION CORNER</a>
+              <ul class="dropdown">
+                <li><a href="/Blog">Blog</a></li>
+                <li><a href="/Questions_And_Answer">Q&A</a></li>
+              </ul>
+            </li>
+            <li><a href="/Contact" class="nav-link">CONTACT US</a></li>
+          </ul>
+          <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none" data-toggle="collapse" data-target="#main-navbar">
+            <span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
 
 {{!-- Meta section --}}
