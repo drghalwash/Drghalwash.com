@@ -304,271 +304,46 @@
 
 	</div>
 	<!--  end of container -->
- 
-		 <div style="margin-top: 35px;" class="section">
-			 <div class="container">
-				 <div class="row">
-					 <div class="col-12" data-aos="fade-up" data-aos-delay="0">
-						 <h2 class="heading mb-5">Featured Works</h2>
-					 </div>
-				 </div>
-
-				 <div class="row align-items-stretch" id="media-container">
-					 {{#each Offers}}
-					 <div class="col-6 col-sm-6 col-md-6 col-lg-3 media-entry" data-aos="fade-up" data-aos-delay="100">
-						 <div class="media-entry-inner group relative overflow-hidden rounded-lg">
-							 <a href="#" class="aspect-video block overflow-hidden">
-								 <iframe 
-									 class="vids w-full h-full transition-transform duration-500 group-hover:scale-105" 
-									 src="{{video_link}}"
-									 title="YouTube video player" 
-									 frameborder="0"
-									 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-									 referrerpolicy="strict-origin-when-cross-origin" 
-									 allowfullscreen
-								 ></iframe>
-							 </a>
-							 <div class="bg-white m-body p-4">
-								 <h3 class="text-xl font-semibold mb-2">
-									 <a href="#" class="hover:text-primary transition-colors">{{title}}</a>
-								 </h3>
-								 <p class="text-gray-600 mb-4">{{description}}</p>
-								 <a href="#" class="more d-flex align-items-center float-start group" data-offer-id="{{@index}}">
-									 <span class="label mr-2">Read More</span>
-									 <span class="arrow transition-transform group-hover:translate-x-1">
-										 <span class="icon-keyboard_arrow_right"></span>
-									 </span>
-								 </a>
-							 </div>
-						 </div>
-					 </div>
-					 {{/each}}
-				 </div>
-
-				 <div class="text-center mt-4">
-					 <button id="show-more-btn" class="btn btn-primary">Show More</button>
-				 </div>
-			 </div>
-		 </div>
-
-		 <!-- The Modal -->
-		 <!-- The Modal -->
-<div id="offer-modal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2 id="modal-title"></h2>
-    <p id="modal-description"></p>
-  </div>
-</div>
 
 
-		 <script>
-		 document.addEventListener("DOMContentLoaded", function () {
-			 const mediaEntries = document.querySelectorAll(".media-entry");
-			 const showMoreBtn = document.getElementById("show-more-btn");
-			 const initialVisibleCount = 8;
-			 let currentlyVisibleCount = initialVisibleCount;
-			 const modal = document.getElementById("offer-modal");
-			 const modalTitle = document.getElementById("modal-title");
-			 const modalDescription = document.getElementById("modal-description");
-			 const closeBtn = document.querySelector(".close");
-			 const offers = {{{json Offers}}}; // Get the Offers data passed from Handlebars
+	<div style="margin-top: 35px;" class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12" data-aos="fade-up" data-aos-delay="0">
+					<h2 class="heading mb-5">What We Offer</h2>
+				</div>
+			</div>
+			<div class="row align-items-stretch" id="media-container">
+				{{#each Offers}}
+				<div class="col-6 col-sm-6 col-md-6 col-lg-3 media-entry" data-aos="fade-up" data-aos-delay="100">
+					<div class="media-entry">
+						<a href="#">
+							<iframe class="vids" width="560" height="315" src="{{video_link}}"
+								title="YouTube video player" frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+						</a>
+						<div class="bg-white m-body">
+							<h3><a href="#">{{title}}</a></h3>
+							<p>{{description}}</p>
+							<a href="single.html" class="more d-flex align-items-center float-start">
+								<span class="label">Read More</span>
+								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			<div class="text-center mt-4">
+				<button id="show-more-btn" class="btn btn-primary">Show More</button>
+			</div>
+		</div>
+	</div>
 
 
-			 // Hide initial entries
-			 mediaEntries.forEach((entry, index) => {
-				 if (index >= initialVisibleCount) {
-					 entry.style.display = "none";
-				 }
-			 });
-
-			 // Show more handler
-			 showMoreBtn.addEventListener("click", function () {
-				 const hiddenEntries = Array.from(mediaEntries).filter(
-					 (entry) => entry.style.display === "none"
-				 );
-
-				 hiddenEntries.slice(0, initialVisibleCount).forEach((entry) => {
-					 entry.style.display = "";
-					 entry.setAttribute('data-aos-delay', '100');
-					 AOS.refresh();
-				 });
-
-				 currentlyVisibleCount += initialVisibleCount;
-
-				 if (currentlyVisibleCount >= mediaEntries.length) {
-					 showMoreBtn.style.display = "none";
-				 }
-			 });
-
-			 // "Read More" button functionality
-				 const readMoreLinks = document.querySelectorAll(".more");
-				 readMoreLinks.forEach((link, index) => {
-						 link.addEventListener("click", function (event) {
-								 event.preventDefault();
-								 const offerIndex = this.getAttribute("data-offer-id");
-								 const offer = offers[offerIndex];
-
-								 modalTitle.textContent = offer.title;
-								 modalDescription.textContent = offer.description;
-
-								 modal.style.display = "block";
-						 });
-				 });
 
 
-			 // Close the modal
-			 closeBtn.addEventListener("click", function () {
-				 modal.style.display = "none";
-			 });
-
-			 window.addEventListener("click", function (event) {
-				 if (event.target == modal) {
-					 modal.style.display = "none";
-				 }
-			 });
-		 });
-		 </script>
-
-		 <style>
-		 /* General styling */
-		 .section {
-				 margin-top: 35px;
-		 }
-
-		 .container {
-				 width: 100%;
-				 max-width: 1200px; /* Adjust as needed */
-				 margin: 0 auto;
-				 padding: 0 15px; /* Add some padding */
-		 }
-
-		 /* Media entry styling */
-		 .media-entry {
-				 transition: transform 0.3s ease;
-		 }
-
-		 .media-entry:hover {
-				 transform: translateY(-5px);
-		 }
-
-		 .media-entry-inner {
-				 border-radius: 12px;
-				 overflow: hidden;
-				 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-				 display: flex;
-				 flex-direction: column;
-				 height: 100%; /* Ensure the inner container takes up the full height */
-		 }
-
-
-		 /* Video styling */
-		 .vids {
-				 border-radius: 12px 12px 0 0;
-				 aspect-ratio: 16/9;
-				 width: 100%;
-				 object-fit: cover; /* Make sure the video covers the area */
-		 }
-
-		 /* Content body styling */
-		 .m-body {
-				 border-radius: 0 0 12px 12px;
-				 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-				 padding: 1rem;
-				 flex-grow: 1; /* Allow the content body to grow and fill the available space */
-				 display: flex;
-				 flex-direction: column;
-				 justify-content: space-between; /* Push the "Read More" link to the bottom */
-		 }
-			 /* Desktop spacing */
-@media (min-width: 992px) {
-    #media-container {
-        --bs-gutter-y: 3rem;
-    }
-}
-
-/* Mobile spacing */
-@media (max-width: 991.98px) {
-    #media-container {
-        --bs-gutter-y: 2rem;
-    }
-}
-
-			 /* Desktop (4 items per row) */
-.col-lg-3 { /* 25% width */ }
-
-/* Mobile (2 items per row) */
-.col-6 { /* 50% width */ }
-
-
-		 /* "Read More" link styling */
-		 .more {
-				 display: inline-flex;
-				 align-items: center;
-				 color: inherit;
-				 text-decoration: none;
-				 transition: color 0.3s ease;
-				 margin-top: auto; /* Push the "Read More" link to the bottom */
-		 }
-
-		 .more:hover {
-				 color: var(--primary-color);
-		 }
-
-		 .more .arrow {
-				 display: inline-block;
-				 transition: transform 0.3s ease;
-		 }
-
-		 .more:hover .arrow {
-				 transform: translateX(5px);
-		 }
-
-		 /* Modal styles */
-		 .modal {
-				 display: none; /* Hidden by default */
-				 position: fixed; /* Stay in place */
-				 z-index: 1; /* Sit on top */
-				 left: 0;
-				 top: 0;
-				 width: 100%; /* Full width */
-				 height: 100%; /* Full height */
-				 overflow: auto; /* Enable scroll if needed */
-				 background-color: rgba(0, 0, 0, 0.3); /* Black with opacity */
-		 }
-
-		 /* Modal Content/Box */
-		 .modal-content {
-				 background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-				 margin: 15% auto; /* 15% from the top and centered */
-				 padding: 20px;
-				 border: 1px solid #888;
-				 width: 30%; /* Could be more or less, depending on screen size */
-         height: 30%;
-				 border-radius: 15px; /* Rounded corners */
-				 position: relative;
-		 }
-
-		 /* The Close Button */
-		 .close {
-				 position: absolute;
-				 top: 0;
-				 right: 0;
-				 color: #aaa;
-				 font-size: 58px;
-				 font-weight: bold;
-				 padding: 10px;
-		 }
-
-		 .close:hover,
-		 .close:focus {
-				 color: black;
-				 text-decoration: none;
-				 cursor: pointer;
-		 }
-		 </style>
-
-	
 	<div class="site-footer">
 		<div class="container">
 			<div class="row">
@@ -853,4 +628,3 @@
 </body>
 
 </html>
-
