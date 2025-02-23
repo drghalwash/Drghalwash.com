@@ -129,3 +129,47 @@
 
 
 })();
+// Safe element accessor
+function safeQuerySelector(selector, parent = document) {
+  const element = parent.querySelector(selector);
+  if (!element) {
+    console.warn(`Element not found: ${selector}`);
+    return null;
+  }
+  return element;
+}
+
+// Safe event binding
+function safeAddEventListener(element, event, handler) {
+  if (!element) {
+    console.warn('Cannot add event listener to null element');
+    return;
+  }
+  element.addEventListener(event, handler);
+}
+
+// Safe style setter
+function safeSetStyle(element, property, value) {
+  if (!element) {
+    console.warn('Cannot set style on null element');
+    return;
+  }
+  element.style[property] = value;
+}
+
+// Initialize Rellax safely
+function initRellax() {
+  if (typeof Rellax === 'undefined') {
+    console.warn('Rellax is not loaded');
+    return;
+  }
+  const rellaxElement = safeQuerySelector('.rellax');
+  if (rellaxElement) {
+    new Rellax('.rellax');
+  }
+}
+
+// Document ready handler
+document.addEventListener('DOMContentLoaded', () => {
+  initRellax();
+});

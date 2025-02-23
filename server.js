@@ -80,9 +80,31 @@ app.set('view engine', 'handlebars');
 app.set('views', join(__dirname, 'Templates'));
 
 // Serve static files
-app.use(express.static(join(__dirname, 'Templates')));
-app.use(express.static(join(__dirname, 'Upload')));
-app.use(express.static(join(__dirname, 'Qapartials')));
+// Serve static files with proper error handling
+const serveStatic = (dir) => {
+  return express.static(join(__dirname, dir), {
+    fallthrough: true,
+    redirect: false
+  });
+};
+
+app.use((err, req, res, next) => {
+  console.error('Static file error:', err);
+  next();
+});
+
+app.use(serveStatic('Templates'));
+app.use(serveStatic('Upload'));
+app.use(serveStatic('Qapartials'));
+
+// Handle 404 for static files
+app.use((req, res, next) => {
+  if (req.path.includes('.')) {
+    console.warn(`Static file not found: ${req.path}`);
+    return res.status(404).send('File not found');
+  }
+  next();
+});
 
 // Middleware to attach Supabase client to requests
 app.use((req, res, next) => {
