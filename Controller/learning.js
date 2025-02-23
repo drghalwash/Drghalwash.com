@@ -182,4 +182,27 @@ const startProcessor = async () => {
   return subscription;
 };
 
-export { startProcessor };
+const addLearning = async (req, res) => {
+  try {
+    const { question, choices } = req.body;
+    
+    const { data, error } = await supabase
+      .from('learning')
+      .insert([
+        { 
+          question,
+          choices: choices.join('\n'),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
+      ]);
+
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (err) {
+    console.error('Error adding learning:', err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export { startProcessor, addLearning };
