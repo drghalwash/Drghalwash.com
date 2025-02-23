@@ -1,78 +1,74 @@
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
+import pdf from 'pdf-parse';
 
 const supabase = createClient(
   process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co',
   process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI'
 );
 
-import pdf from 'pdf-parse';
-
 const processQAFile = async (filePath) => {
-  if (!filePath || typeof filePath !== 'string') {
-    console.error('Invalid file path:', filePath);
-    return [];
-  }
-
-  let content;
+  console.log('Processing file:', filePath);
   try {
-    const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
-    if (!fileExists) {
-      console.error('File does not exist:', filePath);
-      return [];
+    if (!filePath || typeof filePath !== 'string') {
+      throw new Error('Invalid file path');
     }
 
-    if (filePath.toLowerCase().endsWith('.pdf')) {
-      const dataBuffer = await fs.readFile(filePath);
-      const pdfData = await pdf(dataBuffer);
+    const fileBuffer = await fs.readFile(filePath);
+    let content;
+
+    if (path.extname(filePath).toLowerCase() === '.pdf') {
+      const pdfData = await pdf(fileBuffer);
       content = pdfData.text;
     } else {
-      content = await fs.readFile(filePath, 'utf-8');
+      content = fileBuffer.toString('utf-8');
     }
-  } catch (error) {
-    console.error(`Error reading file ${filePath}:`, error);
-    return []; // Return empty array if file processing fails
-  }
-  const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
-  const qaPairs = [];
 
-  let currentQ = '';
-  let currentChoices = [];
+    const lines = content.split('\n')
+      .map(line => line.trim())
+      .filter(Boolean);
 
-  for (const line of lines) {
-    if (line.match(/^Q[0-9]+:/i)) {
-      if (currentQ && currentChoices.length) {
-        qaPairs.push({ question: currentQ, choices: currentChoices });
+    const qaPairs = [];
+    let currentQ = '';
+    let currentChoices = [];
+
+    for (const line of lines) {
+      if (line.match(/^Q[0-9]+:/i)) {
+        if (currentQ && currentChoices.length) {
+          qaPairs.push({ question: currentQ, choices: currentChoices });
+        }
+        currentQ = line.replace(/^Q[0-9]+:\s*/i, '').trim();
+        currentChoices = [];
+      } else if (line.match(/^[A-E]\)/)) {
+        currentChoices.push(line.trim());
       }
-      currentQ = line.replace(/^Q[0-9]+:\s*/i, '');
-      currentChoices = [];
-    } else if (line.match(/^[A-E]\)/)) {
-      currentChoices.push(line);
     }
-  }
 
-  if (currentQ && currentChoices.length) {
-    qaPairs.push({ question: currentQ, choices: currentChoices });
-  }
+    if (currentQ && currentChoices.length) {
+      qaPairs.push({ question: currentQ, choices: currentChoices });
+    }
 
-  return qaPairs;
+    return qaPairs;
+  } catch (error) {
+    console.error(`Error processing file ${filePath}:`, error);
+    return [];
+  }
 };
 
 const insertQAPairs = async (qaPairs) => {
   if (!Array.isArray(qaPairs)) {
-    console.error('Invalid QA pairs format:', qaPairs);
+    console.error('Invalid QA pairs format');
     return;
   }
 
-  const failed = [];
   for (const qa of qaPairs) {
-    if (!qa?.question || !Array.isArray(qa?.choices)) {
-      console.error('Invalid QA pair structure:', qa);
-      continue;
-    }
-
     try {
+      if (!qa?.question || !Array.isArray(qa?.choices)) {
+        console.warn('Skipping invalid QA pair:', qa);
+        continue;
+      }
+
       const { data: existing } = await supabase
         .from('learning')
         .select('id')
@@ -80,7 +76,7 @@ const insertQAPairs = async (qaPairs) => {
         .maybeSingle();
 
       if (!existing) {
-        await supabase
+        const { error } = await supabase
           .from('learning')
           .insert({
             question: qa.question,
@@ -88,120 +84,98 @@ const insertQAPairs = async (qaPairs) => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           });
+
+        if (error) {
+          console.error('Error inserting QA pair:', error);
+        }
       }
     } catch (error) {
-      console.error(`Error inserting QA pair: ${qa.question}`, error);
-      failed.push(qa);
+      console.error('Error processing QA pair:', error);
     }
-  }
-  if (failed.length > 0) {
-    console.warn(`Failed to insert ${failed.length} QA pairs.`);
-  }
-};
-
-const processRootFolder = async () => {
-  const rootPath = process.cwd();
-  try {
-    const files = await fs.readdir(rootPath);
-    for (const file of files) {
-      if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
-        const filePath = path.join(rootPath, file);
-        const qaPairs = await processQAFile(filePath);
-        await insertQAPairs(qaPairs);
-      }
-    }
-  } catch (error) {
-    console.error('Error processing root folder:', error);
   }
 };
 
 const startProcessor = async () => {
   console.log('Starting learning processor...');
+  try {
+    const subscription = supabase
+      .channel('unsorted-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'unsorted' },
+        async (payload) => {
+          console.log('Change detected:', payload);
+          try {
+            const { data: latestRow, error } = await supabase
+              .from('unsorted')
+              .select('qc')
+              .order('id', { ascending: false })
+              .limit(1)
+              .single();
 
-  const subscription = supabase
-    .channel('unsorted-changes')
-    .on('postgres_changes', 
-      { event: '*', schema: 'public', table: 'unsorted' },
-      async (payload) => {
-        console.log('Detected change in unsorted table:', payload);
-        try {
-          // Get the latest row
-          const { data: latestRow, error } = await supabase
-            .from('unsorted')
-            .select('qc')
-            .order('id', { ascending: false })
-            .limit(1)
-            .single();
-
-          if (error) {
-            console.error('Error fetching latest unsorted row:', error);
-            return;
-          }
-
-          console.log('Processing latest unsorted row:', latestRow);
-          const questionLimit = parseInt(latestRow.qc);
-
-          if (isNaN(questionLimit)) {
-            console.error('Invalid question limit value:', latestRow.qc);
-            return;
-          }
-
-          console.log(`Will process ${questionLimit} questions from root directory`);
-          let processedCount = 0;
-
-          const rootPath = process.cwd();
-          const files = await fs.readdir(rootPath);
-
-          for (const file of files) {
-            if (processedCount >= questionLimit) {
-              console.log(`Reached question limit of ${questionLimit}`);
-              break;
+            if (error) throw error;
+            if (!latestRow) {
+              console.log('No rows in unsorted table');
+              return;
             }
 
-            if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
-              console.log(`Processing file: ${file}`);
-              const filePath = path.join(rootPath, file);
-              const qaPairs = await processQAFile(filePath);
-
-              // Only process up to the remaining limit
-              const pairsToProcess = qaPairs.slice(0, questionLimit - processedCount);
-              console.log(`Processing ${pairsToProcess.length} pairs from ${file}`);
-
-              await insertQAPairs(pairsToProcess);
-              processedCount += pairsToProcess.length;
+            const questionLimit = parseInt(latestRow.qc);
+            if (isNaN(questionLimit)) {
+              console.error('Invalid question limit:', latestRow.qc);
+              return;
             }
+
+            console.log(`Processing ${questionLimit} questions`);
+            const rootDir = process.cwd();
+            const files = await fs.readdir(rootDir);
+            let processedCount = 0;
+
+            for (const file of files) {
+              if (processedCount >= questionLimit) break;
+
+              const ext = path.extname(file).toLowerCase();
+              if (ext === '.txt' || ext === '.pdf') {
+                const filePath = path.join(rootDir, file);
+                console.log(`Processing ${filePath}`);
+                const qaPairs = await processQAFile(filePath);
+                await insertQAPairs(qaPairs.slice(0, questionLimit - processedCount));
+                processedCount += qaPairs.length;
+              }
+            }
+            console.log(`Processed ${processedCount} QA pairs`);
+          } catch (error) {
+            console.error('Error in change handler:', error);
           }
+        })
+      .subscribe();
 
-          console.log(`Successfully processed ${processedCount} QA pairs`);
-        } catch (err) {
-          console.error('Error in QA processing:', err);
-        }
-    })
-    .subscribe();
-
-  return subscription;
+    return subscription;
+  } catch (error) {
+    console.error('Failed to start processor:', error);
+    throw error;
+  }
 };
 
 const addLearning = async (req, res) => {
   try {
     const { question, choices } = req.body;
-    
+    if (!question || !Array.isArray(choices)) {
+      return res.status(400).json({ error: 'Invalid input' });
+    }
+
     const { data, error } = await supabase
       .from('learning')
-      .insert([
-        { 
-          question,
-          choices: choices.join('\n'),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ]);
+      .insert([{ 
+        question,
+        choices: choices.join('\n'),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }]);
 
     if (error) throw error;
     res.status(200).json(data);
-  } catch (err) {
-    console.error('Error adding learning:', err);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error('Error adding learning:', error);
+    res.status(500).json({ error: error.message });
   }
 };
 
