@@ -36,32 +36,62 @@
 
 	<nav class="unique-navbar">
     <div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
-    <div class="menu-toggle js-menu-toggle" id="toggle-button">
+    <div class="menu-toggle" id="toggle-button">
         <div class="toggle-lines">
-            <span style="width: 15px;"></span>
-            <span style="width: 20px;"></span>
-            <span style="width: 15px;"></span>
+            <span style=" width: 15px; "></span>
+            <span style=" width: 20px;"></span>
+            <span style=" width: 15px;"></span>
         </div>
         <span class="menu-text">Menu</span>
     </div>
-    
-    <div class="site-mobile-menu">
-        <div class="site-mobile-menu-header">
-            <div class="site-mobile-menu-close">
-                <span class="js-menu-toggle">&times;</span>
-            </div>
+    <div class="rare-menu" id="menu">
+        <a href="/Home" class="uncommon-link">HOME</a>
+        <div class="dropdown">
+            <a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+                <li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+                <li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+            </ul>
         </div>
-        <div class="site-mobile-menu-body"></div>
+        <div class="dropdown">
+            <a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                {{#each galleries}}
+                <li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
+                {{/each}}
+                <li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+            </ul>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                        <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                        <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                        <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                        <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+                <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+                <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+                <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+                <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+            </ul>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Blog" class="dropdown-link">Blog</a></li>
+                <li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
+            </ul>
+        </div>
+        <a href="/Contact" class="uncommon-link">CONTACT US</a>
     </div>
-    
-    <ul class="js-clone-nav d-none d-lg-inline-block site-menu float-end" id="mainNav">
-            <li><a href="/Home">HOME</a></li>
-            <li><a href="/About_Us/Dr_Khaled">ABOUT US</a></li>
-            <li><a href="#">PHOTO GALLERY</a></li>
-            <li><a href="#">PATIENT INFO</a></li>
-            <li><a href="#">DISCUSSION CORNER</a></li>
-            <li><a href="/Contact">CONTACT US</a></li>
-        </ul>
 </nav>
 
 
@@ -202,9 +232,27 @@
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/aos.js"></script>
 <script src="/js/counter.js"></script>
-<script src="/js/navbar.js"></script>
 <script>
   $(document).ready(function() {
+    // Toggle menu on click
+    $("#toggle-button").click(function() {
+      $("#menu").toggleClass("show");
+    });
+
+    // Dropdown functionality 
+    $('.dropdown').hover(function() {
+      $(this).find('.dropdown-menu').addClass('show');
+    }, function() {
+      $(this).find('.dropdown-menu').removeClass('show');
+    });
+
+    // Close menu on window resize
+    $(window).resize(function() {
+      if ($(window).width() > 992) {
+        $("#menu").removeClass("show");
+      }
+    });
+
     // Navbar scroll effect
     $(window).scroll(function() {
       if ($(window).scrollTop() > 50) {
