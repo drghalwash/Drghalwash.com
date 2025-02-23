@@ -1,70 +1,94 @@
 
 import { createClient } from '@supabase/supabase-js';
+import fs from 'fs/promises';
+import path from 'path';
 
-const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
-const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(
+  process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co',
+  process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI'
+);
 
-// Create learning table
-const createTable = async () => {
-  console.log('Creating learning table...');
-  const { error } = await supabase
-    .from('learning')
-    .insert([
-      { 
-        q: 'test question',
-        a: 'test answer',
-        d: new Date().toISOString().split('T')[0]
-      }
-    ])
-    .select();
-
-  if (error) {
-    console.error('Error with learning table:', error);
-  } else {
-    console.log('Learning table is ready');
-  }
-};
-
-// Initialize table
-createTable().catch(console.error);
-
-// Create learning table if it doesn't exist
-const createLearningTable = async () => {
-  const { error } = await supabase.rpc('create_learning_table', {
-    sql: `
-      CREATE TABLE IF NOT EXISTS learning (
-        id SERIAL PRIMARY KEY,
-        q TEXT NOT NULL,
-        a TEXT NOT NULL,
-        d DATE NOT NULL,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
-    `
-  });
+const processQAFile = async (filePath) => {
+  const content = await fs.readFile(filePath, 'utf-8');
+  const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
+  const qaPairs = [];
   
-  if (error) {
-    console.error('Error creating learning table:', error);
-    throw error;
+  let currentQ = '';
+  let currentChoices = [];
+  
+  for (const line of lines) {
+    if (line.match(/^Q[0-9]+:/i)) {
+      if (currentQ && currentChoices.length) {
+        qaPairs.push({ question: currentQ, choices: currentChoices });
+      }
+      currentQ = line.replace(/^Q[0-9]+:\s*/i, '');
+      currentChoices = [];
+    } else if (line.match(/^[A-E]\)/)) {
+      currentChoices.push(line);
+    }
   }
+  
+  if (currentQ && currentChoices.length) {
+    qaPairs.push({ question: currentQ, choices: currentChoices });
+  }
+  
+  return qaPairs;
 };
 
-// Initialize table
-createLearningTable().catch(console.error);
-
-export const addLearning = async (req, res) => {
-  try {
-    const { q, a, d } = req.body;
-    
-    const { data, error } = await supabase
+const insertQAPairs = async (qaPairs) => {
+  for (const qa of qaPairs) {
+    // Check for duplicate questions
+    const { data: existing } = await supabase
       .from('learning')
-      .insert([{ q, a, d }]);
-
-    if (error) throw error;
-
-    res.json({ success: true, data });
-  } catch (error) {
-    console.error('Learning entry error:', error);
-    res.status(500).json({ success: false, error: error.message });
+      .select('id')
+      .eq('question', qa.question)
+      .single();
+      
+    if (!existing) {
+      await supabase
+        .from('learning')
+        .insert({
+          question: qa.question,
+          choices: qa.choices.join('\n'),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+    }
   }
 };
+
+const processQapartialsFolder = async () => {
+  const qapartialsPath = path.join(process.cwd(), 'Qapartials');
+  const files = await fs.readdir(qapartialsPath);
+  
+  for (const file of files) {
+    if (file.endsWith('.txt')) {
+      const filePath = path.join(qapartialsPath, file);
+      const qaPairs = await processQAFile(filePath);
+      await insertQAPairs(qaPairs);
+    }
+  }
+};
+
+const startProcessor = async () => {
+  console.log('Starting learning processor...');
+
+  const subscription = supabase
+    .channel('unsorted-changes')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'unsorted' },
+      async () => {
+        console.log('Detected change in unsorted table, processing Qapartials...');
+        try {
+          await processQapartialsFolder();
+          console.log('Successfully processed Qapartials folder');
+        } catch (err) {
+          console.error('Error processing Qapartials:', err);
+        }
+    })
+    .subscribe();
+
+  return subscription;
+};
+
+export { startProcessor };
