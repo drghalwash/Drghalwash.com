@@ -16,9 +16,18 @@ const processQAFile = async (filePath) => {
       return [];
     }
 
-    // Handle both absolute and relative paths
+    // Check if file exists in root directory first
     const resolvedPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
     console.log('Attempting to process:', resolvedPath);
+
+    let fileExists = false;
+    try {
+      await fs.access(resolvedPath);
+      fileExists = true;
+    } catch (err) {
+      console.log('File not found in root, skipping:', resolvedPath);
+      return [];
+    }
     
     // Ensure directory exists
     const dir = path.dirname(resolvedPath);
