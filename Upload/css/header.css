@@ -59,8 +59,8 @@
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
     position: fixed !important; 
   }
-
   
+
   .unique-navbar:hover {
     color: white;
   }
@@ -74,7 +74,8 @@
   align-items: center;
   padding: 0 100px;
   background-color: transparent; /* Transparent at the top */
- 
+  
+
   width: 100%;
   height: 60px;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -93,322 +94,317 @@
 }
 
 
-
-  /* Menu Styles */
-  .rare-menu {
-    display: none; /* Default hidden for mobile view */
-    flex-direction: column;
-    gap: 1.5rem;
-    background-color: #565656;
-    position: fixed;
-    top: 0;
-    right: -100%; /* Initially off-screen */
-    height: 100vh;
-    width: 250px;
-    padding: 2rem;
-    transition: right 0.3s ease-in-out; /* Smooth slide-in effect */
-    z-index: 1000;
-  }
-  
-  .rare-menu.active {
-    right: 0; /* Slide into view */
-    display: flex; /* Make the menu visible when active */
-  }
-  
-  .uncommon-link {
-    text-decoration: none;
-    
-    font-family: var(--theme-font-family) !important;
-    font-weight: 500 !important;
-    font-style: var(--theme-font-style, inherit);
-    line-height: var(--theme-line-height);
-    letter-spacing: var(--theme-letter-spacing);
-    text-transform: var(--theme-text-transform);
-    -webkit-text-decoration: var(--theme-text-decoration);
-    text-decoration: var(--theme-text-decoration);
-  }
-  
-  
-  /* Toggle Button */
-  .exclusive-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 0.3rem;
-    cursor: pointer;
-  }
-  
- 
-
-  
-  /* Mobile View */
-  @media (max-width: 1000px) and (min-width: 667px)  {
-    .exclusive-toggle {
-      display: flex; /* Show the toggle button on mobile view */
-    }
-  
-    .rare-menu {
-        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
-       
-    }
-  
-    .uncommon-link {
-      color: #FFF; /* White text color for better visibility */
-    }
-    
-  }
-  @media (max-width: 667px) and (min-width:610px)  {
-    .exclusive-toggle {
-      display: flex; /* Show the toggle button on mobile view */
-    }
-  
-    .rare-menu {
-        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
-        
-    }
-  
-    .uncommon-link {
-      color: #FFF; /* White text color for better visibility */
-    }
-   
-  }
-  @media (max-width: 610px)  {
-    .exclusive-toggle {
-      display: flex; /* Show the toggle button on mobile view */
-    }
-  
-    .rare-menu {
-        background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
-        height: 100%;
-    }
-  
-    .uncommon-link {
-      color: #FFF; /* White text color for better visibility */
-    }
-   
-  }
-  
-  /* Desktop View */
-  @media (min-width: 1001px) {
-    .rare-menu {
-      display: flex; /* Ensure the menu is visible in desktop view */
-      flex-direction: row; /* Align items horizontally */
-      gap: 2rem; /* Add spacing between links */
-      position: static; /* Normal flow for desktop */
-      background-color: transparent; /* Transparent background */
-      height: auto; /* Reset height */
-      width: auto; /* Reset width */
-      padding: 0; /* Reset padding */
-    }
-  }
-  /* Further shrink the navbar for even smaller desktop screens */
-@media (max-width: 1100px) and (min-width: 1001px) {
-    .unique-navbar {
-      padding: 0 30px; /* Further reduce padding */
-    }
-  
-   
-    .rare-menu {
-      gap: 0.8rem; /* Tighten spacing further */
-    }
-  
-    .uncommon-link {
-      font-size: 0.9rem; /* Scale down font size further */
-    }
-  }
-   /* Further shrink the navbar for even smaller desktop screens */
-@media (max-width:1200px) and (min-width: 1100px) {
-    .unique-navbar {
-      padding: 0 30px; /* Further reduce padding */
-    }
-  
-   
-    .rare-menu {
-      gap: 1rem; /* Tighten spacing further */
-    }
-  
-    .uncommon-link {
-      font-size: 1rem; /* Scale down font size further */
-    }
-  }
-
-    /* Further shrink the navbar for even smaller desktop screens */
-@media (max-width:1300px) and (min-width: 1200px) {
-    .unique-navbar {
-      padding: 0 30px; /* Further reduce padding */
-    }
-  
-    .distinct-logo img {
-      max-width: 300px; /* Further reduce logo size */
-      max-height: 250px;
-    }
-  
-    .rare-menu {
-      gap: 1rem; /* Tighten spacing further */
-    }
-  
-    .uncommon-link {
-      font-size: 1rem; /* Scale down font size further */
-    }
-  }
-
-  /* Dropdown Container */
-.dropdown {
-    position: relative;
-    display: inline-block; /* Aligns dropdown inline with other elements */
-  }
-  
-  /* Hide Dropdown Menu by Default */
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%; /* Positions menu below the link */
-    left: 0;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 200px; /* Set width as needed */
-    z-index: 1000;
-  }
-  
-  /* Dropdown Links */
-  .dropdown-menu li {
-    border-bottom: 1px solid #eaeaea; /* Optional: Add a divider */
-  }
-  
-  .dropdown-menu li:last-child {
-    border-bottom: none; /* Remove divider for last item */
-  }
-  .dropdown-menu a {
-    font-size: 15.5px;
-  }
-  
-  .dropdown-link {
-    display: block;
-    padding: 0.75rem 1rem;
-    text-decoration: none;
-    color: #333;
-    font-size: 1rem;
-  }
-  
-  .dropdown-link:hover {
-    background-color: #f0f0f0; /* Highlight effect */
-    color: #1b54ff;
-  }
-  
-  /* Show Dropdown on Hover */
-  .dropdown:hover > .dropdown-menu {
-    display: block;
+/* Menu Styles */
+.rare-menu {
+  display: none; /* Default hidden for mobile view */
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: #565656;
+  position: fixed;
+  top: 0;
+  right: -100%; /* Initially off-screen */
+  height: 100vh;
+  width: 250px;
+  padding: 2rem;
+  transition: right 0.3s ease-in-out; /* Smooth slide-in effect */
+  z-index: 1000;
 }
+
+.rare-menu.active {
+  right: 0; /* Slide into view */
+  display: flex; /* Make the menu visible when active */
+}
+
+.uncommon-link {
+  text-decoration: none;
   
 
+  font-family: var(--theme-font-family) !important;
+  font-weight: 500 !important;
+  font-style: var(--theme-font-style, inherit);
+  line-height: var(--theme-line-height);
+  letter-spacing: var(--theme-letter-spacing);
+  text-transform: var(--theme-text-transform);
+  -webkit-text-decoration: var(--theme-text-decoration);
+  text-decoration: var(--theme-text-decoration);
+}
 
-  .modal2 {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    right: 0 !important;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
-    padding-right: 0px !important;
+
+/* Toggle Button */
+.exclusive-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+/* Mobile View */
+@media (max-width: 1000px) and (min-width: 667px)  {
+  .exclusive-toggle {
+    display: flex; /* Show the toggle button on mobile view */
+  }
+
+  .rare-menu {
+      background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+     
+  }
+
+  .uncommon-link {
+    color: #FFF; /* White text color for better visibility */
   }
   
+}
+@media (max-width: 667px) and (min-width:610px)  {
+  .exclusive-toggle {
+    display: flex; /* Show the toggle button on mobile view */
+  }
+
+  .rare-menu {
+      background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+      
+  }
+
+  .uncommon-link {
+    color: #FFF; /* White text color for better visibility */
+  }
+  
+}
+@media (max-width: 610px)  {
+  .exclusive-toggle {
+    display: flex; /* Show the toggle button on mobile view */
+  }
+
+  .rare-menu {
+      background-color: rgba(0, 0, 0, 0.9); /* Ensure background is dark for contrast */
+      height: 100%;
+  }
+
+  .uncommon-link {
+    color: #FFF; /* White text color for better visibility */
+  }
+  
+}
+
+/* Desktop View */
+@media (min-width: 1001px) {
+  .rare-menu {
+    display: flex; /* Ensure the menu is visible in desktop view */
+    flex-direction: row; /* Align items horizontally */
+    gap: 2rem; /* Add spacing between links */
+    position: static; /* Normal flow for desktop */
+    background-color: transparent; /* Transparent background */
+    height: auto; /* Reset height */
+    width: auto; /* Reset width */
+    padding: 0; /* Reset padding */
+  }
+}
+/* Further shrink the navbar for even smaller desktop screens */
+@media (max-width: 1100px) and (min-width: 1001px) {
+  .unique-navbar {
+    padding: 0 30px; /* Further reduce padding */
+  }
+
+  
+
+  .rare-menu {
+    gap: 0.8rem; /* Tighten spacing further */
+  }
+
+  .uncommon-link {
+    font-size: 0.9rem; /* Scale down font size further */
+  }
+}
+ /* Further shrink the navbar for even smaller desktop screens */
+@media (max-width:1200px) and (min-width: 1100px) {
+  .unique-navbar {
+    padding: 0 30px; /* Further reduce padding */
+  }
+
+  
+
+  .rare-menu {
+    gap: 1rem; /* Tighten spacing further */
+  }
+
+  .uncommon-link {
+    font-size: 1rem; /* Scale down font size further */
+  }
+}
+/* Further shrink the navbar for even smaller desktop screens */
+@media (max-width:1300px) and (min-width: 1200px) {
+  .unique-navbar {
+    padding: 0 30px; /* Further reduce padding */
+  }
+
+  .distinct-logo img {
+    max-width: 300px; /* Further reduce logo size */
+    max-height: 250px;
+  }
+
+  .rare-menu {
+    gap: 1rem; /* Tighten spacing further */
+  }
+
+  .uncommon-link {
+    font-size: 1rem; /* Scale down font size further */
+  }
+}
+
+/* Dropdown Container */
+.dropdown {
+  position: relative;
+  display: inline-block; /* Aligns dropdown inline with other elements */
+}
+
+/* Hide Dropdown Menu by Default */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Positions menu below the link */
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 200px; /* Set width as needed */
+  z-index: 1000;
+}
+
+/* Dropdown Links */
+.dropdown-menu li {
+  border-bottom: 1px solid #eaeaea; /* Optional: Add a divider */
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none; /* Remove divider for last item */
+}
+.dropdown-menu a {
+  font-size: 15.5px;
+}
+
+.dropdown-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+}
+
+.dropdown-link:hover {
+  background-color: #f0f0f0; /* Highlight effect */
+  color: #1b54ff;
+}
+
+/* Show Dropdown on Hover */
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+
+.modal2 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  right: 0 !important;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+  padding-right: 0px !important;
+}
+
 /* Modal desktop Content */
 .desktop-content {
-    background-color: transparent;
-    margin: auto;
-    padding: 20px;
-    width: 100%; /* Ensures the modal content takes up full width */
-    max-width: 800px; /* Limits the width of modal content */
-    box-sizing: border-box; /* Includes padding in width calculation */
-    display: flex; /* Flexbox for horizontal alignment of content-pair divs */
-    justify-content: space-between; /* Space out content-pair divs */
-    gap: 0.5rem; /* Optional: Space between the content-pair divs */
-    right: 0 !important;
+  background-color: transparent;
+  margin: auto;
+  padding: 20px;
+  width: 100%; /* Ensures the modal content takes up full width */
+  max-width: 800px; /* Limits the width of modal content */
+  box-sizing: border-box; /* Includes padding in width calculation */
+  display: flex; /* Flexbox for horizontal alignment of content-pair divs */
+  justify-content: space-between; /* Space out content-pair divs */
+  gap: 0.5rem; /* Optional: Space between the content-pair divs */
+  right: 0 !important;
 margin-right: 40px;
-  }
-  
-  /* Style for the container pairing img and p */
-  .content-pair {
-    /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
-    align-items: right;     /* Vertically align the image and text */
-    gap: 0.5rem;               /* Space between image and text */
-    margin-bottom: 1.5rem;   /* Space between pairs of content */
-    flex: 1;                 /* Ensure the content-pair div takes equal width */
-    max-width: 40%;          /* Limit the width of each pair for side-by-side layout */
-  }
-  
-  /* Style for the image */
-  .arrow-desktop {
-    height: 80px;
-    width: 80px;
-  }
-  
-  /* Style for the text */
-  .content-pair p {
-    font-size: 1rem; /* Adjust font size */
-    color: #fff; /* Ensure text contrasts well with background */
-    margin: 15px; /* Remove default margins */
-    font-family: cursive;
+}
 
-  }
-  
+/* Style for the container pairing img and p */
+.content-pair {
+  /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
+  align-items: right;     /* Vertically align the image and text */
+  gap: 0.5rem;               /* Space between image and text */
+  margin-bottom: 1.5rem;   /* Space between pairs of content */
+  flex: 1;                 /* Ensure the content-pair div takes equal width */
+  max-width: 40%;          /* Limit the width of each pair for side-by-side layout */
+}
+
+/* Style for the image */
+.arrow-desktop {
+  height: 80px;
+  width: 80px;
+}
+
+/* Style for the text */
+.content-pair p {
+  font-size: 1rem; /* Adjust font size */
+  color: #fff; /* Ensure text contrasts well with background */
+  margin: 15px; /* Remove default margins */
+  font-family: cursive;
+
+}
 
 /* mobile modal */
-  .mobile-content {
-    background-color: transparent;
-    margin: auto;
-    padding: 0 ;
-    padding-right: 5%;
-    right: 0 !important; /* Align to the right of the page */
-    position: absolute;
-    /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
-    gap: 0.5rem;  
+.mobile-content {
+  background-color: transparent;
+  margin: auto;
+  padding: 0 ;
+  padding-right: 5%;
+  right: 0 !important; /* Align to the right of the page */
+  position: absolute;
+  /* display: flex;           Enable flexbox for side-by-side alignment of img and p */
+  gap: 0.5rem;  
   margin-right: 0px !important;
-  }
-  .mobile-content p{
-    color: white;
-    font-family: cursive;
-  }
-  .arrow-mobile{
-    height: 80px;
-    width: 80px;
+}
+.mobile-content p{
+  color: white;
+  font-family: cursive;
+}
+.arrow-mobile{
+  height: 80px;
+  width: 80px;
   margin-left: 50%;
-  }
+}
 
 
 
+.unique-navbar.scrolled {
+  background-color: white !important;
+  color: #4c4b4b !important; /* Dark text color */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for effect */
+}
 
-  .unique-navbar.scrolled {
-    background-color: white !important;
-    color: #4c4b4b !important; /* Dark text color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for effect */
-  }
-  
-  .unique-navbar.scrolled .distinct-logo img {
-    filter: invert(1); /* Invert logo color */
-  }
-  
+.unique-navbar.scrolled .distinct-logo img {
+  filter: invert(1); /* Invert logo color */
+}
+
+.unique-navbar.scrolled .uncommon-link {
+  color: #555555 !important; /* Update link color */
+}
+
+.distinct-logo img {
+  filter: none !important; /* Ensure no filter is applied */
+}
+@media (max-width: 1000px) {
   .unique-navbar.scrolled .uncommon-link {
-    color: #555555 !important; /* Update link color */
+    color: white !important; /* Color for mobile when scrolled */
   }
-  
-  .distinct-logo img {
-    filter: none !important; /* Ensure no filter is applied */
-  }
-  @media (max-width: 1000px) {
-    .unique-navbar.scrolled .uncommon-link {
-      color: white !important; /* Color for mobile when scrolled */
-    }
-  }
+}
 
-  /* Default logo size */
+/* Default logo size */
 .distinct-logo img {
   max-width: 320px; /* Default width */
   max-height: 300px; /* Default height */
@@ -461,12 +457,14 @@ margin-right: 40px;
   }
 
   
+
 }
 /* Mobile View: Stack dropdown menus vertically */
 @media (max-width: 1000px) {
   .dropdown-menu {
     position: static; /* Reset position for mobile */
     display: none; /* Hide by default */
+    
 
   }
 
@@ -486,5 +484,150 @@ margin-right: 40px;
 
   .dropdown.open > .dropdown-menu {
     display: block; /* Show dropdown when parent has the 'open' class */
+  }
+}
+
+/* New Navbar Styles */
+.site-nav {
+  padding: 10px 90px;
+  margin-top: 0px !important;
+  height: 90px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-nav.scrolled {
+  background-color: white;
+  height: 100px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 0px !important;
+}
+
+.site-navigation {
+  padding-top: 30px;
+}
+
+.site-nav .site-navigation .site-menu {
+  margin-bottom: 0;
+}
+
+.site-nav .site-navigation .site-menu > li {
+  display: inline-block;
+}
+
+.site-nav .site-navigation .site-menu > li > a {
+  font-size: 16px;
+  padding: 20px 20px;
+  display: inline-block;
+  text-decoration: none !important;
+  color: white;
+}
+
+.site-nav.scrolled .site-menu > li > a {
+  color: black;
+}
+
+.site-nav .site-navigation .site-menu > li > a:hover {
+  color: #a6a6a6;
+}
+
+.site-nav .site-navigation .site-menu > li.has-children {
+  position: relative;
+}
+
+.site-nav .site-navigation .site-menu .has-children > a {
+  position: relative;
+  padding-right: 20px;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown {
+  visibility: hidden;
+  opacity: 0;
+  top: 100%;
+  position: absolute;
+  text-align: left;
+  box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.25);
+  padding: 0px 0;
+  margin-top: 20px;
+  margin-left: 0px;
+  background: #fff;
+  transition: 0.2s 0s;
+  border-radius: 4px;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown.arrow-top {
+  position: absolute;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown a {
+  text-transform: none;
+  letter-spacing: normal;
+  transition: 0s all;
+  color: #000;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown .active > a {
+  color: #007bff !important;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown > li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 200px;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown > li > a {
+  padding: 9px 20px;
+  display: block;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown > li > a:hover {
+  background: #f4f5f9;
+  color: #25262a;
+}
+
+.site-nav .site-navigation .site-menu .has-children .dropdown > li.has-children > a:before {
+  content: "\e315";
+  right: 20px;
+}
+
+.site-nav .site-navigation .site-menu .has-children:hover > a,
+.site-nav .site-navigation .site-menu .has-children:focus > a,
+.site-nav .site-navigation .site-menu .has-children:active > a {
+  color: #007bff;
+}
+
+.site-nav .site-navigation .site-menu .has-children:hover > .dropdown,
+.site-nav .site-navigation .site-menu .has-children:focus > .dropdown,
+.site-nav .site-navigation .site-menu .has-children:active > .dropdown {
+  transition-delay: 0s;
+  margin-top: 0px;
+  visibility: visible;
+  opacity: 1;
+}
+
+.site-menu-toggle {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .site-menu-toggle {
+    display: block;
+    position: relative;
+    z-index: 100;
+  }
+
+  .site-nav .site-navigation .site-menu {
+    display: none !important;
+  }
+
+  .site-nav.active .site-navigation .site-menu {
+    display: block !important;
   }
 }
