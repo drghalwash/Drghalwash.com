@@ -112,7 +112,29 @@ export const index = async (req, res) => {
       }
     });
 
-    res.render('Pages/gallery', { gallery, galleries, rowsHtml, movingBackground2: true, 'site-footer': true });
+    res.render('Pages/gallery', { 
+      gallery, 
+      galleries, 
+      rowsHtml,
+      movingBackground2: true,
+      'site-footer': true,
+      layout: 'main', // Ensure main layout is used
+      scripts: [ // Required scripts
+        '/js/bootstrap.bundle.min.js',
+        '/js/tiny-slider.js',
+        '/js/glightbox.min.js',
+        '/js/aos.js',
+        '/js/navbar.js',
+        '/js/counter.js',
+        '/js/custom.js'
+      ],
+      styles: [ // Required styles
+        '/css/tiny-slider.css',
+        '/css/aos.css',
+        '/css/style.css',
+        '/css/glightbox.min.css'
+      ]
+    });
   } catch (error) {
     console.error('[Error] Index controller:', error.message);
     res.status(500).render('error', { error: 'An unexpected error occurred.' });
