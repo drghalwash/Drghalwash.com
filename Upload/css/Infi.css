@@ -1,9 +1,41 @@
-/* Base styling for the dark theme background */
-body {
-    /* Rich dark background that's easy on the eyes */
-    background-color: #111827;
-    /* Prevent text selection for smoother interactions */
-    user-select: none;
+/* Base styling for tag cloud */
+.tag-container {
+    min-height: 200px;
+    background-color: transparent;
+    padding: 2rem 0;
+    width: 100%;
+    overflow: visible;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(45deg, #4a90e2, #357abd);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.tag:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.tag-row {
+    white-space: nowrap;
+    margin: 1rem 0;
+    animation: scrollTags 20s linear infinite;
+}
+
+@keyframes scrollTags {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 /* Main container for the tag cloud */
@@ -63,6 +95,9 @@ body {
 /* Individual tag styling */
 .tag {
     display: inline-flex;
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
     align-items: center;
     padding: 0.375rem 0.75rem;
     margin: 0.375rem;
