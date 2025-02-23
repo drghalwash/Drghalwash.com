@@ -10,8 +10,19 @@ const supabase = createClient(
 import pdf from 'pdf-parse';
 
 const processQAFile = async (filePath) => {
+  if (!filePath || typeof filePath !== 'string') {
+    console.error('Invalid file path:', filePath);
+    return [];
+  }
+
   let content;
   try {
+    const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
+    if (!fileExists) {
+      console.error('File does not exist:', filePath);
+      return [];
+    }
+
     if (filePath.toLowerCase().endsWith('.pdf')) {
       const dataBuffer = await fs.readFile(filePath);
       const pdfData = await pdf(dataBuffer);
@@ -49,14 +60,24 @@ const processQAFile = async (filePath) => {
 };
 
 const insertQAPairs = async (qaPairs) => {
+  if (!Array.isArray(qaPairs)) {
+    console.error('Invalid QA pairs format:', qaPairs);
+    return;
+  }
+
   const failed = [];
   for (const qa of qaPairs) {
+    if (!qa?.question || !Array.isArray(qa?.choices)) {
+      console.error('Invalid QA pair structure:', qa);
+      continue;
+    }
+
     try {
       const { data: existing } = await supabase
         .from('learning')
         .select('id')
         .eq('question', qa.question)
-        .single();
+        .maybeSingle();
 
       if (!existing) {
         await supabase
