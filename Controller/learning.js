@@ -16,8 +16,17 @@ const processQAFile = async (filePath) => {
       return [];
     }
 
-    const resolvedPath = path.join(process.cwd(), filePath);
+    // Handle both absolute and relative paths
+    const resolvedPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
     console.log('Attempting to process:', resolvedPath);
+    
+    // Ensure directory exists
+    const dir = path.dirname(resolvedPath);
+    try {
+      await fs.mkdir(dir, { recursive: true });
+    } catch (err) {
+      console.warn(`Error creating directory: ${err.message}`);
+    }
 
     let fileExists = false;
     try {
