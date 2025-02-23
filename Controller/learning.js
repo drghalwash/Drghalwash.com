@@ -158,15 +158,28 @@ const processFile = async (filePath) => {
   try {
     console.log(`Processing file: ${filePath}`);
     const resolvedPath = path.resolve(process.cwd(), filePath);
-    await fse.access(resolvedPath);
+    
+    // Create directory if it doesn't exist
+    const dir = path.dirname(resolvedPath);
+    await fse.ensureDir(dir);
+    
+    // Check if file exists
+    try {
+      await fse.access(resolvedPath);
+    } catch (err) {
+      console.log(`File ${filePath} not found, skipping...`);
+      return [];
+    }
 
     const buffer = await fse.readFile(resolvedPath);
     const ext = path.extname(resolvedPath).toLowerCase();
 
     if (ext === '.pdf') {
+      console.log('Processing PDF file...');
       return await processPDF(buffer);
     }
 
+    console.log('Processing text file...');
     return buffer.toString('utf-8')
       .split('\n')
       .map(line => line.trim())
