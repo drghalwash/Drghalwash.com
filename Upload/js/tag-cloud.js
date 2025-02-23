@@ -15,30 +15,13 @@ function createTag(text) {
 function initializeTagCloud() {
     const tagRow = document.querySelector('.tag-row');
     if (!tagRow) return;
-    
-    tagRow.innerHTML = ''; // Clear existing content
-    
-    // Create tags for continuous scrolling
+
+    // Create three sets of tags for continuous scrolling
     for (let i = 0; i < 3; i++) {
         TAGS.forEach(tag => {
             tagRow.appendChild(createTag(tag));
         });
     }
-    
-    // Add basic animation
-    tagRow.style.animation = 'scrollTags 30s linear infinite';
 }
 
-// Wait for DOM and reinitialize if needed
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTagCloud();
-    // Reinitialize if container exists but empty
-    const observer = new MutationObserver(() => {
-        const tagRow = document.querySelector('.tag-row');
-        if (tagRow && !tagRow.hasChildNodes()) {
-            initializeTagCloud();
-        }
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
-});
+document.addEventListener('DOMContentLoaded', initializeTagCloud);
