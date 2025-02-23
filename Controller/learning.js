@@ -8,8 +8,17 @@ const supabase = createClient(
   process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI'
 );
 
+import pdf from 'pdf-parse';
+
 const processQAFile = async (filePath) => {
-  const content = await fs.readFile(filePath, 'utf-8');
+  let content;
+  if (filePath.toLowerCase().endsWith('.pdf')) {
+    const dataBuffer = await fs.readFile(filePath);
+    const pdfData = await pdf(dataBuffer);
+    content = pdfData.text;
+  } else {
+    content = await fs.readFile(filePath, 'utf-8');
+  }
   const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
   const qaPairs = [];
   
@@ -62,7 +71,7 @@ const processQapartialsFolder = async () => {
   const files = await fs.readdir(qapartialsPath);
   
   for (const file of files) {
-    if (file.endsWith('.txt')) {
+    if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
       const filePath = path.join(qapartialsPath, file);
       const qaPairs = await processQAFile(filePath);
       await insertQAPairs(qaPairs);
