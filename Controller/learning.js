@@ -16,13 +16,20 @@ const processQAFile = async (filePath) => {
       return [];
     }
 
-    const resolvedPath = path.resolve(filePath);
-    console.log('Resolved path:', resolvedPath);
+    const resolvedPath = path.join(process.cwd(), filePath);
+    console.log('Attempting to process:', resolvedPath);
 
+    let fileExists = false;
     try {
       await fs.access(resolvedPath);
+      fileExists = true;
     } catch (err) {
-      console.warn(`File not found: ${resolvedPath}`);
+      console.warn(`File not found at ${resolvedPath}`);
+      return [];
+    }
+
+    if (!fileExists) {
+      console.warn('File does not exist');
       return [];
     }
 
