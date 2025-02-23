@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
@@ -12,19 +11,24 @@ import pdf from 'pdf-parse';
 
 const processQAFile = async (filePath) => {
   let content;
-  if (filePath.toLowerCase().endsWith('.pdf')) {
-    const dataBuffer = await fs.readFile(filePath);
-    const pdfData = await pdf(dataBuffer);
-    content = pdfData.text;
-  } else {
-    content = await fs.readFile(filePath, 'utf-8');
+  try {
+    if (filePath.toLowerCase().endsWith('.pdf')) {
+      const dataBuffer = await fs.readFile(filePath);
+      const pdfData = await pdf(dataBuffer);
+      content = pdfData.text;
+    } else {
+      content = await fs.readFile(filePath, 'utf-8');
+    }
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return []; // Return empty array if file processing fails
   }
   const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
   const qaPairs = [];
-  
+
   let currentQ = '';
   let currentChoices = [];
-  
+
   for (const line of lines) {
     if (line.match(/^Q[0-9]+:/i)) {
       if (currentQ && currentChoices.length) {
@@ -36,46 +40,57 @@ const processQAFile = async (filePath) => {
       currentChoices.push(line);
     }
   }
-  
+
   if (currentQ && currentChoices.length) {
     qaPairs.push({ question: currentQ, choices: currentChoices });
   }
-  
+
   return qaPairs;
 };
 
 const insertQAPairs = async (qaPairs) => {
+  const failed = [];
   for (const qa of qaPairs) {
-    // Check for duplicate questions
-    const { data: existing } = await supabase
-      .from('learning')
-      .select('id')
-      .eq('question', qa.question)
-      .single();
-      
-    if (!existing) {
-      await supabase
+    try {
+      const { data: existing } = await supabase
         .from('learning')
-        .insert({
-          question: qa.question,
-          choices: qa.choices.join('\n'),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        });
+        .select('id')
+        .eq('question', qa.question)
+        .single();
+
+      if (!existing) {
+        await supabase
+          .from('learning')
+          .insert({
+            question: qa.question,
+            choices: qa.choices.join('\n'),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+      }
+    } catch (error) {
+      console.error(`Error inserting QA pair: ${qa.question}`, error);
+      failed.push(qa);
     }
+  }
+  if (failed.length > 0) {
+    console.warn(`Failed to insert ${failed.length} QA pairs.`);
   }
 };
 
 const processQapartialsFolder = async () => {
   const qapartialsPath = path.join(process.cwd(), 'Qapartials');
-  const files = await fs.readdir(qapartialsPath);
-  
-  for (const file of files) {
-    if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
-      const filePath = path.join(qapartialsPath, file);
-      const qaPairs = await processQAFile(filePath);
-      await insertQAPairs(qaPairs);
+  try {
+    const files = await fs.readdir(qapartialsPath);
+    for (const file of files) {
+      if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
+        const filePath = path.join(qapartialsPath, file);
+        const qaPairs = await processQAFile(filePath);
+        await insertQAPairs(qaPairs);
+      }
     }
+  } catch (error) {
+    console.error('Error processing Qapartials folder:', error);
   }
 };
 
@@ -88,14 +103,11 @@ const startProcessor = async () => {
       { event: '*', schema: 'public', table: 'unsorted' },
       async () => {
         console.log('Detected change in unsorted table, processing Qapartials...');
-        try {
-          await processQapartialsFolder();
-          console.log('Successfully processed Qapartials folder');
-        } catch (err) {
-          console.error('Error processing Qapartials:', err);
-        }
-    })
+        await processQapartialsFolder();
+        console.log('Finished processing Qapartials folder.');
+      })
     .subscribe();
+
 
   return subscription;
 };
