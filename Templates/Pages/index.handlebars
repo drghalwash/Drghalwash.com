@@ -136,6 +136,41 @@
 		a {
 			text-decoration: none;
 		}
+
+        .tag-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-row {
+            display: flex;
+            animation: scrollTags 20s linear infinite;
+        }
+
+        .tag-row div {
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #333;
+        }
+
+        @keyframes scrollTags {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .tag-row:hover {
+            animation-play-state: paused;
+        }
 	</style>
 	<title>The best is here </title>
 </head>
@@ -216,10 +251,10 @@
 
 
 	<!-- Mobile Modal -->
-	
+
 
 	<!-- Desktop Modal -->
-	
+
 
 
 	<div class="video-container">
@@ -229,13 +264,31 @@
 		</iframe>
 	</div>
 
-<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="tag-container position-relative" style="width: 60%;">
+    <div class="tag-container">
         <div class="tag-list">
-            <div class="tag-row"></div>
+            <div class="tag-row">
+                <div>Tag 1</div>
+                <div>Tag 2</div>
+                <div>Tag 3</div>
+                <div>Tag 4</div>
+                <div>Tag 5</div>
+                <div>Tag 6</div>
+                <div>Tag 7</div>
+                <div>Tag 8</div>
+                <div>Tag 9</div>
+                <div>Tag 10</div>
+                <div>Tag 11</div>
+                <div>Tag 12</div>
+                <div>Tag 13</div>
+                <div>Tag 14</div>
+                <div>Tag 15</div>
+                <div>Tag 16</div>
+                <div>Tag 17</div>
+                <div>Tag 18</div>
+
+            </div>
         </div>
     </div>
-</div>
 
 	<div class="home-slider">
 		<h1 style="text-align: center;">{{Home.title}}</h1>
@@ -652,7 +705,7 @@
 	<script src="js/flatpickr.js"></script>
 	<script src="js/glightbox.min.js"></script>
 	<script src="js/custom.js"></script>
-	
+
 
 	<script>
 		const toggleButton = document.getElementById('toggle-button');
@@ -661,7 +714,7 @@
 		// Toggle the menu visibility on button click
 		toggleButton.addEventListener('click', (event) => {
 			event.stopPropagation(); // Prevent click from propagating to the document
-			menu.classList.toggle('active');
+			menu.classListtoggle('active');
 		});
 
 		// Close the menu when clicking outside of it
