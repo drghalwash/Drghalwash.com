@@ -174,7 +174,7 @@ function openModal(imageId) {
 
 
 
-... <div class="moving-background2">
+<div class="moving-background2">
 	<div class="overlay"></div>
 	<div class="content-of-moving-background">
     <h1>Hear from Our Patients</h1>
@@ -238,8 +238,8 @@ function openModal(imageId) {
 					<div class="widget">
 						<h3 class="footer-headers">Procedures</h3>
 						<ul class="list-unstyled float-left links">
-							{{#each allGalleries}} <!-- ONLY CHANGE: allGalleries -->
-							<li><a href="/gallery/{{id}}">{{name}}</a></li><!-- ONLY CHANGE: /gallery/{{id}} -->
+							{{#each galleries}} <!-- ONLY CHANGE: allGalleries -->
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li><!-- ONLY CHANGE: /gallery/{{id}} -->
 							{{/each}}
 							<li><a href="/Guidelines">Photography Guidelines</a></li>
 						</ul>
@@ -274,7 +274,8 @@ function openModal(imageId) {
 			</div>
 		</div>
 	</div>
-	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>... <script src="/js/bootstrap.bundle.min.js"></script>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+	<script src="/js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>
 		<script src="/js/aos.js"></script>
 		<script src="/js/navbar.js"></script>
