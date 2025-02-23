@@ -12,14 +12,16 @@ const processQAFile = async (filePath) => {
   console.log('Processing file:', filePath);
   try {
     if (!filePath || typeof filePath !== 'string') {
-      console.warn('Invalid file path provided');
+      console.warn('Invalid file path');
       return [];
     }
 
-    const resolvedPath = path.resolve(process.cwd(), filePath);
-    const exists = await fs.access(resolvedPath).then(() => true).catch(() => false);
-    
-    if (!exists) {
+    const resolvedPath = path.resolve(filePath);
+    console.log('Resolved path:', resolvedPath);
+
+    try {
+      await fs.access(resolvedPath);
+    } catch (err) {
       console.warn(`File not found: ${resolvedPath}`);
       return [];
     }
