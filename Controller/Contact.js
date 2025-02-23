@@ -1,21 +1,21 @@
+
+import { createClient } from '@supabase/supabase-js';
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-import Contact from "../DB Models/Contact.js"
-import Photo_Gallaries from "../DB Models/Photo_Gallary.js"
+const supabaseUrl = 'https://drwismqxtzpptshsqphb.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-import nodemailer from "nodemailer";
-
-// Create a transporter
 const transporter = nodemailer.createTransport({
-    service: "gmail", // Use your email service (e.g., Gmail, Outlook)
+    service: "gmail",
     auth: {
-        user: process.env.Sender_Email, // Your email address
-        pass: process.env.Sender_App_Password, // Your email password or app-specific password
+        user: process.env.Sender_Email,
+        pass: process.env.Sender_App_Password,
     },
 });
 
-// Function to send an email
 const sendEmail = (to, subject, text) => {
     const mailOptions = {
         from: process.env.Sender_Email,
@@ -35,31 +35,34 @@ const sendEmail = (to, subject, text) => {
 
 export const index = async (req, res) => {
     try {
-        const Photo_Gallary = await Photo_Gallaries.find({}).lean();
-        res.render('Pages/Contact', { Photo_Gallary })
+        const { data: galleries, error } = await supabase.from('gallery').select('*');
+        if (error) throw error;
+        res.render('Pages/Contact', { galleries });
     } catch (error) {
         console.error(error);
         res.status(500).render("Pages/404", { error });
     }
 };
+
 export const Save = async (req, res) => {
     try {
         const { name, email, phone, procedures, questions } = req.body;
-        await Contact.create({
+        
+        const { error } = await supabase.from('Contact').insert([{
             name,
             email,
             phone,
             procedures,
             questions
-        });
-        // Send email to admin
-        const emailSubject = name ;
-        const emailText = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nprocedure: ${procedures}\n\nMessage:  ${questions}`;
+        }]);
+        
+        if (error) throw error;
 
-        // Send email to info@domain.com
-
+        const emailSubject = name;
+        const emailText = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nprocedure: ${procedures}\n\nMessage: ${questions}`;
+        
         sendEmail(process.env.Receiver_Email, emailSubject, emailText);
-        res.redirect('/Contact')
+        res.redirect('/Contact');
     } catch (error) {
         console.error(error);
         res.status(500).render("Pages/404", { error });
