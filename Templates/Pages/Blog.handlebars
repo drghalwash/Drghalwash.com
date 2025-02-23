@@ -104,8 +104,8 @@
 			<div class="dropdown">
 				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
 				<ul class="dropdown-menu">
-					{{#each allGalleries}} <!-- ONLY CHANGE: allGalleries -->
-					<li><a href="/gallery/{{id}}" class="dropdown-link">{{name}}</a></li> <!-- ONLY CHANGE: /gallery/{{id}} -->
+					{{#each galleries}}
+					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
 					{{/each}}
 					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
 				</ul>
@@ -262,8 +262,8 @@
 					<div class="widget">
 						<h3 class="footer-headers">Procedures</h3>
 						<ul class="list-unstyled float-left links">
-							{{#each Photo_Gallary}}
-							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
 							{{/each}}
 							<li><a href="/Guidelines">Photography Guidelines</a></li>
 						</ul>
