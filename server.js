@@ -40,9 +40,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-// Start learning processor
-import { startProcessor } from './Controller/learning.js';
-startProcessor().catch(err => console.error('Failed to start learning processor:', err));
 
 // Handlebars Helpers
 Handlebars.registerHelper("hasQuestions", function (categories) {
@@ -129,8 +126,6 @@ app.use('/Blog', Blog_route);
 app.use('/Read_More', Read_More_route);
 app.use('/galleries', gallery_route);
 app.use('/Out_of_town', Out_of_town_route);
-import learning_route from './Routes/learning_route.js';
-app.use('/learning', learning_route);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => { console.log(`Server is running on port ${PORT}`); });
