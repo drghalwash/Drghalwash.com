@@ -78,19 +78,19 @@ const insertQAPairs = async (qaPairs) => {
   }
 };
 
-const processQapartialsFolder = async () => {
-  const qapartialsPath = path.join(process.cwd(), 'Qapartials');
+const processRootFolder = async () => {
+  const rootPath = process.cwd();
   try {
-    const files = await fs.readdir(qapartialsPath);
+    const files = await fs.readdir(rootPath);
     for (const file of files) {
       if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
-        const filePath = path.join(qapartialsPath, file);
+        const filePath = path.join(rootPath, file);
         const qaPairs = await processQAFile(filePath);
         await insertQAPairs(qaPairs);
       }
     }
   } catch (error) {
-    console.error('Error processing Qapartials folder:', error);
+    console.error('Error processing root folder:', error);
   }
 };
 
@@ -125,11 +125,11 @@ const startProcessor = async () => {
             return;
           }
 
-          console.log(`Will process ${questionLimit} questions from Qapartials`);
+          console.log(`Will process ${questionLimit} questions from root directory`);
           let processedCount = 0;
 
-          const qapartialsPath = path.join(process.cwd(), 'Qapartials');
-          const files = await fs.readdir(qapartialsPath);
+          const rootPath = process.cwd();
+          const files = await fs.readdir(rootPath);
 
           for (const file of files) {
             if (processedCount >= questionLimit) {
@@ -139,7 +139,7 @@ const startProcessor = async () => {
 
             if (file.toLowerCase().endsWith('.txt') || file.toLowerCase().endsWith('.pdf')) {
               console.log(`Processing file: ${file}`);
-              const filePath = path.join(qapartialsPath, file);
+              const filePath = path.join(rootPath, file);
               const qaPairs = await processQAFile(filePath);
 
               // Only process up to the remaining limit
