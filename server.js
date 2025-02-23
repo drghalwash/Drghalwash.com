@@ -106,8 +106,8 @@ app.use('/Out_of_town', Out_of_town_route);
 import learning_route from './Routes/learning_route.js';
 app.use('/learning', learning_route);
 
-const PORT = 5000; // Hardcode the port to 5000
-app.listen(PORT, () => { console.log(`Server is running on http://localhost:${PORT}`); });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => { console.log(`Server is running on port ${PORT}`); });
 
 // Error handlers
 app.use((req, res) => {

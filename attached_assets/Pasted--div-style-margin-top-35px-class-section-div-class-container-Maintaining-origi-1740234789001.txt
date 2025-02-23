@@ -1,0 +1,130 @@
+<div style="margin-top: 35px;" class="section">
+  <div class="container">
+    <!-- Maintaining original grid structure and AOS animations -->
+    <div class="row">
+      <div class="col-12" data-aos="fade-up" data-aos-delay="0">
+        <h2 class="heading mb-5">Featured Works</h2>
+      </div>
+    </div>
+
+    <!-- Media Grid with Original Classes + Enhanced Styling -->
+    <div class="row align-items-stretch" id="media-container">
+      {{#each Offers}}
+      <div class="col-6 col-sm-6 col-md-6 col-lg-3 media-entry" data-aos="fade-up" data-aos-delay="100">
+        <div class="media-entry group relative overflow-hidden rounded-lg">
+          <!-- Preserving video functionality -->
+          <a href="#" class="aspect-video block overflow-hidden">
+            <iframe 
+              class="vids w-full h-full transition-transform duration-500 group-hover:scale-105" 
+              src="{{video_link}}"
+              title="YouTube video player" 
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen
+            ></iframe>
+          </a>
+          <!-- Enhanced content section -->
+          <div class="bg-white m-body p-4">
+            <h3 class="text-xl font-semibold mb-2">
+              <a href="#" class="hover:text-primary transition-colors">{{title}}</a>
+            </h3>
+            <p class="text-gray-600 mb-4">{{description}}</p>
+            <a href="single.html" class="more d-flex align-items-center float-start group">
+              <span class="label mr-2">Read More</span>
+              <span class="arrow transition-transform group-hover:translate-x-1">
+                <span class="icon-keyboard_arrow_right"></span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Preserved Show More Button -->
+    <div class="text-center mt-4">
+      <button id="show-more-btn" class="btn btn-primary">Show More</button>
+    </div>
+  </div>
+</div>
+
+<!-- Preserve original Show More functionality -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const mediaEntries = document.querySelectorAll(".media-entry");
+  const showMoreBtn = document.getElementById("show-more-btn");
+  const initialVisibleCount = 8;
+  let currentlyVisibleCount = initialVisibleCount;
+
+  // Hide initial entries
+  mediaEntries.forEach((entry, index) => {
+    if (index >= initialVisibleCount) {
+      entry.style.display = "none";
+    }
+  });
+
+  // Show more handler
+  showMoreBtn.addEventListener("click", function () {
+    const hiddenEntries = Array.from(mediaEntries).filter(
+      (entry) => entry.style.display === "none"
+    );
+
+    hiddenEntries.slice(0, initialVisibleCount).forEach((entry) => {
+      entry.style.display = "";
+      // Trigger AOS animation for newly visible entries
+      entry.setAttribute('data-aos-delay', '100');
+      AOS.refresh();
+    });
+
+    currentlyVisibleCount += initialVisibleCount;
+
+    if (currentlyVisibleCount >= mediaEntries.length) {
+      showMoreBtn.style.display = "none";
+    }
+  });
+});
+</script>
+
+<!-- Additional styles to blend both designs -->
+<style>
+.media-entry {
+  transition: transform 0.3s ease;
+}
+
+.media-entry:hover {
+  transform: translateY(-5px);
+}
+
+.vids {
+  border-radius: 8px 8px 0 0;
+  aspect-ratio: 16/9;
+  width: 100%;
+}
+
+.m-body {
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.more:hover {
+  color: var(--primary-color);
+}
+
+.more .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.more:hover .arrow {
+  transform: translateX(5px);
+}
+</style>
