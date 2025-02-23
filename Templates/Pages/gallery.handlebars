@@ -36,14 +36,24 @@
 
 	<nav class="unique-navbar">
     <div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
-    <div class="menu-toggle" id="toggle-button">
+    <div class="menu-toggle js-menu-toggle" id="toggle-button">
         <div class="toggle-lines">
-            <span style=" width: 15px; "></span>
-            <span style=" width: 20px;"></span>
-            <span style=" width: 15px;"></span>
+            <span style="width: 15px;"></span>
+            <span style="width: 20px;"></span>
+            <span style="width: 15px;"></span>
         </div>
         <span class="menu-text">Menu</span>
     </div>
+    
+    <div class="site-mobile-menu">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close">
+                <span class="js-menu-toggle">&times;</span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+    
     <ul class="js-clone-nav d-none d-lg-inline-block site-menu float-end" id="mainNav">
             <li><a href="/Home">HOME</a></li>
             <li><a href="/About_Us/Dr_Khaled">ABOUT US</a></li>
@@ -192,14 +202,9 @@
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/aos.js"></script>
 <script src="/js/counter.js"></script>
+<script src="/js/navbar.js"></script>
 <script>
   $(document).ready(function() {
-    // Toggle menu on click
-    $("#toggle-button").click(function() {
-      $("#mainNav").toggleClass("show");
-    });
-
-
     // Navbar scroll effect
     $(window).scroll(function() {
       if ($(window).scrollTop() > 50) {
