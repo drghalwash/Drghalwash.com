@@ -4,77 +4,94 @@
     </div>
 </div>
 
-<script>
-const TAGS = [
-    'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
-    'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
-    'Professional Experience', 'Surgical Expertise', 'Medical Innovation',
-    'Beauty Enhancement', 'Surgical Precision', 'Patient Safety'
-];
-
-function createTag(text) {
-    const tag = document.createElement('div');
-    tag.className = 'tag';
-    tag.textContent = text;
-    return tag;
+<style>
+.tag-container {
+    overflow: visible;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    margin: 20px 0;
 }
 
-function initializeTagCloud() {
-    const tagRow = document.querySelector('.tag-row');
-    if (!tagRow) return;
+.tag-list {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 0;
+    transform: translateZ(0);
+    will-change: transform;
+}
 
-    // Create two sets of tags for continuous scrolling
-    for (let i = 0; i < 2; i++) {
-        TAGS.forEach(tag => {
-            tagRow.appendChild(createTag(tag));
+.tag-row {
+    white-space: nowrap;
+    margin: 0.75rem 0;
+    transform: perspective(1000px) rotateX(0.5deg);
+    position: relative;
+    z-index: 1;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    animation: loop 60s linear infinite;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    margin: 0.375rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
+
+.tag.active {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes loop {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-33.333% - 0.5px)); }
+}
+</style>
+
+<script>
+const TAGS = [
+    'HTML', 'CSS', 'Git', 'MongoDB', 'Accessibility',
+    'JavaScript', 'Express', 'React', 'Node.js', 'Testing',
+    'Docker', 'AWS', 'REST API', 'Performance', 'Security'
+];
+
+function initializeTagCloud() {
+    const row = document.querySelector('.tag-row');
+    if (!row) return;
+
+    TAGS.forEach(tag => {
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag';
+        tagElement.textContent = tag;
+        tagElement.addEventListener('mouseenter', () => {
+            tagElement.classList.add('active');
         });
-    }
+        tagElement.addEventListener('mouseleave', () => {
+            tagElement.classList.remove('active');
+        });
+        row.appendChild(tagElement);
+    });
+
+    // Clone tags twice for smooth infinite scroll
+    const tags = Array.from(row.children);
+    tags.forEach(tag => {
+        row.appendChild(tag.cloneNode(true));
+        row.appendChild(tag.cloneNode(true));
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initializeTagCloud);
 </script>
-
-<style>
-.tag-container {
-    width: 100%;
-    overflow: hidden;
-    padding: 2rem 0;
-    background: transparent;
-}
-
-.tag-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.tag-row {
-    display: flex;
-    white-space: nowrap;
-    animation: scrollTags 30s linear infinite;
-}
-
-.tag {
-    display: inline-block;
-    padding: 8px 16px;
-    margin: 4px;
-    border-radius: 20px;
-    color: white;
-    background: rgba(255,255,255,0.1);
-    transition: transform 0.3s ease;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    background: linear-gradient(45deg, #4a90e2, #357abd);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.tag:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-@keyframes scrollTags {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-</style>
