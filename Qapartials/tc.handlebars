@@ -40,40 +40,17 @@
     color: #4a4a4a;
     cursor: pointer;
     transform-origin: center;
-    position: relative;
-    transition: all 0.5s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 background-color 0.3s ease;
     user-select: none;
     will-change: transform, box-shadow;
     box-shadow: 0 0 8px rgba(180, 175, 170, 0.2);
 }
 
-.tag:hover, .tag.center {
-    background-color: #ffffff;
-    transform: translateY(-8px);
-}
-
-.tag.center {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-}
-
-.tag.center::after {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    border-radius: 25px;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
-    z-index: -1;
-    opacity: 0;
-    animation: glowFade 2s ease-in-out infinite;
-}
-
-@keyframes glowFade {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+.tag:hover {
+    background-color: #f0eeeb;
+    box-shadow: 0 0 12px rgba(180, 175, 170, 0.3);
 }
 
 .tag.active {
@@ -153,26 +130,6 @@
                 }
             }, 2000);
         });
-
-        function checkCenterTags() {
-            const tags = tagRow.querySelectorAll('.tag');
-            const containerRect = document.querySelector('.tag-container').getBoundingClientRect();
-            const centerX = containerRect.left + containerRect.width / 2;
-            
-            tags.forEach(tag => {
-                const tagRect = tag.getBoundingClientRect();
-                const tagCenter = tagRect.left + tagRect.width / 2;
-                const distance = Math.abs(tagCenter - centerX);
-                
-                if (distance < 50) {
-                    tag.classList.add('center');
-                } else {
-                    tag.classList.remove('center');
-                }
-            });
-        }
-
-        setInterval(checkCenterTags, 100);
 
         tagRow.addEventListener('mouseenter', () => {
             if (!isAnimationPaused) {
