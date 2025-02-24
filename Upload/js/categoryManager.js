@@ -17,6 +17,7 @@ function generateCategoryNav(zones) {
         display: grid;
         grid-template-columns: repeat(1, minmax(200px, 1fr));
         gap: 15px;
+        border: 2px solid #ffa500;
         border-radius: 8px;
         padding: 15px;
     `;
@@ -50,15 +51,15 @@ function generateCategoryNav(zones) {
         // Create container for categories
         const categoriesContainer = document.createElement('div');
         categoriesContainer.style.cssText = `
-            max-height: 0;
+            max-height: 0px;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         `;
-
+        
         // Add click handler for collapsing
         header.addEventListener('click', () => {
-            const isCollapsed = categoriesContainer.style.maxHeight === '0px' || categoriesContainer.style.maxHeight === '0';
-            categoriesContainer.style.maxHeight = isCollapsed ? '1000px' : '0';
+            const isCollapsed = categoriesContainer.style.maxHeight === '0px';
+            categoriesContainer.style.maxHeight = isCollapsed ? '1000px' : '0px';
             header.textContent = zone.name + (isCollapsed ? ' ▼' : ' ▶');
         });
 
@@ -66,45 +67,45 @@ function generateCategoryNav(zones) {
         groupDiv.appendChild(categoriesContainer);
 
         // Create category links within each zone
-        zone.categories.forEach(category => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'category-item';
-            itemDiv.style.cssText = `
-                padding: 5px 0;
-            `;
+zone.categories.forEach(category => {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'category-item';
+    itemDiv.style.cssText = `
+        padding: 5px 0;
+    `;
 
-            const link = document.createElement('a');
-            link.href = `#${category.technical_id}`; // Use category technical ID as anchor
+    const link = document.createElement('a');
+    link.href = `#${category.technical_id}`; // Use category technical ID as anchor
 
-            // Split the display name into words
-            const words = category.display_name.split(' ');
-            const firstTwoWords = words.slice(0, 2).join(' ');
-            const remainingWords = words.slice(2).join(' ');
+    // Split the display name into words
+    const words = category.display_name.split(' ');
+    const firstTwoWords = words.slice(0, 2).join(' ');
+    const remainingWords = words.slice(2).join(' ');
 
-            // Set the innerHTML to include the extra-bold class for the first two words
-            link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
+    // Set the innerHTML to include the extra-bold class for the first two words
+    link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
 
-            link.style.cssText = `
-                color: #495057;
-                text-decoration: none;
-                font-family: Verdana, sans-serif;
-                font-size: 0.95em;
-                transition: color 0.3s ease;
-            `;
+    link.style.cssText = `
+        color: #495057;
+        text-decoration: none;
+        font-family: Verdana, sans-serif;
+        font-size: 0.95em;
+        transition: color 0.3s ease;
+    `;
+    
+    link.addEventListener('mouseenter', () => {
+        link.style.color = '#007bff';
+        link.style.fontWeight = 'bold';
+    });
+    
+    link.addEventListener('mouseleave', () => {
+        link.style.color = '#495057';
+        link.style.fontWeight = 'normal';
+    });
 
-            link.addEventListener('mouseenter', () => {
-                link.style.color = '#007bff';
-                link.style.fontWeight = 'bold';
-            });
-
-            link.addEventListener('mouseleave', () => {
-                link.style.color = '#495057';
-                link.style.fontWeight = 'normal';
-            });
-
-            itemDiv.appendChild(link);
-            groupDiv.appendChild(itemDiv);
-        });
+    itemDiv.appendChild(link);
+    groupDiv.appendChild(itemDiv);
+});
         navContainer.appendChild(groupDiv);
     });
 }
@@ -138,7 +139,7 @@ function enableAutoScroll() {
             event.preventDefault();
             const targetId = event.target.getAttribute('href').substring(1); // Remove the '#' from href
             const targetSection = document.getElementById(targetId);
-
+            
             if (targetSection) {
                 targetSection.scrollIntoView({ behavior: 'smooth' });
             }
