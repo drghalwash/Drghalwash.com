@@ -35,7 +35,7 @@ function generateCategoryNav(zones) {
             font-weight: bold;
             font-size: 1.1em;
             padding: 8px 15px;
-            margin-bottom: 15px;
+            margin-bottom: 0.1px;
             border-radius: 0 20px 20px 0;
             cursor: pointer;
             user-select: none;
@@ -61,7 +61,7 @@ function generateCategoryNav(zones) {
             itemDiv.className = 'category-item';
             itemDiv.style.cssText = `
                 padding: 8px 15px;
-                margin: 5px 0;
+                margin: 0.3px 0;
                 transition: all 0.3s ease;
             `;
 
