@@ -205,53 +205,15 @@ font-family: Verdana, sans-serif;
     }
 
     .qa-left-column {
-        flex: 0 0 25%;
-        max-width: 25%;
-        position: fixed;
-        top: 180px;
-        left: 20px;
-        height: calc(100vh - 250px);
-        overflow: visible;
-        padding-bottom: 30px;
-    }
-
-    .category-group {
-        margin-bottom: 10px;
-    }
-
-    .group-title {
-        cursor: pointer;
-        padding: 10px;
-        background: #394464;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 5px;
-    }
-
-    .group-title::after {
-        content: '▼';
-        transition: transform 0.3s;
-    }
-
-    .group-title.collapsed::after {
-        transform: rotate(-90deg);
-    }
-
-    .category-list {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-out;
-    }
-
-    .category-list.expanded {
-        max-height: 1000px;
+        flex: 1;
+        max-width: 300px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
     }
 
     .qa-right-column {
-        flex: 0 0 70%;
-        margin-left: 28%;
         flex: 3;
         min-width: 0;
     }
@@ -679,10 +641,10 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 <script src="/js/categoryManager.js"></script>
 
 <!-- Main Q&A Layout Container -->
-<div class="qa-horizontal-layout" style="margin-top: 120px; margin-bottom: 50px;">
+<div class="qa-horizontal-layout">
   <!-- Left Column: Categories -->
   <div class="qa-left-column">
-    <div class="categories-container" style="margin-top: 20px;">
+    <div class="categories-container">
       <h2>Categories</h2>
       <div class="categories">
         <!-- This container will be populated dynamically by categoryManager.js -->

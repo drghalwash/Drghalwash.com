@@ -1,29 +1,3 @@
-
-// Add collapsible functionality to zone groups
-function makeGroupsCollapsible() {
-    document.querySelectorAll('.category-group').forEach(group => {
-        const title = group.querySelector('.group-title');
-        const list = group.querySelector('.category-list');
-        
-        if (title && list) {
-            title.addEventListener('click', () => {
-                title.classList.toggle('collapsed');
-                list.classList.toggle('expanded');
-            });
-        }
-    });
-}
-
-// Add this to the DOMContentLoaded event
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.zonesData) {
-        generateCategoryNav(window.zonesData);
-        handleResponsiveDesign();
-        enableAutoScroll();
-        makeGroupsCollapsible(); // Add this line
-    }
-});
-
 /***********************************************************************
  * File: /js/categoryManager.js
  * Description: Dynamically generates category navigation and handles 
@@ -41,8 +15,8 @@ function generateCategoryNav(zones) {
     // Apply grid layout styles
     navContainer.style.cssText = `
         display: grid;
-        grid-template-columns: repeat(1, minmax(200px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        gap: 15px;
     `;
 
     // Loop through zones to create category groups
@@ -52,8 +26,8 @@ function generateCategoryNav(zones) {
         groupDiv.style.cssText = `
             background-color: #ffffff;
             border: 2px solid #ffa500;
-            border-radius: 20px;
-            padding: 7px;
+            border-radius: 8px;
+            padding: 15px;
             break-inside: avoid;
         `;
 
@@ -71,46 +45,39 @@ function generateCategoryNav(zones) {
             border-radius: 0 20px 20px 0;
         `;
         groupDiv.appendChild(header);
-// Create category links within each zone
-zone.categories.forEach(category => {
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'category-item';
-    itemDiv.style.cssText = `
-        padding: 5px 0;
-    `;
 
-    const link = document.createElement('a');
-    link.href = `#${category.technical_id}`; // Use category technical ID as anchor
+        // Create category links within each zone
+        zone.categories.forEach(category => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'category-item';
+            itemDiv.style.cssText = `
+                padding: 5px 0;
+            `;
 
-    // Split the display name into words
-    const words = category.display_name.split(' ');
-    const firstTwoWords = words.slice(0, 2).join(' ');
-    const remainingWords = words.slice(2).join(' ');
+            const link = document.createElement('a');
+            link.href = `#${category.technical_id}`; // Use category technical ID as anchor
+            link.textContent = category.display_name; // Category display name
+            link.style.cssText = `
+                color: #495057;
+                text-decoration: none;
+                font-family: Verdana, sans-serif;
+                font-size: 0.95em;
+                transition: color 0.3s ease;
+            `;
+            
+            link.addEventListener('mouseenter', () => {
+                link.style.color = '#007bff';
+                link.style.fontWeight = 'bold';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.color = '#495057';
+                link.style.fontWeight = 'normal';
+            });
 
-    // Set the innerHTML to include the extra-bold class for the first two words
-    link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
-
-    link.style.cssText = `
-        color: #495057;
-        text-decoration: none;
-        font-family: Verdana, sans-serif;
-        font-size: 0.95em;
-        transition: color 0.3s ease;
-    `;
-    
-    link.addEventListener('mouseenter', () => {
-        link.style.color = '#007bff';
-        link.style.fontWeight = 'bold';
-    });
-    
-    link.addEventListener('mouseleave', () => {
-        link.style.color = '#495057';
-        link.style.fontWeight = 'normal';
-    });
-
-    itemDiv.appendChild(link);
-    groupDiv.appendChild(itemDiv);
-});
+            itemDiv.appendChild(link);
+            groupDiv.appendChild(itemDiv);
+        });
 
         navContainer.appendChild(groupDiv);
     });
@@ -127,9 +94,9 @@ function handleResponsiveDesign() {
         const width = window.innerWidth;
         categories.style.gridTemplateColumns =
             width < 576 ? 'repeat(1, minmax(200px, auto))' :
-            width < 768 ? 'repeat(1, minmax(200px, auto))' :
-            width < 1200 ? 'repeat(1, minmax(200px, auto))' :
-            'repeat(1, minmax(200px, auto))';
+            width < 768 ? 'repeat(2, minmax(200px, auto))' :
+            width < 1200 ? 'repeat(3, minmax(200px, auto))' :
+            'repeat(4, minmax(200px, auto))';
     };
 
     updateGrid();
