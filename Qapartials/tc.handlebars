@@ -1,4 +1,3 @@
-
 <!-- Tag Cloud Partial -->
 <div class="tag-container">
     <div class="tag-list">
@@ -54,109 +53,49 @@
     z-index: 1;
 }
 
-.tag.active {
-    transform: translateY(-5px) scale(1.1);
+.tag:hover {
+    transform: translateY(-2px) scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes loop {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-33.333% - 0.5px)); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50%)); }
 }
 </style>
 
 <script>
-const TAGS = [
-    'Node.js', 'Express', 'Bootstrap', 'JavaScript', 'HTML',
-    'CSS', 'MongoDB', 'REST API', 'Docker', 'AWS',
-    'Git', 'CI/CD', 'Testing', 'Performance', 'Accessibility'
-];
+(function() {
+    const tags = [
+        'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
+        'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
+        'Professional Experience', 'Surgical Expertise', 'Medical Innovation',
+        'Beauty Enhancement', 'Surgical Precision', 'Patient Safety'
+    ];
 
-const TAGS_PER_ROW = 5;
-const BASE_DURATION = 15000;
-const INITIAL_SPEED_MULTIPLIER = 5;
-const TARGET_SPEED_MULTIPLIER = 2;
-const TRANSITION_DURATION = 500;
+    function initTagCloud() {
+        const row = document.querySelector('.tag-row');
+        if (!row) return;
 
-function shuffle(array) {
-    return [...array].sort(() => Math.random() - 0.5);
-}
+        // Clear existing content
+        row.innerHTML = '';
 
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function createTag(text) {
-    const tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerHTML = `<i class="hash">#</i>${text}`;
-
-    let startX, currentX, velocity = 0;
-    let lastX = 0;
-    let lastTime = 0;
-    let animationRequest;
-    let initialTransform = 0;
-    let isDragging = false;
-
-    const handleInteraction = (e) => {
-        e.preventDefault();
-        cancelAnimationFrame(animationRequest);
-        tag.classList.add('active');
-        isDragging = true;
-        startX = e.type === 'pointerdown' ? e.clientX : (e.touches ? e.touches[0].clientX : e.clientX);
-        currentX = startX;
-        lastX = startX;
-        lastTime = Date.now();
-        velocity = 0;
-
-        const row = tag.closest('.tag-row');
-        const computedStyle = window.getComputedStyle(row);
-        const matrix = new DOMMatrix(computedStyle.transform);
-        initialTransform = matrix.m41;
-    };
-
-    const handleMove = (e) => {
-        if (!isDragging) return;
-        const now = Date.now();
-        const dt = now - lastTime;
-        currentX = e.type === 'pointermove' ? e.clientX : (e.touches ? e.touches[0].clientX : e.clientX);
-        velocity = (currentX - lastX) / dt;
-        const row = tag.closest('.tag-row');
-        const deltaX = currentX - lastX;
-        const newX = initialTransform + deltaX * (1 + Math.abs(velocity));
-        row.style.transform = `translate3d(${newX}px, 0, 0)`;
-        lastX = currentX;
-        lastTime = now;
-    };
-
-    const handleInteractionEnd = (e) => {
-        e.preventDefault();
-        tag.classList.remove('active');
-        isDragging = false;
-        const row = tag.closest('.tag-row');
-        row.style.transform = `translate3d(0, 0, 0)`;
-    };
-
-    tag.addEventListener('pointerdown', handleInteraction);
-    tag.addEventListener('pointerleave', handleInteractionEnd);
-    tag.addEventListener('pointermove', handleMove);
-    tag.addEventListener('pointerup', handleInteractionEnd);
-
-    return tag;
-}
-
-function initializeRows() {
-    const rows = document.querySelectorAll('.tag-row');
-    rows.forEach((row) => {
-        const tags = shuffle(TAGS).slice(0, TAGS_PER_ROW);
-        row.style.willChange = 'transform';
-        for (let i = 0; i < 3; i++) {
-            tags.forEach(tag => {
-                row.appendChild(createTag(tag));
+        // Create two sets of tags for smooth infinite scrolling
+        for (let j = 0; j < 2; j++) {
+            tags.forEach(text => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = text;
+                row.appendChild(tag);
             });
         }
-    });
-}
+    }
 
-document.addEventListener('DOMContentLoaded', initializeRows);
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTagCloud);
+    } else {
+        initTagCloud();
+    }
+})();
 </script>
