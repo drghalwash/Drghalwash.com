@@ -83,10 +83,16 @@ export const index = async (req, res) => {
       )
     );
 
+    const flattenedQuestions = organizedZones.flatMap(zone => 
+      zone.categories.flatMap(category => 
+        category.questions.map(q => q.text)
+      )
+    ).filter(Boolean);
+
     res.render('Pages/Questions_And_Answer', {
       galleries,
       zones: organizedZones,
-      questions: allQuestions
+      questions: flattenedQuestions
     });
 
     console.log('[Controller] Data successfully sent to the template.');

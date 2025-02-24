@@ -73,11 +73,7 @@
 
 <script>
 (function() {
-    const tags = zones.flatMap(zone => 
-    zone.categories.flatMap(category => 
-        category.questions.map(q => q.text)
-    )
-);
+    const tags = {{{json questions}}};
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
