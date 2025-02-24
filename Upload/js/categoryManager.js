@@ -31,9 +31,9 @@ function generateCategoryNav(zones) {
             break-inside: avoid;
         `;
 
-        // Create zone header
+        // Create collapsible zone header
         const header = document.createElement('h3');
-        header.textContent = zone.name; // Zone name
+        header.textContent = zone.name + ' ▼'; // Zone name with dropdown indicator
         header.style.cssText = `
             background-color: #394464;
             color: white;
@@ -43,42 +43,68 @@ function generateCategoryNav(zones) {
             padding: 8px 15px;
             margin-bottom: 15px;
             border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            user-select: none;
         `;
-        groupDiv.appendChild(header);
 
-        // Create category links within each zone
-        zone.categories.forEach(category => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'category-item';
-            itemDiv.style.cssText = `
-                padding: 5px 0;
-            `;
-
-            const link = document.createElement('a');
-            link.href = `#${category.technical_id}`; // Use category technical ID as anchor
-            link.textContent = category.display_name; // Category display name
-            link.style.cssText = `
-                color: #495057;
-                text-decoration: none;
-                font-family: Verdana, sans-serif;
-                font-size: 0.95em;
-                transition: color 0.3s ease;
-            `;
-            
-            link.addEventListener('mouseenter', () => {
-                link.style.color = '#007bff';
-                link.style.fontWeight = 'bold';
-            });
-            
-            link.addEventListener('mouseleave', () => {
-                link.style.color = '#495057';
-                link.style.fontWeight = 'normal';
-            });
-
-            itemDiv.appendChild(link);
-            groupDiv.appendChild(itemDiv);
+        // Create container for categories
+        const categoriesContainer = document.createElement('div');
+        categoriesContainer.style.cssText = `
+            max-height: 100%;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        `;
+        
+        // Add click handler for collapsing
+        header.addEventListener('click', () => {
+            const isCollapsed = categoriesContainer.style.maxHeight === '0px';
+            categoriesContainer.style.maxHeight = isCollapsed ? '1000px' : '0px';
+            header.textContent = zone.name + (isCollapsed ? ' ▼' : ' ▶');
         });
 
+        groupDiv.appendChild(header);
+        groupDiv.appendChild(categoriesContainer);
+
+        // Create category links within each zone
+zone.categories.forEach(category => {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'category-item';
+    itemDiv.style.cssText = `
+        padding: 5px 0;
+    `;
+
+    const link = document.createElement('a');
+    link.href = `#${category.technical_id}`; // Use category technical ID as anchor
+
+    // Split the display name into words
+    const words = category.display_name.split(' ');
+    const firstTwoWords = words.slice(0, 2).join(' ');
+    const remainingWords = words.slice(2).join(' ');
+
+    // Set the innerHTML to include the extra-bold class for the first two words
+    link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
+
+    link.style.cssText = `
+        color: #495057;
+        text-decoration: none;
+        font-family: Verdana, sans-serif;
+        font-size: 0.95em;
+        transition: color 0.3s ease;
+    `;
+    
+    link.addEventListener('mouseenter', () => {
+        link.style.color = '#007bff';
+        link.style.fontWeight = 'bold';
+    });
+    
+    link.addEventListener('mouseleave', () => {
+        link.style.color = '#495057';
+        link.style.fontWeight = 'normal';
+    });
+
+    itemDiv.appendChild(link);
+    groupDiv.appendChild(itemDiv);
+});
         navContainer.appendChild(groupDiv);
     });
 }
