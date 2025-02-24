@@ -4,7 +4,7 @@
     overflow: hidden;
     position: relative;
     height: 100px;
-    width: 100%;
+    width: 60%;
     max-width: 800px;
     margin: 0 auto;
     -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
@@ -73,11 +73,11 @@
 
 <script>
 (function() {
-    const tags = zones.flatMap(zone => 
-    zone.categories.flatMap(category => 
-        category.questions.map(q => q.text)
-    )
-);
+    const tags = [
+        'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
+        'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
+        'Professional Experience', 'Surgical Expertise', 'Medical Innovation'
+    ];
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
