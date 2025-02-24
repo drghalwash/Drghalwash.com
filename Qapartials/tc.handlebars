@@ -11,9 +11,6 @@
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     transform: translateZ(0);
     will-change: transform;
-    contain: layout style paint;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
 }
 
 .tag-list {
@@ -87,27 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
         if (!tagRow) return;
-        
-        requestAnimationFrame(() => {
-            const fragment = document.createDocumentFragment();
-            const tagElements = tags.map(tag => {
-                const div = document.createElement('div');
-                div.className = 'tag';
-                div.textContent = tag;
-                return div;
-            });
-            
-            // Clone tags three times for smooth infinite scroll
-            for (let i = 0; i < 3; i++) {
-                tagElements.forEach(tag => fragment.appendChild(tag.cloneNode(true)));
-            }
-            
-            tagRow.appendChild(fragment);
-        });
+
+        const tagsHTML = tags.map(tag => `<div class="tag">${tag}</div>`).join('');
+        tagRow.innerHTML = tagsHTML + tagsHTML + tagsHTML;
 
         const allTags = tagRow.querySelectorAll('.tag');
         let activeTimeout;
-        let rafId;
 
         allTags.forEach(tag => {
             tag.addEventListener('click', (e) => {
