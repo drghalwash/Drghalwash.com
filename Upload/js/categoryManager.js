@@ -20,6 +20,7 @@ function generateCategoryNav(zones) {
         border: 2px solid #ffa500;
         border-radius: 8px;
         padding: 15px;
+        margin: 2cm auto;
     `;
 
     // Loop through zones to create category groups
@@ -30,6 +31,7 @@ function generateCategoryNav(zones) {
             background-color: #ffffff;
             break-inside: avoid;
             margin-bottom: 10px;
+            position: relative;
         `;
 
         // Create collapsible zone header
@@ -51,15 +53,17 @@ function generateCategoryNav(zones) {
         // Create container for categories
         const categoriesContainer = document.createElement('div');
         categoriesContainer.style.cssText = `
-            max-height: 0px;
+            max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+            padding: 0 15px;
         `;
         
         // Add click handler for collapsing
         header.addEventListener('click', () => {
-            const isCollapsed = categoriesContainer.style.maxHeight === '0px';
-            categoriesContainer.style.maxHeight = isCollapsed ? '1000px' : '0px';
+            const actualHeight = categoriesContainer.scrollHeight;
+            const isCollapsed = categoriesContainer.style.maxHeight === '0px' || categoriesContainer.style.maxHeight === '0';
+            categoriesContainer.style.maxHeight = isCollapsed ? `${actualHeight}px` : '0';
             header.textContent = zone.name + (isCollapsed ? ' ▼' : ' ▶');
         });
 
