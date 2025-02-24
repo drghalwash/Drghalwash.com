@@ -46,7 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
     overflow: visible;
     position: relative;
     height: 100px;
-    width: 40%;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
     -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
@@ -55,8 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
     position: relative;
     z-index: 1;
     padding: 0.5rem 0;
+    width: 100%;
     transform: translateZ(0);
     will-change: transform;
+    text-align: center;
 }
 
 .tag-row {
