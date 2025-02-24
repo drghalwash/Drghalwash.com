@@ -83,13 +83,6 @@ export const index = async (req, res) => {
       )
     );
 
-    // Extract and shuffle questions
-    const allQuestions = organizedZones.flatMap(zone => 
-      zone.categories.flatMap(category => 
-        category.questions.map(q => q.text)
-      )
-    ).filter(Boolean); // Remove any undefined/null values
-    
     res.render('Pages/Questions_And_Answer', {
       galleries,
       zones: organizedZones,
