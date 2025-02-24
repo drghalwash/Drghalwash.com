@@ -1,156 +1,153 @@
 
 <style>
-.tag-cloud {
-    padding: 2rem;
-    background: linear-gradient(to right, #f8f9fa, #ffffff);
-    border-radius: 8px;
-    margin: 2rem auto;
-    max-width: 1200px;
+.tag-container {
+    overflow: hidden;
+    position: relative;
+    height: 100px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-.tag-container {
+.tag-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    align-items: center;
     justify-content: center;
+    height: 100%;
+}
+
+.tag-row {
+    display: flex;
+    white-space: nowrap;
+    animation: scroll 30s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .tag {
-    padding: 0.75rem 1.25rem;
-    background-color: #ffffff;
-    border-radius: 25px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin: 0.375rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    background-color: #e8e6e3;
     color: #4a4a4a;
-    border: 1px solid #eaeaea;
-    max-width: 300px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    cursor: pointer;
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease;
+    user-select: none;
+    will-change: transform, box-shadow;
+    box-shadow: 0 0 8px rgba(180, 175, 170, 0.2);
 }
 
 .tag:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background-color: #f0eeeb;
+    box-shadow: 0 0 12px rgba(180, 175, 170, 0.3);
+}
+
+.tag.active {
+    transform: translateY(-5px) scale(1.05);
     background-color: #f5f3f0;
+    box-shadow: 0 0 20px rgba(180, 175, 170, 0.4);
 }
 
-.tag.glow::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-    opacity: 0;
-    transform: scale(0);
-    animation: glowPulse 2s ease-out;
-}
-
-@keyframes glowPulse {
-    0% {
-        opacity: 0;
-        transform: scale(0);
-    }
-    50% {
-        opacity: 0.5;
-        transform: scale(0.5);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1);
-    }
-}
-
-.tag-category {
-    font-size: 0.75rem;
-    color: #666;
-    margin-top: 4px;
-    display: block;
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 </style>
 
-<div class="tag-cloud">
-    <div class="tag-container" id="tagContainer"></div>
+<div class="tag-container">
+    <div class="tag-list">
+        <div class="tag-row"></div>
+    </div>
 </div>
 
 <script>
 (function() {
-    const questions = {{{json zones}}}.flatMap(zone => 
-        zone.categories.flatMap(category => 
-            category.questions.map(question => ({
-                ...question,
-                zone: zone.name,
-                category: category.name
-            }))
-        )
-    );
+    const tags = [
+        'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
+        'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
+        'Professional Experience', 'Surgical Expertise', 'Medical Innovation'
+    ];
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
+    function createTags() {
+        const tagRow = document.querySelector('.tag-row');
+        if (!tagRow) return;
 
-    function createTag(question) {
-        const tag = document.createElement('div');
-        tag.className = 'tag';
-        tag.innerHTML = `
-            ${question.text}
-            <span class="tag-category">${question.category} - ${question.zone}</span>
-        `;
-
-        // Random glow effect
-        const triggerRandomGlow = () => {
-            if (Math.random() < 0.3) { // 30% chance every interval
-                tag.classList.add('glow');
-                setTimeout(() => tag.classList.remove('glow'), 2000);
-            }
-        };
-
-        setInterval(triggerRandomGlow, Math.random() * 3000 + 2000); // Random interval between 2-5s
-
-        tag.addEventListener('click', () => {
-            const allTags = document.querySelectorAll('.tag');
-            allTags.forEach(t => t.classList.remove('active'));
-            tag.classList.add('active');
-            tag.classList.add('glow');
-        });
-
-        return tag;
-    }
-
-    function initializeTags() {
-        const tagContainer = document.getElementById('tagContainer');
-        if (!tagContainer || !questions.length) return;
-
-        // Get 10 random questions
-        const randomQuestions = shuffleArray([...questions]).slice(0, 10);
+        const fragment = document.createDocumentFragment();
         
-        randomQuestions.forEach(question => {
-            tagContainer.appendChild(createTag(question));
+        // Create tags three times for smooth infinite scroll
+        for (let i = 0; i < 3; i++) {
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'tag';
+                div.textContent = tag;
+                fragment.appendChild(div);
+            });
+        }
+        
+        tagRow.appendChild(fragment);
+
+        let isAnimationPaused = false;
+        let activeTag = null;
+
+        tagRow.addEventListener('click', (e) => {
+            const tag = e.target.closest('.tag');
+            if (!tag) return;
+
+            if (activeTag === tag) {
+                tag.classList.remove('active');
+                activeTag = null;
+                tagRow.style.animationPlayState = 'running';
+                isAnimationPaused = false;
+                return;
+            }
+
+            if (activeTag) {
+                activeTag.classList.remove('active');
+            }
+
+            tag.classList.add('active');
+            activeTag = tag;
+            tagRow.style.animationPlayState = 'paused';
+            isAnimationPaused = true;
+
+            setTimeout(() => {
+                if (isAnimationPaused) {
+                    tag.classList.remove('active');
+                    tagRow.style.animationPlayState = 'running';
+                    isAnimationPaused = false;
+                    activeTag = null;
+                }
+            }, 2000);
         });
 
-        // Refresh tags every 30 seconds
-        setInterval(() => {
-            tagContainer.innerHTML = '';
-            const newRandomQuestions = shuffleArray([...questions]).slice(0, 10);
-            newRandomQuestions.forEach(question => {
-                tagContainer.appendChild(createTag(question));
-            });
-        }, 30000);
+        tagRow.addEventListener('mouseenter', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'paused';
+            }
+        });
+
+        tagRow.addEventListener('mouseleave', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'running';
+            }
+        });
     }
 
-    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeTags);
+        document.addEventListener('DOMContentLoaded', createTags);
     } else {
-        initializeTags();
+        createTags();
     }
 })();
 </script>
