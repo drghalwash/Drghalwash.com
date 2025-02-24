@@ -1,3 +1,29 @@
+
+// Add collapsible functionality to zone groups
+function makeGroupsCollapsible() {
+    document.querySelectorAll('.category-group').forEach(group => {
+        const title = group.querySelector('.group-title');
+        const list = group.querySelector('.category-list');
+        
+        if (title && list) {
+            title.addEventListener('click', () => {
+                title.classList.toggle('collapsed');
+                list.classList.toggle('expanded');
+            });
+        }
+    });
+}
+
+// Add this to the DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.zonesData) {
+        generateCategoryNav(window.zonesData);
+        handleResponsiveDesign();
+        enableAutoScroll();
+        makeGroupsCollapsible(); // Add this line
+    }
+});
+
 /***********************************************************************
  * File: /js/categoryManager.js
  * Description: Dynamically generates category navigation and handles 
