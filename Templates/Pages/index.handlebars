@@ -352,15 +352,19 @@
 
 
 
-	<div class="qa-search-container">
-		<div class="search-form">
-			<input type="text" id="qaSearchInput" placeholder="Search for questions..." class="form-control">
-			<button onclick="handleQASearch()" class="search-button">Search</button>
-		</div>
-		<div id="noResultsMessage" style="display: none;">
-			<p>Can't find what you're looking for? Email us at ask@drghalwash.com - we'll respond within 6 hours!</p>
-		</div>
-	</div>
+	<div class="search-container">
+        <div class="search-wrapper">
+            <div class="search-box">
+                <input type="text" id="categorySearch" placeholder="Search categories & questions..." onclick="handleSearchRedirect()">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	<style>
     .search-container {
@@ -927,21 +931,18 @@
 	<script src="js/glightbox.min.js"></script>
 	<script src="js/custom.js"></script>
 	<script>
-	function handleQASearch() {
-		const searchTerm = document.getElementById('qaSearchInput').value.trim();
-		if (searchTerm) {
-			// Redirect to Q&A page with search term
-			window.location.href = `/Questions_And_Answer?search=${encodeURIComponent(searchTerm)}`;
-		}
-	}
-
-	// Add enter key support
-	document.getElementById('qaSearchInput').addEventListener('keypress', function(e) {
-		if (e.key === 'Enter') {
-			handleQASearch();
-		}
-	});
-	</script>
+    function handleSearchRedirect() {
+        window.location.href = '/Questions_And_Answer';
+    }
+    
+    // Add click handler for the search icon as well
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchIcon = document.querySelector('.search-icon');
+        if (searchIcon) {
+            searchIcon.addEventListener('click', handleSearchRedirect);
+        }
+    });
+    </script>
 	<script>
 		const toggleButton = document.getElementById('toggle-button');
 		const menu = document.getElementById('menu');
