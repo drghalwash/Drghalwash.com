@@ -196,11 +196,36 @@ font-family: Verdana, sans-serif;
 </style>
 
 <style>
-    .qa-main-container {
-        width: 90%;
-        max-width: 1400px;
-        margin: 0 auto;
+    .qa-horizontal-layout {
+        display: flex;
+        gap: 30px;
+        margin: 20px auto;
         padding: 0 20px;
+        max-width: 1400px;
+    }
+
+    .qa-left-column {
+        flex: 1;
+        max-width: 300px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+    }
+
+    .qa-right-column {
+        flex: 3;
+        min-width: 0;
+    }
+
+    @media (max-width: 768px) {
+        .qa-horizontal-layout {
+            flex-direction: column;
+        }
+
+        .qa-left-column {
+            max-width: 100%;
+        }
     }
 
     @media (max-width: 768px) {
@@ -337,6 +362,7 @@ color: #16a085; /* Emerald green */
 background: linear-gradient(120deg, #ffe06640 0%, #ffd43b40 100%);
 
 }
+      .extra-bold { font-weight: bold; /* Makes the text bold */ font-size: 1.2em; /* Optional: Increases the font size */ /* Add any other styles you want */ }
 
 .alert-highlight {
 
@@ -614,20 +640,22 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 <!-- Include categoryManager.js for dynamic category generation -->
 <script src="/js/categoryManager.js"></script>
 
-<!-- Category Navigation Container -->
-<div class="qa-main-container">
-  <div class="categories-container">
-    <h2>Categories</h2>
-    <div class="categories">
-      <!-- This container will be populated dynamically by categoryManager.js -->
+<!-- Main Q&A Layout Container -->
+<div class="qa-horizontal-layout">
+  <!-- Left Column: Categories -->
+  <div class="qa-left-column">
+    <div class="categories-container">
+      <h2>Categories</h2>
+      <div class="categories">
+        <!-- This container will be populated dynamically by categoryManager.js -->
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Q&A Section -->
-<section class="bsb-faq-3 py-3 py-md-5 py-xl-8">
-  <div class="qa-main-container">
-    {{#each zones}}
+  <!-- Right Column: Q&A Content -->
+  <div class="qa-right-column">
+    <section class="bsb-faq-3">
+      {{#each zones}}
       <!-- Check if the zone has categories with questions -->
       {{#if (hasQuestions this.categories)}}
         <h3 id="{{this.technical_id}}">{{this.name}}</h3> <!-- Zone name -->
@@ -653,8 +681,9 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         {{/each}}
       {{/if}}
     {{/each}}
+    </section>
   </div>
-</section>
+</div>
 
 
 
