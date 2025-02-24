@@ -17,6 +17,9 @@ function generateCategoryNav(zones) {
         display: grid;
         grid-template-columns: repeat(1, minmax(200px, 1fr));
         gap: 15px;
+        border: 2px solid #ffa500;
+        border-radius: 8px;
+        padding: 15px;
     `;
 
     // Loop through zones to create category groups
@@ -25,10 +28,8 @@ function generateCategoryNav(zones) {
         groupDiv.className = 'category-group';
         groupDiv.style.cssText = `
             background-color: #ffffff;
-            border: 2px solid #ffa500;
-            border-radius: 8px;
-            padding: 15px;
             break-inside: avoid;
+            margin-bottom: 10px;
         `;
 
         // Create collapsible zone header
@@ -50,7 +51,7 @@ function generateCategoryNav(zones) {
         // Create container for categories
         const categoriesContainer = document.createElement('div');
         categoriesContainer.style.cssText = `
-            max-height: 100%;
+            max-height: 0px;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         `;
