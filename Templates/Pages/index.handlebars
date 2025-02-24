@@ -447,7 +447,66 @@
 	}
 	</style>
 
-	<div class="tag-container">
+	<div class="qa-search-container">
+    <div class="qa-search-box">
+        <input type="text" id="qaSearch" placeholder="Search for questions..." />
+        <button onclick="handleQASearch()">Search</button>
+    </div>
+    <div id="noResultsMessage" style="display: none;">
+        <p>Can't find what you're looking for? Email us at ask@drghalwash.com - we'll respond within 6 hours!</p>
+    </div>
+</div>
+
+<style>
+.qa-search-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.qa-search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.qa-search-box input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e8e6e3;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.qa-search-box input:focus {
+    border-color: #2367ef;
+}
+
+.qa-search-box button {
+    padding: 12px 24px;
+    background-color: #2367ef;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.qa-search-box button:hover {
+    background-color: #1a4fc7;
+}
+
+#noResultsMessage {
+    color: #666;
+    font-style: italic;
+    margin-top: 10px;
+}
+</style>
+
+<div class="tag-container">
 			<div class="tag-list">
 					<div class="tag-row"></div>
 			</div>
@@ -872,7 +931,23 @@
 	<script src="js/rellax.js"></script>
 	<script src="js/flatpickr.js"></script>
 	<script src="js/glightbox.min.js"></script>
-	<script src="js/custom.js"></script>
+	<script>
+function handleQASearch() {
+    const searchTerm = document.getElementById('qaSearch').value.trim();
+    if (searchTerm) {
+        // Redirect to Q&A page with search term
+        window.location.href = `/Questions_And_Answer?search=${encodeURIComponent(searchTerm)}`;
+    }
+}
+
+// Add enter key support
+document.getElementById('qaSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        handleQASearch();
+    }
+});
+</script>
+<script src="js/custom.js"></script>
 	{{!--
 	<script src="js/header.js"></script> --}}
 	<script>
