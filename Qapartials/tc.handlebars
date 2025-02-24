@@ -40,23 +40,51 @@
     color: #4a4a4a;
     cursor: pointer;
     transform-origin: center;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background-color 0.3s ease;
+    transition: all 0.5s ease;
     user-select: none;
-    will-change: transform, box-shadow;
-    box-shadow: 0 0 8px rgba(180, 175, 170, 0.2);
+    position: relative;
+    z-index: 1;
 }
 
-.tag:hover {
-    background-color: #f0eeeb;
-    box-shadow: 0 0 12px rgba(180, 175, 170, 0.3);
+.tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background: white;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.5s ease;
 }
 
-.tag.active {
-    transform: translateY(-5px) scale(1.05);
-    background-color: #f5f3f0;
-    box-shadow: 0 0 20px rgba(180, 175, 170, 0.4);
+.tag::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 25px;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.tag.center {
+    transform: translateY(-8px);
+    background-color: #ffffff;
+}
+
+.tag.center::before {
+    opacity: 1;
+}
+
+.tag.center::after {
+    opacity: 1;
 }
 
 @keyframes scroll {
@@ -130,6 +158,27 @@
                 }
             }, 2000);
         });
+
+        // Check for center position
+        function checkCenter() {
+            const container = document.querySelector('.tag-container');
+            if (!container) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+            
+            document.querySelectorAll('.tag').forEach(tag => {
+                const rect = tag.getBoundingClientRect();
+                const tagCenter = rect.left + rect.width / 2;
+                if (Math.abs(tagCenter - centerX) < 50) {
+                    tag.classList.add('center');
+                } else {
+                    tag.classList.remove('center');
+                }
+            });
+        }
+
+        setInterval(checkCenter, 100);
 
         tagRow.addEventListener('mouseenter', () => {
             if (!isAnimationPaused) {
