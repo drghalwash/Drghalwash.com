@@ -83,11 +83,12 @@ export const index = async (req, res) => {
       )
     );
 
+    // Get all questions and filter out any empty or null values
     const flattenedQuestions = organizedZones.flatMap(zone => 
       zone.categories.flatMap(category => 
         category.questions.map(q => q.text)
       )
-    ).filter(Boolean);
+    ).filter(q => q && q.trim() !== '');
 
     res.render('Pages/Questions_And_Answer', {
       galleries,

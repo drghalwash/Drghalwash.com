@@ -73,7 +73,13 @@
 
 <script>
 (function() {
-    const tags = {{{json questions}}};
+    // Generate random questions from all available questions
+    const allQuestions = {{{json questions}}};
+    const randomQuestions = allQuestions
+        .sort(() => Math.random() - 0.5) // Shuffle array
+        .slice(0, 15); // Take first 15 questions
+
+    const tags = randomQuestions;
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
