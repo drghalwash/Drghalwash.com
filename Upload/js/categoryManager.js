@@ -17,8 +17,6 @@ function generateCategoryNav(zones) {
         display: grid;
         grid-template-columns: repeat(1, minmax(200px, 1fr));
         gap: 15px;
-        border: 2px solid #ffa500;
-        border-radius: 8px;
         padding: 15px;
     `;
 
