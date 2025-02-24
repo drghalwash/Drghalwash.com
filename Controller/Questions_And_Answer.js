@@ -84,16 +84,19 @@ export const index = async (req, res) => {
     );
 
     // Get all questions and filter out any empty or null values
-    const flattenedQuestions = organizedZones.flatMap(zone => 
-      zone.categories.flatMap(category => 
-        category.questions.map(q => q.text)
-      )
-    ).filter(q => q && q.trim() !== '');
+    // Extract unique questions
+    const allQuestions = [...new Set(
+      organizedZones.flatMap(zone => 
+        zone.categories.flatMap(category => 
+          category.questions.map(q => q.text)
+        )
+      ).filter(q => q && q.trim() !== '')
+    )];
 
     res.render('Pages/Questions_And_Answer', {
       galleries,
       zones: organizedZones,
-      questions: flattenedQuestions
+      tagQuestions: JSON.stringify(allQuestions) // Pass as JSON string
     });
 
     console.log('[Controller] Data successfully sent to the template.');

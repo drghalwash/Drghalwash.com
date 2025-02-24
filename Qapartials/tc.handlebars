@@ -1,4 +1,3 @@
-
 <style>
 .tag-container {
     overflow: hidden;
@@ -9,9 +8,6 @@
     margin: 0 auto;
     -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
 }
 
 .tag-list {
@@ -25,8 +21,6 @@
     display: flex;
     white-space: nowrap;
     animation: scroll 30s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
 }
 
 .tag {
@@ -39,24 +33,14 @@
     background-color: #e8e6e3;
     color: #4a4a4a;
     cursor: pointer;
-    transform-origin: center;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background-color 0.3s ease;
+    transition: all 0.3s ease;
     user-select: none;
-    will-change: transform, box-shadow;
-    box-shadow: 0 0 8px rgba(180, 175, 170, 0.2);
 }
 
 .tag:hover {
     background-color: #f0eeeb;
-    box-shadow: 0 0 12px rgba(180, 175, 170, 0.3);
-}
-
-.tag.active {
-    transform: translateY(-5px) scale(1.05);
-    background-color: #f5f3f0;
-    box-shadow: 0 0 20px rgba(180, 175, 170, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes scroll {
@@ -73,20 +57,20 @@
 
 <script>
 (function() {
-    // Generate random questions from all available questions
-    const allQuestions = {{{json questions}}};
-    const randomQuestions = allQuestions
-        .sort(() => Math.random() - 0.5) // Shuffle array
-        .slice(0, 15); // Take first 15 questions
+    // Parse questions from the server-side data
+    const questions = {{{tagQuestions}}};
 
-    const tags = randomQuestions;
+    // Take random 15 questions
+    const tags = questions
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 15);
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
         if (!tagRow) return;
 
         const fragment = document.createDocumentFragment();
-        
+
         // Create tags three times for smooth infinite scroll
         for (let i = 0; i < 3; i++) {
             tags.forEach(tag => {
@@ -96,56 +80,20 @@
                 fragment.appendChild(div);
             });
         }
-        
+
         tagRow.appendChild(fragment);
 
-        let isAnimationPaused = false;
-        let activeTag = null;
-
-        tagRow.addEventListener('click', (e) => {
-            const tag = e.target.closest('.tag');
-            if (!tag) return;
-
-            if (activeTag === tag) {
-                tag.classList.remove('active');
-                activeTag = null;
-                tagRow.style.animationPlayState = 'running';
-                isAnimationPaused = false;
-                return;
-            }
-
-            if (activeTag) {
-                activeTag.classList.remove('active');
-            }
-
-            tag.classList.add('active');
-            activeTag = tag;
-            tagRow.style.animationPlayState = 'paused';
-            isAnimationPaused = true;
-
-            setTimeout(() => {
-                if (isAnimationPaused) {
-                    tag.classList.remove('active');
-                    tagRow.style.animationPlayState = 'running';
-                    isAnimationPaused = false;
-                    activeTag = null;
-                }
-            }, 2000);
-        });
-
+        // Add interaction handlers
         tagRow.addEventListener('mouseenter', () => {
-            if (!isAnimationPaused) {
-                tagRow.style.animationPlayState = 'paused';
-            }
+            tagRow.style.animationPlayState = 'paused';
         });
 
         tagRow.addEventListener('mouseleave', () => {
-            if (!isAnimationPaused) {
-                tagRow.style.animationPlayState = 'running';
-            }
+            tagRow.style.animationPlayState = 'running';
         });
     }
 
+    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', createTags);
     } else {
