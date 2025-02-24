@@ -76,27 +76,9 @@ export const index = async (req, res) => {
     ]);
 
     // Render the Handlebars template with fetched data
-    // Extract all questions
-    const allQuestions = organizedZones.flatMap(zone => 
-      zone.categories.flatMap(category => 
-        category.questions.map(question => question.text)
-      )
-    );
-
-    // Get all questions and filter out any empty or null values
-    // Extract unique questions
-    const allQuestions = [...new Set(
-      organizedZones.flatMap(zone => 
-        zone.categories.flatMap(category => 
-          category.questions.map(q => q.text)
-        )
-      ).filter(q => q && q.trim() !== '')
-    )];
-
     res.render('Pages/Questions_And_Answer', {
-      galleries,
+      galleries, // CHANGED: Photo_Gallary to galleries
       zones: organizedZones,
-      tagQuestions: JSON.stringify(allQuestions) // Pass as JSON string
     });
 
     console.log('[Controller] Data successfully sent to the template.');
