@@ -83,7 +83,7 @@
 
 <script>
 (function() {
-    const questions = {{{json zones}}}.flatMap(zone => 
+    const questions = {{{json questions}}}.flatMap(zone => 
         zone.categories.flatMap(category => 
             category.questions.map(q => q.question_text)
         )

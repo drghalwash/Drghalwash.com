@@ -77,13 +77,8 @@ export const index = async (req, res) => {
 
     // Render the Handlebars template with fetched data
     res.render('Pages/Questions_And_Answer', {
-      galleries,
+      galleries, // CHANGED: Photo_Gallary to galleries
       zones: organizedZones,
-      helpers: {
-        json: function(context) {
-          return JSON.stringify(context);
-        }
-      }
     });
 
     console.log('[Controller] Data successfully sent to the template.');
