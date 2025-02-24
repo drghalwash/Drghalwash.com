@@ -352,7 +352,60 @@
 
 
 
+	<div class="qa-search-container">
+		<div class="search-form">
+			<input type="text" id="qaSearchInput" placeholder="Search for questions..." class="form-control">
+			<button onclick="handleQASearch()" class="search-button">Search</button>
+		</div>
+		<div id="noResultsMessage" style="display: none;">
+			<p>Can't find what you're looking for? Email us at ask@drghalwash.com - we'll respond within 6 hours!</p>
+		</div>
+	</div>
+
 	<style>
+    .search-container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .search-wrapper {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-box {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
 	.tag-container {
 			overflow: hidden;
 			position: relative;
@@ -873,8 +926,22 @@
 	<script src="js/flatpickr.js"></script>
 	<script src="js/glightbox.min.js"></script>
 	<script src="js/custom.js"></script>
-	{{!--
-	<script src="js/header.js"></script> --}}
+	<script>
+	function handleQASearch() {
+		const searchTerm = document.getElementById('qaSearchInput').value.trim();
+		if (searchTerm) {
+			// Redirect to Q&A page with search term
+			window.location.href = `/Questions_And_Answer?search=${encodeURIComponent(searchTerm)}`;
+		}
+	}
+
+	// Add enter key support
+	document.getElementById('qaSearchInput').addEventListener('keypress', function(e) {
+		if (e.key === 'Enter') {
+			handleQASearch();
+		}
+	});
+	</script>
 	<script>
 		const toggleButton = document.getElementById('toggle-button');
 		const menu = document.getElementById('menu');

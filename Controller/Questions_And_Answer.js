@@ -68,6 +68,8 @@ const getGalleries = async () => {
 export const index = async (req, res) => {
   try {
     console.log('[Controller] Q&A Index initiated...');
+    const searchTerm = req.query.search || '';
+    console.log('[Controller] Search term:', searchTerm);
 
     // Fetch galleries and hierarchical zone data concurrently
     const [galleries, organizedZones] = await Promise.all([
