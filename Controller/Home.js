@@ -8,6 +8,21 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 /**
  * Fetch Home data.
  */
+const fetchQuestions = async () => {
+  try {
+    console.log('[Questions] Fetching questions...');
+    const { data: questions, error } = await supabase
+      .from('questions')
+      .select('*');
+    
+    if (error) throw new Error(`Error fetching questions: ${error.message}`);
+    return questions;
+  } catch (error) {
+    console.error('[Error] Fetching questions:', error.message);
+    throw error;
+  }
+};
+
 const fetchHomeData = async () => {
   try {
     console.log('[Home] Fetching home data...');
@@ -70,14 +85,32 @@ export const index = async (req, res) => {
     console.log('[Request] Homepage requested');
 
     // Fetch all required data in parallel
-    const [Home, Offers, galleries] = await Promise.all([
+    const [Home, Offers, galleries, questions] = await Promise.all([
       fetchHomeData(),
       fetchOffersData(),
       fetchGalleryData(),
+      fetchQuestions(),
     ]);
 
+    // Get random questions for tags
+    const randomQuestions = questions
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 10)
+      .map(q => q.question_text || q.question || 'Default Question')
+      .filter(q => q); // Remove any null/undefined values
+
+    // Add default questions if none found
+    const tagsToShow = randomQuestions.length > 0 ? 
+      randomQuestions : 
+      ['What is plastic surgery?', 'How to choose a surgeon?', 'What is recovery like?'];
+
     // Render the homepage with fetched data
-    res.render('Pages/index', { Home, Offers, galleries });
+    res.render('Pages/index', { 
+      Home, 
+      Offers, 
+      galleries, 
+      tags: JSON.stringify(tagsToShow) // Ensure proper JSON serialization
+    });
 
     console.log('[Success] Homepage rendered successfully');
   } catch (error) {
