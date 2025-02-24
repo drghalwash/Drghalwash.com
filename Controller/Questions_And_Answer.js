@@ -76,9 +76,17 @@ export const index = async (req, res) => {
     ]);
 
     // Render the Handlebars template with fetched data
+    // Extract all questions
+    const allQuestions = organizedZones.flatMap(zone => 
+      zone.categories.flatMap(category => 
+        category.questions.map(question => question.text)
+      )
+    );
+
     res.render('Pages/Questions_And_Answer', {
-      galleries, // CHANGED: Photo_Gallary to galleries
+      galleries,
       zones: organizedZones,
+      questions: allQuestions
     });
 
     console.log('[Controller] Data successfully sent to the template.');
