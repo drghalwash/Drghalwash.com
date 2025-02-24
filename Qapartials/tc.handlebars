@@ -1,6 +1,78 @@
 
+<style>
+.tag-container {
+    overflow: hidden;
+    position: relative;
+    height: 100px;
+    width: 50%;
+    max-width: 800px;
+    margin: 0 auto;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.tag-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.tag-row {
+    display: flex;
+    white-space: nowrap;
+    animation: scroll 30s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin: 0.375rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    background-color: #e8e6e3;
+    color: #4a4a4a;
+    cursor: pointer;
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease;
+    user-select: none;
+    will-change: transform, box-shadow;
+    box-shadow: 0 0 8px rgba(180, 175, 170, 0.2);
+}
+
+.tag:hover {
+    background-color: #f0eeeb;
+    box-shadow: 0 0 12px rgba(180, 175, 170, 0.3);
+}
+
+.tag.active {
+    transform: translateY(-5px) scale(1.05);
+    background-color: #f5f3f0;
+    box-shadow: 0 0 20px rgba(180, 175, 170, 0.4);
+}
+
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+</style>
+
+<div class="tag-container">
+    <div class="tag-list">
+        <div class="tag-row"></div>
+    </div>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
     const tags = [
         'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
         'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
@@ -11,95 +83,71 @@ document.addEventListener('DOMContentLoaded', function() {
         const tagRow = document.querySelector('.tag-row');
         if (!tagRow) return;
 
-        // Create tags twice for continuous scrolling
-        const tagsHTML = tags.map(tag => `<div class="tag">${tag}</div>`).join('');
-        tagRow.innerHTML = tagsHTML + tagsHTML;
-
-        // Add interaction handlers
-        const allTags = tagRow.querySelectorAll('.tag');
-        allTags.forEach(tag => {
-            tag.addEventListener('mouseenter', () => {
-                tag.classList.add('active');
-                tagRow.style.animationPlayState = 'paused';
+        const fragment = document.createDocumentFragment();
+        
+        // Create tags three times for smooth infinite scroll
+        for (let i = 0; i < 3; i++) {
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'tag';
+                div.textContent = tag;
+                fragment.appendChild(div);
             });
+        }
+        
+        tagRow.appendChild(fragment);
 
-            tag.addEventListener('mouseleave', () => {
+        let isAnimationPaused = false;
+        let activeTag = null;
+
+        tagRow.addEventListener('click', (e) => {
+            const tag = e.target.closest('.tag');
+            if (!tag) return;
+
+            if (activeTag === tag) {
                 tag.classList.remove('active');
+                activeTag = null;
                 tagRow.style.animationPlayState = 'running';
-            });
+                isAnimationPaused = false;
+                return;
+            }
+
+            if (activeTag) {
+                activeTag.classList.remove('active');
+            }
+
+            tag.classList.add('active');
+            activeTag = tag;
+            tagRow.style.animationPlayState = 'paused';
+            isAnimationPaused = true;
+
+            setTimeout(() => {
+                if (isAnimationPaused) {
+                    tag.classList.remove('active');
+                    tagRow.style.animationPlayState = 'running';
+                    isAnimationPaused = false;
+                    activeTag = null;
+                }
+            }, 2000);
+        });
+
+        tagRow.addEventListener('mouseenter', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'paused';
+            }
+        });
+
+        tagRow.addEventListener('mouseleave', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'running';
+            }
         });
     }
 
-    createTags();
-});
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', createTags);
+    } else {
+        createTags();
+    }
+})();
 </script>
-    
-<!-- Tag Cloud Partial -->
-<div class="tag-container">
-    <div class="tag-list">
-        <div class="tag-row"></div>
-    </div>
-</div>
-
-<style>
-.tag-container {
-    overflow: visible;
-    position: relative;
-    height: auto;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-}
-
-.tag-list {
-    position: relative;
-    z-index: 1;
-    padding: 0.5rem 0;
-    transform: translateZ(0);
-    will-change: transform;
-}
-
-.tag-row {
-    white-space: nowrap;
-    margin: 0;
-    padding: 0.5rem 0;
-    transform: perspective(1000px) rotateX(0.5deg);
-    position: relative;
-    z-index: 1;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: subpixel-antialiased;
-    animation: loop 60s linear infinite;
-    text-align: center;
-}
-
-.tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.375rem 0.75rem;
-    margin: 0.375rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    background-color: #f3f4f6;
-    color: #111827;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center;
-    user-select: none;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    position: relative;
-    z-index: 1;
-}
-
-.tag.active {
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes loop {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-33.333% - 0.5px)); }
-}
-</style>
