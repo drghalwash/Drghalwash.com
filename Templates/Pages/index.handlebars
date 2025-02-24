@@ -144,10 +144,15 @@
 	
 <script>
 (function() {
-    const tags = {{{json tags}}};
+    const tags = {{{json tags}}} || ['Plastic Surgery', 'Patient Care'];
+    const questions = Array.isArray(tags) ? tags : tags.map(t => t.question_text || t);
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
+        if (!tagRow) {
+            console.error('Tag row element not found');
+            return;
+        }
         if (!tagRow) return;
 
         const fragment = document.createDocumentFragment();

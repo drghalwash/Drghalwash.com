@@ -13,13 +13,18 @@ const fetchQuestions = async () => {
     console.log('[Questions] Fetching questions...');
     const { data: questions, error } = await supabase
       .from('questions')
-      .select('*');
+      .select('question_text')
+      .not('question_text', 'is', null);
     
     if (error) throw new Error(`Error fetching questions: ${error.message}`);
+    if (!questions || questions.length === 0) {
+      console.log('[Questions] No questions found, using default');
+      return [{ question_text: 'What is plastic surgery?' }];
+    }
     return questions;
   } catch (error) {
     console.error('[Error] Fetching questions:', error.message);
-    throw error;
+    return [{ question_text: 'What is plastic surgery?' }];
   }
 };
 
