@@ -75,22 +75,10 @@ export const index = async (req, res) => {
       getZonesWithDetails(),
     ]);
 
-    // Extract questions and flatten the data structure
-    const allQuestions = organizedZones.flatMap(zone => 
-      zone.categories.flatMap(category => 
-        category.questions.map(q => ({
-          text: q.question_text,
-          category: category.name,
-          zone: zone.name
-        }))
-      )
-    );
-
     // Render the Handlebars template with fetched data
     res.render('Pages/Questions_And_Answer', {
-      galleries,
+      galleries, // CHANGED: Photo_Gallary to galleries
       zones: organizedZones,
-      questions: allQuestions
     });
 
     console.log('[Controller] Data successfully sent to the template.');
