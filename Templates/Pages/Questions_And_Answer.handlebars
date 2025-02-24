@@ -196,23 +196,47 @@ font-family: Verdana, sans-serif;
 </style>
 
 <style>
-    .qa-horizontal-layout {
-        display: flex;
-        gap: 30px;
-        margin: 20px auto;
-        padding: 0 20px;
+    .qa-main-container {
         max-width: 1400px;
+        margin: 80px auto 40px;
+        padding: 0 20px;
     }
 
-    .qa-left-column {
-        flex: 0 0 25%;
-        max-width: 25%;
-        position: fixed;
-        top: 180px;
-        left: 20px;
-        height: calc(100vh - 250px);
-        overflow: visible;
-        padding-bottom: 30px;
+    .search-section {
+        margin-bottom: 40px;
+    }
+
+    .qa-content-layout {
+        display: grid;
+        grid-template-columns: minmax(250px, 1fr) minmax(0, 3fr);
+        gap: 40px;
+        align-items: start;
+    }
+
+    .qa-sidebar {
+        position: sticky;
+        top: 100px;
+        height: calc(100vh - 120px);
+        overflow: auto;
+        scrollbar-width: thin;
+        padding-right: 10px;
+    }
+
+    .categories-wrapper {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .qa-content {
+        min-width: 0;
+    }
+
+    .qa-section {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .category-group {
@@ -679,20 +703,38 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 <script src="/js/categoryManager.js"></script>
 
 <!-- Main Q&A Layout Container -->
-<div class="qa-horizontal-layout" style="margin-top: 120px; margin-bottom: 50px;">
-  <!-- Left Column: Categories -->
-  <div class="qa-left-column">
-    <div class="categories-container" style="margin-top: 20px;">
-      <h2>Categories</h2>
-      <div class="categories">
-        <!-- This container will be populated dynamically by categoryManager.js -->
+<div class="qa-main-container">
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <div class="search-box">
+          <input type="text" id="categorySearch" placeholder="Search categories & questions...">
+          <div class="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Right Column: Q&A Content -->
-  <div class="qa-right-column">
-    <section class="bsb-faq-3">
+  <!-- Content Layout -->
+  <div class="qa-content-layout">
+    <!-- Categories Sidebar -->
+    <aside class="qa-sidebar">
+      <div class="categories-wrapper">
+        <div class="categories">
+          <!-- Populated by categoryManager.js -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Q&A Content Area -->
+    <main class="qa-content">
+      <section class="qa-section">
       {{#each zones}}
       <!-- Check if the zone has categories with questions -->
       {{#if (hasQuestions this.categories)}}
