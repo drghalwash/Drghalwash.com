@@ -23,7 +23,7 @@ function generateCategoryNav(zones) {
         groupDiv.style.cssText = `
             background-color: #ffffff;
             break-inside: avoid;
-            margin-bottom: 10px;
+            margin-bottom: 0.11px;
         `;
 
         const header = document.createElement('h3');
@@ -48,14 +48,29 @@ function generateCategoryNav(zones) {
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         `;
-
         header.addEventListener('click', () => {
-            const isExpanded = categoriesContainer.style.maxHeight !== '0px';
-            categoriesContainer.style.maxHeight = isExpanded ? '0px' : '1000px';
-            header.textContent = zone.name + (isExpanded ? ' ▶' : ' ▼');
-            header.style.backgroundColor = isExpanded ? '#394464' : '#2c3550';
-        });
+    const isExpanded = categoriesContainer.style.maxHeight !== '0px';
 
+    // Collapse all other categories
+    const allCategories = document.querySelectorAll('.categories-container .categories > .category-group > div');
+    allCategories.forEach(container => {
+        if (container !== categoriesContainer) {
+            container.style.maxHeight = '0';
+            const otherZoneHeader = container.previousElementSibling;
+            otherZoneHeader.textContent = otherZoneHeader.dataset.zoneName + ' ▶'; // Use data attribute
+            otherZoneHeader.style.backgroundColor = '#394464';
+        }
+    });
+
+    // Expand the clicked category
+    categoriesContainer.style.maxHeight = isExpanded ? '0' : '1000px';
+    header.textContent = zone.name + (isExpanded ? ' ▶' : ' ▼'); // Use correct zone name
+    header.style.backgroundColor = isExpanded ? '#394464' : '#2c3550';
+});
+
+// Set data attribute for the zone name
+header.dataset.zoneName = zone.name;
+        
         zone.categories.forEach(category => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'category-item';
