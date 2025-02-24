@@ -42,13 +42,15 @@
 {{!-- <style>
 	/* Basic Styling */
 .qa-container {
-  max-width: 800px;
+  width: 90%;
+  max-width: none;
   margin: 20px auto;
   padding: 10px;
   font-family: Arial, sans-serif;
 }
 
 .qa-category {
+  
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -148,6 +150,7 @@ font-family: Verdana, sans-serif;
 }
 
 .custom-accordion {
+  
     isolation: isolate;
     position: relative;
 }
@@ -569,70 +572,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 		<p><a href="/Home">Home </a> >  Discussion Corner > Q&As </p>
 	</div>
 
-    {{!-- <section class="light">
-        <div class="container py-2">
-            <div class="h1 text-center text-dark" id="pageHeaderTitle">Q & A</div>
-
-            <article class="postcard light blue">
-                <a class="postcard__img_link" href="#">
-                    <img class="postcard__img" src="https://picsum.photos/1000/1000" alt="Image Title" />
-                </a>
-                <div class="postcard__text t-dark">
-                    <h1 class="postcard__title blue"><a href="#">Podcast Title</a></h1>
-
-                    <div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
-                    <div class="postcard__bar"></div>
-
-
-                </div>
-            </article>
-            <article class="postcard light red">
-                <a class="postcard__img_link" href="#">
-                    <img class="postcard__img" src="https://picsum.photos/501/500" alt="Image Title" />	
-                </a>
-                <div class="postcard__text t-dark">
-                    <h1 class="postcard__title red"><a href="#">Podcast Title</a></h1>
-                    <div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
-                    <div class="postcard__bar"></div>
-
-
-                </div>
-
-        </div>
-    </section>
-     --}}
-
-	 {{!-- <div class="qa-container">
-
-  <div class="qa-category">
-    <div class="qa-heading" onclick="toggleQA(this)">Category 1</div>
-    <div class="qa-content">
-      <div class="qa-item">
-        <p class="question">What is question 1?</p>
-        <p class="answer">This is the answer to question 1.</p>
-      </div>
-      <div class="qa-item">
-        <p class="question">What is question 2?</p>
-        <p class="answer">This is the answer to question 2.</p>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="qa-category">
-    <div class="qa-heading" onclick="toggleQA(this)">Category 2</div>
-    <div class="qa-content">
-      <div class="qa-item">
-        <p class="question">What is question 1 in Category 2?</p>
-        <p class="answer">This is the answer to question 1 in Category 2.</p>
-      </div>
-      <div class="qa-item">
-        <p class="question">What is question 2 in Category 2?</p>
-        <p class="answer">This is the answer to question 2 in Category 2.</p>
-      </div>
-    </div>
-  </div>
-</div> --}}
+  
 <!-- Expose zones data for the categoryManager to use -->
   <script>
     // Use triple curly braces to output unescaped JSON.
