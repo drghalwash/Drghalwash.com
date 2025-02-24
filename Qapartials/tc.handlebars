@@ -1,7 +1,15 @@
 
 <style>
+/* Gradient for center detection */
+@property --center-x {
+  syntax: '<percentage>';
+  initial-value: 50%;
+  inherits: false;
+}
+
 .tag-container {
     overflow: hidden;
+    position: relative;
     position: relative;
     height: 100px;
     width: 60%;
@@ -39,6 +47,8 @@
     background-color: #e8e6e3;
     color: #4a4a4a;
     cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
     transform-origin: center;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -73,6 +83,39 @@
 
 <script>
 (function() {
+    // Center detection function
+    function isInCenter(element) {
+        const rect = element.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const elementCenter = rect.left + rect.width / 2;
+        const viewportCenter = viewportWidth / 2;
+        return Math.abs(elementCenter - viewportCenter) < 50; // 50px tolerance
+    }
+
+    // Update tags based on position
+    function updateTags() {
+        document.querySelectorAll('.tag').forEach(tag => {
+            if (isInCenter(tag)) {
+                tag.style.transform = 'translateY(-10px) scale(1.1)';
+                tag.style.backgroundColor = '#ffffff';
+                tag.style.boxShadow = '0 5px 15px rgba(255,255,255,0.4)';
+                tag.style.zIndex = '1000';
+            } else {
+                tag.style.transform = 'none';
+                tag.style.backgroundColor = '#e8e6e3';
+                tag.style.boxShadow = 'none';
+                tag.style.zIndex = '1';
+            }
+        });
+    }
+
+    // Add scroll listener for continuous updates
+    const tagContainer = document.querySelector('.tag-container');
+    if (tagContainer) {
+        tagContainer.addEventListener('animationframe', updateTags);
+        setInterval(updateTags, 100); // Fallback for smooth updates
+    }
+
     const tags = [
         'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
         'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
