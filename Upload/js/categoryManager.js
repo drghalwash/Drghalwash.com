@@ -15,7 +15,7 @@ function generateCategoryNav(zones) {
     // Apply grid layout styles
     navContainer.style.cssText = `
         display: grid;
-        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        grid-template-columns: repeat(1, minmax(200px, 1fr));
         gap: 15px;
     `;
 
@@ -94,9 +94,9 @@ function handleResponsiveDesign() {
         const width = window.innerWidth;
         categories.style.gridTemplateColumns =
             width < 576 ? 'repeat(1, minmax(200px, auto))' :
-            width < 768 ? 'repeat(2, minmax(200px, auto))' :
-            width < 1200 ? 'repeat(3, minmax(200px, auto))' :
-            'repeat(4, minmax(200px, auto))';
+            width < 768 ? 'repeat(1, minmax(200px, auto))' :
+            width < 1200 ? 'repeat(1, minmax(200px, auto))' :
+            'repeat(1, minmax(200px, auto))';
     };
 
     updateGrid();
