@@ -59,6 +59,16 @@
     box-shadow: 0 0 20px rgba(180, 175, 170, 0.4);
 }
 
+.tag.glowing {
+    animation: glow 1s ease-in-out;
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 8px rgba(180, 175, 170, 0.2); }
+    50% { box-shadow: 0 0 25px rgba(180, 175, 170, 0.6); }
+    100% { box-shadow: 0 0 8px rgba(180, 175, 170, 0.2); }
+}
+
 @keyframes scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -73,11 +83,35 @@
 
 <script>
 (function() {
-    const tags = [
-        'Dr. Khaled Ghalwash', 'Dr. Mohammed Ghalwash', 'Alexandria, Egypt',
-        'Plastic Surgery', 'Aesthetic Excellence', 'Patient Care',
-        'Professional Experience', 'Surgical Expertise', 'Medical Innovation'
-    ];
+    const questions = {{{json zones}}}.flatMap(zone => 
+        zone.categories.flatMap(category => 
+            category.questions.map(q => q.question_text)
+        )
+    );
+
+    function createRandomGlow() {
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+        tag.textContent = randomQuestion || 'Loading...';
+        
+        // Random glow timing
+        const startDelay = Math.random() * 5000;
+        const duration = 1000 + Math.random() * 2000;
+        
+        setTimeout(() => {
+            const glowInterval = setInterval(() => {
+                if (!document.body.contains(tag)) {
+                    clearInterval(glowInterval);
+                    return;
+                }
+                tag.classList.add('glowing');
+                setTimeout(() => tag.classList.remove('glowing'), duration);
+            }, 5000 + Math.random() * 5000);
+        }, startDelay);
+        
+        return tag;
+    }
 
     function createTags() {
         const tagRow = document.querySelector('.tag-row');
@@ -87,12 +121,9 @@
         
         // Create tags three times for smooth infinite scroll
         for (let i = 0; i < 3; i++) {
-            tags.forEach(tag => {
-                const div = document.createElement('div');
-                div.className = 'tag';
-                div.textContent = tag;
-                fragment.appendChild(div);
-            });
+            for (let j = 0; j < 5; j++) {
+                fragment.appendChild(createRandomGlow());
+            }
         }
         
         tagRow.appendChild(fragment);
