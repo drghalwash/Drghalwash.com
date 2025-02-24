@@ -363,52 +363,48 @@
 	</div>
 
 	<style>
-	.qa-search-container {
-		width: 80%;
-		max-width: 800px;
-		margin: 20px auto;
-		text-align: center;
-	}
+    .search-container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
 
-	.search-form {
-		display: flex;
-		gap: 10px;
-		margin-bottom: 10px;
-	}
+    .search-wrapper {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
 
-	#qaSearchInput {
-		flex: 1;
-		padding: 12px;
-		border: 2px solid #e8e6e3;
-		border-radius: 20px;
-		font-size: 16px;
-		outline: none;
-		transition: border-color 0.3s;
-	}
+    .search-box {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
 
-	#qaSearchInput:focus {
-		border-color: #2367ef;
-	}
+    .search-box input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
 
-	.search-button {
-		padding: 12px 24px;
-		background-color: #2367ef;
-		color: white;
-		border: none;
-		border-radius: 20px;
-		cursor: pointer;
-		transition: background-color 0.3s;
-	}
+    .search-box input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+    }
 
-	.search-button:hover {
-		background-color: #1a4fc7;
-	}
-
-	#noResultsMessage {
-		color: #666;
-		font-style: italic;
-		margin-top: 10px;
-	}
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
 
 	.tag-container {
 			overflow: hidden;
