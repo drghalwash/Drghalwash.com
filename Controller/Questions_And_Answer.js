@@ -33,7 +33,7 @@ const getZonesWithDetails = async () => {
         .map((category) => ({
           ...category,
           questions: questions.filter(
-            (question) => question.category_technical_id === category.technical_id
+            (question) => question.category_display_name === category.display_name
           ),
         })),
     }));
