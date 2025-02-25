@@ -81,7 +81,7 @@ header.dataset.zoneName = zone.name;
             `;
 
             const link = document.createElement('a');
-            link.href = `#${category.technical_id}`;
+            link.href = `#${category.display_name}`;
 
             const words = category.display_name.split(' ');
             const firstTwoWords = words.slice(0, 2).join(' ');

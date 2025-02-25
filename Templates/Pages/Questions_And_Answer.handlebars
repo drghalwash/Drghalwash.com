@@ -212,9 +212,13 @@ font-family: Verdana, sans-serif;
         align-self: flex-start;
     }
 
+  
     .qa-right-column {
-        flex: 3;
-        min-width: 0;
+    flex: 3;
+    min-width: 0;
+    height: calc(100vh - 40px); /* Use calc to subtract header and footer */
+    overflow-y: scroll; /* Enable vertical scrolling only on the right column */
+    padding-right: 20px; /* Add some padding for visual balance */
     }
 
     @media (max-width: 768px) {
