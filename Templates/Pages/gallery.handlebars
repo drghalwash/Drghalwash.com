@@ -133,15 +133,15 @@
                 <div class="custom-row {{#if (isFirstRow @index ../images.length)}}first-row{{else}}second-row{{/if}}">
             {{/if}}
             
-            <div class="gallery-item">
+            <div class="{{#if (eq status 'Public')}}custom-div{{else}}custom-div-private{{/if}}">
                 {{#if (eq status "Public")}}
-                    <a href="/galleries/{{../slug}}/{{slug}}">
-                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" />
+                    <a href="/galleries/{{../slug}}/{{slug}}" class="gallery-link">
+                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" class="icons"/>
                         <p>{{name}}</p>
                     </a>
                 {{else}}
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='{{id}}'">
-                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" />
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='{{id}}'" class="gallery-link">
+                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" class="icons"/>
                         <p>{{name}} <i class="fas fa-lock"></i></p>
                     </a>
                 {{/if}}
@@ -280,13 +280,13 @@
 			</div> <!-- /.row -->
 
 
-			<!-- Preloader -->
-			<div id="overlayer"></div>
-			<div class="loader">
-				<div class="spinner-border text-primary" role="status">
-					<span class="visually-hidden">Loading...</span>
-				</div>
 			</div>
+	</div>
+	<!-- Preloader -->
+	<div id="overlayer"></div>
+	<div class="loader">
+		<div class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Loading...</span>
 		</div>
 	</div>
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
