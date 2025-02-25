@@ -1,10 +1,10 @@
-// gallery_route.js
+
 import { Router } from 'express';
-import { index } from '../Controller/gallery.js';
+import { index, validatePassword } from '../Controller/gallery.js';
 
 const router = new Router();
 
-// Route: Fetch gallery by slug (e.g., .com/galleries/Face)
 router.get('/:slug', index);
+router.post('/validate-password', validatePassword);
 
 export default router;

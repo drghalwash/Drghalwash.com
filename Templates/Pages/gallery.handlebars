@@ -417,3 +417,61 @@
 </script>
 	</body>
 	</html>
+<div class="modal fade" id="passwordModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Private Content</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="passwordForm">
+          <input type="hidden" id="imageId">
+          <div class="mb-3">
+            <label class="form-label">Please enter password to access this content:</label>
+            <input type="password" class="form-control" id="password" required>
+          </div>
+          <div class="alert alert-danger d-none" id="passwordError">
+            Invalid password. Please try again.
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(imageId) {
+  const modal = new bootstrap.Modal(document.getElementById('passwordModal'));
+  document.getElementById('imageId').value = imageId;
+  document.getElementById('passwordError').classList.add('d-none');
+  modal.show();
+}
+
+document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const imageId = document.getElementById('imageId').value;
+  const password = document.getElementById('password').value;
+  
+  try {
+    const response = await fetch('/galleries/validate-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageId, password })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      window.location.href = result.redirectUrl;
+    } else {
+      document.getElementById('passwordError').classList.remove('d-none');
+    }
+  } catch (error) {
+    console.error('Error validating password:', error);
+    document.getElementById('passwordError').classList.remove('d-none');
+  }
+});
+</script>
