@@ -1,5 +1,5 @@
 @media (max-width: 1000px) {
-
+  
 
   .moving-background2 {
     display: flex;
@@ -21,23 +21,17 @@
     margin-top: 10px;
   }
 }
-
+	
 .img-fluid{
     height: 400px !important;
     width: 500px;
-}
-
-.main-content-wrapper {
-    min-height: calc(100vh - 200px); /* Adjust value based on footer height */
-    position: relative;
-    padding-bottom: 60px; /* Space for footer */
 }
 
 .photo-gallery {
     background-color: #F0F5FF;
     width: 100%;
     height: auto;
-    padding: 30px 10px;
+    padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,14 +59,14 @@
     padding: 20px 20px;
     width: 85%;
 }
-
+  
   /* Scoped row styles */
   .custom-container .custom-row {
     display: flex;
     justify-content: space-between; /* Distribute child divs evenly */
     gap: 10px; /* Space between divs within a row */
   }
-
+  
   /* Scoped child div styles */
   .custom-container .custom-div,
   .custom-container .custom-div-private {
@@ -85,18 +79,18 @@
     background-color: white; /* Background color */
     color: black; /* Text color */
     font-size: 16px;
-
+   
     text-align: center;
     padding: 30px 5px;
     border: none;
   }
-
+  
   .custom-container .custom-div,
   .custom-container .custom-div-private{
     position: relative; /* Make the div the positioning context */
     transition: border-bottom 0.3s ease; /* Smooth transition for the border */
   }
-
+  
   .custom-container .custom-div:hover {
     border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
   }
@@ -109,7 +103,7 @@
   .custom-container .first-row .custom-div-private {
     flex-basis: calc((100% - 4 * 10px) / 5); /* Divide row into 5 equal parts */
   }
-
+  
   /* Second row: Override to ensure 4 divs fit */
   .custom-container .second-row .custom-div,
   .custom-container .second-row .custom-div-private {
@@ -120,7 +114,7 @@
       flex-wrap: wrap; /* Allow wrapping */
       justify-content: center; /* Center align */
     }
-
+  
     .custom-container .custom-div,
     .custom-container .custom-div-private {
       flex-basis: 100%; /* Full width for each div */
@@ -131,7 +125,7 @@
     justify-content: space-between;
     gap: 10px;
   }
-
+  
   /* Styling each div */
   .custom-div,
   .custom-div-private {
@@ -143,10 +137,10 @@
     background-color: #f5f5f5; /* Light background for visibility */
     border: 1px solid #ddd; /* Optional border */
     border-radius: 5px; /* Rounded corners */
-
-
+   
+   
   }
-
+  
      .icons{
         height: 100px;
         width: 90px;
@@ -168,12 +162,12 @@
           flex-direction: column; /* Stack items vertically */
           align-items: center; /* Center align items */
         }
-
+      
         .icons {
           margin-bottom: 2px; /* Add spacing below the image */
         }
       }
-
+      
 
       .moving-background2 {
         position: relative;
@@ -186,12 +180,12 @@
         background-attachment: fixed; /* Keep the background fixed during scrolling */
         background-repeat: no-repeat;
         padding: 200px 20px;
-
+        
       }
 
       .content {
         height: 100vh; }
-
+      
       .modal2 {
         border-radius: 7px;
         overflow: hidden;
@@ -255,7 +249,7 @@
             -webkit-transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
-
+      
       .form-control {
         border: none;
         border-radius: 0;
@@ -267,7 +261,7 @@
           -webkit-box-shadow: none;
           box-shadow: none;
           outline: none; }
-
+      
       .btn {
         border-radius: 4px;
         border: none;
@@ -279,7 +273,7 @@
           outline: none;
           -webkit-box-shadow: none !important;
           box-shadow: none !important; }
-
+      
       .close-btn {
         position: absolute;
         right: 20px;
@@ -289,7 +283,7 @@
           color: #ccc; }
         .close-btn:hover span {
           color: #000; }
-
+      
 
           @media (max-width: 768px) {
             .custom-container {
@@ -297,16 +291,16 @@
               flex-wrap: wrap; /* Allow items to wrap */
               gap: 10px; /* Space between items */
             }
-
+          
             /* Default style: 2 divs per row (50% width each) */
             .custom-container .custom-div,
             .custom-container .custom-div-private {
               flex: 1 1 calc(50% - 10px); /* Half width minus gap */
-
+              
               min-width: calc(50% - 10px);
               box-sizing: border-box; /* Account for padding/borders */
             }
-
+          
             /* Every 5th div spans full width (1 div per row) */
             .custom-container .custom-div:nth-child(5n),
             .custom-container .custom-div-private:nth-child(5n) {
@@ -321,7 +315,7 @@
               font-size: 20px;
             }
           }
-
+          
           @media (max-width: 545px) {
             .custom-container {
               display: flex;
@@ -335,17 +329,17 @@
             .custom-container .custom-div,
             .custom-container .custom-div-private {
               flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
-
+             
               min-width: calc(50% - 5px) !important;
               box-sizing: border-box; /* Account for padding/borders */
             }
-
+          
             /* Every 5th div spans full width (1 div per row) */
             .custom-container .custom-div:nth-child(5n),
             .custom-container .custom-div-private:nth-child(5n) {
               flex: 1 1 100%; /* Full width */
               max-width: 100%;
-
+              
             }
             .custom-container{
               width: 100%;
@@ -362,7 +356,7 @@
           }
              .col-lg-5 p{
             font-weight: 350;
-
+    
     font-size: 18px;
     text-align: justify;
     text-align-last: justify; /* Ensures the last line is also justified */
@@ -370,16 +364,3 @@
     word-wrap: break-word !important; /* Ensure text breaks within the container width */
 
           }
-
-.site-footer {
-    position: relative;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    background: #fff;
-    z-index: 1;
-}
-
-.Copyright {
-
-}
