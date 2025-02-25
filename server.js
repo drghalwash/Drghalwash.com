@@ -63,6 +63,20 @@ Handlebars.registerHelper('partial', function (name) {
   }
 });
 
+// Add Handlebars helpers
+Handlebars.registerHelper('modulo', function(index, val) {
+    return index !== 0 && index % val === 0;
+});
+
+Handlebars.registerHelper('isFirstRow', function(index, total) {
+    const rowIndex = Math.floor(index / 5);
+    return rowIndex % 2 === 0;
+});
+
+Handlebars.registerHelper('eq', function(a, b) {
+    return a === b;
+});
+
 // Configure Handlebars
 app.engine('handlebars', engine({
   partialsDir: [
@@ -141,7 +155,6 @@ app.use((err, req, res, next) => {
   res.status(500).render('error', { error: err }); // Render error page instead of plain text
 });
 
-// Export the Express app as a serverless function for platforms like Vercel
 export default async (req, res) => {
-  await app(req, res); // Forward the request to the Express app
+  await app(req, res);
 };
