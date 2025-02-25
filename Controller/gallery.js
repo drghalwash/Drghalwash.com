@@ -44,6 +44,12 @@ const fetchGalleryImagesBySlug = async (gallerySlug) => {
       `)
       .eq('gallery.slug', gallerySlug);
     if (error) throw error;
+    console.log('[Gallery] Fetched images:', images);
+    console.log('[Gallery] Image icons and names:', images?.map(img => ({
+      icon: img.icon,
+      name: img.name,
+      status: img.status
+    })));
     return images || [];
   } catch (error) {
     console.error('[Error] Fetching gallery images:', error);
