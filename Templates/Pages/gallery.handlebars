@@ -120,36 +120,14 @@
     </div>
   </div>
 
-<div class="photo-gallery">
+  <div class="photo-gallery">
+<div>	
     <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
-    <div class="custom-container">
-        {{#each images}}
-            {{#if @first}}
-                <div class="custom-row first-row">
-            {{/if}}
-            {{#if @index5}}
-                </div>
-                <div class="custom-row second-row">
-            {{/if}}
-            <div class="gallery-item">
-                {{#if (eq status "Public")}}
-                    <a href="/galleries/{{../gallery.slug}}/{{slug}}" class="custom-div">
-                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" class="icons"/>
-                        <p>{{name}}</p>
-                    </a>
-                {{else}}
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='{{id}}'" class="custom-div-private">
-                        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{icon}}?raw=true" alt="{{name}}" class="icons"/>
-                        <p>{{name}} <i class="fas fa-lock"></i></p>
-                    </a>
-                {{/if}}
-            </div>
-            {{#if @last}}
-                </div>
-            {{/if}}
-        {{/each}}
-    </div>
 </div>
+    <div class="custom-container">
+        {{{rowsHtml}}}
+    </div>
+  </div>
 
   <!-- Password Modal -->
   <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
@@ -287,6 +265,7 @@
 		</div>
 	</div>
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
 
 		<script src="/js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>
