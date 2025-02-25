@@ -120,12 +120,16 @@
     </div>
   </div>
 
+
   <div class="photo-gallery">
-    <div class="custom-container text-center">
-      <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
-      <div class="photo-gallery-grid">
-        {{{rowsHtml}}}
+    <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
+    <div class="custom-container">
+      {{#each images}}
+      <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+        <img src="{{this.icon}}" alt="{{this.name}}" class="icons">
+        <p>{{this.name}}</p>
       </div>
+      {{/each}}
     </div>
   </div>
 
