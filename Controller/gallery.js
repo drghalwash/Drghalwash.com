@@ -77,11 +77,11 @@ export const index = async (req, res) => {
         currentRow.forEach(img => {
           const imageHtml = img.status === 'Public' 
             ? `<a href="/galleries/${slug}/${img.slug}">
-                <img src="/images/gallery/${img.icon}" alt="${img.name}" />
+                <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/gallery/${img.icon}" alt="${img.name}" />
                 <p>${img.name}</p>
               </a>`
             : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
-                <img src="/images/gallery/${img.icon}" alt="${img.name}" />
+                <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/gallery/${img.icon}" alt="${img.name}" />
                 <p>${img.name} <i class="fas fa-lock"></i></p>
               </a>`;
           
