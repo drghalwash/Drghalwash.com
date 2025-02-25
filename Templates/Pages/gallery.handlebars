@@ -124,9 +124,9 @@
   <div class="photo-gallery">
     <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
     <div class="custom-container">
-      {{#each images}}
+      {{#each galleryimage}}
       <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
-        <img src="{{this.icon}}" alt="{{this.name}}" class="icons">
+        <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{this.icon}}?raw=true" alt="{{this.name}}" class="icons">
         <p>{{this.name}}</p>
       </div>
       {{/each}}
