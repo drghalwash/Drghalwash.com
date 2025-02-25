@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
@@ -76,19 +75,23 @@ export const index = async (req, res) => {
         rowsHtml += `<div class="custom-row ${rowType}">`;
         currentRow.forEach(img => {
           const imageHtml = img.status === 'Public' 
-            ? `<a href="/galleries/${slug}/${img.slug}">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name}</p>
+            ? `<a href="/galleries/${slug}/${img.slug}" class="gallery-item">
+                <div class="image-container">
+                  <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" class="gallery-image" />
+                </div>
+                <p class="image-title">${img.name}</p>
               </a>`
-            : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name} <i class="fas fa-lock"></i></p>
+            : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'" class="gallery-item">
+                <div class="image-container">
+                  <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" class="gallery-image" />
+                </div>
+                <p class="image-title">${img.name} <i class="fas fa-lock"></i></p>
               </a>`;
-          
-          rowsHtml += `<div class="gallery-item">${imageHtml}</div>`;
+
+          rowsHtml += `${imageHtml}`;
         });
         rowsHtml += '</div>';
-        
+
         currentRow = [];
         rowType = rowType === 'first-row' ? 'second-row' : 'first-row';
       }
@@ -110,7 +113,7 @@ export const index = async (req, res) => {
 export const validatePassword = async (req, res) => {
   try {
     const { imageId, password } = req.body;
-    
+
     const { data: image, error: imageError } = await supabase
       .from('galleryimage')
       .select('*, password:password_id(*)')
