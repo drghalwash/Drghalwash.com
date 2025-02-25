@@ -657,12 +657,12 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
       {{#each zones}}
       <!-- Check if the zone has categories with questions -->
       {{#if (hasQuestions this.categories)}}
-        <h3 id="{{this.technical_id}}">{{this.name}}</h3> <!-- Zone name -->
+        <h3 id="{{this.display_name}}">{{this.name}}</h3> <!-- Zone name -->
         {{#each this.categories}}
           <!-- Check if the category has questions -->
           {{#if this.questions.length}}
-            <h4 id="{{this.technical_id}}">{{this.display_name}}</h4> <!-- Category name -->
-            <div class="custom-accordion" id="accordion_{{this.technical_id}}">
+            <h4 id="{{this.display_name}}">{{this.display_name}}</h4> <!-- Category name -->
+            <div class="custom-accordion" id="accordion_{{this.display_name}}">
               {{#each this.questions}}
                 <div class="accordion-item">
                   <h2 class="mb-0">
