@@ -37,6 +37,7 @@ const fetchGalleryImagesBySlug = async (gallerySlug) => {
       .from('galleryimage')
       .select(`
         *,
+        gallery!inner(*),
         password:password_id (
           password
         )
