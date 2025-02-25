@@ -79,9 +79,9 @@ export const index = async (req, res) => {
                 <img src="/images/gallery/${img.icon}" alt="${img.name}" />
                 <p>${img.name}</p>
               </a>`
-            : `<a href="#" onclick="openModal('${img.id}')">
+            : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
                 <img src="/images/gallery/${img.icon}" alt="${img.name}" />
-                <p>${img.name} (Private)</p>
+                <p>${img.name} <i class="fas fa-lock"></i></p>
               </a>`;
           
           rowsHtml += `<div class="gallery-item">${imageHtml}</div>`;
