@@ -113,9 +113,12 @@ export const index = async (req, res) => {
         return res.status(404).render('error', { error: 'Gallery not found' });
       }
 
+      // Sort subgalleries if needed
+      const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+      
       res.render('Pages/gallery', {
         gallery,
-        subgalleries,
+        subgalleries: sortedSubgalleries,
         galleries,
         movingBackground2: true,
         'site-footer': true
