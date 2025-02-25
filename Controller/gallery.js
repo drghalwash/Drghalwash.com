@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
@@ -44,12 +43,6 @@ const fetchGalleryImagesBySlug = async (gallerySlug) => {
       `)
       .eq('gallery.slug', gallerySlug);
     if (error) throw error;
-    console.log('[Gallery] Fetched images:', images);
-    console.log('[Gallery] Image icons and names:', images?.map(img => ({
-      icon: img.icon,
-      name: img.name,
-      status: img.status
-    })));
     return images || [];
   } catch (error) {
     console.error('[Error] Fetching gallery images:', error);
@@ -60,7 +53,7 @@ const fetchGalleryImagesBySlug = async (gallerySlug) => {
 export const index = async (req, res) => {
   try {
     const { slug } = req.params;
-    const [gallery, rawImages, galleries] = await Promise.all([
+    const [gallery, images, galleries] = await Promise.all([
       fetchGalleryBySlug(slug),
       fetchGalleryImagesBySlug(slug),
       fetchGalleries()
@@ -70,40 +63,10 @@ export const index = async (req, res) => {
       return res.status(404).render('error', { error: 'Gallery not found' });
     }
 
-    let rowsHtml = '';
-    let currentRow = [];
-    let rowType = 'first-row';
-
-    rawImages.forEach((image, index) => {
-      currentRow.push(image);
-      const maxItemsInRow = rowType === 'first-row' ? 5 : 4;
-
-      if (currentRow.length === maxItemsInRow || index === rawImages.length - 1) {
-        rowsHtml += `<div class="custom-row ${rowType}">`;
-        currentRow.forEach(img => {
-          const imageHtml = img.status === 'Public' 
-            ? `<a href="/galleries/${slug}/${img.slug}">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name}</p>
-              </a>`
-            : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name} <i class="fas fa-lock"></i></p>
-              </a>`;
-          
-          rowsHtml += `<div class="gallery-item">${imageHtml}</div>`;
-        });
-        rowsHtml += '</div>';
-        
-        currentRow = [];
-        rowType = rowType === 'first-row' ? 'second-row' : 'first-row';
-      }
-    });
-
     res.render('Pages/gallery', { 
-      gallery, 
-      galleries, 
-      rowsHtml,
+      gallery,
+      galleries,
+      images,
       movingBackground2: true,
       'site-footer': true
     });
@@ -116,7 +79,7 @@ export const index = async (req, res) => {
 export const validatePassword = async (req, res) => {
   try {
     const { imageId, password } = req.body;
-    
+
     const { data: image, error: imageError } = await supabase
       .from('galleryimage')
       .select('*, password:password_id(*)')
