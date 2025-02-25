@@ -71,14 +71,9 @@ export const index = async (req, res) => {
     }
 
     res.render('Pages/gallery', { 
-      gallery, 
+      gallery,
       galleries,
-      images: rawImages.map(img => ({
-        icon: img.icon,
-        name: img.name,
-        password_id: img.password_id,
-        slug: img.slug
-      })),
+      galleryimage: rawImages,
       slug,
       movingBackground2: true,
       'site-footer': true
