@@ -207,28 +207,9 @@ font-family: Verdana, sans-serif;
         flex: 1;
         max-width: 300px;
         position: sticky;
-        top: 100px; /* Increased to account for header */
-        height: calc(100vh - 120px); /* Set height to viewport height minus header/footer space */
+        top: 20px;
+        height: fit-content;
         align-self: flex-start;
-        overflow-y: auto; /* Enable scrolling if content is too tall */
-    }
-
-    /* Add smooth scrollbar styling */
-    .qa-left-column::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .qa-left-column::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    .qa-left-column::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 3px;
-    }
-
-    .qa-left-column::-webkit-scrollbar-thumb:hover {
-        background: #555;
     }
 
     .qa-right-column {
