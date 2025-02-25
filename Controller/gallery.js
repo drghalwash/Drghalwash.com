@@ -77,7 +77,7 @@ export const index = async (req, res) => {
         currentRow.forEach(img => {
           const imageHtml = img.status === 'Public' 
             ? `<a href="/galleries/${slug}/${img.slug}">
-                <img src="https://raw.githubusercontent.com/drghalwash//Test/gallery/${img.icon}" alt="${img.name}" />
+                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
                 <p>${img.name}</p>
               </a>`
             : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
