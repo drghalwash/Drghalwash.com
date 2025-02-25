@@ -70,40 +70,11 @@ export const index = async (req, res) => {
       return res.status(404).render('error', { error: 'Gallery not found' });
     }
 
-    let rowsHtml = '';
-    let currentRow = [];
-    let rowType = 'first-row';
-
-    rawImages.forEach((image, index) => {
-      currentRow.push(image);
-      const maxItemsInRow = rowType === 'first-row' ? 5 : 4;
-
-      if (currentRow.length === maxItemsInRow || index === rawImages.length - 1) {
-        rowsHtml += `<div class="custom-row ${rowType}">`;
-        currentRow.forEach(img => {
-          const imageHtml = img.status === 'Public' 
-            ? `<a href="/galleries/${slug}/${img.slug}">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name}</p>
-              </a>`
-            : `<a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" onclick="document.getElementById('imageId').value='${img.id}'">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/${img.icon}?raw=true" alt="${img.name}" />
-                <p>${img.name} <i class="fas fa-lock"></i></p>
-              </a>`;
-          
-          rowsHtml += `<div class="gallery-item">${imageHtml}</div>`;
-        });
-        rowsHtml += '</div>';
-        
-        currentRow = [];
-        rowType = rowType === 'first-row' ? 'second-row' : 'first-row';
-      }
-    });
-
     res.render('Pages/gallery', { 
       gallery, 
-      galleries, 
-      rowsHtml,
+      galleries,
+      images: rawImages,
+      slug,
       movingBackground2: true,
       'site-footer': true
     });
