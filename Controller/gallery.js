@@ -167,6 +167,52 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
   }
 };
 
+/**
+ * Arranges subgalleries into rows with varying item counts
+ * @param {Array} subgalleries - The array of subgallery objects
+ * @returns {Array} - Array of row objects, each with items array
+ */
+const arrangeSubgalleriesInRows = (subgalleries) => {
+  if (!subgalleries || subgalleries.length === 0) return [];
+  
+  const rows = [];
+  let currentIndex = 0;
+
+  // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
+  while (currentIndex < subgalleries.length) {
+    // First row: up to 5 items
+    const firstRowCount = Math.min(5, subgalleries.length - currentIndex);
+    if (firstRowCount > 0) {
+      rows.push({
+        type: 'row-five',
+        items: subgalleries.slice(currentIndex, currentIndex + firstRowCount)
+      });
+      currentIndex += firstRowCount;
+    }
+
+    // Second row: up to 4 items
+    const secondRowCount = Math.min(4, subgalleries.length - currentIndex);
+    if (secondRowCount > 0) {
+      rows.push({
+        type: 'row-four',
+        items: subgalleries.slice(currentIndex, currentIndex + secondRowCount)
+      });
+      currentIndex += secondRowCount;
+    }
+
+    // Third row: 1 item
+    if (currentIndex < subgalleries.length) {
+      rows.push({
+        type: 'row-one',
+        items: [subgalleries[currentIndex]]
+      });
+      currentIndex += 1;
+    }
+  }
+
+  return rows;
+};
+
 const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   try {
     const { data: gallery } = await supabase
@@ -263,10 +309,12 @@ export const index = async (req, res) => {
     }
 
     const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+    const subgalleryRows = arrangeSubgalleriesInRows(sortedSubgalleries);
 
     return res.render('Pages/gallery', {
       gallery,
       subgalleries: sortedSubgalleries,
+      subgalleryRows,
       galleries,
       movingBackground2: true,
       'site-footer': true
