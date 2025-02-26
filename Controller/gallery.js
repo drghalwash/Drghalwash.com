@@ -4,106 +4,193 @@ const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.su
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const processImageUrl = (filename) => {
-  return filename ? `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true` : '/images/default-gallery.png';
+const fetchGalleries = async () => {
+  try {
+    const { data: galleries, error } = await supabase.from('gallery').select('*');
+    if (error) throw error;
+    return galleries || [];
+  } catch (error) {
+    console.error('[Error] Fetching galleries:', error);
+    return [];
+  }
 };
 
-const processImagesArray = (imagesStr) => {
+const fetchGalleryBySlug = async (slug) => {
   try {
-    return JSON.parse(imagesStr.replace(/\\/g, '')).map(img => ({
-      filename: img,
-      url: processImageUrl(img)
-    }));
-  } catch (e) {
-    console.error('Error parsing images array:', e);
+    const { data: gallery, error } = await supabase
+      .from('gallery')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+    if (error) throw error;
+
+    // Parse image array from JSON string
+    let imageArray;
+    try {
+      imageArray = typeof gallery.image === 'string' ? 
+        JSON.parse(gallery.image) : [];
+    } catch (e) {
+      console.error('Error parsing gallery image array:', e);
+      imageArray = [];
+    }
+
+    // Transform gallery image to GitHub URL
+    return {
+      ...gallery,
+      image: imageArray[0] ? `https://github.com/drghalwash/Test/blob/main/gallery/${imageArray[0]}?raw=true` : '/images/default-gallery.png'
+    };
+  } catch (error) {
+    console.error('[Error] Fetching gallery:', error);
+    return null;
+  }
+};
+
+const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
+  try {
+    const { data: gallery } = await supabase
+      .from('gallery')
+      .select('id')
+      .eq('slug', gallerySlug)
+      .single();
+
+    if (!gallery) return [];
+
+    const { data: subgalleries, error } = await supabase
+      .from('subgallery')
+      .select('*')
+      .eq('gallery_id', gallery.id);
+
+    if (error) throw error;
+    return subgalleries || [];
+  } catch (error) {
+    console.error('[Error] Fetching subgalleries:', error);
     return [];
+  }
+};
+
+const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
+  try {
+    const { data: gallery } = await supabase
+      .from('gallery')
+      .select('id')
+      .eq('slug', gallerySlug)
+      .single();
+
+    if (!gallery) return null;
+
+    const { data: subgallery, error } = await supabase
+      .from('subgallery')
+      .select('*')
+      .eq('gallery_id', gallery.id)
+      .eq('slug', subgallerySlug)
+      .single();
+
+    if (error) throw error;
+
+    if (!subgallery) return null;
+
+    // Parse images array from JSON string
+    let imageArray;
+    try {
+      imageArray = typeof subgallery.images === 'string' ? 
+        JSON.parse(subgallery.images.replace(/\\/g, '')) : [];
+    } catch (e) {
+      console.error('Error parsing images array:', e);
+      imageArray = [];
+    }
+
+    // Transform image filenames into full GitHub URLs
+    const processedImages = imageArray.map(filename => ({
+      filename: filename,
+      url: `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`
+    }));
+
+    // Format icon URL
+    const iconUrl = subgallery.icon ? 
+      `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : 
+      '/images/default-icon.png';
+
+    return {
+      ...subgallery,
+      icon: iconUrl,
+      images: processedImages,
+      primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
+    };
+  } catch (error) {
+    console.error('[Error] Fetching subgallery:', error);
+    return null;
   }
 };
 
 export const index = async (req, res) => {
   try {
     const { slug, subSlug } = req.params;
+    const galleries = await fetchGalleries();
 
     if (!slug) {
       return res.status(404).render('error', { 
         error: 'Gallery not found',
+        galleries,
         movingBackground2: true,
         'site-footer': true
       });
     }
 
     if (subSlug) {
-      // Fetch subgallery details
-      const { data: gallery } = await supabase
-        .from('gallery')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      const { data: subgallery } = await supabase
-        .from('subgallery')
-        .select('*')
-        .eq('gallery_id', gallery.id)
-        .eq('slug', subSlug)
-        .single();
+      // Render subgallery page
+      const [gallery, subgallery] = await Promise.all([
+        fetchGalleryBySlug(slug),
+        fetchSubGalleryBySlug(slug, subSlug)
+      ]);
 
       if (!gallery || !subgallery) {
         return res.status(404).render('error', { 
           error: 'Gallery not found',
+          galleries,
           movingBackground2: true,
           'site-footer': true
         });
       }
 
-      const processedImages = processImagesArray(subgallery.images);
-
       return res.render('Pages/subgallery', {
         gallery,
-        subgallery: {
-          ...subgallery,
-          icon: processImageUrl(subgallery.icon),
-          images: processedImages,
-          primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
-        },
+        subgallery,
+        galleries,
         movingBackground2: true,
         'site-footer': true
       });
     }
 
-    // Fetch main gallery and its subgalleries
-    const [{ data: gallery }, { data: subgalleries }] = await Promise.all([
-      supabase.from('gallery').select('*').eq('slug', slug).single(),
-      supabase.from('subgallery').select('*').eq('gallery_id', gallery.id)
+    // Render main gallery page
+    const [gallery, subgalleries] = await Promise.all([
+      fetchGalleryBySlug(slug),
+      fetchSubGalleriesByGallerySlug(slug)
     ]);
 
     if (!gallery) {
       return res.status(404).render('error', { 
         error: 'Gallery not found',
+        galleries,
         movingBackground2: true,
-        'site-footer': true
+        'site-footer': true  
       });
     }
 
-    const processedSubgalleries = subgalleries.map(sub => ({
-      ...sub,
-      icon: processImageUrl(sub.icon),
-      images: processImagesArray(sub.images)
-    }));
+    // Sort subgalleries if needed
+    const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
 
     return res.render('Pages/gallery', {
-      gallery: {
-        ...gallery,
-        image: processImageUrl(JSON.parse(gallery.image)[0])
-      },
-      subgalleries: processedSubgalleries,
+      gallery,
+      subgalleries: sortedSubgalleries,
+      galleries,
       movingBackground2: true,
       'site-footer': true
     });
-
   } catch (error) {
     console.error('[Error] Gallery controller:', error);
     res.status(500).render('error', { 
       error: 'Server error',
+      galleries: [],
       movingBackground2: true,
       'site-footer': true
     });
