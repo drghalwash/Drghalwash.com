@@ -78,7 +78,26 @@ header.dataset.zoneName = zone.name;
                 padding: 8px 15px;
                 margin: 0.3px 0;
                 transition: all 0.3s ease;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             `;
+            
+            // Add soon tag if category has no questions
+            if (!category.questions || category.questions.length === 0) {
+                const soonTag = document.createElement('span');
+                soonTag.textContent = 'soon';
+                soonTag.style.cssText = `
+                    background: linear-gradient(45deg, #FF8C42, #FFA07A);
+                    color: white;
+                    padding: 2px 8px;
+                    border-radius: 12px;
+                    font-size: 0.7em;
+                    font-weight: bold;
+                    margin-left: 8px;
+                `;
+                itemDiv.appendChild(soonTag);
+            }
 
             const link = document.createElement('a');
             link.href = `#${category.display_name}`;
