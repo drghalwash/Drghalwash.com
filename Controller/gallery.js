@@ -14,7 +14,8 @@ const safeJsonParse = (jsonString, defaultValue = []) => {
   if (!jsonString) return defaultValue;
   try {
     return typeof jsonString === 'string' ? 
-      JSON.parse(jsonString.replace(/\\/g, '')) : defaultValue;
+      JSON.parse(jsonString.replace(/\\/g, '')) : 
+      Array.isArray(jsonString) ? jsonString : defaultValue;
   } catch (e) {
     console.error('Error parsing JSON:', e);
     return defaultValue;
@@ -25,7 +26,10 @@ const fetchGalleries = async () => {
   try {
     const { data: galleries, error } = await supabase.from('gallery').select('*');
     if (error) throw error;
-    return galleries || [];
+    return galleries.map(gallery => ({
+      ...gallery,
+      image: transformGithubUrl(safeJsonParse(gallery.image)[0])
+    }));
   } catch (error) {
     console.error('[Error] Fetching galleries:', error);
     return [];
@@ -45,7 +49,6 @@ const fetchGalleryBySlug = async (slug) => {
     if (error || !gallery) return null;
 
     const imageArray = safeJsonParse(gallery.image);
-    
     return {
       ...gallery,
       image: transformGithubUrl(imageArray[0])
@@ -115,8 +118,7 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     return {
       ...subgallery,
       icon: transformGithubUrl(subgallery.icon),
-      images: processedImages,
-      primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
+      images: processedImages
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
@@ -132,9 +134,7 @@ export const index = async (req, res) => {
     if (!slug) {
       return res.status(404).render('error', { 
         error: 'Gallery not found',
-        galleries,
-        movingBackground2: true,
-        'site-footer': true
+        galleries
       });
     }
 
@@ -147,18 +147,14 @@ export const index = async (req, res) => {
       if (!gallery || !subgallery) {
         return res.status(404).render('error', { 
           error: 'Content not found',
-          galleries,
-          movingBackground2: true,
-          'site-footer': true
+          galleries
         });
       }
 
       return res.render('Pages/subgallery', {
         gallery,
         subgallery,
-        galleries,
-        movingBackground2: true,
-        'site-footer': true
+        galleries
       });
     }
 
@@ -170,26 +166,20 @@ export const index = async (req, res) => {
     if (!gallery) {
       return res.status(404).render('error', { 
         error: 'Gallery not found',
-        galleries,
-        movingBackground2: true,
-        'site-footer': true
+        galleries
       });
     }
 
     return res.render('Pages/gallery', {
       gallery,
       subgalleries: subgalleries.sort((a, b) => (a.name || '').localeCompare(b.name || '')),
-      galleries,
-      movingBackground2: true,
-      'site-footer': true
+      galleries
     });
   } catch (error) {
     console.error('[Error] Gallery controller:', error);
     return res.status(500).render('error', { 
       error: 'Server error',
-      galleries: [],
-      movingBackground2: true,
-      'site-footer': true
+      galleries: []
     });
   }
 };
