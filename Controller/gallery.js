@@ -97,10 +97,14 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .single();
 
     if (error) throw error;
-    return subgallery ? {
+    
+    if (!subgallery) return null;
+
+    return {
       ...subgallery,
-      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png'
-    } : null;
+      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
+      images: (subgallery.images || []).map(img => `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`)
+    };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
     return null;
