@@ -28,6 +28,7 @@ const fetchGalleryBySlug = async (slug) => {
       .select('*')
       .eq('slug', slug)
       .single();
+      
     if (error) throw error;
     return gallery ? {
       ...gallery,
@@ -83,9 +84,7 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .eq('slug', subgallerySlug)
       .single();
 
-    if (error) throw error;
-    
-    if (!subgallery) return null;
+    if (error || !subgallery) return null;
 
     return {
       ...subgallery,
