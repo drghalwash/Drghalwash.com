@@ -131,7 +131,7 @@
           <div class="carousel-inner">
             {{#each subgallery.images}}
               <div class="carousel-item {{#if @first}}active{{/if}}">
-                <img src="{{this}}" alt="Image {{add @index 1}}" class="d-block w-100">
+                <img src="{{this.url}}" alt="{{this.filename}}" class="d-block w-100">
               </div>
             {{/each}}
           </div>

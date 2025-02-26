@@ -75,17 +75,27 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     
     if (!subgallery) return null;
 
-    // Ensure images is an array and transform URLs
-    const imageArray = Array.isArray(subgallery.images) ? subgallery.images : [];
-    const processedImages = imageArray.map(img => 
-      `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`
-    );
+    // Parse JSON string if needed and ensure it's an array
+    let imageArray = [];
+    try {
+      imageArray = typeof subgallery.images === 'string' ? 
+        JSON.parse(subgallery.images) : 
+        (Array.isArray(subgallery.images) ? subgallery.images : []);
+    } catch (e) {
+      console.error('Error parsing images:', e);
+    }
+
+    // Transform URLs
+    const processedImages = imageArray.map(img => ({
+      url: `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`,
+      filename: img
+    }));
 
     return {
       ...subgallery,
       icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
       images: processedImages,
-      primaryImage: processedImages[0] || '/images/default-gallery.png'
+      primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
