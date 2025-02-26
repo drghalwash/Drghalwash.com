@@ -124,14 +124,25 @@
   <div class="photo-gallery">
     <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
     <div class="custom-container">
-      {{#each subgalleries}}
-      <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
-        <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
-          <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{this.icon}}?raw=true" alt="{{this.name}}" class="icons">
-          <p>{{this.name}}</p>
+      {{#if subgalleries.length}}
+        {{#each subgalleries}}
+          <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+            <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+              <img 
+                src="{{this.icon}}" 
+                alt="{{this.name}}" 
+                class="icons"
+                onerror="this.onerror=null; this.src='/images/default-icon.png'; console.log('[Recovery] Fallback image loaded for: {{this.name}}');"
+              >
+              <p>{{this.name}}</p>
+            </div>
+          </a>
+        {{/each}}
+      {{else}}
+        <div class="no-galleries-message">
+          <p>No galleries available at the moment.</p>
         </div>
-      </a>
-      {{/each}}
+      {{/if}}
     </div>
   </div>
 
