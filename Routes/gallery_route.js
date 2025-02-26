@@ -4,12 +4,7 @@ import { index } from '../Controller/gallery.js';
 
 const router = new Router();
 
-router.get('/:slug', async (req, res) => {
-  return await index(req, res);
-});
-
-router.get('/:slug/:subSlug', async (req, res) => {
-  return await index(req, res);
-});
+router.get('/:slug', index);
+router.get('/:slug/:subSlug', index);
 
 export default router;
