@@ -127,59 +127,42 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 };
 
 export const index = async (req, res) => {
-  try {
-    const { slug, subSlug } = req.params;
-    const galleries = await fetchGalleries();
+  const { slug, subSlug } = req.params;
+  const galleries = await fetchGalleries();
 
-    if (!slug) {
-      return res.status(404).render('error', { 
-        error: 'Gallery not found',
-        galleries
-      });
-    }
+  if (!slug) {
+    return res.redirect('/Home');
+  }
 
-    if (subSlug) {
-      const [gallery, subgallery] = await Promise.all([
-        fetchGalleryBySlug(slug),
-        fetchSubGalleryBySlug(slug, subSlug)
-      ]);
-
-      if (!gallery || !subgallery) {
-        return res.status(404).render('error', { 
-          error: 'Content not found',
-          galleries
-        });
-      }
-
-      return res.render('Pages/subgallery', {
-        gallery,
-        subgallery,
-        galleries
-      });
-    }
-
-    const [gallery, subgalleries] = await Promise.all([
+  if (subSlug) {
+    const [gallery, subgallery] = await Promise.all([
       fetchGalleryBySlug(slug),
-      fetchSubGalleriesByGallerySlug(slug)
+      fetchSubGalleryBySlug(slug, subSlug)
     ]);
 
-    if (!gallery) {
-      return res.status(404).render('error', { 
-        error: 'Gallery not found',
-        galleries
-      });
+    if (!gallery || !subgallery) {
+      return res.redirect('/Home');
     }
 
-    return res.render('Pages/gallery', {
+    return res.render('Pages/subgallery', {
       gallery,
-      subgalleries: subgalleries.sort((a, b) => (a.name || '').localeCompare(b.name || '')),
+      subgallery,
       galleries
     });
-  } catch (error) {
-    console.error('[Error] Gallery controller:', error);
-    return res.status(500).render('error', { 
-      error: 'Server error',
-      galleries: []
-    });
   }
+
+  const [gallery, subgalleries] = await Promise.all([
+    fetchGalleryBySlug(slug),
+    fetchSubGalleriesByGallerySlug(slug)
+  ]);
+
+  if (!gallery) {
+    return res.redirect('/Home');
+  }
+
+  return res.render('Pages/gallery', {
+    gallery,
+    subgalleries: subgalleries.sort((a, b) => (a.name || '').localeCompare(b.name || '')),
+    galleries
+  });
 };
