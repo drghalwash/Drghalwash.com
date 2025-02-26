@@ -88,7 +88,7 @@ app.engine('handlebars', engine({
   layoutsDir: join(__dirname, 'Templates', 'layouts'),
 }));
 app.set('view engine', 'handlebars');
-app.set('views', join(__dirname, 'Templates'));
+app.set('views', join(__dirname, 'Templates', 'Pages'));
 
 // Serve static files
 // Serve static files with proper error handling
