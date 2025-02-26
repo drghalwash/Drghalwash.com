@@ -75,10 +75,18 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     
     if (!subgallery) return null;
 
+    // Transform the images array and handle missing values
+    const processedImages = (subgallery.images || []).map(img => ({
+      url: `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`,
+      filename: img,
+      thumbnail: img.replace(/\.[^/.]+$/, "_thumb$&") // Add thumbnail version if needed
+    }));
+
     return {
       ...subgallery,
       icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
-      images: (subgallery.images || []).map(img => `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`)
+      images: processedImages,
+      primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
