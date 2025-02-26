@@ -31,84 +31,153 @@ const fetchGalleryBySlug = async (slug) => {
   }
 };
 
-const fetchGalleryImagesBySlug = async (gallerySlug) => {
+const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
   try {
-    const { data: images, error } = await supabase
-      .from('galleryimage')
-      .select(`
-        *,
-        gallery!inner(*),
-        password:password_id (
-          password
-        )
-      `)
-      .eq('gallery.slug', gallerySlug);
+    const { data: gallery } = await supabase
+      .from('gallery')
+      .select('id')
+      .eq('slug', gallerySlug)
+      .single();
+
+    if (!gallery) return [];
+
+    const { data: subgalleries, error } = await supabase
+      .from('subgallery')
+      .select('*')
+      .eq('gallery_id', gallery.id);
+
     if (error) throw error;
-    console.log('[Gallery] Fetched images:', images);
-    console.log('[Gallery] Image icons and names:', images?.map(img => ({
-      icon: img.icon,
-      name: img.name,
-      status: img.status
-    })));
-    return images || [];
+    
+    console.log('[Processing] Starting subgallery processing');
+    const processedGalleries = (subgalleries || []).map(subgallery => {
+      try {
+        if (!subgallery) {
+          console.warn('[Warning] Empty subgallery entry found');
+          return null;
+        }
+        
+        const result = {
+          ...subgallery,
+          icon: subgallery.icon 
+            ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` 
+            : '/images/default-icon.png',
+          name: subgallery.name || 'Untitled Gallery'
+        };
+        console.log(`[Success] Processed subgallery: ${result.name}`);
+        return result;
+      } catch (err) {
+        console.error(`[Error] Processing subgallery: ${err.message}`);
+        return null;
+      }
+    }).filter(Boolean);
+    
+    console.log(`[Complete] Processed ${processedGalleries.length} galleries`);
+    return processedGalleries;
   } catch (error) {
-    console.error('[Error] Fetching gallery images:', error);
+    console.error('[Error] Fetching subgalleries:', error);
     return [];
+  }
+};
+
+const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
+  try {
+    const { data: gallery } = await supabase
+      .from('gallery')
+      .select('id')
+      .eq('slug', gallerySlug)
+      .single();
+
+    if (!gallery) return null;
+
+    const { data: subgallery, error } = await supabase
+      .from('subgallery')
+      .select('*')
+      .eq('gallery_id', gallery.id)
+      .eq('slug', subgallerySlug)
+      .single();
+
+    if (error) throw error;
+    return subgallery ? {
+      ...subgallery,
+      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png'
+    } : null;
+  } catch (error) {
+    console.error('[Error] Fetching subgallery:', error);
+    return null;
   }
 };
 
 export const index = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const [gallery, rawImages, galleries] = await Promise.all([
+    const { slug, subSlug } = req.params;
+    const galleries = await fetchGalleries();
+
+    if (!slug) {
+      return res.status(404).render('error', { 
+        error: 'Gallery not found',
+        galleries,
+        movingBackground2: true,
+        'site-footer': true
+      });
+    }
+
+    if (subSlug) {
+      // Render subgallery page
+      const [gallery, subgallery] = await Promise.all([
+        fetchGalleryBySlug(slug),
+        fetchSubGalleryBySlug(slug, subSlug)
+      ]);
+
+      if (!gallery || !subgallery) {
+        return res.status(404).render('error', { 
+          error: 'Gallery not found',
+          galleries,
+          movingBackground2: true,
+          'site-footer': true
+        });
+      }
+
+      return res.render('Pages/subgallery', {
+        gallery,
+        subgallery,
+        galleries,
+        movingBackground2: true,
+        'site-footer': true
+      });
+    }
+
+    // Render main gallery page
+    const [gallery, subgalleries] = await Promise.all([
       fetchGalleryBySlug(slug),
-      fetchGalleryImagesBySlug(slug),
-      fetchGalleries()
+      fetchSubGalleriesByGallerySlug(slug)
     ]);
 
     if (!gallery) {
-      return res.status(404).render('error', { error: 'Gallery not found' });
+      return res.status(404).render('error', { 
+        error: 'Gallery not found',
+        galleries,
+        movingBackground2: true,
+        'site-footer': true  
+      });
     }
 
-    res.render('Pages/gallery', { 
+    // Sort subgalleries if needed
+    const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+    
+    return res.render('Pages/gallery', {
       gallery,
+      subgalleries: sortedSubgalleries,
       galleries,
-      galleryimage: rawImages,
-      slug,
       movingBackground2: true,
       'site-footer': true
     });
   } catch (error) {
     console.error('[Error] Gallery controller:', error);
-    res.status(500).render('error', { error: 'Server error' });
-  }
-};
-
-export const validatePassword = async (req, res) => {
-  try {
-    const { imageId, password } = req.body;
-    
-    const { data: image, error: imageError } = await supabase
-      .from('galleryimage')
-      .select('*, password:password_id(*)')
-      .eq('id', imageId)
-      .single();
-
-    if (imageError || !image) {
-      return res.json({ success: false });
-    }
-
-    const isValid = image.password && image.password.password === password;
-    if (isValid) {
-      return res.json({ 
-        success: true, 
-        redirectUrl: `/galleries/${image.gallery.slug}/${image.slug}` 
-      });
-    }
-
-    return res.json({ success: false });
-  } catch (error) {
-    console.error('[Error] Password validation:', error);
-    return res.json({ success: false });
+    res.status(500).render('error', { 
+      error: 'Server error',
+      galleries: [],
+      movingBackground2: true,
+      'site-footer': true
+    });
   }
 };
