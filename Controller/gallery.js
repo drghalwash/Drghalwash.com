@@ -92,7 +92,10 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 
 const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   try {
-    if (!gallerySlug || !subgallerySlug) throw new Error('Both gallery and subgallery slugs are required');
+    if (!gallerySlug || !subgallerySlug) {
+      console.error('[Error] Missing gallery or subgallery slug');
+      return null;
+    }
     console.log(`[Subgallery] Fetching subgallery: ${subgallerySlug} from gallery: ${gallerySlug}`);
 
     const { data: gallery } = await supabase
