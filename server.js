@@ -135,7 +135,7 @@ app.use('/Drain_Care', Drain_Care_route);
 app.use('/Finance', Finance_route);
 app.use('/Meet_Our_Patients', Meet_Our_Patients_route);
 app.use('/Policies', Policies_route);
-app.use('/Questions_And_Answer', Questions_And_Answer_route);
+app.use('/your_answer_is_here', Questions_And_Answer_route);
 app.use('/Blog', Blog_route);
 app.use('/Read_More', Read_More_route);
 app.use('/galleries', gallery_route);
