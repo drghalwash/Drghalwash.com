@@ -1,13 +1,31 @@
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const transformGithubUrl = (filename) => {
+  if (!filename) return '/images/default-gallery.png';
+  return `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`;
+};
+
+const safeJsonParse = (jsonString, defaultValue = []) => {
+  try {
+    return typeof jsonString === 'string' ? 
+      JSON.parse(jsonString.replace(/\\/g, '')) : defaultValue;
+  } catch (e) {
+    console.error('Error parsing JSON:', e);
+    return defaultValue;
+  }
+};
+
 const fetchGalleries = async () => {
   try {
+    console.log('[Gallery] Fetching all galleries');
     const { data: galleries, error } = await supabase.from('gallery').select('*');
     if (error) throw error;
+    console.log('[Gallery] Successfully fetched galleries');
     return galleries || [];
   } catch (error) {
     console.error('[Error] Fetching galleries:', error);
@@ -17,27 +35,23 @@ const fetchGalleries = async () => {
 
 const fetchGalleryBySlug = async (slug) => {
   try {
+    if (!slug) throw new Error('Gallery slug is required');
+    console.log(`[Gallery] Fetching gallery with slug: ${slug}`);
+    
     const { data: gallery, error } = await supabase
       .from('gallery')
       .select('*')
       .eq('slug', slug)
       .single();
+      
     if (error) throw error;
+    if (!gallery) throw new Error('Gallery not found');
 
-    // Parse image array from JSON string
-    let imageArray;
-    try {
-      imageArray = typeof gallery.image === 'string' ? 
-        JSON.parse(gallery.image.replace(/\\/g, '')) : [];
-    } catch (e) {
-      console.error('Error parsing gallery image array:', e);
-      imageArray = [];
-    }
-
-    // Transform gallery image to GitHub URL
+    const imageArray = safeJsonParse(gallery.image);
+    
     return {
       ...gallery,
-      image: imageArray[0] ? `https://github.com/drghalwash/Test/blob/main/gallery/${imageArray[0]}?raw=true` : '/images/default-gallery.png',
+      image: transformGithubUrl(imageArray[0]),
       rawImagePaths: imageArray
     };
   } catch (error) {
@@ -48,6 +62,9 @@ const fetchGalleryBySlug = async (slug) => {
 
 const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
   try {
+    if (!gallerySlug) throw new Error('Gallery slug is required');
+    console.log(`[Subgallery] Fetching subgalleries for gallery: ${gallerySlug}`);
+
     const { data: gallery } = await supabase
       .from('gallery')
       .select('id')
@@ -62,7 +79,11 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
       .eq('gallery_id', gallery.id);
 
     if (error) throw error;
-    return subgalleries || [];
+    
+    return (subgalleries || []).map(subgallery => ({
+      ...subgallery,
+      icon: transformGithubUrl(subgallery.icon)
+    }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
     return [];
@@ -71,6 +92,9 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 
 const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   try {
+    if (!gallerySlug || !subgallerySlug) throw new Error('Both gallery and subgallery slugs are required');
+    console.log(`[Subgallery] Fetching subgallery: ${subgallerySlug} from gallery: ${gallerySlug}`);
+
     const { data: gallery } = await supabase
       .from('gallery')
       .select('id')
@@ -86,34 +110,17 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .eq('slug', subgallerySlug)
       .single();
 
-    if (error) throw error;
+    if (error || !subgallery) return null;
 
-    if (!subgallery) return null;
-
-    // Parse images array from JSON string
-    let imageArray;
-    try {
-      imageArray = typeof subgallery.images === 'string' ? 
-        JSON.parse(subgallery.images.replace(/\\/g, '')) : [];
-    } catch (e) {
-      console.error('Error parsing images array:', e);
-      imageArray = [];
-    }
-
-    // Transform image filenames into full GitHub URLs
+    const imageArray = safeJsonParse(subgallery.images);
     const processedImages = imageArray.map(filename => ({
       filename,
-      url: `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`
+      url: transformGithubUrl(filename)
     }));
-
-    // Format icon URL (single PNG file)
-    const iconUrl = subgallery.icon ? 
-      `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : 
-      '/images/default-icon.png';
 
     return {
       ...subgallery,
-      icon: iconUrl,
+      icon: transformGithubUrl(subgallery.icon),
       images: processedImages,
       rawImagePaths: imageArray,
       primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
@@ -127,6 +134,8 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 export const index = async (req, res) => {
   try {
     const { slug, subSlug } = req.params;
+    console.log(`[Controller] Handling request for slug: ${slug}, subSlug: ${subSlug}`);
+
     const galleries = await fetchGalleries();
 
     if (!slug) {
@@ -139,7 +148,6 @@ export const index = async (req, res) => {
     }
 
     if (subSlug) {
-      // Render subgallery page
       const [gallery, subgallery] = await Promise.all([
         fetchGalleryBySlug(slug),
         fetchSubGalleryBySlug(slug, subSlug)
@@ -147,7 +155,7 @@ export const index = async (req, res) => {
 
       if (!gallery || !subgallery) {
         return res.status(404).render('error', { 
-          error: 'Gallery not found',
+          error: 'Content not found',
           galleries,
           movingBackground2: true,
           'site-footer': true
@@ -163,7 +171,6 @@ export const index = async (req, res) => {
       });
     }
 
-    // Render main gallery page
     const [gallery, subgalleries] = await Promise.all([
       fetchGalleryBySlug(slug),
       fetchSubGalleriesByGallerySlug(slug)
@@ -174,12 +181,12 @@ export const index = async (req, res) => {
         error: 'Gallery not found',
         galleries,
         movingBackground2: true,
-        'site-footer': true  
+        'site-footer': true
       });
     }
 
-    // Sort subgalleries if needed
-    const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+    const sortedSubgalleries = subgalleries.sort((a, b) => 
+      (a.name || '').localeCompare(b.name || ''));
 
     return res.render('Pages/gallery', {
       gallery,
