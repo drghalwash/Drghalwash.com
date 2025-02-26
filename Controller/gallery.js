@@ -47,32 +47,7 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
       .eq('gallery_id', gallery.id);
 
     if (error) throw error;
-    
-    console.log('[Processing] Starting subgallery processing');
-    const processedGalleries = (subgalleries || []).map(subgallery => {
-      try {
-        if (!subgallery) {
-          console.warn('[Warning] Empty subgallery entry found');
-          return null;
-        }
-        
-        const result = {
-          ...subgallery,
-          icon: subgallery.icon 
-            ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` 
-            : '/images/default-icon.png',
-          name: subgallery.name || 'Untitled Gallery'
-        };
-        console.log(`[Success] Processed subgallery: ${result.name}`);
-        return result;
-      } catch (err) {
-        console.error(`[Error] Processing subgallery: ${err.message}`);
-        return null;
-      }
-    }).filter(Boolean);
-    
-    console.log(`[Complete] Processed ${processedGalleries.length} galleries`);
-    return processedGalleries;
+    return subgalleries || [];
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
     return [];
@@ -97,10 +72,14 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .single();
 
     if (error) throw error;
-    return subgallery ? {
+    
+    if (!subgallery) return null;
+
+    return {
       ...subgallery,
-      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png'
-    } : null;
+      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
+      images: (subgallery.images || []).map(img => `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`)
+    };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
     return null;
