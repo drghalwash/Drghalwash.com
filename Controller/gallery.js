@@ -56,10 +56,16 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
       .eq('gallery_id', gallery.id);
 
     if (error) throw error;
-    return subgalleries.map(subgallery => ({
-      ...subgallery,
-      icon: subgallery.icon ? getGithubUrl(subgallery.icon) : '/images/default-icon.png',
-      images: (subgallery.images || []).map(img => getGithubUrl(img))
+    return subgalleries.map(subgallery => {
+      // Parse the JSON string if it's a string, otherwise use the array directly
+      const imageArray = typeof subgallery.images === 'string' ? 
+        JSON.parse(subgallery.images) : 
+        subgallery.images || [];
+        
+      return {
+        ...subgallery,
+        icon: subgallery.icon ? getGithubUrl(subgallery.icon) : '/images/default-icon.png',
+        images: imageArray.map(img => getGithubUrl(img))
     }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
@@ -86,10 +92,14 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 
     if (error || !subgallery) return null;
 
+    const imageArray = typeof subgallery.images === 'string' ? 
+      JSON.parse(subgallery.images) : 
+      subgallery.images || [];
+      
     return {
       ...subgallery,
       icon: subgallery.icon ? getGithubUrl(subgallery.icon) : '/images/default-icon.png',
-      images: (subgallery.images || []).map(img => getGithubUrl(img))
+      images: imageArray.map(img => getGithubUrl(img))
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
