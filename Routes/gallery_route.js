@@ -4,27 +4,26 @@ import { index } from '../Controller/gallery.js';
 
 const router = new Router();
 
-router.get('/:slug', (req, res, next) => {
-  console.log('[Route] Handling gallery request:', req.params);
+router.get('/:slug', async (req, res) => {
   try {
-    return index(req, res);
+    return await index(req, res);
   } catch (error) {
-    console.error('[Route] Error handling gallery request:', error);
-    next(error);
+    console.error('[Route] Error:', error);
+    return res.status(500).render('error', {
+      error: 'Internal server error',
+      movingBackground2: true,
+      'site-footer': true
+    });
   }
 });
 
-router.get('/:slug/:subSlug', async (req, res, next) => {
-  console.log('[Route] Handling subgallery request:', req.params);
+router.get('/:slug/:subSlug', async (req, res) => {
   try {
-    if (!req.params.slug || !req.params.subSlug) {
-      throw new Error('Invalid gallery or subgallery slug');
-    }
     return await index(req, res);
   } catch (error) {
-    console.error('[Route] Error handling subgallery request:', error);
-    return res.status(404).render('error', {
-      error: 'Gallery not found',
+    console.error('[Route] Error:', error);
+    return res.status(500).render('error', {
+      error: 'Internal server error',
       movingBackground2: true,
       'site-footer': true
     });

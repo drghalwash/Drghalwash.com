@@ -11,6 +11,7 @@ const transformGithubUrl = (filename) => {
 };
 
 const safeJsonParse = (jsonString, defaultValue = []) => {
+  if (!jsonString) return defaultValue;
   try {
     return typeof jsonString === 'string' ? 
       JSON.parse(jsonString.replace(/\\/g, '')) : defaultValue;
@@ -22,10 +23,8 @@ const safeJsonParse = (jsonString, defaultValue = []) => {
 
 const fetchGalleries = async () => {
   try {
-    console.log('[Gallery] Fetching all galleries');
     const { data: galleries, error } = await supabase.from('gallery').select('*');
     if (error) throw error;
-    console.log('[Gallery] Successfully fetched galleries');
     return galleries || [];
   } catch (error) {
     console.error('[Error] Fetching galleries:', error);
@@ -35,8 +34,7 @@ const fetchGalleries = async () => {
 
 const fetchGalleryBySlug = async (slug) => {
   try {
-    if (!slug) throw new Error('Gallery slug is required');
-    console.log(`[Gallery] Fetching gallery with slug: ${slug}`);
+    if (!slug) return null;
     
     const { data: gallery, error } = await supabase
       .from('gallery')
@@ -44,15 +42,13 @@ const fetchGalleryBySlug = async (slug) => {
       .eq('slug', slug)
       .single();
       
-    if (error) throw error;
-    if (!gallery) throw new Error('Gallery not found');
+    if (error || !gallery) return null;
 
     const imageArray = safeJsonParse(gallery.image);
     
     return {
       ...gallery,
-      image: transformGithubUrl(imageArray[0]),
-      rawImagePaths: imageArray
+      image: transformGithubUrl(imageArray[0])
     };
   } catch (error) {
     console.error('[Error] Fetching gallery:', error);
@@ -62,8 +58,7 @@ const fetchGalleryBySlug = async (slug) => {
 
 const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
   try {
-    if (!gallerySlug) throw new Error('Gallery slug is required');
-    console.log(`[Subgallery] Fetching subgalleries for gallery: ${gallerySlug}`);
+    if (!gallerySlug) return [];
 
     const { data: gallery } = await supabase
       .from('gallery')
@@ -78,7 +73,7 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
       .select('*')
       .eq('gallery_id', gallery.id);
 
-    if (error) throw error;
+    if (error) return [];
     
     return (subgalleries || []).map(subgallery => ({
       ...subgallery,
@@ -92,11 +87,7 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 
 const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   try {
-    if (!gallerySlug || !subgallerySlug) {
-      console.error('[Error] Missing gallery or subgallery slug');
-      return null;
-    }
-    console.log(`[Subgallery] Fetching subgallery: ${subgallerySlug} from gallery: ${gallerySlug}`);
+    if (!gallerySlug || !subgallerySlug) return null;
 
     const { data: gallery } = await supabase
       .from('gallery')
@@ -125,7 +116,6 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       ...subgallery,
       icon: transformGithubUrl(subgallery.icon),
       images: processedImages,
-      rawImagePaths: imageArray,
       primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
     };
   } catch (error) {
@@ -137,8 +127,6 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 export const index = async (req, res) => {
   try {
     const { slug, subSlug } = req.params;
-    console.log(`[Controller] Handling request for slug: ${slug}, subSlug: ${subSlug}`);
-
     const galleries = await fetchGalleries();
 
     if (!slug) {
@@ -188,19 +176,16 @@ export const index = async (req, res) => {
       });
     }
 
-    const sortedSubgalleries = subgalleries.sort((a, b) => 
-      (a.name || '').localeCompare(b.name || ''));
-
     return res.render('Pages/gallery', {
       gallery,
-      subgalleries: sortedSubgalleries,
+      subgalleries: subgalleries.sort((a, b) => (a.name || '').localeCompare(b.name || '')),
       galleries,
       movingBackground2: true,
       'site-footer': true
     });
   } catch (error) {
     console.error('[Error] Gallery controller:', error);
-    res.status(500).render('error', { 
+    return res.status(500).render('error', { 
       error: 'Server error',
       galleries: [],
       movingBackground2: true,
