@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
@@ -72,29 +71,33 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .single();
 
     if (error) throw error;
-    
+
     if (!subgallery) return null;
 
-    // Parse images array from JSON string if needed
+    // Parse images array from JSON string
     let imageArray;
     try {
       imageArray = typeof subgallery.images === 'string' ? 
-        JSON.parse(subgallery.images.replace(/\\/g, '')) : // Handle escaped quotes
-        (Array.isArray(subgallery.images) ? subgallery.images : []);
+        JSON.parse(subgallery.images.replace(/\\/g, '')) : [];
     } catch (e) {
       console.error('Error parsing images array:', e);
       imageArray = [];
     }
 
-    // Transform image filenames into full URLs
+    // Transform image filenames into full GitHub URLs
     const processedImages = imageArray.map(filename => ({
       filename: filename,
       url: `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`
     }));
 
+    // Format icon URL
+    const iconUrl = subgallery.icon ? 
+      `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : 
+      '/images/default-icon.png';
+
     return {
       ...subgallery,
-      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
+      icon: iconUrl,
       images: processedImages,
       primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
     };
@@ -160,7 +163,7 @@ export const index = async (req, res) => {
 
     // Sort subgalleries if needed
     const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
-    
+
     return res.render('Pages/gallery', {
       gallery,
       subgalleries: sortedSubgalleries,
