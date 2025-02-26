@@ -159,13 +159,13 @@
           <div class="carousel-inner">
             {{#if subgallery.images.[0]}}
             <div class="carousel-item active">
-              <img src="{{subgallery.images.[0]}}" class="d-block w-100 rounded" alt="Image 1">
+              <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{subgallery.images.[0]}}?raw=true" class="d-block w-100 rounded" alt="Image 1">
             </div>
             {{/if}}
             {{#each subgallery.images}}
               {{#if @index}}
               <div class="carousel-item">
-                <img src="{{this}}" class="d-block w-100 rounded" alt="Image {{add @index 1}}">
+                <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{this}}?raw=true" class="d-block w-100 rounded" alt="Image {{add @index 1}}">
               </div>
               {{/if}}
             {{/each}}
@@ -239,19 +239,17 @@
             {{/if}}
           </div>
 
-          {{#if subgallery.description1}}
           <div id="des_1" class="tab-content" style="display: block;">
-            <p>{{subgallery.description1}}</p>
+            {{{subgallery.description1}}}
           </div>
-          {{/if}}
           {{#if subgallery.description2}}
           <div id="des_2" class="tab-content" style="display: none;">
-            <p>{{subgallery.description2}}</p>
+            {{{subgallery.description2}}}
           </div>
           {{/if}}
           {{#if subgallery.description3}}
           <div id="des_3" class="tab-content" style="display: none;">
-            <p>{{subgallery.description3}}</p>
+            {{{subgallery.description3}}}
           </div>
           {{/if}}
         </div>
