@@ -5,7 +5,10 @@ const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.su
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const getImagePath = (filename) => `/Upload/images/gallery/${filename}`;
+const getImagePath = (filename) => {
+  if (!filename) return '/images/default-gallery.jpg';
+  return `/Upload/images/gallery/${filename}`;
+};
 
 const fetchGalleries = async () => {
   try {
@@ -58,10 +61,9 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
     if (error) throw error;
     return subgalleries.map(subgallery => ({
       ...subgallery,
-      icon: subgallery.icon ? getImagePath(subgallery.icon) : '/images/default-icon.jpg',
-      images: Array.isArray(subgallery.images) ? 
-        subgallery.images.map(img => getImagePath(img)) : 
-        JSON.parse(subgallery.images || '[]').map(img => getImagePath(img))
+      icon: getImagePath(subgallery.icon),
+      images: (Array.isArray(subgallery.images) ? subgallery.images : 
+        JSON.parse(subgallery.images || '[]')).map(img => getImagePath(img))
     }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
@@ -90,10 +92,9 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 
     return {
       ...subgallery,
-      icon: subgallery.icon ? getImagePath(subgallery.icon) : '/images/default-icon.jpg',
-      images: Array.isArray(subgallery.images) ? 
-        subgallery.images.map(img => getImagePath(img)) : 
-        JSON.parse(subgallery.images || '[]').map(img => getImagePath(img))
+      icon: getImagePath(subgallery.icon),
+      images: (Array.isArray(subgallery.images) ? subgallery.images : 
+        JSON.parse(subgallery.images || '[]')).map(img => getImagePath(img))
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
