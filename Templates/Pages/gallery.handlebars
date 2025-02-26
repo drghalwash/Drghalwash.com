@@ -110,7 +110,7 @@
     <div class="container">
         <div class="row justify-content-between align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0 order-lg-2" data-aos="fade-up">
-                <img src="{{gallery.image}}" alt="{{gallery.name}}" class="img-fluid" onerror="this.src='/images/gallery/default-gallery.jpg'">
+                <img src="{{gallery.image}}" alt="{{gallery.name}}" class="img-fluid" onerror="this.style.display='none'">
             </div>
             <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
                 <h6 style="font-size: 20px;" class="heading mb-4">{{gallery.title}}</h6>
@@ -132,7 +132,7 @@
                 src="{{this.icon}}" 
                 alt="{{this.name}}" 
                 class="icons"
-                onerror="this.onerror=null; this.src='/Upload/images/default-icon.jpg';"
+                onerror="this.style.display='none';"
                 loading="lazy"
               >
               <p>{{this.name}}</p>
