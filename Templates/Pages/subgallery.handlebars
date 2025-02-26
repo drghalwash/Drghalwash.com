@@ -135,7 +135,7 @@
                   src="{{subgallery.images.[0]}}" 
                   alt="{{../subgallery.name}} - Image 1" 
                   class="d-block w-100"
-                  onerror="this.src='/Upload/images/gallery/default-gallery.jpg'"
+                  onerror="this.style.display='none'"
                 >
               </div>
             {{/if}}
@@ -146,7 +146,7 @@
                     src="{{this}}" 
                     alt="{{../subgallery.name}} - Image {{add @index 1}}" 
                     class="d-block w-100"
-                    onerror="this.src='/Upload/images/gallery/default-gallery.jpg'"
+                    onerror="this.style.display='none'"
                   >
                 </div>
               {{/if}}

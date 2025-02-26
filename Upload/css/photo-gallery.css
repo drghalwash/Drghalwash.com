@@ -61,62 +61,72 @@
 
 /* Scoped styles for the custom container */
 .custom-container {
-    display: flex;
-    flex-direction: column; /* Stack rows vertically */
-    gap: 10px; /* Space between rows */
-    padding: 20px 20px;
-    width: 85%;
+  display: flex;
+  flex-direction: column; /* Stack rows vertically */
+  gap: 20px; /* Space between rows */
+  padding: 20px 100px;
 }
 
-  /* Scoped row styles */
-  .custom-container .custom-row {
-    display: flex;
-    justify-content: space-between; /* Distribute child divs evenly */
-    gap: 10px; /* Space between divs within a row */
-  }
+/* Scoped row styles */
+.custom-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
+  gap: 20px; /* Space between divs within a row */
+  width: 100%;
+}
 
-  /* Scoped child div styles */
-  .custom-container .custom-div,
-  .custom-container .custom-div-private {
-    flex: 1; /* Make all child divs equal width */
-    height: auto; /* Adjust height as needed */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white; /* Background color */
-    color: black; /* Text color */
-    font-size: 16px;
+/* Scoped child div styles */
+.custom-container .custom-div,
+.custom-container .custom-div-private {
+  flex: 1; /* Make all child divs equal width */
+  height: auto; /* Adjust height as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white; /* Background color */
+  color: black; /* Text color */
+  font-size: 16px;
 
-    text-align: center;
-    padding: 30px 5px;
-    border: none;
-  }
+  text-align: center;
+  padding: 30px 5px;
+  border: none;
+}
 
-  .custom-container .custom-div,
-  .custom-container .custom-div-private{
-    position: relative; /* Make the div the positioning context */
-    transition: border-bottom 0.3s ease; /* Smooth transition for the border */
-  }
+.custom-container .custom-div,
+.custom-container .custom-div-private{
+  position: relative; /* Make the div the positioning context */
+  transition: border-bottom 0.3s ease; /* Smooth transition for the border */
+}
 
-  .custom-container .custom-div:hover {
-    border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
-  }
-  .custom-container .custom-div-private:hover {
-    border-bottom: 3px solid red; /* Add blue border-bottom on hover */
-  }
+.custom-container .custom-div:hover {
+  border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
+}
+.custom-container .custom-div-private:hover {
+  border-bottom: 3px solid red; /* Add blue border-bottom on hover */
+}
 
-  /* First row: Override to ensure 5 divs fit */
-  .custom-container .first-row .custom-div,
-  .custom-container .first-row .custom-div-private {
-    flex-basis: calc((100% - 4 * 10px) / 5); /* Divide row into 5 equal parts */
-  }
 
-  /* Second row: Override to ensure 4 divs fit */
-  .custom-container .second-row .custom-div,
-  .custom-container .second-row .custom-div-private {
-    flex-basis: calc((100% - 3 * 10px) / 4); /* Divide row into 4 equal parts */
-  }
+/* Row with 5 items */
+.row-five .custom-div,
+.row-five .custom-div-private {
+  flex: 1 1 calc(20% - 16px);
+  min-width: calc(20% - 16px);
+}
+
+/* Row with 4 items */
+.row-four .custom-div,
+.row-four .custom-div-private {
+  flex: 1 1 calc(25% - 15px);
+  min-width: calc(25% - 15px);
+}
+
+/* Row with single item */
+.row-one .custom-div,
+.row-one .custom-div-private {
+  flex: 1 1 100%;
+  min-width: 100%;
+}
   @media (max-width: 768px) {
     .custom-container .custom-row {
       flex-wrap: wrap; /* Allow wrapping */
@@ -293,34 +303,38 @@
           color: #000; }
 
 
-          @media (max-width: 768px) {
+          @media (max-width: 1024px) {
             .custom-container {
-              display: flex;
-              flex-wrap: wrap; /* Allow items to wrap */
-              gap: 10px; /* Space between items */
+              gap: 10px; /* Smaller gap for smaller screens */
+              padding: 20px;
             }
 
-            /* Default style: 2 divs per row (50% width each) */
-            .custom-container .custom-div,
-            .custom-container .custom-div-private {
-              flex: 1 1 calc(50% - 10px); /* Half width minus gap */
-
-              min-width: calc(50% - 10px);
-              box-sizing: border-box; /* Account for padding/borders */
+            .custom-row {
+              gap: 10px;
             }
 
-            /* Every 5th div spans full width (1 div per row) */
-            .custom-container .custom-div:nth-child(5n),
-            .custom-container .custom-div-private:nth-child(5n) {
-              flex: 1 1 100% !important; /* Full width */
-              max-width: 100% ;
-              min-width: 100%;
+            .custom-div, .custom-div-private {
+              min-width: 150px;
             }
-            .custom-container{
-              width: 100%;
+
+            /* Responsive adjustments for rows */
+            .row-five .custom-div,
+            .row-five .custom-div-private,
+            .row-four .custom-div,
+            .row-four .custom-div-private {
+              flex: 1 1 calc(33.333% - 8px);
+              min-width: calc(33.333% - 8px);
             }
-            .photo-gallery h1 {
-              font-size: 20px;
+
+            /* Default style: 2 divs per row (50% width each) for very small screens */
+            @media (max-width: 768px) {
+              .row-five .custom-div,
+              .row-five .custom-div-private,
+              .row-four .custom-div,
+              .row-four .custom-div-private {
+                flex: 1 1 calc(50% - 5px); /* Half width minus gap */
+                min-width: calc(50% - 5px);
+              }
             }
           }
 
