@@ -75,10 +75,20 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     
     if (!subgallery) return null;
 
+    // Ensure images is a proper array
+    const imageArray = Array.isArray(subgallery.images) ? subgallery.images : 
+                      typeof subgallery.images === 'string' ? JSON.parse(subgallery.images) : [];
+
+    // Transform each image URL
+    const processedImages = imageArray.map(filename => 
+      `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`
+    );
+
     return {
       ...subgallery,
       icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png',
-      images: (subgallery.images || []).map(img => `https://github.com/drghalwash/Test/blob/main/gallery/${img}?raw=true`)
+      images: processedImages,
+      primaryImage: processedImages[0] || '/images/default-gallery.png'
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);

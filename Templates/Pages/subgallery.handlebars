@@ -126,36 +126,24 @@
 
   <div class="container2">
     <div class="content">
-      <div class="slider">
+      <div class="slider" data-total-images="{{subgallery.images.length}}">
         <div id="imageCarousel" class="carousel slide">
           <div class="carousel-inner">
-            {{#if subgallery.images.[0]}}
-              <div class="carousel-item active">
-                <img src="{{subgallery.images.[0]}}" alt="Image 1">
-              </div>
-            {{/if}}
             {{#each subgallery.images}}
-              {{#if @index}}
-                <div class="carousel-item">
-                  <img src="{{this}}" alt="Image {{add @index 1}}">
-                </div>
-              {{/if}}
+              <div class="carousel-item {{#if @first}}active{{/if}}">
+                <img src="{{this}}" alt="Gallery Image {{add @index 1}}" class="d-block w-100">
+              </div>
             {{/each}}
           </div>
-
-          <button class="prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
           </button>
-          <button class="next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
           </button>
-
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active"></button>
             {{#each subgallery.images}}
-              {{#if @index}}
-                <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{@index}}"></button>
-              {{/if}}
+              <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{@index}}" class="{{#if @index === 0}}active{{/if}}"></button>
             {{/each}}
           </div>
         </div>
