@@ -127,29 +127,31 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 };
 
 export const index = async (req, res) => {
-  const { slug, subSlug } = req.params;
-  const galleries = await fetchGalleries();
+  try {
+    const { slug, subSlug } = req.params;
+    const galleries = await fetchGalleries();
 
-  if (!slug) {
-    return res.redirect('/Home');
-  }
-
-  if (subSlug) {
-    const [gallery, subgallery] = await Promise.all([
-      fetchGalleryBySlug(slug),
-      fetchSubGalleryBySlug(slug, subSlug)
-    ]);
-
-    if (!gallery || !subgallery) {
+    if (!slug) {
       return res.redirect('/Home');
     }
 
-    return res.render('Pages/subgallery', {
-      gallery,
-      subgallery,
-      galleries
-    });
-  }
+    if (subSlug) {
+      const [gallery, subgallery] = await Promise.all([
+        fetchGalleryBySlug(slug),
+        fetchSubGalleryBySlug(slug, subSlug)
+      ]);
+
+      if (!gallery || !subgallery) {
+        console.error('Gallery or subgallery not found:', { slug, subSlug });
+        return res.redirect('/Home');
+      }
+
+      return res.render('Pages/subgallery', {
+        gallery,
+        subgallery,
+        galleries
+      });
+    }
 
   const [gallery, subgalleries] = await Promise.all([
     fetchGalleryBySlug(slug),

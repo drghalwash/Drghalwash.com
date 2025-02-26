@@ -151,8 +151,8 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error('Error stack:', err.stack); // Add detailed logging
-  res.status(500).render('error', { error: err }); // Render error page instead of plain text
+  console.error('Error stack:', err.stack);
+  res.status(500).redirect('/Home');
 });
 
 export default async (req, res) => {
