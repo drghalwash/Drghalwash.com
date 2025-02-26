@@ -6,10 +6,13 @@ const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const getImagePath = (filename) => {
-  if (!filename) return '/Upload/images/gallery/default-gallery.jpg';
+  if (!filename) return '/images/gallery/default.jpg';
   if (filename.startsWith('http')) return filename;
-  if (filename.startsWith('/Upload/')) return filename;
-  return `/Upload/images/gallery/${filename.replace(/["[\]]/g, '')}`;
+  if (filename.startsWith('/images/')) return filename;
+  if (filename.endsWith('.png') || filename.endsWith('.jpg')) {
+    return `/images/gallery/${filename.replace(/["[\]]/g, '')}`;
+  }
+  return '/images/gallery/default.jpg';
 };
 
 const fetchGalleries = async () => {
@@ -17,8 +20,8 @@ const fetchGalleries = async () => {
     const { data: galleries, error } = await supabase.from('gallery').select('*');
     if (error) throw error;
     return galleries.map(gallery => ({
-      ...gallery,
-      image: gallery.image?.length > 0 ? getImagePath(gallery.image[0]) : '/images/default-gallery.jpg'
+      ...gallery, 
+      image: gallery.image?.length > 0 ? getImagePath(JSON.parse(gallery.image)[0]) : '/images/gallery/default.jpg'
     }));
   } catch (error) {
     console.error('[Error] Fetching galleries:', error);
@@ -37,7 +40,7 @@ const fetchGalleryBySlug = async (slug) => {
     if (error) throw error;
     return gallery ? {
       ...gallery,
-      image: gallery.image?.length > 0 ? getImagePath(gallery.image[0]) : '/images/default-gallery.jpg'
+      image: gallery.image?.length > 0 ? getImagePath(gallery.image[0]) : '/images/gallery/default.jpg'
     } : null;
   } catch (error) {
     console.error('[Error] Fetching gallery:', error);
@@ -64,8 +67,7 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
     return subgalleries.map(subgallery => ({
       ...subgallery,
       icon: getImagePath(subgallery.icon),
-      images: (Array.isArray(subgallery.images) ? subgallery.images : 
-        JSON.parse(subgallery.images || '[]')).map(img => getImagePath(img))
+      images: JSON.parse(subgallery.images || '[]').map(img => getImagePath(img))
     }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
