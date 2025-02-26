@@ -9,7 +9,7 @@ const getImagePath = (filename) => {
   if (!filename) return '/Upload/images/default-gallery.jpg';
   if (filename.startsWith('http')) return filename;
   if (filename.startsWith('/')) return filename;
-  return `/Upload/images/gallery/${filename}`;
+  return `/Upload/images/gallery/${filename.replace(/["[\]]/g, '')}`;
 };
 
 const fetchGalleries = async () => {
