@@ -28,7 +28,7 @@ const fetchGalleryBySlug = async (slug) => {
     let imageArray;
     try {
       imageArray = typeof gallery.image === 'string' ? 
-        JSON.parse(gallery.image) : [];
+        JSON.parse(gallery.image.replace(/\\/g, '')) : [];
     } catch (e) {
       console.error('Error parsing gallery image array:', e);
       imageArray = [];
@@ -37,7 +37,8 @@ const fetchGalleryBySlug = async (slug) => {
     // Transform gallery image to GitHub URL
     return {
       ...gallery,
-      image: imageArray[0] ? `https://github.com/drghalwash/Test/blob/main/gallery/${imageArray[0]}?raw=true` : '/images/default-gallery.png'
+      image: imageArray[0] ? `https://github.com/drghalwash/Test/blob/main/gallery/${imageArray[0]}?raw=true` : '/images/default-gallery.png',
+      rawImagePaths: imageArray
     };
   } catch (error) {
     console.error('[Error] Fetching gallery:', error);
@@ -101,11 +102,11 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 
     // Transform image filenames into full GitHub URLs
     const processedImages = imageArray.map(filename => ({
-      filename: filename,
+      filename,
       url: `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`
     }));
 
-    // Format icon URL
+    // Format icon URL (single PNG file)
     const iconUrl = subgallery.icon ? 
       `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : 
       '/images/default-icon.png';
@@ -114,6 +115,7 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       ...subgallery,
       icon: iconUrl,
       images: processedImages,
+      rawImagePaths: imageArray,
       primaryImage: processedImages[0]?.url || '/images/default-gallery.png'
     };
   } catch (error) {
