@@ -47,7 +47,12 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
       .eq('gallery_id', gallery.id);
 
     if (error) throw error;
-    return subgalleries || [];
+    
+    // Process subgalleries to ensure icon paths are complete
+    return (subgalleries || []).map(subgallery => ({
+      ...subgallery,
+      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png'
+    }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
     return [];
@@ -72,7 +77,10 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       .single();
 
     if (error) throw error;
-    return subgallery;
+    return subgallery ? {
+      ...subgallery,
+      icon: subgallery.icon ? `https://github.com/drghalwash/Test/blob/main/gallery/${subgallery.icon}?raw=true` : '/images/default-icon.png'
+    } : null;
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
     return null;
@@ -84,6 +92,15 @@ export const index = async (req, res) => {
     const { slug, subSlug } = req.params;
     const galleries = await fetchGalleries();
 
+    if (!slug) {
+      return res.status(404).render('error', { 
+        error: 'Gallery not found',
+        galleries,
+        movingBackground2: true,
+        'site-footer': true
+      });
+    }
+
     if (subSlug) {
       // Render subgallery page
       const [gallery, subgallery] = await Promise.all([
@@ -92,40 +109,55 @@ export const index = async (req, res) => {
       ]);
 
       if (!gallery || !subgallery) {
-        return res.status(404).render('error', { error: 'Gallery not found' });
+        return res.status(404).render('error', { 
+          error: 'Gallery not found',
+          galleries,
+          movingBackground2: true,
+          'site-footer': true
+        });
       }
 
-      res.render('Pages/subgallery', {
+      return res.render('Pages/subgallery', {
         gallery,
         subgallery,
         galleries,
         movingBackground2: true,
         'site-footer': true
       });
-    } else {
-      // Render main gallery page
-      const [gallery, subgalleries] = await Promise.all([
-        fetchGalleryBySlug(slug),
-        fetchSubGalleriesByGallerySlug(slug)
-      ]);
+    }
 
-      if (!gallery) {
-        return res.status(404).render('error', { error: 'Gallery not found' });
-      }
+    // Render main gallery page
+    const [gallery, subgalleries] = await Promise.all([
+      fetchGalleryBySlug(slug),
+      fetchSubGalleriesByGallerySlug(slug)
+    ]);
 
-      // Sort subgalleries if needed
-      const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
-      
-      res.render('Pages/gallery', {
-        gallery,
-        subgalleries: sortedSubgalleries,
+    if (!gallery) {
+      return res.status(404).render('error', { 
+        error: 'Gallery not found',
         galleries,
         movingBackground2: true,
-        'site-footer': true
+        'site-footer': true  
       });
     }
+
+    // Sort subgalleries if needed
+    const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+    
+    return res.render('Pages/gallery', {
+      gallery,
+      subgalleries: sortedSubgalleries,
+      galleries,
+      movingBackground2: true,
+      'site-footer': true
+    });
   } catch (error) {
     console.error('[Error] Gallery controller:', error);
-    res.status(500).render('error', { error: 'Server error' });
+    res.status(500).render('error', { 
+      error: 'Server error',
+      galleries: [],
+      movingBackground2: true,
+      'site-footer': true
+    });
   }
 };
