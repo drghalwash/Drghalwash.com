@@ -1,10 +1,16 @@
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const getGithubUrl = (filename) => `https://github.com/drghalwash/Test/blob/main/gallery/${filename}?raw=true`;
+const getImagePath = (filename) => {
+  if (!filename) return '/Upload/images/gallery/default-gallery.jpg';
+  if (filename.startsWith('http')) return filename;
+  if (filename.startsWith('/Upload/')) return filename;
+  return `/Upload/images/gallery/${filename.replace(/["[\]]/g, '')}`;
+};
 
 const fetchGalleries = async () => {
   try {
@@ -12,7 +18,7 @@ const fetchGalleries = async () => {
     if (error) throw error;
     return galleries.map(gallery => ({
       ...gallery,
-      image: gallery.image ? getGithubUrl(gallery.image[0]) : null
+      image: gallery.image?.length > 0 ? getImagePath(gallery.image[0]) : '/images/default-gallery.jpg'
     }));
   } catch (error) {
     console.error('[Error] Fetching galleries:', error);
@@ -31,7 +37,7 @@ const fetchGalleryBySlug = async (slug) => {
     if (error) throw error;
     return gallery ? {
       ...gallery,
-      image: gallery.image ? getGithubUrl(gallery.image[0]) : null
+      image: gallery.image?.length > 0 ? getImagePath(gallery.image[0]) : '/images/default-gallery.jpg'
     } : null;
   } catch (error) {
     console.error('[Error] Fetching gallery:', error);
@@ -57,10 +63,9 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
     if (error) throw error;
     return subgalleries.map(subgallery => ({
       ...subgallery,
-      icon: subgallery.icon ? getGithubUrl(subgallery.icon) : '/images/default-icon.png',
-      images: Array.isArray(subgallery.images) ? 
-        subgallery.images.map(img => getGithubUrl(img)) : 
-        JSON.parse(subgallery.images || '[]').map(img => getGithubUrl(img))
+      icon: getImagePath(subgallery.icon),
+      images: (Array.isArray(subgallery.images) ? subgallery.images : 
+        JSON.parse(subgallery.images || '[]')).map(img => getImagePath(img))
     }));
   } catch (error) {
     console.error('[Error] Fetching subgalleries:', error);
@@ -89,10 +94,9 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
 
     return {
       ...subgallery,
-      icon: subgallery.icon ? getGithubUrl(subgallery.icon) : '/images/default-icon.png',
-      images: Array.isArray(subgallery.images) ? 
-        subgallery.images.map(img => getGithubUrl(img)) : 
-        JSON.parse(subgallery.images || '[]').map(img => getGithubUrl(img))
+      icon: getImagePath(subgallery.icon),
+      images: (Array.isArray(subgallery.images) ? subgallery.images : 
+        JSON.parse(subgallery.images || '[]')).map(img => getImagePath(img))
     };
   } catch (error) {
     console.error('[Error] Fetching subgallery:', error);
