@@ -13,6 +13,24 @@ import Choose_route from "./Routes/Choose_route.js";
 import Diet_route from "./Routes/Diet_route.js";
 import Drain_Care_route from "./Routes/Drain_Care_route.js";
 import Finance_route from "./Routes/Finance_route.js";
+
+// Handlebars helper to limit an array
+hbs.registerHelper('limit', function(arr, start, count) {
+  if (!Array.isArray(arr)) return [];
+  return arr.slice(start, start + count);
+});
+
+// Handlebars helper to get items from a specific index to the end
+hbs.registerHelper('limitFrom', function(arr, start) {
+  if (!Array.isArray(arr)) return [];
+  return arr.slice(start);
+});
+
+// Handlebars helper for greater than comparison
+hbs.registerHelper('gt', function(a, b) {
+  return a > b;
+});
+
 import Meet_Our_Patients_route from "./Routes/Meet_Our_Patients_route.js";
 import Policies_route from "./Routes/Policies_route.js";
 import Questions_And_Answer_route from "./Routes/Questions_And_Answer_route.js";

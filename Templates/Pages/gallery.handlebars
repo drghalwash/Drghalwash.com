@@ -125,20 +125,103 @@
     <h1>We invite you to click on each link below to view Before & <br>After Photos with Aesthetics Procedure Description</h1>
     <div class="custom-container">
       {{#if subgalleries.length}}
-        {{#each subgalleries}}
-          <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
-            <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
-              <img 
-                src="{{this.icon}}" 
-                alt="{{this.name}}" 
-                class="icons"
-                onerror="this.style.display='none';"
-                loading="lazy"
-              >
-              <p>{{this.name}}</p>
-            </div>
-          </a>
-        {{/each}}
+        {{! First row - 5 items }}
+        <div class="custom-row first-row">
+          {{#each (limit subgalleries 0 5)}}
+            <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+              <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                <img 
+                  src="{{this.icon}}" 
+                  alt="{{this.name}}" 
+                  class="icons"
+                  onerror="this.style.display='none';"
+                  loading="lazy"
+                >
+                <p>{{this.name}}</p>
+              </div>
+            </a>
+          {{/each}}
+        </div>
+        
+        {{! Second row - 4 items }}
+        {{#if (gt subgalleries.length 5)}}
+          <div class="custom-row second-row">
+            {{#each (limit subgalleries 5 4)}}
+              <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+                <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                  <img 
+                    src="{{this.icon}}" 
+                    alt="{{this.name}}" 
+                    class="icons"
+                    onerror="this.style.display='none';"
+                    loading="lazy"
+                  >
+                  <p>{{this.name}}</p>
+                </div>
+              </a>
+            {{/each}}
+          </div>
+        {{/if}}
+        
+        {{! Third row - 3 items }}
+        {{#if (gt subgalleries.length 9)}}
+          <div class="custom-row third-row">
+            {{#each (limit subgalleries 9 3)}}
+              <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+                <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                  <img 
+                    src="{{this.icon}}" 
+                    alt="{{this.name}}" 
+                    class="icons"
+                    onerror="this.style.display='none';"
+                    loading="lazy"
+                  >
+                  <p>{{this.name}}</p>
+                </div>
+              </a>
+            {{/each}}
+          </div>
+        {{/if}}
+        
+        {{! Fourth row - 1 item }}
+        {{#if (gt subgalleries.length 12)}}
+          <div class="custom-row fourth-row">
+            {{#each (limit subgalleries 12 1)}}
+              <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+                <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                  <img 
+                    src="{{this.icon}}" 
+                    alt="{{this.name}}" 
+                    class="icons"
+                    onerror="this.style.display='none';"
+                    loading="lazy"
+                  >
+                  <p>{{this.name}}</p>
+                </div>
+              </a>
+            {{/each}}
+          </div>
+        {{/if}}
+        
+        {{! Additional items }}
+        {{#if (gt subgalleries.length 13)}}
+          <div class="custom-row additional-row">
+            {{#each (limitFrom subgalleries 13)}}
+              <a href="/galleries/{{../gallery.slug}}/{{this.slug}}" class="gallery-link">
+                <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                  <img 
+                    src="{{this.icon}}" 
+                    alt="{{this.name}}" 
+                    class="icons"
+                    onerror="this.style.display='none';"
+                    loading="lazy"
+                  >
+                  <p>{{this.name}}</p>
+                </div>
+              </a>
+            {{/each}}
+          </div>
+        {{/if}}
       {{else}}
         <div class="no-galleries-message">
           <p>No galleries available at the moment.</p>
