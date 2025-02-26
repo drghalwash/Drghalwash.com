@@ -12,51 +12,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/fonts/icomoon/style.css">
-  <link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
   <link rel="stylesheet" href="/css/tiny-slider.css">
   <link rel="stylesheet" href="/css/aos.css">
-  <link rel="stylesheet" href="/css/flatpickr.min.css">
-  <link rel="stylesheet" href="/css/glightbox.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/photo-gallery.css">
   <link rel="stylesheet" href="/css/header.css">
-  <link rel="stylesheet" href="/css/Stack.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/gallery.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <title>{{subgallery.name}}</title>
-  <style>
-    .carousel-inner img {
-      object-fit: cover;
-      border-radius: 5px;
-      width: 100%;
-      max-height: 400px;
-    }
-    .carousel-indicators {
-      position: static;
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-    .carousel-indicators button {
-      width: 12px !important;
-      height: 12px !important;
-      border-radius: 50% !important;
-      background-color: #666 !important;
-      border: none !important;
-    }
-    .carousel-indicators .active {
-      background-color: #333 !important;
-    }
-  </style>
 </head>
 <body>
-
   <nav class="unique-navbar">
-    <div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+    <div class="distinct-logo">
+      <a href="/Home"><img src="/images/new-logo.png" alt="Logo"></a>
+    </div>
     <div class="menu-toggle" id="toggle-button">
       <div class="toggle-lines">
         <span style="width: 15px;"></span>
@@ -124,69 +93,42 @@
     <p><a href="/Home">Home</a> > <a href="/galleries/{{gallery.slug}}">{{gallery.name}}</a> > {{subgallery.name}}</p>
   </div>
 
-  <div class="container2">
-    <div class="content">
-      <div class="slider" data-total-images="{{subgallery.images.length}}">
-        <div id="imageCarousel" class="carousel slide">
-          <div class="carousel-inner">
-            {{#each subgallery.images}}
-              <div class="carousel-item {{#if @first}}active{{/if}}">
-                <img src="{{this.url}}" alt="{{this.filename}}" class="d-block w-100">
-              </div>
-            {{/each}}
+  {{#if subgallery.images.length}}
+  <div class="section">
+    <div class="container">
+      <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {{#each subgallery.images}}
+          <div class="carousel-item {{#if @first}}active{{/if}}">
+            <img src="{{this.url}}" class="d-block w-100" alt="Gallery Image">
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-          </button>
-          <div class="carousel-indicators">
-            {{#each subgallery.images}}
-              <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{@index}}" class="{{#if @index === 0}}active{{/if}}"></button>
-            {{/each}}
-          </div>
+          {{/each}}
         </div>
-        <p class="text-center mt-2">Click image to view in full screen</p>
-      </div>
-
-      <div class="details">
-        <div style="display: flex; align-items: center; gap: 8px; padding: 10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-          </svg>
-          <p style="margin: 11px 0 0;">READ PROCEDURE DETAILS written by Dr. Khaled</p>
-        </div>
-
-        <div class="tabs">
-          {{#if subgallery.title1}}
-            <div class="tab active" onclick="showTab('desc1')">{{subgallery.title1}}</div>
-          {{/if}}
-          {{#if subgallery.title2}}
-            <div class="tab" onclick="showTab('desc2')">{{subgallery.title2}}</div>
-          {{/if}}
-          {{#if subgallery.title3}}
-            <div class="tab" onclick="showTab('desc3')">{{subgallery.title3}}</div>
-          {{/if}}
-        </div>
-
-        <div id="desc1" class="tab-content" style="display: block;">
-          {{{subgallery.description1}}}
-        </div>
-        {{#if subgallery.description2}}
-          <div id="desc2" class="tab-content" style="display: none;">
-            {{{subgallery.description2}}}
-          </div>
-        {{/if}}
-        {{#if subgallery.description3}}
-          <div id="desc3" class="tab-content" style="display: none;">
-            {{{subgallery.description3}}}
-          </div>
-        {{/if}}
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>
+  {{/if}}
+
+  {{#if subgallery.description}}
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          {{{subgallery.description}}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
 
   <div class="moving-background2">
     <div class="overlay"></div>
@@ -267,106 +209,17 @@
   </div>
   <div class="Copyright">Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved.</div>
 
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/tiny-slider.js"></script>
-  <script src="/js/aos.js"></script>
-  <script src="/js/navbar.js"></script>
-  <script src="/js/counter.js"></script>
-  
-  <script src="/js/flatpickr.js"></script>
-  <script src="/js/glightbox.min.js"></script>
-  <script src="/js/custom.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/jquery-3.3.1.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-
+  <script src="/js/navbar.js"></script>
   <script>
+    // Simple navbar toggle
     const toggleButton = document.getElementById('toggle-button');
     const menu = document.getElementById('menu');
-
-    toggleButton.addEventListener('click', (event) => {
-      event.stopPropagation();
-      menu.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
-        menu.classList.remove('active');
-      }
-    });
-
-    const resetMenu = () => {
-      if (window.innerWidth > 768) {
-        menu.classList.remove('active');
-      }
-    };
-
-    window.addEventListener('resize', resetMenu);
-    resetMenu();
-
-    function showTab(tabId) {
-      // Hide all tab contents
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.style.display = 'none';
+    if (toggleButton && menu) {
+      toggleButton.addEventListener('click', () => {
+        menu.classList.toggle('active');
       });
-
-      // Remove active class from all tabs
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-
-      // Show selected tab content
-      document.getElementById(tabId).style.display = 'block';
-
-      // Add active class to clicked tab
-      event.target.classList.add('active');
     }
-
-    const navbar = document.querySelector(".unique-navbar");
-    const logo = document.querySelector(".distinct-logo img");
-    const links = document.querySelectorAll(".uncommon-link");
-    const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
-
-    const originalLogoSrc = "/images/white-logo.png";
-    const scrolledLogoSrc = "/images/black-logo.png";
-
-    function handleScroll() {
-      if (window.scrollY > 0) {
-        navbar.classList.add("scrolled");
-        logo.src = scrolledLogoSrc;
-        links.forEach((link) => {
-          link.style.color = "#4c4b4b";
-        });
-        toggleSpans.forEach((span) => {
-          span.style.backgroundColor = "#4c4b4b";
-        });
-      } else {
-        navbar.classList.remove("scrolled");
-        logo.src = originalLogoSrc;
-        links.forEach((link) => {
-          link.style.color = "white";
-        });
-        toggleSpans.forEach((span) => {
-          span.style.backgroundColor = "white";
-        });
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      if (window.scrollY === 0) {
-        logo.src = originalLogoSrc;
-      }
-    });
-
-    window.addEventListener("scroll", handleScroll);
-
-    // Initialize lightbox for images
-    document.querySelectorAll('.carousel-inner img').forEach(img => {
-      img.addEventListener('click', () => {
-        window.open(img.src, '_blank');
-      });
-    });
   </script>
 </body>
 </html>
