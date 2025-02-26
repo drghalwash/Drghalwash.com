@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,52 +24,15 @@
   <link rel="stylesheet" href="/css/Stack.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/gallery.css">
 
   <title>{{subgallery.name}}</title>
   <style>
-    @media (max-width: 700px) {
-      .heading-pages h1 {
-        font-size: 29px;
-        line-height: 1.2;
-      }
-      .heading-pages p {
-        font-size: 14px;
-      }
-      .heading-pages a {
-        font-size: 14px;
-      }
-    }
-    @media (max-width: 768px) {
-      .row {
-        flex-direction: column;
-      }
-      .carousel {
-        max-width: 100%;
-      }
-      .carousel-inner img {
-        height: 200px;
-      }
-    }
-    .carousel {
-      max-width: 70%;
-      margin: 0 auto;
-    }
     .carousel-inner img {
       object-fit: cover;
-      height: 300px;
-      border-radius: 10px;
+      border-radius: 5px;
       width: 100%;
-    }
-    .carousel-indicators button {
-      width: 12px !important;
-      height: 12px !important;
-      border-radius: 50% !important;
-      background-color: gray !important;
-      border: none !important;
-      transition: background-color 0.3s ease;
-    }
-    .carousel-indicators .active {
-      background-color: rgb(54, 51, 51) !important;
+      max-height: 400px;
     }
     .carousel-indicators {
       position: static;
@@ -78,6 +40,16 @@
       display: flex;
       justify-content: center;
       gap: 10px;
+    }
+    .carousel-indicators button {
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 50% !important;
+      background-color: #666 !important;
+      border: none !important;
+    }
+    .carousel-indicators .active {
+      background-color: #333 !important;
     }
   </style>
 </head>
@@ -154,105 +126,76 @@
 
   <div class="container2">
     <div class="content">
-      <div class="col-lg-6 col-12 mb-4">
-        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 70%; margin: 0 auto;">
+      <div class="slider">
+        <div id="imageCarousel" class="carousel slide">
           <div class="carousel-inner">
             {{#if subgallery.images.[0]}}
-            <div class="carousel-item active">
-              <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{subgallery.images.[0]}}?raw=true" class="d-block w-100 rounded" alt="Image 1">
-            </div>
+              <div class="carousel-item active">
+                <img src="{{subgallery.images.[0]}}" alt="Image 1">
+              </div>
             {{/if}}
             {{#each subgallery.images}}
               {{#if @index}}
-              <div class="carousel-item">
-                <img src="https://github.com/drghalwash/Test/blob/main/gallery/{{this}}?raw=true" class="d-block w-100 rounded" alt="Image {{add @index 1}}">
-              </div>
+                <div class="carousel-item">
+                  <img src="{{this}}" alt="Image {{add @index 1}}">
+                </div>
               {{/if}}
             {{/each}}
           </div>
+
+          <button class="prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
 
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active"></button>
             {{#each subgallery.images}}
               {{#if @index}}
-              <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{@index}}"></button>
+                <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{@index}}"></button>
               {{/if}}
             {{/each}}
           </div>
-
-          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
         </div>
-        <p class="mt-2 text-center">Click the image to expand. It'll open in full screen for a closer look.</p>
+        <p class="text-center mt-2">Click image to view in full screen</p>
       </div>
 
       <div class="details">
-        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-info-circle" viewBox="0 0 16 16">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
           </svg>
-          <p style="margin-top: 11px;">READ PROCEDURE DETAILS written by Dr Khaled</p>
+          <p style="margin: 11px 0 0;">READ PROCEDURE DETAILS written by Dr. Khaled</p>
         </div>
 
         <div class="tabs">
           {{#if subgallery.title1}}
-          <div id="tab_1" class="tab active" onclick="showTab('des_1', event)">{{subgallery.title1}}</div>
+            <div class="tab active" onclick="showTab('desc1')">{{subgallery.title1}}</div>
           {{/if}}
           {{#if subgallery.title2}}
-          <div id="tab_2" class="tab" onclick="showTab('des_2', event)">{{subgallery.title2}}</div>
+            <div class="tab" onclick="showTab('desc2')">{{subgallery.title2}}</div>
           {{/if}}
           {{#if subgallery.title3}}
-          <div id="tab_3" class="tab" onclick="showTab('des_3', event)">{{subgallery.title3}}</div>
+            <div class="tab" onclick="showTab('desc3')">{{subgallery.title3}}</div>
           {{/if}}
         </div>
 
-        <div id="des_1" class="tab-content" style="display: block;">
+        <div id="desc1" class="tab-content" style="display: block;">
           {{{subgallery.description1}}}
         </div>
         {{#if subgallery.description2}}
-        <div id="des_2" class="tab-content" style="display: none;">
-          {{{subgallery.description2}}}
-        </div>
-        {{/if}}
-        {{#if subgallery.description3}}
-        <div id="des_3" class="tab-content" style="display: none;">
-          {{{subgallery.description3}}}
-        </div>
-        {{/if}}
-
-          <div class="tabs">
-            {{#if subgallery.title1}}
-            <div id="tab_1" class="tab active" onclick="showTab('des_1', event)">{{subgallery.title1}}</div>
-            {{/if}}
-            {{#if subgallery.title2}}
-            <div id="tab_2" class="tab" onclick="showTab('des_2', event)">{{subgallery.title2}}</div>
-            {{/if}}
-            {{#if subgallery.title3}}
-            <div id="tab_3" class="tab" onclick="showTab('des_3', event)">{{subgallery.title3}}</div>
-            {{/if}}
-          </div>
-
-          <div id="des_1" class="tab-content" style="display: block;">
-            {{{subgallery.description1}}}
-          </div>
-          {{#if subgallery.description2}}
-          <div id="des_2" class="tab-content" style="display: none;">
+          <div id="desc2" class="tab-content" style="display: none;">
             {{{subgallery.description2}}}
           </div>
-          {{/if}}
-          {{#if subgallery.description3}}
-          <div id="des_3" class="tab-content" style="display: none;">
+        {{/if}}
+        {{#if subgallery.description3}}
+          <div id="desc3" class="tab-content" style="display: none;">
             {{{subgallery.description3}}}
           </div>
-          {{/if}}
-        </div>
+        {{/if}}
       </div>
     </div>
   </div>
@@ -374,14 +317,21 @@
     window.addEventListener('resize', resetMenu);
     resetMenu();
 
-    function showTab(tabId, event) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.style.display = 'none';
+    function showTab(tabId) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.style.display = 'none';
       });
+
+      // Remove active class from all tabs
       document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.remove('active');
       });
+
+      // Show selected tab content
       document.getElementById(tabId).style.display = 'block';
+
+      // Add active class to clicked tab
       event.target.classList.add('active');
     }
 
@@ -422,6 +372,13 @@
     });
 
     window.addEventListener("scroll", handleScroll);
+
+    // Initialize lightbox for images
+    document.querySelectorAll('.carousel-inner img').forEach(img => {
+      img.addEventListener('click', () => {
+        window.open(img.src, '_blank');
+      });
+    });
   </script>
 </body>
 </html>
