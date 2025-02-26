@@ -3,9 +3,9 @@
     width: 95%;
     margin: 40px auto;
     padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: transparent;
+    border-radius: 0px;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width:430px){
