@@ -130,15 +130,9 @@
         <div id="imageCarousel" class="carousel slide">
           <div class="carousel-inner">
             {{#each subgallery.images}}
-              {{#if @index === 0}}
-                <div class="carousel-item active">
-                  <img src="{{this}}" alt="Image 1">
-                </div>
-              {{else}}
-                <div class="carousel-item">
-                  <img src="{{this}}" alt="Image {{@index}}">
-                </div>
-              {{/if}}
+              <div class="carousel-item {{#if @first}}active{{/if}}">
+                <img src="{{this}}" alt="Image {{add @index 1}}" class="d-block w-100">
+              </div>
             {{/each}}
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
