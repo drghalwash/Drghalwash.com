@@ -6,7 +6,7 @@ const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const getImagePath = (filename) => {
-  if (!filename) return '/Upload/images/default-gallery.jpg';
+  if (!filename) return '/Upload/images/gallery/default-gallery.jpg';
   if (filename.startsWith('http')) return filename;
   if (filename.startsWith('/Upload/')) return filename;
   return `/Upload/images/gallery/${filename.replace(/["[\]]/g, '')}`;
