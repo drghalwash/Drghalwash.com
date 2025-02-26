@@ -27,6 +27,59 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
 
   <title>{{subgallery.name}}</title>
+  <style>
+    @media (max-width: 700px) {
+      .heading-pages h1 {
+        font-size: 29px;
+        line-height: 1.2;
+      }
+      .heading-pages p {
+        font-size: 14px;
+      }
+      .heading-pages a {
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 768px) {
+      .row {
+        flex-direction: column;
+      }
+      .carousel {
+        max-width: 100%;
+      }
+      .carousel-inner img {
+        height: 200px;
+      }
+    }
+    .carousel {
+      max-width: 70%;
+      margin: 0 auto;
+    }
+    .carousel-inner img {
+      object-fit: cover;
+      height: 300px;
+      border-radius: 10px;
+      width: 100%;
+    }
+    .carousel-indicators button {
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 50% !important;
+      background-color: gray !important;
+      border: none !important;
+      transition: background-color 0.3s ease;
+    }
+    .carousel-indicators .active {
+      background-color: rgb(54, 51, 51) !important;
+    }
+    .carousel-indicators {
+      position: static;
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+  </style>
 </head>
 <body>
 
@@ -106,13 +159,13 @@
           <div class="carousel-inner">
             {{#if subgallery.images.[0]}}
             <div class="carousel-item active">
-              <img src="/images/Photo Gallery/{{subgallery.images.[0]}}" class="d-block w-100 rounded" alt="Image 1">
+              <img src="{{subgallery.images.[0]}}" class="d-block w-100 rounded" alt="Image 1">
             </div>
             {{/if}}
             {{#each subgallery.images}}
               {{#if @index}}
               <div class="carousel-item">
-                <img src="/images/Photo Gallery/{{this}}" class="d-block w-100 rounded" alt="Image {{add @index 1}}">
+                <img src="{{this}}" class="d-block w-100 rounded" alt="Image {{add @index 1}}">
               </div>
               {{/if}}
             {{/each}}
@@ -140,14 +193,13 @@
       </div>
 
       <div class="details">
-        <div class="procedure-info">
-          <div style="display: flex; align-items: center; gap: 8px; padding: 10px 10px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-info-circle" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-            </svg>
-            <p style="margin-top: 11px;">READ PROCEDURE DETAILS written by Dr. Khaled</p>
-          </div>
+        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+          </svg>
+          <p style="margin-top: 11px;">READ PROCEDURE DETAILS written by Dr. Khaled</p>
+        </div>
 
           <div class="tabs">
             {{#if subgallery.title1}}
