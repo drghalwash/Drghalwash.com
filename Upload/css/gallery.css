@@ -1,3 +1,46 @@
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  background: #1B54FF;
+  color: white;
+  border-color: #1B54FF;
+}
+
+.tab-content {
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  line-height: 1.6;
+}
+
+.tab-content p {
+  margin: 0;
+  text-align: justify;
+}
+
+.details {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .container2 {
     max-width: 1200px;
     margin: 20px auto;

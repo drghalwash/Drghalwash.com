@@ -198,8 +198,34 @@
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
           </svg>
-          <p style="margin-top: 11px;">READ PROCEDURE DETAILS written by Dr. Khaled</p>
+          <p style="margin-top: 11px;">READ PROCEDURE DETAILS written by Dr Khaled</p>
         </div>
+
+        <div class="tabs">
+          {{#if subgallery.title1}}
+          <div id="tab_1" class="tab active" onclick="showTab('des_1', event)">{{subgallery.title1}}</div>
+          {{/if}}
+          {{#if subgallery.title2}}
+          <div id="tab_2" class="tab" onclick="showTab('des_2', event)">{{subgallery.title2}}</div>
+          {{/if}}
+          {{#if subgallery.title3}}
+          <div id="tab_3" class="tab" onclick="showTab('des_3', event)">{{subgallery.title3}}</div>
+          {{/if}}
+        </div>
+
+        <div id="des_1" class="tab-content" style="display: block;">
+          {{{subgallery.description1}}}
+        </div>
+        {{#if subgallery.description2}}
+        <div id="des_2" class="tab-content" style="display: none;">
+          {{{subgallery.description2}}}
+        </div>
+        {{/if}}
+        {{#if subgallery.description3}}
+        <div id="des_3" class="tab-content" style="display: none;">
+          {{{subgallery.description3}}}
+        </div>
+        {{/if}}
 
           <div class="tabs">
             {{#if subgallery.title1}}
