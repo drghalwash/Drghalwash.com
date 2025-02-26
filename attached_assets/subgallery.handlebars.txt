@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap5" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="/fonts/icomoon/style.css">
+  <link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+  <link rel="stylesheet" href="/css/tiny-slider.css">
+  <link rel="stylesheet" href="/css/aos.css">
+  <link rel="stylesheet" href="/css/flatpickr.min.css">
+  <link rel="stylesheet" href="/css/glightbox.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/guidelines.css">
+  <link rel="stylesheet" href="/css/gallery.css">
+  <link rel="stylesheet" href="/css/header.css">
+
+
+  <!-- <link rel="stylesheet" href="css/photo-gallery.css"> -->
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @media (max-width: 700px) {
+      .heading-pages h1 {
+        font-size: 29px;
+        /* Reduce font size for the main heading */
+        line-height: 1.2;
+        /* Adjust line height for better spacing */
+      }
+
+      .heading-pages p {
+        font-size: 14px;
+        /* Reduce breadcrumb font size */
+      }
+
+      .heading-pages a {
+        font-size: 14px;
+        /* Ensure link text matches breadcrumb size */
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .row {
+        flex-direction: column;
+      }
+
+      .carousel {
+        max-width: 100%;
+      }
+
+      .carousel-inner img {
+        height: 200px;
+        /* Adjust height for smaller screens */
+      }
+    }
+
+    .carousel {
+      max-width: 70%;
+      margin: 0 auto;
+    }
+
+    .carousel-inner img {
+      object-fit: cover;
+      /* Ensure images fit well */
+      height: auto;
+      border-radius: 10px;
+      width: 100%;
+      /* Ensures the image takes the full width of its container */
+      height: 300px;
+      /* Set a fixed height */
+    }
+
+    /* Customize carousel indicators (dots instead of squares) */
+    .carousel-indicators button {
+      width: 12px !important;
+      /* Width of the dots */
+      height: 12px !important;
+      /* Height of the dots */
+      border-radius: 50% !important;
+      /* Make the dots circular */
+      background-color: gray !important;
+      /* Default gray color for the dots */
+      border: none !important;
+      /* Remove border around the dots */
+      transition: background-color 0.3s ease;
+      /* Smooth transition for color change */
+    }
+
+    .carousel-indicators .active {
+      background-color: rgb(54, 51, 51) !important;
+      /* Darker gray when active */
+    }
+
+      {
+        {
+        !-- .carousel-indicators [data-bs-target] {
+          box-sizing: content-box;
+          flex: 0 1 auto;
+          width: 10px;
+          height: 1px;
+          padding: 0;
+          margin-right: 3px;
+          margin-left: 3px;
+          text-indent: -999px;
+          cursor: pointer;
+          background-color: #fff;
+          background-clip: padding-box;
+          border: 0;
+          border-top: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+          opacity: 1;
+          transition: opacity .6s ease;
+        }
+
+        --
+      }
+    }
+
+    .carousel-indicators .active {
+      background-color: black;
+      /* Active dot color */
+    }
+
+    /* Small white arrows for carousel controls */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      opacity: 1;
+    }
+
+
+    .carousel-control-prev-icon {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M3.5 0L4.5 1 2 3.5 4.5 6 3.5 7 0 3.5 3.5 0z'/%3E%3C/svg%3E");
+      background-size: 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      opacity: 1 !important;
+    }
+
+    .carousel-control-next-icon {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M4.5 0L3.5 1 6 3.5 3.5 6 4.5 7 8 3.5 4.5 0z'/%3E%3C/svg%3E");
+      background-size: 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      opacity: 1 !important;
+    }
+
+
+    .carousel-control-prev-icon:hover,
+    .carousel-control-next-icon:hover {
+
+      color: gray;
+    }
+
+      {
+        {
+        !-- .carousel-indicators [data-bs-target] {
+          box-sizing: content-box;
+          flex: 0 1 auto;
+          width: 10px;
+          height: 1px;
+          padding: 0;
+          margin-right: 3px;
+          margin-left: 3px;
+          text-indent: -999px;
+          cursor: pointer;
+          background-color: black;
+          background-clip: padding-box;
+          border: 0;
+
+
+          /* border-bottom: 10px solid transparent; */
+          opacity: 1;
+          transition: opacity .6s ease;
+        }
+
+        --
+      }
+    }
+
+    .carousel-indicators {
+      position: static;
+      /* Remove absolute positioning to move below the slider */
+      margin-top: 15px;
+      /* Add some spacing between the slider and the dots */
+      display: flex;
+      justify-content: center;
+      /* Center the dots under the slider */
+      gap: 10px;
+      /* Add spacing between the dots */
+    }
+  </style>
+  <title>Guidelines </title>
+
+</head>
+
+<body>
+
+  <nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each Photo_Gallariess}}
+					<li><a href="/Photo_Gallary/{{_id}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+        <!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+        
+      
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/Questions_And_Answer" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+
+  <div class="heading-pages">
+    <h1>Photography Guidelines</h1>
+    <p><a href="/Home">Home </a> > Photo Gallery > Photography Guidelines </p>
+  </div>
+
+
+
+
+
+  <div class="container2">
+    <div class="content">
+      <!-- Image Slider -->
+      <div class="col-lg-6 col-12 mb-4">
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 70%; margin: 0 auto;">
+
+
+          <!-- Carousel Images -->
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="/images/Photo Gallery/{{First_Image}}" class="d-block w-100 rounded" alt="Image 1">
+            </div>
+            {{#each all_images}}
+            <div class="carousel-item">
+              <img src="/images/Photo Gallery/{{this}}" class="d-block w-100 rounded" alt="Image 2">
+            </div>
+            {{/each}}
+          </div>
+          <!-- Indicators (Dots) -->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active"
+              aria-current="true" aria-label="Slide 1"></button>
+              {{#each all_images}}
+            <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{add @index 1}}" aria-label="Slide 2"></button>
+            {{/each}}
+          </div>
+
+          <!-- Carousel Controls (Small White Arrows) -->
+          <!-- Carousel Controls -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
+        <p class="mt-2 text-center">Click the image to expand. It'll open in full screen for a closer look.</p>
+      </div>
+
+      <!-- Procedure Details -->
+      <div class="details">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-info-circle"
+            viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+            <path
+              d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+          </svg>
+          <p style="margin-top: 11px; ">READ PROCEDURE DETAILS written by Dr Romano</p>
+        </div>
+
+        <div class="tabs">
+          <div id="test_2" hidden>{{Photo_Gallaries_images.title2}}</div>
+          <div id="test_3" hidden>{{Photo_Gallaries_images.title3}}</div>
+          <div id="tab_1" class="tab active" onclick="showTab('des_1', event)">{{Photo_Gallaries_images.title1}}</div>
+          <div id="tab_2" class="tab" onclick="showTab('des_2', event)">{{Photo_Gallaries_images.title2}}</div>
+          <div id="tab_3" class="tab" onclick="showTab('des_3', event)">{{Photo_Gallaries_images.title3}}</div>
+        </div>
+        <div id="des_1" class="tab-content" style="display: block;">
+          <p>{{Photo_Gallaries_images.description1}}</p>
+        </div>
+        <div id="des_2" class="tab-content" style="display: none;">
+          <p>{{Photo_Gallaries_images.description2}}</p>
+        </div>
+        <div id="des_3" class="tab-content" style="display: none;">
+          <p>{{Photo_Gallaries_images.description3}}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="moving-background2">
+    <div class="overlay"></div>
+    <div class="content-of-moving-background">
+      <h1>Get Started</h1>
+      <p>We’re here to answer your questions and guide you on your journey. Reach out to us today.</p>
+      <div class="button-of-moving-background">
+        <a href="/Contact">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">123 Main St, Anytown, USA 12345</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">01011111111</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each Photo_Gallariess}}
+							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+      <script src="/js/bootstrap.bundle.min.js"></script>
+      <script src="/js/tiny-slider.js"></script>
+      <script src="/js/aos.js"></script>
+      <script src="/js/navbar.js"></script>
+      <script src="/js/counter.js"></script>
+      <script src="/js/rellax.js"></script>
+      <script src="/js/flatpickr.js"></script>
+      <script src="/js/glightbox.min.js"></script>
+      <script src="/js/custom.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+      <script>
+
+
+
+        // Function to initialize and hide empty tabs
+        function initializeTabs() {
+          const tabs = [
+            { tab: "tab_1", content: "des_1" },
+            { tab: "tab_2", content: "des_2" },
+            { tab: "tab_3", content: "des_3" }
+          ];
+
+          tabs.forEach(({ tab, content }) => {
+            const tabElement = document.getElementById(tab);
+            const contentElement = document.getElementById(content);
+
+            if (!tabElement || !contentElement) return;
+
+            // Hide tab and content if the tab's content is empty
+            if (!tabElement.innerHTML.trim()) {
+              tabElement.style.display = "none";
+              contentElement.style.display = "none";
+            }
+          });
+        }
+
+        // Tab Logic
+        function showTab(tabId, event) {
+          document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.style.display = 'none';
+          });
+          document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+          });
+          const contentElement = document.getElementById(tabId);
+          if (contentElement) {
+            contentElement.style.display = 'block';
+          }
+          if (event.target) {
+            event.target.classList.add('active');
+          }
+        }
+
+        // Initialize tabs on DOMContentLoaded
+        document.addEventListener("DOMContentLoaded", initializeTabs);
+
+      </script>
+
+      <script src="/js/header.js"></script>
+      <script>
+        const toggleButton = document.getElementById('toggle-button');
+        const menu = document.getElementById('menu');
+
+        // Toggle the menu visibility on button click
+        toggleButton.addEventListener('click', (event) => {
+          event.stopPropagation(); // Prevent click from propagating to the document
+          menu.classList.toggle('active');
+        });
+
+        // Close the menu when clicking outside of it
+        document.addEventListener('click', (event) => {
+          if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+            menu.classList.remove('active'); // Remove the active class if clicking outside
+          }
+        });
+
+        // Function to reset menu visibility for larger screens
+        const resetMenu = () => {
+          if (window.innerWidth > 768) {
+            menu.classList.remove('active'); // Remove the active class in desktop view
+          }
+        };
+
+        // Listen for window resize events
+        window.addEventListener('resize', resetMenu);
+
+        // Initial check to reset menu on page load
+        resetMenu();
+      </script>
+      <script src="js/header.js"></script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const nav = document.querySelector(".site-nav ");
+          const menuToggle = document.querySelector(".sticky-wrapper");
+          menuToggle.addEventListener("click", function () {
+            nav.classList.toggle("active"); // Toggle the class on the nav
+          });
+        });
+      </script>
+
+      <script>
+        // Select the navbar, logo, links, and toggle spans
+        const navbar = document.querySelector(".unique-navbar");
+        const logo = document.querySelector(".distinct-logo img");
+        const links = document.querySelectorAll(".uncommon-link");
+        const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
+
+        // Paths for the original and scrolled state logos
+        const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
+        const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
+
+        // Function to handle scroll behavior
+        function handleScroll() {
+          if (window.scrollY > 0) {
+            // Add scrolled class when the user scrolls down
+            navbar.classList.add("scrolled");
+
+            // Update logo for scrolled state
+            logo.src = scrolledLogoSrc;
+
+            // Update link colors
+            links.forEach((link) => {
+              link.style.color = "#4c4b4b"; // Dark links for scrolled state
+            });
+
+            // Update toggle span colors
+            toggleSpans.forEach((span) => {
+              span.style.backgroundColor = "#4c4b4b"; // Black for scrolled state
+            });
+          } else {
+            // Remove scrolled class when at the top of the page
+            navbar.classList.remove("scrolled");
+
+            // Ensure the logo is white when at the top
+            logo.src = originalLogoSrc;
+
+            // Reset link colors to inherit the default color
+            links.forEach((link) => {
+              link.style.color = "white";
+            });
+
+            // Reset toggle span colors
+            toggleSpans.forEach((span) => {
+              span.style.backgroundColor = "white"; // White for default state
+            });
+          }
+        }
+
+        // Ensure the logo is white when the page loads
+        window.addEventListener("DOMContentLoaded", () => {
+          if (window.scrollY === 0) {
+            logo.src = originalLogoSrc;
+          }
+        });
+
+        // Attach the scroll event listener
+        window.addEventListener("scroll", handleScroll);
+      </script>
+</body>
+
+</html>
