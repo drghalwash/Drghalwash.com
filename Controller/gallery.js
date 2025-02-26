@@ -23,7 +23,22 @@ const fetchGalleryBySlug = async (slug) => {
       .eq('slug', slug)
       .single();
     if (error) throw error;
-    return gallery;
+
+    // Parse image array from JSON string
+    let imageArray;
+    try {
+      imageArray = typeof gallery.image === 'string' ? 
+        JSON.parse(gallery.image) : [];
+    } catch (e) {
+      console.error('Error parsing gallery image array:', e);
+      imageArray = [];
+    }
+
+    // Transform gallery image to GitHub URL
+    return {
+      ...gallery,
+      image: imageArray[0] ? `https://github.com/drghalwash/Test/blob/main/gallery/${imageArray[0]}?raw=true` : '/images/default-gallery.png'
+    };
   } catch (error) {
     console.error('[Error] Fetching gallery:', error);
     return null;
