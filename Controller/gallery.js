@@ -195,39 +195,38 @@ const arrangeSubgalleriesInRows = (subgalleries) => {
   // Filter out subgalleries without names as they shouldn't be displayed
   const validSubgalleries = subgalleries.filter(sg => sg.name && sg.name.trim() !== '');
   
-  // Process subgalleries to add hasName property
+  // Prepare subgalleries with default icons only when needed
   const preparedSubgalleries = validSubgalleries.map(sg => ({
     ...sg,
-    hasName: !!(sg.name && sg.name.trim() !== ''), // Boolean flag for name presence
-    hasIcon: !!(sg.icon && !sg.icon.includes('default-icon.jpg')) // Boolean flag for valid icon
+    // No need to force an icon if name exists - this prevents UI issues with missing icons
   }));
   
   const rows = [];
   let currentIndex = 0;
   const totalItems = preparedSubgalleries.length;
-  
-  // Optimal distribution for aesthetics and readability
-  if (totalItems <= 3) {
-    // For 1-3 items, use a single row
+
+  // Determine optimal row patterns based on total count
+  // This creates a more balanced layout with consistent spacing
+  if (totalItems <= 4) {
+    // Simple single row for 1-4 items
     rows.push({
       type: `row-${totalItems}`,
       items: preparedSubgalleries
     });
   } else {
-    // For larger collections, create balanced rows
+    // For larger collections, create uniform rows where possible
     while (currentIndex < preparedSubgalleries.length) {
       const remainingItems = preparedSubgalleries.length - currentIndex;
       
-      // Try to maintain a pattern of 5-4-3-2 or 4-4-4-2 for aesthetics
-      if (remainingItems >= 5 && (totalItems - currentIndex) > 8) {
-        // Full row of 5 for larger galleries
+      if (remainingItems >= 5) {
+        // Full row of 5
         rows.push({
           type: 'row-five',
           items: preparedSubgalleries.slice(currentIndex, currentIndex + 5)
         });
         currentIndex += 5;
       } else if (remainingItems >= 4) {
-        // Row of 4 for medium-size galleries
+        // Row of 4
         rows.push({
           type: 'row-four',
           items: preparedSubgalleries.slice(currentIndex, currentIndex + 4)
