@@ -148,15 +148,42 @@
   .custom-div,
   .custom-div-private {
     display: flex; /* Enable Flexbox for horizontal alignment */
-    align-items: center; /* Vertically align items */
-    justify-content: center; /* Center items horizontally */
-    gap: 0px; /* Space between the image and text */
-    padding: 10px !important;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    gap: 10px; /* Space between the image and text */
+    padding: 15px !important;
     background-color: #f5f5f5; /* Light background for visibility */
     border: 1px solid #ddd; /* Optional border */
     border-radius: 5px; /* Rounded corners */
+    min-height: 180px; /* Set fixed minimum height to prevent shrinking */
+    width: 100%; /* Ensure full width */
+  }
 
+  .icons {
+    height: 100px;
+    width: 90px;
+    object-fit: contain;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
 
+  .icons:not([src]), 
+  .icons[src=""], 
+  .icons[onerror] {
+    min-height: 100px; /* Maintain height even when image fails to load */
+    background-color: #f0f0f0; /* Light background to show space */
+    border-radius: 5px;
+  }
+
+  .custom-div p,
+  .custom-div-private p {
+    margin: 0; /* Remove default margin */
+    padding: 0;
+    font-size: 16px; /* Adjust text size */
+    color: #4D4D4D; /* Set text color */
+    font-weight: bold;
+    text-align: center; /* Center text */
+    width: 100%; /* Full width */
   }
 
      .icons{
@@ -165,14 +192,7 @@
         object-fit: contain;
 
     }
-    .custom-div p,
-    .custom-div-private p {
-        margin: 0; /* Remove default margin */
-  padding: 0;
-        font-size: 16px; /* Adjust text size */
-        color: #4D4D4D; /* Set text color */
-        font-weight: bold;
-      }
+
 
       @media (max-width: 768px) {
         .custom-div,
