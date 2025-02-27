@@ -143,24 +143,7 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
     
     return subgalleries.map(subgallery => {
       // Process icon path with better fallback mechanisms
-      // If icon is missing, try to use first image as icon or fallback to default
-      let iconPath;
-      
-      if (subgallery.icon) {
-        iconPath = getImagePath(subgallery.icon, 'icon');
-      } else {
-        // Try to extract first image as icon
-        const rawImages = subgallery.images;
-        
-        if (typeof rawImages === 'string' && rawImages) {
-          const parsedImages = safeJsonParse(rawImages);
-          iconPath = parsedImages.length > 0 ? getImagePath(parsedImages[0]) : getImagePath(null, 'icon');
-        } else if (Array.isArray(rawImages) && rawImages.length > 0) {
-          iconPath = getImagePath(rawImages[0]);
-        } else {
-          iconPath = getImagePath(null, 'icon');
-        }
-      }
+      let iconPath = getImagePath(subgallery.icon || null, 'icon');
       
       // Process image array
       const rawImages = subgallery.images;
@@ -185,62 +168,74 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 };
 
 /**
- * Arranges subgalleries into rows with varying item counts
+ * Arranges subgalleries into rows with appropriate sizing
  * @param {Array} subgalleries - The array of subgallery objects
- * @returns {Array} - Array of row objects, each with items array
+ * @returns {Array} - Array of row objects, each with items array and row type
  */
 const arrangeSubgalleriesInRows = (subgalleries) => {
+  // Return empty array if no subgalleries exist
   if (!subgalleries || subgalleries.length === 0) return [];
   
-  // Filter out subgalleries without names as they shouldn't be displayed
+  // Filter valid subgalleries based on name presence
   const validSubgalleries = subgalleries.filter(sg => sg.name && sg.name.trim() !== '');
+  if (validSubgalleries.length === 0) return [];
   
-  // Ensure each subgallery has an icon (use default if missing)
-  const preparedSubgalleries = validSubgalleries.map(sg => {
-    if (!sg.icon || sg.icon.trim() === '') {
-      return {
-        ...sg,
-        icon: '/images/gallery/default-icon.jpg'  // Use default icon
-      };
-    }
-    return sg;
-  });
-  
+  // Initialize rows array and set counters
   const rows = [];
   let currentIndex = 0;
-
-  // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
-  while (currentIndex < preparedSubgalleries.length) {
-    // First row: up to 5 items
-    const firstRowCount = Math.min(5, preparedSubgalleries.length - currentIndex);
-    if (firstRowCount > 0) {
-      rows.push({
-        type: 'row-five',
-        items: preparedSubgalleries.slice(currentIndex, currentIndex + firstRowCount)
-      });
-      currentIndex += firstRowCount;
-    }
-
-    // Second row: up to 4 items
-    const secondRowCount = Math.min(4, preparedSubgalleries.length - currentIndex);
-    if (secondRowCount > 0) {
-      rows.push({
-        type: 'row-four',
-        items: preparedSubgalleries.slice(currentIndex, currentIndex + secondRowCount)
-      });
-      currentIndex += secondRowCount;
-    }
-
-    // Third row: 1 item
-    if (currentIndex < preparedSubgalleries.length) {
-      rows.push({
-        type: 'row-one',
-        items: [preparedSubgalleries[currentIndex]]
-      });
-      currentIndex += 1;
+  const totalCount = validSubgalleries.length;
+  
+  // Determine optimal row arrangement based on total count
+  if (totalCount <= 5) {
+    // For 1-5 items, use a single row with the count as type
+    rows.push({
+      type: `row-${totalCount}`,
+      items: validSubgalleries
+    });
+  } else {
+    // For more items, create rows with fixed patterns
+    while (currentIndex < validSubgalleries.length) {
+      const remainingItems = validSubgalleries.length - currentIndex;
+      
+      if (remainingItems >= 5) {
+        // Create a row with 5 items
+        rows.push({
+          type: 'row-five',
+          items: validSubgalleries.slice(currentIndex, currentIndex + 5)
+        });
+        currentIndex += 5;
+      } else if (remainingItems >= 4) {
+        // Create a row with 4 items
+        rows.push({
+          type: 'row-four',
+          items: validSubgalleries.slice(currentIndex, currentIndex + 4)
+        });
+        currentIndex += 4;
+      } else if (remainingItems === 3) {
+        // Create a row with 3 items
+        rows.push({
+          type: 'row-three',
+          items: validSubgalleries.slice(currentIndex, currentIndex + 3)
+        });
+        currentIndex += 3;
+      } else if (remainingItems === 2) {
+        // Create a row with 2 items
+        rows.push({
+          type: 'row-two',
+          items: validSubgalleries.slice(currentIndex, currentIndex + 2)
+        });
+        currentIndex += 2;
+      } else {
+        // Create a row with 1 item
+        rows.push({
+          type: 'row-one',
+          items: [validSubgalleries[currentIndex]]
+        });
+        currentIndex += 1;
+      }
     }
   }
-
+  
   return rows;
 };
 
