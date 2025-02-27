@@ -386,3 +386,10 @@
     word-wrap: break-word !important; /* Ensure text breaks within the container width */
 
           }
+
+.photo-gallery .custom-div img, .photo-gallery .custom-div-private img {
+  width: 80px;
+  height: 80px;
+  margin-top: 20px;
+  object-fit: contain;
+}

@@ -142,8 +142,25 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
     if (error) throw error;
     
     return subgalleries.map(subgallery => {
-      // Process icon path
-      const iconPath = getImagePath(subgallery.icon, 'icon');
+      // Process icon path with better fallback mechanisms
+      // If icon is missing, try to use first image as icon or fallback to default
+      let iconPath;
+      
+      if (subgallery.icon) {
+        iconPath = getImagePath(subgallery.icon, 'icon');
+      } else {
+        // Try to extract first image as icon
+        const rawImages = subgallery.images;
+        
+        if (typeof rawImages === 'string' && rawImages) {
+          const parsedImages = safeJsonParse(rawImages);
+          iconPath = parsedImages.length > 0 ? getImagePath(parsedImages[0]) : getImagePath(null, 'icon');
+        } else if (Array.isArray(rawImages) && rawImages.length > 0) {
+          iconPath = getImagePath(rawImages[0]);
+        } else {
+          iconPath = getImagePath(null, 'icon');
+        }
+      }
       
       // Process image array
       const rawImages = subgallery.images;
@@ -175,36 +192,39 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 const arrangeSubgalleriesInRows = (subgalleries) => {
   if (!subgalleries || subgalleries.length === 0) return [];
   
+  // Filter out subgalleries without names as they shouldn't be displayed
+  const validSubgalleries = subgalleries.filter(sg => sg.name && sg.name.trim() !== '');
+  
   const rows = [];
   let currentIndex = 0;
 
   // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
-  while (currentIndex < subgalleries.length) {
+  while (currentIndex < validSubgalleries.length) {
     // First row: up to 5 items
-    const firstRowCount = Math.min(5, subgalleries.length - currentIndex);
+    const firstRowCount = Math.min(5, validSubgalleries.length - currentIndex);
     if (firstRowCount > 0) {
       rows.push({
         type: 'row-five',
-        items: subgalleries.slice(currentIndex, currentIndex + firstRowCount)
+        items: validSubgalleries.slice(currentIndex, currentIndex + firstRowCount)
       });
       currentIndex += firstRowCount;
     }
 
     // Second row: up to 4 items
-    const secondRowCount = Math.min(4, subgalleries.length - currentIndex);
+    const secondRowCount = Math.min(4, validSubgalleries.length - currentIndex);
     if (secondRowCount > 0) {
       rows.push({
         type: 'row-four',
-        items: subgalleries.slice(currentIndex, currentIndex + secondRowCount)
+        items: validSubgalleries.slice(currentIndex, currentIndex + secondRowCount)
       });
       currentIndex += secondRowCount;
     }
 
     // Third row: 1 item
-    if (currentIndex < subgalleries.length) {
+    if (currentIndex < validSubgalleries.length) {
       rows.push({
         type: 'row-one',
-        items: [subgalleries[currentIndex]]
+        items: [validSubgalleries[currentIndex]]
       });
       currentIndex += 1;
     }
