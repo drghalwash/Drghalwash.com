@@ -1,23 +1,21 @@
 @media (max-width: 1000px) {
-
-
   .moving-background2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Ensure it contains the child */
+    position: relative;
   }
 
   .content-of-moving-background {
-    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    text-align: center; /* Center text and the button inside */
+    text-align: center;
   }
 
   .button-of-moving-background {
-    display: inline-block; /* Ensure proper centering for the button */
+    display: inline-block;
     margin-top: 10px;
   }
 }
@@ -27,12 +25,389 @@
     width: 500px;
 }
 
-.photo-gallery {
-  background-color: #F0F5FF;
+.photo-gallery{
+   background-color: #F0F5FF;
+    width: 100%;
+    height: auto;
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.photo-gallery h1{
+  color: #1B54FF;
+  font-family: var(--theme-font-family);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
+  font-size: 25px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto 25px;
+  line-height: 1.4;
+}
+
+/* Scoped styles for the custom container */
+.custom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  width: 85%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Row styles with consistent spacing */
+.custom-container .custom-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
-  height: auto;
-  padding: 40px 20px;  /* Increased padding for better spacing */
+}
+
+/* Base styles for all rows */
+.custom-container .row-one,
+.custom-container .row-two,
+.custom-container .row-three,
+.custom-container .row-four,
+.custom-container .row-five {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+}
+
+/* Different row types with appropriate sizing */
+.custom-container .row-one {
+  justify-content: center;
+}
+
+.custom-container .row-one .custom-div,
+.custom-container .row-one .custom-div-private {
+  flex: 0 0 60%;
+  max-width: 400px;
+}
+
+.custom-container .row-two .custom-div,
+.custom-container .row-two .custom-div-private {
+  flex: 1;
+  max-width: calc(50% - 10px);
+}
+
+.custom-container .row-three .custom-div,
+.custom-container .row-three .custom-div-private {
+  flex: 1;
+  max-width: calc(33.333% - 14px);
+}
+
+.custom-container .row-four .custom-div,
+.custom-container .row-four .custom-div-private {
+  flex: 1;
+  max-width: calc(25% - 15px);
+}
+
+.custom-container .row-five .custom-div,
+.custom-container .row-five .custom-div-private {
+  flex: 1;
+  max-width: calc(20% - 16px);
+}
+
+/* Base styles for gallery items */
+.custom-container .custom-div,
+.custom-container .custom-div-private {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px 15px;
+  min-height: 180px;
+  transition: all 0.3s ease;
+  text-align: center;
   position: relative;
+}
+
+.custom-container .custom-div:hover {
+  border-bottom: 3px solid #1B54FF;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.custom-container .custom-div-private:hover {
+  border-bottom: 3px solid red;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Gallery item images */
+.photo-gallery .custom-div img,
+.photo-gallery .custom-div-private img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+/* Gallery item text */
+.custom-div p,
+.custom-div-private p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4D4D4D;
+  line-height: 1.3;
+}
+
+/* No galleries message */
+.no-galleries-message {
+  text-align: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.no-galleries-message p {
+  font-size: 18px;
+  color: #777;
+}
+
+/* Media query for tablets */
+@media (max-width: 992px) {
+  .custom-container {
+    width: 95%;
+  }
+
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 80%;
+    max-width: 500px;
+  }
+
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private {
+    flex: 0 0 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private {
+    flex: 0 0 calc(33.333% - 14px);
+    max-width: calc(33.333% - 14px);
+  }
+
+  .custom-row {
+    flex-wrap: wrap;
+  }
+}
+
+/* Media query for mobile */
+@media (max-width: 768px) {
+  .photo-gallery h1 {
+    font-size: 20px;
+    max-width: 95%;
+  }
+
+  .custom-container {
+    width: 100%;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .custom-container .custom-row {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  /* Make all items consistent width on mobile */
+  .custom-container .row-two .custom-div,
+  .custom-container .row-two .custom-div-private,
+  .custom-container .row-three .custom-div,
+  .custom-container .row-three .custom-div-private,
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private,
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private {
+    flex: 0 0 calc(50% - 8px);
+    max-width: calc(50% - 8px);
+  }
+
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .photo-gallery {
+    padding: 20px 10px;
+  }
+
+  .photo-gallery h1 {
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 15px;
+  }
+
+  .custom-container {
+    width: 100%;
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .custom-container .custom-row {
+    gap: 12px;
+  }
+
+  .custom-div p,
+  .custom-div-private p {
+    font-size: 14px;
+  }
+
+  .photo-gallery .custom-div img,
+  .photo-gallery .custom-div-private img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+  }
+}
+
+.col-lg-5 p {
+  font-weight: 350;
+  font-size: 18px;
+  text-align: justify;
+  text-align-last: left;
+  text-align: left !important;
+  word-wrap: break-word !important;
+}
+
+/* Moving background styling */
+.moving-background2 {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background-image: url('../images/before2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 200px 20px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.content-of-moving-background {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+}
+
+.content-of-moving-background h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.button-of-moving-background {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.button-of-moving-background a {
+  display: inline-block;
+  padding: 10px 25px;
+  background-color: #1B54FF;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.button-of-moving-background a:hover {
+  background-color: #0040d0;
+}
+
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.95);
+  margin: 15% auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 30%;
+  max-width: 500px;
+  min-width: 300px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #777;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Ensure gallery link is block level for proper clicking */
+.gallery-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+.icons {
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.custom-div:hover .icons,
+.custom-div-private:hover .icons {
+    transform: scale(1.05);
 }
 
 .site-footer .container-fluid {
@@ -47,204 +422,17 @@
   margin: 0;
 }
 
-.photo-gallery h1 {
-    color: #1B54FF;
-    font-family: var(--theme-font-family);
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 30px; /* Add space below the heading */
-    max-width: 800px;
-    line-height: 1.4;
-}
-
-/* Scoped styles for the custom container */
-.custom-container {
-    display: flex;
-    flex-direction: column; /* Stack rows vertically */
-    gap: 25px; /* Increased space between rows */
-    padding: 10px;
-    width: 90%;
-    max-width: 1200px; /* Maximum width for better layout control */
-}
-
-/* Scoped row styles */
-.custom-container .custom-row {
-    display: flex;
-    justify-content: center; /* Center the items in the row */
-    gap: 20px; /* Increased space between divs within a row */
-    width: 100%;
-}
-
-/* Scoped child div styles */
-.custom-container .custom-div,
-.custom-container .custom-div-private {
-    flex: 1; /* Make all child divs equal width */
-    min-height: 200px; /* Minimum height for consistency */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: black;
-    font-size: 16px;
-    text-align: center;
-    padding: 25px 15px;
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* Subtle shadow */
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-bottom 0.3s ease;
-}
-
-.custom-container .custom-div:hover,
-.custom-container .custom-div-private:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.custom-container .custom-div:hover {
-    border-bottom: 3px solid #1B54FF; /* Blue border-bottom on hover */
-}
-
-.custom-container .custom-div-private:hover {
-    border-bottom: 3px solid red; /* Red border-bottom on hover */
-}
-
-/* Row type specific styling */
-.custom-container .row-five .custom-div,
-.custom-container .row-five .custom-div-private {
-    flex: 0 0 calc(20% - 16px); /* 5 items per row */
-}
-
-.custom-container .row-four .custom-div,
-.custom-container .row-four .custom-div-private {
-    flex: 0 0 calc(25% - 15px); /* 4 items per row */
-}
-
-.custom-container .row-three .custom-div,
-.custom-container .row-three .custom-div-private {
-    flex: 0 0 calc(33.333% - 14px); /* 3 items per row */
-}
-
-.custom-container .row-two .custom-div,
-.custom-container .row-two .custom-div-private {
-    flex: 0 0 calc(50% - 10px); /* 2 items per row */
-}
-
-.custom-container .row-one .custom-div,
-.custom-container .row-one .custom-div-private {
-    flex: 0 0 calc(100% - 20px); /* 1 item per row */
-    max-width: 300px; /* Limit width for single items */
-}
-
-  @media (max-width: 768px) {
-    .custom-container {
-      width: 95%;
-      gap: 15px;
-    }
-
-    .custom-container .custom-row {
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .custom-div,
-    .custom-div-private {
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center align items */
-      min-height: 180px;
-    }
-
-    .icons {
-      margin-bottom: 10px; /* Increased spacing below the image */
-      max-height: 80px; /* Smaller icons on mobile */
-    }
-
-    /* Make all items same width on mobile */
-    .custom-container .row-five .custom-div,
-    .custom-container .row-five .custom-div-private,
-    .custom-container .row-four .custom-div,
-    .custom-container .row-four .custom-div-private,
-    .custom-container .row-three .custom-div,
-    .custom-container .row-three .custom-div-private,
-    .custom-container .row-two .custom-div,
-    .custom-container .row-two .custom-div-private {
-      flex: 0 0 calc(50% - 8px); /* 2 items per row on mobile */
-      min-width: calc(50% - 8px);
-    }
-
-    .custom-container .row-one .custom-div,
-    .custom-container .row-one .custom-div-private {
-      flex: 0 0 100%; /* Full width for single items */
-      max-width: 100%;
-    }
-  }
-
-  /* Extra small devices */
-  @media (max-width: 480px) {
-    .photo-gallery {
-      padding: 30px 10px;
-    }
-
-    .photo-gallery h1 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
-    .custom-container {
-      width: 100%;
-      gap: 12px;
-    }
-
-    .custom-container .custom-row {
-      gap: 12px;
-    }
-
-    /* Make all items same width on very small screens */
-    .custom-container .row-five .custom-div,
-    .custom-container .row-five .custom-div-private,
-    .custom-container .row-four .custom-div,
-    .custom-container .row-four .custom-div-private,
-    .custom-container .row-three .custom-div,
-    .custom-container .row-three .custom-div-private,
-    .custom-container .row-two .custom-div,
-    .custom-container .row-two .custom-div-private,
-    .custom-container .row-one .custom-div,
-    .custom-container .row-one .custom-div-private {
-      flex: 0 0 100%;
-      min-width: 100%;
-      margin-bottom: 5px;
-    }
-  }
-
-  .moving-background2 {
-    position: relative;
-    width: 100%;
-    height: 300px; /* Adjust height as needed */
-    overflow: hidden;
-    background-image: url('../images/before2.jpg'); /* Replace with your image path */
-    background-size: cover; /* Ensure the image covers the div */
-    background-position: center;
-    background-attachment: fixed; /* Keep the background fixed during scrolling */
-    background-repeat: no-repeat;
-    padding: 200px 20px;
-
-  }
-
-  .content {
-    height: 100vh; }
-
-  .modal2 {
+.modal2 {
     border-radius: 7px;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 3000 !important; /* Set a high z-index */
-    position: fixed; /* Ensure it stays fixed on the viewport */
+    z-index: 3000 !important; 
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Ensure no scrolling issues */
+    overflow: hidden; 
   }
     .modal2 .logo a img {
       width: 30px; }
@@ -333,116 +521,6 @@
       color: #000; }
 
 
-    .icons {
-      height: 90px;
-      width: 90px;
-      object-fit: contain;
-      margin-bottom: 15px; /* Space between icon and text */
-      transition: transform 0.3s ease;
-    }
-
-    .custom-div:hover .icons,
-    .custom-div-private:hover .icons {
-        transform: scale(1.05); /* Slightly enlarge icon on hover */
-    }
-
-    .custom-div p,
-    .custom-div-private p {
-        margin: 0; /* Remove default margin */
-        padding: 0;
-        font-size: 16px; /* Adjust text size */
-        color: #4D4D4D; /* Set text color */
-        font-weight: bold;
-        line-height: 1.3; /* Improve text readability */
-    }
-
-    @media (max-width: 1024px) {
-      .custom-container {
-        gap: 10px; /* Smaller gap for smaller screens */
-        padding: 20px;
-      }
-
-      .custom-row {
-        gap: 10px;
-      }
-
-      .custom-div, .custom-div-private {
-        min-width: 150px;
-      }
-
-      /* Responsive adjustments for rows */
-      .row-five .custom-div,
-      .row-five .custom-div-private,
-      .row-four .custom-div,
-      .row-four .custom-div-private {
-        flex: 1 1 calc(33.333% - 8px);
-        min-width: calc(33.333% - 8px);
-      }
-
-      /* Default style: 2 divs per row (50% width each) for very small screens */
-      @media (max-width: 768px) {
-        .row-five .custom-div,
-        .row-five .custom-div-private,
-        .row-four .custom-div,
-        .row-four .custom-div-private {
-          flex: 1 1 calc(50% - 5px); /* Half width minus gap */
-          min-width: calc(50% - 5px);
-        }
-      }
-    }
-
-    @media (max-width: 545px) {
-      .custom-container {
-        display: flex;
-        flex-wrap: wrap; /* Allow items to wrap */
-        gap: 5px; /* Smaller gap for smaller screens */
-      }
-    .custom-div,.custom-div-private{
-      min-width: 100px;
-    }
-      /* Default style: 2 divs per row (50% width each) */
-      .custom-container .custom-div,
-      .custom-container .custom-div-private {
-        flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
-
-        min-width: calc(50% - 5px) !important;
-        box-sizing: border-box; /* Account for padding/borders */
-      }
-
-      /* Every 5th div spans full width (1 div per row) */
-      .custom-container .custom-div:nth-child(5n),
-      .custom-container .custom-div-private:nth-child(5n) {
-        flex: 1 1 100%; /* Full width */
-        max-width: 100%;
-
-      }
-      .custom-container{
-        width: 100%;
-      }
-      .photo-gallery h1 {
-        font-size: 18px;
-        display: block; /* Ensure the heading behaves like a block-level element */
-  width: 100%; /* Make sure the heading stretches across the full width */
-  text-align: center; /* Center the text */
-  white-space: normal; /* Allow text to wrap onto new lines */
-  word-wrap: break-word !important; /* Ensure text breaks within the container width */
-  margin: 0; /* Remove any default margins */
-      }
-    }
-       .col-lg-5 p{
-      font-weight: 350;
-
-  font-size: 18px;
-  text-align: justify;
-  text-align-last: justify; /* Ensures the last line is also justified */
-  text-align: left !important;
-  word-wrap: break-word !important; /* Ensure text breaks within the container width */
-
-    }
-
-.photo-gallery .custom-div img, .photo-gallery .custom-div-private img {
-  width: 80px;
-  height: 80px;
-  margin-top: 20px;
-  object-fit: contain;
+.content {
+  height: 100vh;
 }
