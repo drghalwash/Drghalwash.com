@@ -168,48 +168,58 @@ const fetchSubGalleriesByGallerySlug = async (gallerySlug) => {
 };
 
 /**
- * Arranges subgalleries into rows with varying item counts
+ * Arranges subgalleries into rows with varying item counts following a pattern
  * @param {Array} subgalleries - The array of subgallery objects
- * @returns {Array} - Array of row objects, each with items array
+ * @returns {Array} - Array of row objects with specific type and items
  */
 const arrangeSubgalleriesInRows = (subgalleries) => {
   if (!subgalleries || subgalleries.length === 0) return [];
   
+  // Create a deep copy to avoid mutating the original array
+  const subgalleriesCopy = [...subgalleries];
   const rows = [];
-  let currentIndex = 0;
-
-  // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
-  while (currentIndex < subgalleries.length) {
-    // First row: up to 5 items
-    const firstRowCount = Math.min(5, subgalleries.length - currentIndex);
-    if (firstRowCount > 0) {
+  
+  // Process all subgalleries in batches of 10 (5+4+1 pattern)
+  while (subgalleriesCopy.length > 0) {
+    // First row pattern: 5 items (or remaining if less than 5)
+    const firstRowItems = subgalleriesCopy.splice(0, Math.min(5, subgalleriesCopy.length));
+    if (firstRowItems.length > 0) {
       rows.push({
         type: 'row-five',
-        items: subgalleries.slice(currentIndex, currentIndex + firstRowCount)
+        items: firstRowItems
       });
-      currentIndex += firstRowCount;
     }
-
-    // Second row: up to 4 items
-    const secondRowCount = Math.min(4, subgalleries.length - currentIndex);
-    if (secondRowCount > 0) {
-      rows.push({
-        type: 'row-four',
-        items: subgalleries.slice(currentIndex, currentIndex + secondRowCount)
-      });
-      currentIndex += secondRowCount;
+    
+    // Second row pattern: 4 items (or remaining if less than 4)
+    if (subgalleriesCopy.length > 0) {
+      const secondRowItems = subgalleriesCopy.splice(0, Math.min(4, subgalleriesCopy.length));
+      if (secondRowItems.length > 0) {
+        rows.push({
+          type: 'row-four',
+          items: secondRowItems
+        });
+      }
     }
-
-    // Third row: 1 item
-    if (currentIndex < subgalleries.length) {
+    
+    // Third row pattern: 1 featured item
+    if (subgalleriesCopy.length > 0) {
+      const featuredItem = subgalleriesCopy.splice(0, 1);
       rows.push({
         type: 'row-one',
-        items: [subgalleries[currentIndex]]
+        items: featuredItem
       });
-      currentIndex += 1;
     }
   }
-
+  
+  // Debug the row structure
+  console.log('Generated row structure:', 
+    rows.map(row => ({
+      type: row.type, 
+      itemCount: row.items.length,
+      itemNames: row.items.map(item => item.name)
+    }))
+  );
+  
   return rows;
 };
 
@@ -308,8 +318,20 @@ export const index = async (req, res) => {
       });
     }
 
-    const sortedSubgalleries = subgalleries.sort((a, b) => a.name.localeCompare(b.name));
+    // Filter out any invalid subgalleries (missing required fields)
+    const validSubgalleries = subgalleries.filter(sub => 
+      sub && typeof sub === 'object' && sub.name && sub.slug
+    );
+    
+    if (validSubgalleries.length < subgalleries.length) {
+      console.warn(`[Warning] Filtered out ${subgalleries.length - validSubgalleries.length} invalid subgalleries`);
+    }
+    
+    const sortedSubgalleries = validSubgalleries.sort((a, b) => a.name.localeCompare(b.name));
     const subgalleryRows = arrangeSubgalleriesInRows(sortedSubgalleries);
+    
+    // Debug: Log the structure of subgalleryRows
+    console.log(`Gallery [${gallery.name}] has ${sortedSubgalleries.length} subgalleries in ${subgalleryRows.length} rows`);
 
     return res.render('Pages/gallery', {
       gallery,
