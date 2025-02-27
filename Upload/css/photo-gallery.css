@@ -1,448 +1,430 @@
+
 @media (max-width: 1000px) {
-
-
   .moving-background2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Ensure it contains the child */
+    position: relative;
   }
 
   .content-of-moving-background {
-    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    text-align: center; /* Center text and the button inside */
+    text-align: center;
   }
 
   .button-of-moving-background {
-    display: inline-block; /* Ensure proper centering for the button */
+    display: inline-block;
     margin-top: 10px;
   }
 }
-
+	
 .img-fluid{
     height: 400px !important;
     width: 500px;
 }
 
-.photo-gallery {
-  background-color: #F0F5FF;
-  width: 100%;
-  height: auto;
-  padding: 40px 20px;  /* Increased padding for better spacing */
-  position: relative;
-}
-
-.site-footer .container-fluid {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.site-footer .row {
-  --bs-gutter-x: 0;
-  --bs-gutter-y: 0;
-  margin: 0;
-}
-
-.photo-gallery h1 {
-    color: #1B54FF;
-    font-family: var(--theme-font-family);
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 30px; /* Add space below the heading */
-    max-width: 800px;
-    line-height: 1.4;
-}
-
-/* Scoped styles for the custom container */
-.custom-container {
-    display: flex;
-    flex-direction: column; /* Stack rows vertically */
-    gap: 25px; /* Increased space between rows */
-    padding: 10px;
-    width: 90%;
-    max-width: 1200px; /* Maximum width for better layout control */
-}
-
-/* Scoped row styles */
-.custom-container .custom-row {
-    display: flex;
-    justify-content: center; /* Center the items in the row */
-    gap: 20px; /* Increased space between divs within a row */
+.photo-gallery{
+   background-color: #F0F5FF;
     width: 100%;
-}
-
-/* Scoped child div styles */
-.custom-container .custom-div,
-.custom-container .custom-div-private {
-    flex: 1; /* Make all child divs equal width */
-    min-height: 200px; /* Minimum height for consistency */
+    height: auto;
+    padding: 30px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    color: black;
-    font-size: 16px;
     text-align: center;
-    padding: 25px 15px;
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* Subtle shadow */
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-bottom 0.3s ease;
 }
 
-.custom-container .custom-div:hover,
-.custom-container .custom-div-private:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+.photo-gallery h1{
+  color: #1B54FF;
+  font-family: var(--theme-font-family);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
+  font-size: 25px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto 30px;
 }
 
-.custom-container .custom-div:hover {
-    border-bottom: 3px solid #1B54FF; /* Blue border-bottom on hover */
+/* Container for the gallery items */
+.custom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.custom-container .custom-div-private:hover {
-    border-bottom: 3px solid red; /* Red border-bottom on hover */
+/* Row styling */
+.custom-container .custom-row {
+  display: flex;
+  gap: 24px;
+  width: 100%;
 }
 
-/* Row type specific styling */
+/* Base styles for gallery items */
+.custom-container .custom-div,
+.custom-container .custom-div-private {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  min-height: 180px;
+  position: relative;
+}
+
+/* Row specific styles for proper spacing */
 .custom-container .row-five .custom-div,
 .custom-container .row-five .custom-div-private {
-    flex: 0 0 calc(20% - 16px); /* 5 items per row */
+  flex: 1;
+  width: calc(20% - 19.2px);
 }
 
 .custom-container .row-four .custom-div,
 .custom-container .row-four .custom-div-private {
-    flex: 0 0 calc(25% - 15px); /* 4 items per row */
+  flex: 1;
+  width: calc(25% - 18px);
 }
 
 .custom-container .row-three .custom-div,
 .custom-container .row-three .custom-div-private {
-    flex: 0 0 calc(33.333% - 14px); /* 3 items per row */
+  flex: 1;
+  width: calc(33.333% - 16px);
 }
 
 .custom-container .row-two .custom-div,
 .custom-container .row-two .custom-div-private {
-    flex: 0 0 calc(50% - 10px); /* 2 items per row */
+  flex: 1;
+  width: calc(50% - 12px);
 }
 
 .custom-container .row-one .custom-div,
 .custom-container .row-one .custom-div-private {
-    flex: 0 0 calc(100% - 20px); /* 1 item per row */
-    max-width: 300px; /* Limit width for single items */
+  flex: 1;
+  width: 100%;
 }
 
-  @media (max-width: 768px) {
-    .custom-container {
-      width: 95%;
-      gap: 15px;
-    }
+/* Hover effects */
+.custom-container .custom-div:hover {
+  border-bottom: 3px solid #1B54FF;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-    .custom-container .custom-row {
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+.custom-container .custom-div-private:hover {
+  border-bottom: 3px solid red;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-    .custom-div,
-    .custom-div-private {
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center align items */
-      min-height: 180px;
-    }
-
-    .icons {
-      margin-bottom: 10px; /* Increased spacing below the image */
-      max-height: 80px; /* Smaller icons on mobile */
-    }
-
-    /* Make all items same width on mobile */
-    .custom-container .row-five .custom-div,
-    .custom-container .row-five .custom-div-private,
-    .custom-container .row-four .custom-div,
-    .custom-container .row-four .custom-div-private,
-    .custom-container .row-three .custom-div,
-    .custom-container .row-three .custom-div-private,
-    .custom-container .row-two .custom-div,
-    .custom-container .row-two .custom-div-private {
-      flex: 0 0 calc(50% - 8px); /* 2 items per row on mobile */
-      min-width: calc(50% - 8px);
-    }
-
-    .custom-container .row-one .custom-div,
-    .custom-container .row-one .custom-div-private {
-      flex: 0 0 100%; /* Full width for single items */
-      max-width: 100%;
-    }
-  }
-
-  /* Extra small devices */
-  @media (max-width: 480px) {
-    .photo-gallery {
-      padding: 30px 10px;
-    }
-
-    .photo-gallery h1 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
-    .custom-container {
-      width: 100%;
-      gap: 12px;
-    }
-
-    .custom-container .custom-row {
-      gap: 12px;
-    }
-
-    /* Make all items same width on very small screens */
-    .custom-container .row-five .custom-div,
-    .custom-container .row-five .custom-div-private,
-    .custom-container .row-four .custom-div,
-    .custom-container .row-four .custom-div-private,
-    .custom-container .row-three .custom-div,
-    .custom-container .row-three .custom-div-private,
-    .custom-container .row-two .custom-div,
-    .custom-container .row-two .custom-div-private,
-    .custom-container .row-one .custom-div,
-    .custom-container .row-one .custom-div-private {
-      flex: 0 0 100%;
-      min-width: 100%;
-      margin-bottom: 5px;
-    }
-  }
-
-  .moving-background2 {
-    position: relative;
-    width: 100%;
-    height: 300px; /* Adjust height as needed */
-    overflow: hidden;
-    background-image: url('../images/before2.jpg'); /* Replace with your image path */
-    background-size: cover; /* Ensure the image covers the div */
-    background-position: center;
-    background-attachment: fixed; /* Keep the background fixed during scrolling */
-    background-repeat: no-repeat;
-    padding: 200px 20px;
-
-  }
-
-  .content {
-    height: 100vh; }
-
-  .modal2 {
-    border-radius: 7px;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 3000 !important; /* Set a high z-index */
-    position: fixed; /* Ensure it stays fixed on the viewport */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Ensure no scrolling issues */
-  }
-    .modal2 .logo a img {
-      width: 30px; }
-    .modal2 .modal-content {
-      background-color: transparent;
-      border: none;
-      border-radius: 7px; }
-      .modal2 .modal-content .modal-body {
-        border-radius: 7px;
-        overflow: hidden;
-        background-color: #fff;
-        padding-left: 0px;
-        padding-right: 0px;
-        -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
-        box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); }
-        .modal2 .modal-content .modal-body h2 {
-          font-size: 18px; }
-        .modal2 .modal-content .modal-body p {
-          color: #777;
-          font-size: 14px; }
-        .modal2 .modal-content .modal-body h3 {
-          color: #000;
-          font-size: 22px; }
-        .modal2 .modal-content .modal-body .close-btn {
-          color: #000; }
-        .modal2 .modal-content .modal-body .promo-img {
-          -webkit-box-flex: 0;
-          -ms-flex: 0 0 50%;
-          flex: 0 0 50%; }
-          .modal2 .modal-content .modal-body .promo-img .price {
-            top: 20px;
-            left: 20px;
-            position: absolute;
-            color: #fff; }
-    .modal2 .btn {
-      border-radius: 30px; }
-    .modal2 .warp-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto;
-      position: relative;
-      background: rgba(62, 100, 255, 0.05);
-      color: #3e64ff;
-      border-radius: 50%; }
-      .modal2 .warp-icon span {
-        font-size: 40px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%); }
-
-  .form-control {
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid #ccc;
-    padding-left: 0;
-    padding-right: 0; }
-    .form-control:active, .form-control:focus, .form-control:hover {
-      border-bottom: 1px solid #000;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      outline: none; }
-
-  .btn {
-    border-radius: 4px;
-    border: none;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 30px;
-    padding-right: 30px; }
-    .btn:active, .btn:focus {
-      outline: none;
-      -webkit-box-shadow: none !important;
-      box-shadow: none !important; }
-
-  .close-btn {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 20px; }
-    .close-btn span {
-      color: #ccc; }
-    .close-btn:hover span {
-      color: #000; }
-
-
-    .icons {
-      height: 90px;
-      width: 90px;
-      object-fit: contain;
-      margin-bottom: 15px; /* Space between icon and text */
-      transition: transform 0.3s ease;
-    }
-
-    .custom-div:hover .icons,
-    .custom-div-private:hover .icons {
-        transform: scale(1.05); /* Slightly enlarge icon on hover */
-    }
-
-    .custom-div p,
-    .custom-div-private p {
-        margin: 0; /* Remove default margin */
-        padding: 0;
-        font-size: 16px; /* Adjust text size */
-        color: #4D4D4D; /* Set text color */
-        font-weight: bold;
-        line-height: 1.3; /* Improve text readability */
-    }
-
-    @media (max-width: 1024px) {
-      .custom-container {
-        gap: 10px; /* Smaller gap for smaller screens */
-        padding: 20px;
-      }
-
-      .custom-row {
-        gap: 10px;
-      }
-
-      .custom-div, .custom-div-private {
-        min-width: 150px;
-      }
-
-      /* Responsive adjustments for rows */
-      .row-five .custom-div,
-      .row-five .custom-div-private,
-      .row-four .custom-div,
-      .row-four .custom-div-private {
-        flex: 1 1 calc(33.333% - 8px);
-        min-width: calc(33.333% - 8px);
-      }
-
-      /* Default style: 2 divs per row (50% width each) for very small screens */
-      @media (max-width: 768px) {
-        .row-five .custom-div,
-        .row-five .custom-div-private,
-        .row-four .custom-div,
-        .row-four .custom-div-private {
-          flex: 1 1 calc(50% - 5px); /* Half width minus gap */
-          min-width: calc(50% - 5px);
-        }
-      }
-    }
-
-    @media (max-width: 545px) {
-      .custom-container {
-        display: flex;
-        flex-wrap: wrap; /* Allow items to wrap */
-        gap: 5px; /* Smaller gap for smaller screens */
-      }
-    .custom-div,.custom-div-private{
-      min-width: 100px;
-    }
-      /* Default style: 2 divs per row (50% width each) */
-      .custom-container .custom-div,
-      .custom-container .custom-div-private {
-        flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
-
-        min-width: calc(50% - 5px) !important;
-        box-sizing: border-box; /* Account for padding/borders */
-      }
-
-      /* Every 5th div spans full width (1 div per row) */
-      .custom-container .custom-div:nth-child(5n),
-      .custom-container .custom-div-private:nth-child(5n) {
-        flex: 1 1 100%; /* Full width */
-        max-width: 100%;
-
-      }
-      .custom-container{
-        width: 100%;
-      }
-      .photo-gallery h1 {
-        font-size: 18px;
-        display: block; /* Ensure the heading behaves like a block-level element */
-  width: 100%; /* Make sure the heading stretches across the full width */
-  text-align: center; /* Center the text */
-  white-space: normal; /* Allow text to wrap onto new lines */
-  word-wrap: break-word !important; /* Ensure text breaks within the container width */
-  margin: 0; /* Remove any default margins */
-      }
-    }
-       .col-lg-5 p{
-      font-weight: 350;
-
-  font-size: 18px;
-  text-align: justify;
-  text-align-last: justify; /* Ensures the last line is also justified */
-  text-align: left !important;
-  word-wrap: break-word !important; /* Ensure text breaks within the container width */
-
-    }
-
-.photo-gallery .custom-div img, .photo-gallery .custom-div-private img {
+/* Image styles */
+.icons {
   width: 80px;
   height: 80px;
-  margin-top: 20px;
   object-fit: contain;
+  margin-bottom: 15px;
+}
+
+/* Text styles */
+.custom-div p,
+.custom-div-private p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: #4D4D4D;
+  font-weight: bold;
+  text-align: center;
+}
+
+.no-galleries-message {
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .custom-container {
+    width: 95%;
+    gap: 20px;
+  }
+  
+  .custom-container .custom-row {
+    gap: 20px;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-container {
+    width: 100%;
+    padding: 15px;
+    gap: 16px;
+  }
+  
+  .custom-container .custom-row {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  /* Make items 2 per row on tablet */
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private,
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private,
+  .custom-container .row-three .custom-div,
+  .custom-container .row-three .custom-div-private,
+  .custom-container .row-two .custom-div,
+  .custom-container .row-two .custom-div-private {
+    flex: 0 0 calc(50% - 8px);
+    width: calc(50% - 8px);
+    min-height: 160px;
+  }
+  
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-gallery {
+    padding: 20px 10px;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+  }
+  
+  .custom-container {
+    gap: 12px;
+  }
+  
+  .custom-container .custom-row {
+    gap: 12px;
+  }
+  
+  /* Make items 1 per row on small mobile */
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private,
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private,
+  .custom-container .row-three .custom-div,
+  .custom-container .row-three .custom-div-private,
+  .custom-container .row-two .custom-div,
+  .custom-container .row-two .custom-div-private,
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 140px;
+  }
+  
+  .icons {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  
+  .custom-div p,
+  .custom-div-private p {
+    font-size: 14px;
+  }
+}
+
+.moving-background2 {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background-image: url('../images/before2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 200px 20px;
+}
+
+.content {
+  height: 100vh;
+}
+
+.modal2 {
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.6); 
+  z-index: 3000 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.modal2 .logo a img {
+  width: 30px; 
+}
+
+.modal2 .modal-content {
+  background-color: transparent;
+  border: none;
+  border-radius: 7px; 
+}
+
+.modal2 .modal-content .modal-body {
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: #fff;
+  padding-left: 0px;
+  padding-right: 0px;
+  -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); 
+}
+
+.modal2 .modal-content .modal-body h2 {
+  font-size: 18px; 
+}
+
+.modal2 .modal-content .modal-body p {
+  color: #777;
+  font-size: 14px; 
+}
+
+.modal2 .modal-content .modal-body h3 {
+  color: #000;
+  font-size: 22px; 
+}
+
+.modal2 .modal-content .modal-body .close-btn {
+  color: #000; 
+}
+
+.modal2 .modal-content .modal-body .promo-img {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 50%;
+  flex: 0 0 50%; 
+}
+
+.modal2 .modal-content .modal-body .promo-img .price {
+  top: 20px;
+  left: 20px;
+  position: absolute;
+  color: #fff; 
+}
+
+.modal2 .btn {
+  border-radius: 30px; 
+}
+
+.modal2 .warp-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  position: relative;
+  background: rgba(62, 100, 255, 0.05);
+  color: #3e64ff;
+  border-radius: 50%; 
+}
+
+.modal2 .warp-icon span {
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); 
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+  padding-right: 0; 
+}
+
+.form-control:active, .form-control:focus, .form-control:hover {
+  border-bottom: 1px solid #000;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none; 
+}
+
+.btn {
+  border-radius: 4px;
+  border: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px; 
+}
+
+.btn:active, .btn:focus {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important; 
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 20px; 
+}
+
+.close-btn span {
+  color: #ccc; 
+}
+
+.close-btn:hover span {
+  color: #000; 
+}
+
+.col-lg-5 p {
+  font-weight: 350;
+  font-size: 18px;
+  text-align: justify;
+  text-align-last: justify;
+  text-align: left !important;
+  word-wrap: break-word !important;
+}
+
+/* Fix empty space issues when images don't load */
+.photo-gallery .custom-div img, 
+.photo-gallery .custom-div-private img {
+  display: block;
+  min-height: 80px;
+}
+
+/* Always maintain consistent spacing regardless of icon presence */
+.photo-gallery .custom-div img[style*="display:none"],
+.photo-gallery .custom-div-private img[style*="display:none"] {
+  display: block !important;
+  visibility: hidden;
 }
