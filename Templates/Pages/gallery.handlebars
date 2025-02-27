@@ -289,7 +289,6 @@
 		<script src="/js/flatpickr.js"></script>
 		<script src="/js/glightbox.min.js"></script>
 		<script src="/js/custom.js"></script>
-		<script src="/js/accordionManager.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -395,63 +394,6 @@
 
   // Attach the scroll event listener
   window.addEventListener("scroll", handleScroll);
-</script>
-<script>
-    function openModal(imageId) {
-        // Log the image ID for debugging
-        console.log('Opening modal for image ID:', imageId);
-
-        // Find the modal
-        const modal = document.getElementById('passwordModal');
-
-        // Store the image ID in a hidden input or process it as needed
-        const hiddenInput = document.getElementById('imageId');
-        if (hiddenInput) {
-            hiddenInput.value = imageId;
-        }
-
-        // Show the modal programmatically
-        const bootstrapModal = new bootstrap.Modal(modal);
-        bootstrapModal.show();
-    }
-
-    // Initialize accordion when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        // This is a fallback in case accordionManager.js doesn't load
-        if (typeof initializeAccordion === 'undefined') {
-            console.log('Loading accordion initialization from inline script');
-            const accordionItems = document.querySelectorAll('.accordion-item');
-
-            accordionItems.forEach(item => {
-                const button = item.querySelector('.btn-link');
-                const collapse = item.querySelector('.accordion-collapse');
-
-                if (button && collapse) {
-                    collapse.style.maxHeight = '0';
-                    collapse.style.overflow = 'hidden';
-                    collapse.style.transition = 'max-height 0.3s ease-out';
-
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-
-                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-                        if (isExpanded) {
-                            button.setAttribute('aria-expanded', 'false');
-                            button.classList.add('collapsed');
-                            collapse.style.maxHeight = '0';
-                            collapse.classList.remove('show');
-                        } else {
-                            button.setAttribute('aria-expanded', 'true');
-                            button.classList.remove('collapsed');
-                            collapse.classList.add('show');
-                            collapse.style.maxHeight = collapse.scrollHeight + 'px';
-                        }
-                    });
-                }
-            });
-        }
-    });
 </script>
 	</body>
 	</html>
