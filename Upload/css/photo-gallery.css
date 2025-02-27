@@ -31,7 +31,7 @@
   background-color: #F0F5FF;
   width: 100%;
   height: auto;
-  padding: 40px 0;
+  padding: 40px 20px;  /* Increased padding for better spacing */
   position: relative;
 }
 
@@ -54,358 +54,391 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
     font-size: 25px;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 30px; /* Add space below the heading */
     max-width: 800px;
     line-height: 1.4;
 }
 
 /* Scoped styles for the custom container */
 .custom-container {
-  display: flex;
-  flex-direction: column; /* Stack rows vertically */
-  gap: 20px; /* Space between rows */
-  padding: 20px 100px;
+    display: flex;
+    flex-direction: column; /* Stack rows vertically */
+    gap: 25px; /* Increased space between rows */
+    padding: 10px;
+    width: 90%;
+    max-width: 1200px; /* Maximum width for better layout control */
 }
 
 /* Scoped row styles */
-.custom-row {
-  display: flex;
-  flex-wrap: wrap; /* Allow wrapping */
-  gap: 20px; /* Space between divs within a row */
-  width: 100%;
+.custom-container .custom-row {
+    display: flex;
+    justify-content: center; /* Center the items in the row */
+    gap: 20px; /* Increased space between divs within a row */
+    width: 100%;
 }
 
 /* Scoped child div styles */
 .custom-container .custom-div,
 .custom-container .custom-div-private {
-  flex: 1; /* Make all child divs equal width */
-  height: auto; /* Adjust height as needed */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white; /* Background color */
-  color: black; /* Text color */
-  font-size: 16px;
-
-  text-align: center;
-  padding: 30px 5px;
-  border: none;
+    flex: 1; /* Make all child divs equal width */
+    min-height: 200px; /* Minimum height for consistency */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    padding: 25px 15px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* Subtle shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-bottom 0.3s ease;
 }
 
-.custom-container .custom-div,
-.custom-container .custom-div-private{
-  position: relative; /* Make the div the positioning context */
-  transition: border-bottom 0.3s ease; /* Smooth transition for the border */
+.custom-container .custom-div:hover,
+.custom-container .custom-div-private:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .custom-container .custom-div:hover {
-  border-bottom: 3px solid #1B54FF; /* Add blue border-bottom on hover */
+    border-bottom: 3px solid #1B54FF; /* Blue border-bottom on hover */
 }
+
 .custom-container .custom-div-private:hover {
-  border-bottom: 3px solid red; /* Add blue border-bottom on hover */
+    border-bottom: 3px solid red; /* Red border-bottom on hover */
 }
 
-
-/* Row with 5 items */
-.row-five .custom-div,
-.row-five .custom-div-private {
-  flex: 1 1 calc(20% - 16px);
-  min-width: calc(20% - 16px);
+/* Row type specific styling */
+.custom-container .row-five .custom-div,
+.custom-container .row-five .custom-div-private {
+    flex: 0 0 calc(20% - 16px); /* 5 items per row */
 }
 
-/* Row with 4 items */
-.row-four .custom-div,
-.row-four .custom-div-private {
-  flex: 1 1 calc(25% - 15px);
-  min-width: calc(25% - 15px);
+.custom-container .row-four .custom-div,
+.custom-container .row-four .custom-div-private {
+    flex: 0 0 calc(25% - 15px); /* 4 items per row */
 }
 
-/* Row with single item */
-.row-one .custom-div,
-.row-one .custom-div-private {
-  flex: 1 1 100%;
-  min-width: 100%;
+.custom-container .row-three .custom-div,
+.custom-container .row-three .custom-div-private {
+    flex: 0 0 calc(33.333% - 14px); /* 3 items per row */
 }
+
+.custom-container .row-two .custom-div,
+.custom-container .row-two .custom-div-private {
+    flex: 0 0 calc(50% - 10px); /* 2 items per row */
+}
+
+.custom-container .row-one .custom-div,
+.custom-container .row-one .custom-div-private {
+    flex: 0 0 calc(100% - 20px); /* 1 item per row */
+    max-width: 300px; /* Limit width for single items */
+}
+
   @media (max-width: 768px) {
+    .custom-container {
+      width: 95%;
+      gap: 15px;
+    }
+
     .custom-container .custom-row {
-      flex-wrap: wrap; /* Allow wrapping */
-      justify-content: center; /* Center align */
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    .custom-container .custom-div,
-    .custom-container .custom-div-private {
-      flex-basis: 100%; /* Full width for each div */
-    }
-  }
-  .custom-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  /* Styling each div */
-  .custom-div,
-  .custom-div-private {
-    display: flex; /* Enable Flexbox for horizontal alignment */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    gap: 10px; /* Space between the image and text */
-    padding: 15px !important;
-    background-color: #f5f5f5; /* Light background for visibility */
-    border: 1px solid #ddd; /* Optional border */
-    border-radius: 5px; /* Rounded corners */
-    min-height: 180px; /* Set fixed minimum height to prevent shrinking */
-    width: 100%; /* Ensure full width */
-  }
-
-  .icons {
-    height: 100px;
-    width: 90px;
-    object-fit: contain;
-    flex-shrink: 0; /* Prevent icon from shrinking */
-  }
-
-  .icons:not([src]), 
-  .icons[src=""], 
-  .icons[onerror] {
-    min-height: 100px; /* Maintain height even when image fails to load */
-    background-color: #f0f0f0; /* Light background to show space */
-    border-radius: 5px;
-  }
-
-  .custom-div p,
-  .custom-div-private p {
-    margin: 0; /* Remove default margin */
-    padding: 0;
-    font-size: 16px; /* Adjust text size */
-    color: #4D4D4D; /* Set text color */
-    font-weight: bold;
-    text-align: center; /* Center text */
-    width: 100%; /* Full width */
-  }
-
-     .icons{
-        height: 100px;
-        width: 90px;
-        object-fit: contain;
-
+    .custom-div,
+    .custom-div-private {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center align items */
+      min-height: 180px;
     }
 
+    .icons {
+      margin-bottom: 10px; /* Increased spacing below the image */
+      max-height: 80px; /* Smaller icons on mobile */
+    }
 
-      @media (max-width: 768px) {
-        .custom-div,
-        .custom-div-private {
-          flex-direction: column; /* Stack items vertically */
-          align-items: center; /* Center align items */
-        }
+    /* Make all items same width on mobile */
+    .custom-container .row-five .custom-div,
+    .custom-container .row-five .custom-div-private,
+    .custom-container .row-four .custom-div,
+    .custom-container .row-four .custom-div-private,
+    .custom-container .row-three .custom-div,
+    .custom-container .row-three .custom-div-private,
+    .custom-container .row-two .custom-div,
+    .custom-container .row-two .custom-div-private {
+      flex: 0 0 calc(50% - 8px); /* 2 items per row on mobile */
+      min-width: calc(50% - 8px);
+    }
 
-        .icons {
-          margin-bottom: 2px; /* Add spacing below the image */
-        }
-      }
+    .custom-container .row-one .custom-div,
+    .custom-container .row-one .custom-div-private {
+      flex: 0 0 100%; /* Full width for single items */
+      max-width: 100%;
+    }
+  }
 
+  /* Extra small devices */
+  @media (max-width: 480px) {
+    .photo-gallery {
+      padding: 30px 10px;
+    }
 
-      .moving-background2 {
-        position: relative;
-        width: 100%;
-        height: 300px; /* Adjust height as needed */
-        overflow: hidden;
-        background-image: url('../images/before2.jpg'); /* Replace with your image path */
-        background-size: cover; /* Ensure the image covers the div */
-        background-position: center;
-        background-attachment: fixed; /* Keep the background fixed during scrolling */
-        background-repeat: no-repeat;
-        padding: 200px 20px;
+    .photo-gallery h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
 
-      }
+    .custom-container {
+      width: 100%;
+      gap: 12px;
+    }
 
-      .content {
-        height: 100vh; }
+    .custom-container .custom-row {
+      gap: 12px;
+    }
 
-      .modal2 {
+    /* Make all items same width on very small screens */
+    .custom-container .row-five .custom-div,
+    .custom-container .row-five .custom-div-private,
+    .custom-container .row-four .custom-div,
+    .custom-container .row-four .custom-div-private,
+    .custom-container .row-three .custom-div,
+    .custom-container .row-three .custom-div-private,
+    .custom-container .row-two .custom-div,
+    .custom-container .row-two .custom-div-private,
+    .custom-container .row-one .custom-div,
+    .custom-container .row-one .custom-div-private {
+      flex: 0 0 100%;
+      min-width: 100%;
+      margin-bottom: 5px;
+    }
+  }
+
+  .moving-background2 {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    overflow: hidden;
+    background-image: url('../images/before2.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensure the image covers the div */
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    background-repeat: no-repeat;
+    padding: 200px 20px;
+
+  }
+
+  .content {
+    height: 100vh; }
+
+  .modal2 {
+    border-radius: 7px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 3000 !important; /* Set a high z-index */
+    position: fixed; /* Ensure it stays fixed on the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Ensure no scrolling issues */
+  }
+    .modal2 .logo a img {
+      width: 30px; }
+    .modal2 .modal-content {
+      background-color: transparent;
+      border: none;
+      border-radius: 7px; }
+      .modal2 .modal-content .modal-body {
         border-radius: 7px;
         overflow: hidden;
-        background-color: rgba(0, 0, 0, 0.6); 
-        z-index: 3000 !important; /* Set a high z-index */
-        position: fixed; /* Ensure it stays fixed on the viewport */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden; /* Ensure no scrolling issues */
-      }
-        .modal2 .logo a img {
-          width: 30px; }
-        .modal2 .modal-content {
-          background-color: transparent;
-          border: none;
-          border-radius: 7px; }
-          .modal2 .modal-content .modal-body {
-            border-radius: 7px;
-            overflow: hidden;
-            background-color: #fff;
-            padding-left: 0px;
-            padding-right: 0px;
-            -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
-            box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); }
-            .modal2 .modal-content .modal-body h2 {
-              font-size: 18px; }
-            .modal2 .modal-content .modal-body p {
-              color: #777;
-              font-size: 14px; }
-            .modal2 .modal-content .modal-body h3 {
-              color: #000;
-              font-size: 22px; }
-            .modal2 .modal-content .modal-body .close-btn {
-              color: #000; }
-            .modal2 .modal-content .modal-body .promo-img {
-              -webkit-box-flex: 0;
-              -ms-flex: 0 0 50%;
-              flex: 0 0 50%; }
-              .modal2 .modal-content .modal-body .promo-img .price {
-                top: 20px;
-                left: 20px;
-                position: absolute;
-                color: #fff; }
-        .modal2 .btn {
-          border-radius: 30px; }
-        .modal2 .warp-icon {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto;
-          position: relative;
-          background: rgba(62, 100, 255, 0.05);
-          color: #3e64ff;
-          border-radius: 50%; }
-          .modal2 .warp-icon span {
-            font-size: 40px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%); }
-
-      .form-control {
-        border: none;
-        border-radius: 0;
-        border-bottom: 1px solid #ccc;
-        padding-left: 0;
-        padding-right: 0; }
-        .form-control:active, .form-control:focus, .form-control:hover {
-          border-bottom: 1px solid #000;
-          -webkit-box-shadow: none;
-          box-shadow: none;
-          outline: none; }
-
-      .btn {
-        border-radius: 4px;
-        border: none;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 30px;
-        padding-right: 30px; }
-        .btn:active, .btn:focus {
-          outline: none;
-          -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-      .close-btn {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        font-size: 20px; }
-        .close-btn span {
-          color: #ccc; }
-        .close-btn:hover span {
+        background-color: #fff;
+        padding-left: 0px;
+        padding-right: 0px;
+        -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+        box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); }
+        .modal2 .modal-content .modal-body h2 {
+          font-size: 18px; }
+        .modal2 .modal-content .modal-body p {
+          color: #777;
+          font-size: 14px; }
+        .modal2 .modal-content .modal-body h3 {
+          color: #000;
+          font-size: 22px; }
+        .modal2 .modal-content .modal-body .close-btn {
           color: #000; }
+        .modal2 .modal-content .modal-body .promo-img {
+          -webkit-box-flex: 0;
+          -ms-flex: 0 0 50%;
+          flex: 0 0 50%; }
+          .modal2 .modal-content .modal-body .promo-img .price {
+            top: 20px;
+            left: 20px;
+            position: absolute;
+            color: #fff; }
+    .modal2 .btn {
+      border-radius: 30px; }
+    .modal2 .warp-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      position: relative;
+      background: rgba(62, 100, 255, 0.05);
+      color: #3e64ff;
+      border-radius: 50%; }
+      .modal2 .warp-icon span {
+        font-size: 40px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
+
+  .form-control {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #ccc;
+    padding-left: 0;
+    padding-right: 0; }
+    .form-control:active, .form-control:focus, .form-control:hover {
+      border-bottom: 1px solid #000;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: none; }
+
+  .btn {
+    border-radius: 4px;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px; }
+    .btn:active, .btn:focus {
+      outline: none;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important; }
+
+  .close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 20px; }
+    .close-btn span {
+      color: #ccc; }
+    .close-btn:hover span {
+      color: #000; }
 
 
-          @media (max-width: 1024px) {
-            .custom-container {
-              gap: 10px; /* Smaller gap for smaller screens */
-              padding: 20px;
-            }
+    .icons {
+      height: 90px;
+      width: 90px;
+      object-fit: contain;
+      margin-bottom: 15px; /* Space between icon and text */
+      transition: transform 0.3s ease;
+    }
 
-            .custom-row {
-              gap: 10px;
-            }
+    .custom-div:hover .icons,
+    .custom-div-private:hover .icons {
+        transform: scale(1.05); /* Slightly enlarge icon on hover */
+    }
 
-            .custom-div, .custom-div-private {
-              min-width: 150px;
-            }
+    .custom-div p,
+    .custom-div-private p {
+        margin: 0; /* Remove default margin */
+        padding: 0;
+        font-size: 16px; /* Adjust text size */
+        color: #4D4D4D; /* Set text color */
+        font-weight: bold;
+        line-height: 1.3; /* Improve text readability */
+    }
 
-            /* Responsive adjustments for rows */
-            .row-five .custom-div,
-            .row-five .custom-div-private,
-            .row-four .custom-div,
-            .row-four .custom-div-private {
-              flex: 1 1 calc(33.333% - 8px);
-              min-width: calc(33.333% - 8px);
-            }
+    @media (max-width: 1024px) {
+      .custom-container {
+        gap: 10px; /* Smaller gap for smaller screens */
+        padding: 20px;
+      }
 
-            /* Default style: 2 divs per row (50% width each) for very small screens */
-            @media (max-width: 768px) {
-              .row-five .custom-div,
-              .row-five .custom-div-private,
-              .row-four .custom-div,
-              .row-four .custom-div-private {
-                flex: 1 1 calc(50% - 5px); /* Half width minus gap */
-                min-width: calc(50% - 5px);
-              }
-            }
-          }
+      .custom-row {
+        gap: 10px;
+      }
 
-          @media (max-width: 545px) {
-            .custom-container {
-              display: flex;
-              flex-wrap: wrap; /* Allow items to wrap */
-              gap: 5px; /* Smaller gap for smaller screens */
-            }
-          .custom-div,.custom-div-private{
-            min-width: 100px;
-          }
-            /* Default style: 2 divs per row (50% width each) */
-            .custom-container .custom-div,
-            .custom-container .custom-div-private {
-              flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
+      .custom-div, .custom-div-private {
+        min-width: 150px;
+      }
 
-              min-width: calc(50% - 5px) !important;
-              box-sizing: border-box; /* Account for padding/borders */
-            }
+      /* Responsive adjustments for rows */
+      .row-five .custom-div,
+      .row-five .custom-div-private,
+      .row-four .custom-div,
+      .row-four .custom-div-private {
+        flex: 1 1 calc(33.333% - 8px);
+        min-width: calc(33.333% - 8px);
+      }
 
-            /* Every 5th div spans full width (1 div per row) */
-            .custom-container .custom-div:nth-child(5n),
-            .custom-container .custom-div-private:nth-child(5n) {
-              flex: 1 1 100%; /* Full width */
-              max-width: 100%;
+      /* Default style: 2 divs per row (50% width each) for very small screens */
+      @media (max-width: 768px) {
+        .row-five .custom-div,
+        .row-five .custom-div-private,
+        .row-four .custom-div,
+        .row-four .custom-div-private {
+          flex: 1 1 calc(50% - 5px); /* Half width minus gap */
+          min-width: calc(50% - 5px);
+        }
+      }
+    }
 
-            }
-            .custom-container{
-              width: 100%;
-            }
-            .photo-gallery h1 {
-              font-size: 18px;
-              display: block; /* Ensure the heading behaves like a block-level element */
-    width: 100%; /* Make sure the heading stretches across the full width */
-    text-align: center; /* Center the text */
-    white-space: normal; /* Allow text to wrap onto new lines */
-    word-wrap: break-word !important; /* Ensure text breaks within the container width */
-    margin: 0; /* Remove any default margins */
-            }
-          }
-             .col-lg-5 p{
-            font-weight: 350;
+    @media (max-width: 545px) {
+      .custom-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap */
+        gap: 5px; /* Smaller gap for smaller screens */
+      }
+    .custom-div,.custom-div-private{
+      min-width: 100px;
+    }
+      /* Default style: 2 divs per row (50% width each) */
+      .custom-container .custom-div,
+      .custom-container .custom-div-private {
+        flex: 1 1 calc(50% - 5px) !important; /* Half width minus gap */
 
-    font-size: 18px;
-    text-align: justify;
-    text-align-last: justify; /* Ensures the last line is also justified */
-    text-align: left !important;
-    word-wrap: break-word !important; /* Ensure text breaks within the container width */
+        min-width: calc(50% - 5px) !important;
+        box-sizing: border-box; /* Account for padding/borders */
+      }
 
-          }
+      /* Every 5th div spans full width (1 div per row) */
+      .custom-container .custom-div:nth-child(5n),
+      .custom-container .custom-div-private:nth-child(5n) {
+        flex: 1 1 100%; /* Full width */
+        max-width: 100%;
+
+      }
+      .custom-container{
+        width: 100%;
+      }
+      .photo-gallery h1 {
+        font-size: 18px;
+        display: block; /* Ensure the heading behaves like a block-level element */
+  width: 100%; /* Make sure the heading stretches across the full width */
+  text-align: center; /* Center the text */
+  white-space: normal; /* Allow text to wrap onto new lines */
+  word-wrap: break-word !important; /* Ensure text breaks within the container width */
+  margin: 0; /* Remove any default margins */
+      }
+    }
+       .col-lg-5 p{
+      font-weight: 350;
+
+  font-size: 18px;
+  text-align: justify;
+  text-align-last: justify; /* Ensures the last line is also justified */
+  text-align: left !important;
+  word-wrap: break-word !important; /* Ensure text breaks within the container width */
+
+    }
 
 .photo-gallery .custom-div img, .photo-gallery .custom-div-private img {
   width: 80px;

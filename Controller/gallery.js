@@ -195,49 +195,65 @@ const arrangeSubgalleriesInRows = (subgalleries) => {
   // Filter out subgalleries without names as they shouldn't be displayed
   const validSubgalleries = subgalleries.filter(sg => sg.name && sg.name.trim() !== '');
   
-  // Ensure each subgallery has an icon (use default if missing)
-  const preparedSubgalleries = validSubgalleries.map(sg => {
-    if (!sg.icon || sg.icon.trim() === '') {
-      return {
-        ...sg,
-        icon: '/images/gallery/default-icon.jpg'  // Use default icon
-      };
-    }
-    return sg;
-  });
+  // Prepare subgalleries with default icons only when needed
+  const preparedSubgalleries = validSubgalleries.map(sg => ({
+    ...sg,
+    // No need to force an icon if name exists - this prevents UI issues with missing icons
+  }));
   
   const rows = [];
   let currentIndex = 0;
+  const totalItems = preparedSubgalleries.length;
 
-  // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
-  while (currentIndex < preparedSubgalleries.length) {
-    // First row: up to 5 items
-    const firstRowCount = Math.min(5, preparedSubgalleries.length - currentIndex);
-    if (firstRowCount > 0) {
-      rows.push({
-        type: 'row-five',
-        items: preparedSubgalleries.slice(currentIndex, currentIndex + firstRowCount)
-      });
-      currentIndex += firstRowCount;
-    }
-
-    // Second row: up to 4 items
-    const secondRowCount = Math.min(4, preparedSubgalleries.length - currentIndex);
-    if (secondRowCount > 0) {
-      rows.push({
-        type: 'row-four',
-        items: preparedSubgalleries.slice(currentIndex, currentIndex + secondRowCount)
-      });
-      currentIndex += secondRowCount;
-    }
-
-    // Third row: 1 item
-    if (currentIndex < preparedSubgalleries.length) {
-      rows.push({
-        type: 'row-one',
-        items: [preparedSubgalleries[currentIndex]]
-      });
-      currentIndex += 1;
+  // Determine optimal row patterns based on total count
+  // This creates a more balanced layout with consistent spacing
+  if (totalItems <= 4) {
+    // Simple single row for 1-4 items
+    rows.push({
+      type: `row-${totalItems}`,
+      items: preparedSubgalleries
+    });
+  } else {
+    // For larger collections, create uniform rows where possible
+    while (currentIndex < preparedSubgalleries.length) {
+      const remainingItems = preparedSubgalleries.length - currentIndex;
+      
+      if (remainingItems >= 5) {
+        // Full row of 5
+        rows.push({
+          type: 'row-five',
+          items: preparedSubgalleries.slice(currentIndex, currentIndex + 5)
+        });
+        currentIndex += 5;
+      } else if (remainingItems >= 4) {
+        // Row of 4
+        rows.push({
+          type: 'row-four',
+          items: preparedSubgalleries.slice(currentIndex, currentIndex + 4)
+        });
+        currentIndex += 4;
+      } else if (remainingItems === 3) {
+        // Row of 3
+        rows.push({
+          type: 'row-three',
+          items: preparedSubgalleries.slice(currentIndex, currentIndex + 3)
+        });
+        currentIndex += 3;
+      } else if (remainingItems === 2) {
+        // Row of 2
+        rows.push({
+          type: 'row-two',
+          items: preparedSubgalleries.slice(currentIndex, currentIndex + 2)
+        });
+        currentIndex += 2;
+      } else {
+        // Single item row
+        rows.push({
+          type: 'row-one',
+          items: [preparedSubgalleries[currentIndex]]
+        });
+        currentIndex += 1;
+      }
     }
   }
 
