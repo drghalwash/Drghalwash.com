@@ -36,6 +36,15 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    box-sizing: border-box;
+}
+
+/* Fix box-sizing for all elements in gallery */
+.photo-gallery *,
+.custom-container *,
+.custom-div,
+.custom-div-private {
+    box-sizing: border-box;
 }
 
 .photo-gallery h1{
@@ -60,6 +69,7 @@
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Row styling */
@@ -180,10 +190,10 @@
   
   .custom-container .custom-row {
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
   }
   
-  /* Make items 2 per row on tablet */
+  /* Make items 3 per row on mobile/tablet */
   .custom-container .row-five .custom-div,
   .custom-container .row-five .custom-div-private,
   .custom-container .row-four .custom-div,
@@ -192,8 +202,8 @@
   .custom-container .row-three .custom-div-private,
   .custom-container .row-two .custom-div,
   .custom-container .row-two .custom-div-private {
-    flex: 0 0 calc(50% - 8px);
-    width: calc(50% - 8px);
+    flex: 0 0 calc(33.333% - 8px);
+    width: calc(33.333% - 8px);
     min-height: 160px;
   }
   
@@ -206,6 +216,12 @@
   .photo-gallery h1 {
     font-size: 20px;
     margin-bottom: 20px;
+  }
+  
+  .icons {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 8px;
   }
 }
 
@@ -221,14 +237,14 @@
   }
   
   .custom-container {
-    gap: 12px;
+    gap: 10px;
   }
   
   .custom-container .custom-row {
-    gap: 12px;
+    gap: 10px;
   }
   
-  /* Make items 1 per row on small mobile */
+  /* Keep 3 items per row even on small mobile */
   .custom-container .row-five .custom-div,
   .custom-container .row-five .custom-div-private,
   .custom-container .row-four .custom-div,
@@ -236,23 +252,28 @@
   .custom-container .row-three .custom-div,
   .custom-container .row-three .custom-div-private,
   .custom-container .row-two .custom-div,
-  .custom-container .row-two .custom-div-private,
+  .custom-container .row-two .custom-div-private {
+    flex: 0 0 calc(33.333% - 7px);
+    width: calc(33.333% - 7px);
+    min-height: 130px;
+    padding: 10px 5px !important;
+  }
+  
   .custom-container .row-one .custom-div,
   .custom-container .row-one .custom-div-private {
     flex: 0 0 100%;
     width: 100%;
-    min-height: 140px;
   }
   
   .icons {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
   }
   
   .custom-div p,
   .custom-div-private p {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
@@ -427,4 +448,18 @@
 .photo-gallery .custom-div-private img[style*="display:none"] {
   display: block !important;
   visibility: hidden;
+}
+
+/* Clear fix for footer issues */
+.site-footer {
+  clear: both;
+  position: relative;
+  width: 100%;
+}
+
+/* Ensure proper container closing */
+.photo-gallery::after {
+  content: "";
+  display: table;
+  clear: both;
 }
