@@ -279,6 +279,43 @@
 <div class="Copyright">Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved.</div>
 </div>
 
+  <script>
+  // Debug script to verify modal functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, checking modal components...');
+
+    // Check if modal exists
+    const passwordModal = document.getElementById('passwordModal');
+    if (passwordModal) {
+      console.log('Password modal found in DOM');
+    } else {
+      console.error('Password modal not found in DOM');
+    }
+
+    // Check if form exists
+    const passwordForm = document.getElementById('passwordForm');
+    if (passwordForm) {
+      console.log('Password form found in DOM');
+    } else {
+      console.error('Password form not found in DOM');
+    }
+
+    // Check gallery links
+    const galleryLinks = document.querySelectorAll('.gallery-link');
+    console.log(`Found ${galleryLinks.length} gallery links`);
+
+    // Check private galleries
+    const privateGalleries = document.querySelectorAll('.custom-div-private');
+    console.log(`Found ${privateGalleries.length} private gallery elements`);
+
+    // Ensure Bootstrap is available
+    if (typeof bootstrap !== 'undefined' && typeof bootstrap.Modal !== 'undefined') {
+      console.log('Bootstrap Modal functionality is available');
+    } else {
+      console.error('Bootstrap Modal functionality is not available');
+    }
+  });
+  </script>
 
 		<script src="/js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>
