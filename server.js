@@ -4,6 +4,7 @@ import Handlebars from 'handlebars';
 import dotenv from 'dotenv';
 dotenv.config();
 import methodOverride from 'method-override';
+import cookieParser from 'cookie-parser'; // Added cookie-parser
 
 import Home_route from "./Routes/Home_route.js";
 import Contact_route from "./Routes/Contact_route.js";
@@ -39,6 +40,7 @@ const __dirname = dirname(__filename);
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(cookieParser()); // Initialize cookie-parser middleware
 
 
 // Handlebars Helpers

@@ -397,3 +397,163 @@
 </script>
 	</body>
 	</html>
+<div class="container">
+  <h1>{{gallery.name}}</h1>
+  
+  {{#if subgalleryRows.length}}
+    <div class="subgallery-container">
+      {{#each subgalleryRows}}
+        <div class="row {{this.type}}">
+          {{#each this.items}}
+            <div class="subgallery-item {{#if this.status}}{{#ifEqual this.status "Private"}}subgallery-private{{else}}subgallery-public{{/ifEqual}}{{else}}subgallery-public{{/if}}" 
+                 {{#if this.status}}{{#ifEqual this.status "Private"}}data-subgallery-id="{{this.id}}"{{else}}onclick="window.location.href='/{{../../../gallery.slug}}/{{this.slug}}'"{{/ifEqual}}{{else}}onclick="window.location.href='/{{../../../gallery.slug}}/{{this.slug}}'"{{/if}}>
+              <div class="subgallery-icon">
+                <img src="{{this.icon}}" alt="{{this.name}}">
+              </div>
+              <div class="subgallery-name">
+                {{this.name}}
+                {{#if this.status}}{{#ifEqual this.status "Private"}}<span class="private-badge">🔒</span>{{/ifEqual}}{{/if}}
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p>No galleries available.</p>
+  {{/if}}
+</div>
+
+<!-- Password Modal -->
+<div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2>This gallery requires a password</h2>
+    <form id="passwordForm">
+      <input type="hidden" id="subgalleryId" name="subgalleryId">
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .subgallery-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .subgallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    flex: 1;
+    padding: 15px;
+    background: #fff;
+  }
+  
+  .subgallery-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .subgallery-private {
+    border: 2px solid #f1c40f;
+  }
+  
+  .subgallery-icon {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .subgallery-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .subgallery-name {
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .private-badge {
+    color: #f1c40f;
+  }
+  
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
