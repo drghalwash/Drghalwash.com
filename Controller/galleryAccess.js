@@ -15,7 +15,7 @@ export const validatePassword = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
-    // Get the subgallery to check if it's password protected
+    // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
       .select('*, password:password_id(password)')
@@ -26,9 +26,14 @@ export const validatePassword = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Subgallery not found' });
     }
 
-    // If the subgallery doesn't require a password
+    // Check if the subgallery is private
+    if (subgallery.status !== 'Private') {
+      return res.status(400).json({ success: false, message: 'This subgallery is not private' });
+    }
+
+    // If the subgallery is private but doesn't have a password_id
     if (!subgallery.password_id) {
-      return res.status(400).json({ success: false, message: 'This subgallery is not password protected' });
+      return res.status(400).json({ success: false, message: 'This private subgallery has no associated password' });
     }
 
     // Check if the provided password matches
@@ -93,8 +98,8 @@ export const checkAccess = async (req, res, next) => {
       .eq('slug', subSlug)
       .single();
     
-    if (!subgallery || !subgallery.password_id || subgallery.status !== 'Private') {
-      // If subgallery doesn't exist, isn't password protected, or isn't private, proceed
+    if (!subgallery || subgallery.status !== 'Private') {
+      // If subgallery doesn't exist or isn't private, proceed
       return next();
     }
 
