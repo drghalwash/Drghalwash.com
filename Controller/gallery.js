@@ -195,36 +195,47 @@ const arrangeSubgalleriesInRows = (subgalleries) => {
   // Filter out subgalleries without names as they shouldn't be displayed
   const validSubgalleries = subgalleries.filter(sg => sg.name && sg.name.trim() !== '');
   
+  // Ensure each subgallery has an icon (use default if missing)
+  const preparedSubgalleries = validSubgalleries.map(sg => {
+    if (!sg.icon || sg.icon.trim() === '') {
+      return {
+        ...sg,
+        icon: '/images/gallery/default-icon.jpg'  // Use default icon
+      };
+    }
+    return sg;
+  });
+  
   const rows = [];
   let currentIndex = 0;
 
   // Pattern: first row 5 items, second row 4 items, third row 1 item, repeat
-  while (currentIndex < validSubgalleries.length) {
+  while (currentIndex < preparedSubgalleries.length) {
     // First row: up to 5 items
-    const firstRowCount = Math.min(5, validSubgalleries.length - currentIndex);
+    const firstRowCount = Math.min(5, preparedSubgalleries.length - currentIndex);
     if (firstRowCount > 0) {
       rows.push({
         type: 'row-five',
-        items: validSubgalleries.slice(currentIndex, currentIndex + firstRowCount)
+        items: preparedSubgalleries.slice(currentIndex, currentIndex + firstRowCount)
       });
       currentIndex += firstRowCount;
     }
 
     // Second row: up to 4 items
-    const secondRowCount = Math.min(4, validSubgalleries.length - currentIndex);
+    const secondRowCount = Math.min(4, preparedSubgalleries.length - currentIndex);
     if (secondRowCount > 0) {
       rows.push({
         type: 'row-four',
-        items: validSubgalleries.slice(currentIndex, currentIndex + secondRowCount)
+        items: preparedSubgalleries.slice(currentIndex, currentIndex + secondRowCount)
       });
       currentIndex += secondRowCount;
     }
 
     // Third row: 1 item
-    if (currentIndex < validSubgalleries.length) {
+    if (currentIndex < preparedSubgalleries.length) {
       rows.push({
         type: 'row-one',
-        items: [validSubgalleries[currentIndex]]
+        items: [preparedSubgalleries[currentIndex]]
       });
       currentIndex += 1;
     }
