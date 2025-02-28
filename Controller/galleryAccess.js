@@ -9,9 +9,13 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
+    // Extract data from request body
     const { subgalleryId, password } = req.body;
     
-    if (!subgalleryId || !password) {
+    console.log("Request body received:", req.body);
+    
+    // Ensure both parameters exist and are not empty
+    if (!subgalleryId || password === undefined || password === '') {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
@@ -61,17 +65,18 @@ export const validatePassword = async (req, res) => {
         // Filter out empty strings
         validPins = pinsArray.filter(pin => pin.length > 0);
         console.log('Valid PINs:', validPins);
-        console.log('Valid pins after parsing:', validPins);
       }
     } catch (e) {
       console.error('Error parsing password data:', e);
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
-    console.log('Checking if provided password:', password, 'matches any valid PINs');
+    // Ensure password is trimmed
+    const trimmedPassword = password.trim();
+    console.log('Checking if provided password:', trimmedPassword, 'matches any valid PINs');
     
     // Check if the provided password matches any of the pins
-    if (validPins.includes(password)) {
+    if (validPins.includes(trimmedPassword)) {
       console.log('Password validated successfully');
       
       // Create a URL for redirection

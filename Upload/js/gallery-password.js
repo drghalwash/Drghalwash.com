@@ -87,9 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.innerHTML = 'Validating...';
 
       try {
-        const requestData = {
+        // Ensure password is properly trimmed
+      const trimmedPassword = password.trim();
+      
+      const requestData = {
           subgalleryId: subgalleryId,
-          password: password
+          password: trimmedPassword
         };
 
         console.log('Sending API request with data:', requestData);
