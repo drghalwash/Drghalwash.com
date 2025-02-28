@@ -129,39 +129,61 @@ const fetchGalleries = async () => {
  */
 export const index = async (req, res) => {
     try {
-        // Fetch galleries for header
-        const { data: galleries, error: galleryError } = await supabase.from('gallery').select('*');
-        if (galleryError) throw galleryError;
-
-        // Fetch zones (categories) for blogs
-        const { data: zones, error: zoneError } = await supabase.from('blog_zones').select('*');
-        if (zoneError) throw zoneError;
-
-        // Fetch all blogs
-        const { data: blogs, error: blogError } = await supabase.from('blogs').select('*');
-        if (blogError) throw blogError;
-
-        // Group blogs by zones into object format for handlebars templates
+        console.log('[BlogController] Fetching data for blog page');
+        
+        // Fetch all required data in parallel for better performance
+        const [galleryResponse, zonesResponse, blogsResponse] = await Promise.all([
+            supabase.from('gallery').select('*'),
+            supabase.from('blog_zones').select('*'),
+            supabase.from('blogs').select('*')
+        ]);
+        
+        // Check for errors in responses
+        if (galleryResponse.error) throw new Error(`Gallery fetch error: ${galleryResponse.error.message}`);
+        if (zonesResponse.error) throw new Error(`Zones fetch error: ${zonesResponse.error.message}`);
+        if (blogsResponse.error) throw new Error(`Blogs fetch error: ${blogsResponse.error.message}`);
+        
+        const galleries = galleryResponse.data;
+        const zones = zonesResponse.data;
+        const blogs = blogsResponse.data;
+        
+        console.log(`[BlogController] Fetched ${galleries.length} galleries, ${zones.length} zones, ${blogs.length} blogs`);
+        
+        // Group blogs by zones with validation
         const groupedBlogs = {};
         zones.forEach(zone => {
-            const blogsInZone = blogs.filter(blog => blog.zone_id === zone.id);
-            if (blogsInZone.length > 0 && zone.name) {
+            if (!zone || !zone.name || !zone.id) return;
+            
+            const blogsInZone = blogs.filter(blog => blog && blog.zone_id === zone.id);
+            if (blogsInZone.length > 0) {
                 groupedBlogs[zone.name] = blogsInZone;
+                console.log(`[BlogController] Zone "${zone.name}" has ${blogsInZone.length} blogs`);
             }
         });
-
-        // Get latest blogs for the sidebar
+        
+        // Get latest blogs for the sidebar with validation to avoid date parsing errors
         const latestBlogs = [...blogs]
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .filter(blog => blog && blog.created_at)
+            .sort((a, b) => {
+                try {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                } catch (e) {
+                    console.error(`[BlogController] Date parsing error: ${e.message}`);
+                    return 0;
+                }
+            })
             .slice(0, 5);
-
+        
+        console.log(`[BlogController] Prepared ${latestBlogs.length} latest blogs for sidebar`);
+        
         // Add helper for JSON stringification in handlebars
         const hbsHelpers = {
             json: function(context) {
                 return JSON.stringify(context);
             }
         };
-
+        
+        console.log('[BlogController] Rendering blog page');
         res.render('Pages/Blog', { 
             galleries, 
             groupedBlogs,
@@ -170,8 +192,11 @@ export const index = async (req, res) => {
             helpers: hbsHelpers
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).render("Pages/404", { error });
+        console.error('[BlogController] Error rendering blog page:', error);
+        res.status(500).render("Pages/404", { 
+            error,
+            errorDetails: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 };
 
