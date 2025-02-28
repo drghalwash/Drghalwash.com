@@ -38,9 +38,6 @@ export const validatePassword = async (req, res) => {
         // Continue with the fallback ID
         const subgalleryIdStr = String(fallbackId).trim();
         console.log(`Using fallback subgalleryId: '${subgalleryIdStr}'`);
-        
-        // Set the raw value to use below
-        rawSubgalleryId = fallbackId;
       } else {
         console.error('No fallback subgalleryId available in request:', req.body);
         return res.status(400).json({ 

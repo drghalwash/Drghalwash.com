@@ -1,270 +1,265 @@
-
 document.addEventListener('DOMContentLoaded', function() {
   console.log("Gallery password script loaded");
-  
+
   // Make sure the password modal element exists
   const passwordModal = document.getElementById('passwordModal');
   if (!passwordModal) {
-    console.error('Password modal not found');
-    return;
+    console.error('Password modal not found in the DOM. Password protection will not work.');
   }
 
-  // Function to display error messages
+  // Find all gallery links
+  const galleryLinks = document.querySelectorAll('.gallery-link');
+
+  if (galleryLinks.length > 0) {
+    console.log(`Found ${galleryLinks.length} gallery links`);
+
+    galleryLinks.forEach(link => {
+      // Check if this is a private gallery by looking for status="Private" in the data
+      const customDiv = link.querySelector('div[class]');
+
+      if (customDiv && customDiv.classList.contains('custom-div-private')) {
+        const subgalleryId = link.getAttribute('data-id');
+        console.log('Found private gallery link:', subgalleryId);
+
+        // Add click event listener to private galleries
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const subgalleryId = this.getAttribute('data-id');
+          if (subgalleryId) {
+            // Show password modal
+            const modal = document.getElementById('passwordModal');
+            if (modal) {
+              // Set the subgallery ID in the hidden field
+              const imageIdField = document.getElementById('imageId');
+              if (imageIdField) {
+                imageIdField.value = subgalleryId;
+                console.log('Set subgallery ID in form:', subgalleryId);
+              }
+
+              // Clear any previous error messages
+              const errorElement = document.getElementById('passwordError');
+              if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+              }
+
+              // Clear the password field
+              const passwordField = document.querySelector('#passwordModal input[name="password"]');
+              if (passwordField) {
+                passwordField.value = '';
+              }
+
+              // Show the modal
+              const passwordModal = new bootstrap.Modal(modal);
+              passwordModal.show();
+              console.log('Showing password modal for gallery ID:', galleryId);
+            } else {
+              console.error('Password modal not found in the DOM');
+            }
+          } else {
+            console.error('Gallery ID not found on link');
+          }
+        });
+      }
+    });
+  }
+
+  // Handle form submission for password validation
+  const passwordForm = document.getElementById('passwordForm');
+  if (passwordForm) {
+    // First, guarantee there's a hidden field for subgalleryId
+    let subgalleryIdField = document.getElementById('imageId');
+    if (!subgalleryIdField) {
+      subgalleryIdField = document.createElement('input');
+      subgalleryIdField.type = 'hidden';
+      subgalleryIdField.id = 'imageId';
+      subgalleryIdField.name = 'subgalleryId'; // Use proper name for server
+      passwordForm.appendChild(subgalleryIdField);
+      console.log('Created missing imageId field');
+    }
+
+    // Add this function for showing errors
+    function displayError(message) {
+      const errorElement = document.getElementById('passwordError');
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      } else {
+        console.error('Error:', message);
+        alert(message);
+      }
+    }
+
+    passwordForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      console.log('Password form submitted');
+      
+      // HARDCODED DEFAULT - We'll grab the active subgallery ID from the URL if possible
+      let subgalleryId = null;
+      
+      // Get from URL if possible
+      const pathSegments = window.location.pathname.split('/');
+      if (pathSegments.length >= 4 && pathSegments[1] === 'galleries') {
+        subgalleryId = pathSegments[3]; // Gets the subgallery slug from URL
+        console.log('Retrieved subgalleryId from URL path:', subgalleryId);
+      }
+      
+      // Try to get from any data attribute on the clicked element
+      const clickedElement = document.querySelector('.private-gallery-link[data-id]');
+      if (clickedElement) {
+        subgalleryId = clickedElement.getAttribute('data-id');
+        console.log('Found subgalleryId from clicked element:', subgalleryId);
+      }
+      
+      // Try to get from form field
+      if (subgalleryIdField) {
+        const fieldValue = subgalleryIdField.value;
+        if (fieldValue && fieldValue.trim() !== '') {
+          subgalleryId = fieldValue.trim();
+          console.log('Found subgalleryId in form field:', subgalleryId);
+        }
+      }
+      
+      // Method 2: Get from modal data attribute if still missing
+      if (!subgalleryId) {
+        const passwordModal = document.getElementById('passwordModal');
+        if (passwordModal && passwordModal.dataset && passwordModal.dataset.subgalleryId) {
+          subgalleryId = passwordModal.dataset.subgalleryId;
+          console.log('Retrieved subgalleryId from modal data attribute:', subgalleryId);
+        }
+      }
+      
+      // HARDCODED FALLBACK - Use "1" as last resort
+      if (!subgalleryId) {
+        subgalleryId = "1"; // Fallback value as last resort
+        console.log('Using fallback subgalleryId:', subgalleryId);
+      }
+      
+      // Update the form field
+      if (subgalleryIdField) {
+        subgalleryIdField.value = subgalleryId;
+      }
+      
+      console.log('Using subgallery ID:', subgalleryId);
+
+      // Ensure the form field has the value (create it if needed)
+      if (!subgalleryIdField) {
+        subgalleryIdField = document.createElement('input');
+        subgalleryIdField.type = 'hidden';
+        subgalleryIdField.id = 'imageId';
+        subgalleryIdField.name = 'imageId';
+        passwordForm.appendChild(subgalleryIdField);
+        subgalleryIdField.value = subgalleryId;
+        console.log('Created missing imageId field with value:', subgalleryId);
+      }
+
+
+      const passwordInput = document.querySelector('#passwordModal input[name="password"]');
+      if (!passwordInput) {
+        displayError('Missing required information: password field');
+        return;
+      }
+
+      const password = passwordInput.value.trim();
+      console.log('Submitted password (trimmed):', password);
+
+      if (!password) {
+        displayError('Please enter a password');
+        return;
+      }
+
+      // Show loading state
+      const submitButton = this.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.innerHTML;
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Validating...';
+
+      try {
+        // Ensure password is properly trimmed
+        const trimmedPassword = password.trim();
+        
+        // Double-check we have subgalleryId
+        if (!subgalleryId) {
+          displayError('Missing required parameter: subgalleryId');
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonText;
+          return;
+        }
+        
+        // Create the request data with extra debug info
+        const requestData = {
+          subgalleryId: subgalleryId,
+          imageId: subgalleryId,
+          id: subgalleryId,
+          password: trimmedPassword,
+          timestamp: new Date().getTime() // Add timestamp for cache busting
+        };
+        
+        console.log('Sending request with data:', JSON.stringify(requestData));
+
+        console.log('Sending API request with data:', requestData);
+
+        const response = await fetch('/galleries/validate-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestData)
+        });
+
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+
+        console.log('API response status:', response.status);
+
+        if (!response.ok) {
+          const responseText = await response.text();
+          console.log('Server error:', response.status, responseText);
+
+          try {
+            // Try to parse as JSON for more detailed error
+            const errorData = JSON.parse(responseText);
+            displayError(errorData.message || `Error (${response.status}): Please try again`);
+          } catch (e) {
+            // If can't parse as JSON, show generic error
+            displayError(`Server error (${response.status}): Please try again`);
+          }
+          return;
+        }
+
+        const data = await response.json();
+        console.log('Password validation response:', data);
+
+        if (data.success) {
+          // Close modal
+          bootstrap.Modal.getInstance(document.getElementById('passwordModal')).hide();
+
+          // Redirect if URL is provided
+          if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;
+          }
+        } else {
+          displayError(data.message || 'Invalid password');
+        }
+      } catch (error) {
+        console.error('Error validating password:', error);
+        displayError('Error connecting to server. Please check your connection and try again.');
+      }
+    });
+  } else {
+    console.error('Password form not found in the DOM');
+  }
+
+  // Helper function to display error messages
   function displayError(message) {
     const errorElement = document.getElementById('passwordError');
     if (errorElement) {
       errorElement.textContent = message;
       errorElement.style.display = 'block';
     } else {
-      console.error('Error element not found:', message);
+      alert(message);
     }
   }
-
-  // Add click event listeners to all gallery links with private access
-  const privateLinks = document.querySelectorAll('.private-gallery-link');
-  if (privateLinks && privateLinks.length > 0) {
-    console.log('Found', privateLinks.length, 'private gallery links');
-    
-    privateLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const subgalleryId = this.getAttribute('data-id');
-        console.log('Link clicked with data-id:', subgalleryId);
-        
-        if (subgalleryId) {
-          // Set the subgallery ID directly on the modal element
-          passwordModal.setAttribute('data-subgallery-id', subgalleryId);
-          
-          // Also set it on any form fields 
-          const imageIdField = document.getElementById('imageId');
-          if (imageIdField) {
-            imageIdField.value = subgalleryId;
-            console.log('Set subgallery ID in imageId field:', subgalleryId);
-          } else {
-            console.log('imageId field not found, creating it');
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.id = 'imageId';
-            hiddenField.name = 'imageId';
-            hiddenField.value = subgalleryId;
-            
-            const form = document.getElementById('passwordForm');
-            if (form) {
-              form.appendChild(hiddenField);
-              console.log('Created and appended imageId field with value:', subgalleryId);
-            }
-          }
-          
-          // Set ID in a separate field for redundancy
-          const subgalleryIdField = document.getElementById('subgalleryId');
-          if (subgalleryIdField) {
-            subgalleryIdField.value = subgalleryId;
-            console.log('Set subgallery ID in subgalleryId field:', subgalleryId);
-          } else {
-            console.log('subgalleryId field not found, creating it');
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.id = 'subgalleryId';
-            hiddenField.name = 'subgalleryId';
-            hiddenField.value = subgalleryId;
-            
-            const form = document.getElementById('passwordForm');
-            if (form) {
-              form.appendChild(hiddenField);
-              console.log('Created and appended subgalleryId field with value:', subgalleryId);
-            }
-          }
-
-          // Clear any previous error messages
-          const errorElement = document.getElementById('passwordError');
-          if (errorElement) {
-            errorElement.textContent = '';
-            errorElement.style.display = 'none';
-          }
-
-          // Clear the password field
-          const passwordField = document.querySelector('#passwordModal input[name="password"]');
-          if (passwordField) {
-            passwordField.value = '';
-          }
-
-          // Show the modal
-          const bsModal = new bootstrap.Modal(passwordModal);
-          bsModal.show();
-          console.log('Showing password modal for subgallery ID:', subgalleryId);
-        } else {
-          console.error('Subgallery ID not found on link');
-        }
-      });
-    });
-  } else {
-    console.log('No private gallery links found');
-  }
-
-  // Handle form submission
-  const passwordForm = document.getElementById('passwordForm');
-  if (!passwordForm) {
-    console.error('Password form not found');
-    return;
-  }
-
-  passwordForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    console.log('Password form submitted');
-    
-    // Get submit button to manage loading state
-    const submitButton = document.querySelector('#passwordForm button[type="submit"]');
-    const originalButtonText = submitButton ? submitButton.innerHTML : 'Submit';
-    
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.innerHTML = 'Validating...';
-    }
-    
-    // Get password input
-    const passwordInput = document.querySelector('#passwordForm input[name="password"]');
-    if (!passwordInput) {
-      displayError('Password input not found');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-      }
-      return;
-    }
-    
-    // STEP 1: Get subgalleryId from multiple possible sources for redundancy
-    let subgalleryId = null;
-    
-    // Try to get from hidden form field first
-    const subgalleryIdField = document.getElementById('subgalleryId');
-    if (subgalleryIdField && subgalleryIdField.value) {
-      subgalleryId = subgalleryIdField.value.trim();
-      console.log('Found subgalleryId in form field:', subgalleryId);
-    }
-    
-    // If not found, try the imageId field
-    if (!subgalleryId) {
-      const imageIdField = document.getElementById('imageId');
-      if (imageIdField && imageIdField.value) {
-        subgalleryId = imageIdField.value.trim();
-        console.log('Found subgalleryId in imageId field:', subgalleryId);
-      }
-    }
-    
-    // If still not found, try the modal data attribute
-    if (!subgalleryId && passwordModal.dataset.subgalleryId) {
-      subgalleryId = passwordModal.dataset.subgalleryId.trim();
-      console.log('Found subgalleryId in modal data attribute:', subgalleryId);
-    }
-    
-    // If still not found, try to get from URL path
-    if (!subgalleryId) {
-      const pathSegments = window.location.pathname.split('/');
-      if (pathSegments.length >= 4 && pathSegments[1] === 'galleries') {
-        subgalleryId = pathSegments[3]; // Gets the subgallery slug from URL
-        console.log('Retrieved subgalleryId from URL path:', subgalleryId);
-      }
-    }
-    
-    // Final check if we have a valid subgalleryId
-    if (!subgalleryId) {
-      console.error('subgalleryId is missing after all attempts');
-      displayError('Missing required information: subgallery ID');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-      }
-      return;
-    }
-    
-    console.log('Using subgallery ID:', subgalleryId);
-    
-    // STEP 2: Get and validate password
-    const password = passwordInput.value.trim();
-    console.log('Password entered (trimmed):', password);
-    
-    if (!password) {
-      displayError('Please enter a password');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-      }
-      return;
-    }
-    
-    // STEP 3: Send validation request
-    try {
-      // Create the request data
-      const requestData = {
-        subgalleryId: subgalleryId,  // Primary field name
-        imageId: subgalleryId,       // Alternate field name for compatibility
-        id: subgalleryId,            // Another alternate field name
-        password: password,
-        timestamp: new Date().getTime()  // For cache busting
-      };
-      
-      console.log('Sending API request with data:', JSON.stringify(requestData));
-      
-      // Send request
-      const response = await fetch('/galleries/validate-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-      });
-      
-      console.log('API response status:', response.status);
-      
-      // Reset button state
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-      }
-      
-      // Handle response
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Server error:', response.status, errorText);
-        
-        try {
-          const errorJson = JSON.parse(errorText);
-          displayError(errorJson.message || 'Invalid password');
-        } catch (e) {
-          displayError('Invalid password');
-        }
-        return;
-      }
-      
-      // Process successful response
-      const data = await response.json();
-      console.log('API response data:', data);
-      
-      if (data.success) {
-        console.log('Password validation successful, redirecting to:', data.redirectUrl);
-        
-        // Hide the modal
-        const modal = bootstrap.Modal.getInstance(passwordModal);
-        if (modal) {
-          modal.hide();
-        }
-        
-        // Redirect to the gallery
-        window.location.href = data.redirectUrl;
-      } else {
-        console.error('API returned success false');
-        displayError(data.message || 'Invalid password');
-      }
-    } catch (error) {
-      console.error('Error in API request:', error);
-      
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-      }
-      
-      displayError('An error occurred. Please try again.');
-    }
-  });
 });
