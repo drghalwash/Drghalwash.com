@@ -207,34 +207,11 @@
 			<div class="custom-categories-container">
 				<h4>Categories</h4>
 				<ul>
-					{{#if zones}}
-						{{#each organizedZones}}
-							<li class="zone-item">
-								<div class="zone-header">
-									<span class="zone-name">{{this.name}}</span>
-									<span class="zone-toggle">▼</span>
-								</div>
-								{{#if this.categories.length}}
-									<ul class="category-list">
-										{{#each this.categories}}
-											<li><a href="#{{this.name}}">{{this.name}}</a></li>
-										{{/each}}
-									</ul>
-								{{else}}
-									<ul class="category-list empty-list">
-										<li class="empty-item">No categories yet</li>
-									</ul>
-								{{/if}}
-							</li>
-						{{/each}}
-					{{else}}
-						{{#each groupedBlogs}}
-							<li><a href="#{{@key}}">{{@key}}</a></li>
-						{{/each}}
-						{{#unless groupedBlogs}}
-							<li><a href="#">No categories yet</a></li>
-						{{/unless}}
-					{{/if}}
+					{{#each groupedBlogs}}
+
+					<li><a style="link" href="#{{@key}}">{{@key}}</a></li>
+					{{/each}}
+
 				</ul>
 			</div>
 
@@ -243,75 +220,10 @@
 				<h4>Latest Posts</h4>
 				<ul>
 					{{#each latestBlogs}}
-						<li><a href="/Read_More/{{title}}">{{title}}</a></li>
-					{{else}}
-						<li><a href="#">Coming Soon</a></li>
-						<li><a href="#">Stay Tuned</a></li>
-						<li><a href="#">New Content Shortly</a></li>
+					<li><a href="/Read_More/{{title}}">{{title}}</a></li>
 					{{/each}}
 				</ul>
 			</div>
-			
-			<!-- Add custom styling for zones and categories -->
-			<style>
-				.zone-item {
-					margin-bottom: 10px;
-				}
-				.zone-header {
-					background-color: #1B54FF;
-					color: white;
-					padding: 8px 15px;
-					border-radius: 5px;
-					cursor: pointer;
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-				}
-				.zone-toggle {
-					transition: transform 0.3s ease;
-				}
-				.zone-header.collapsed .zone-toggle {
-					transform: rotate(-90deg);
-				}
-				.category-list {
-					list-style: none;
-					padding-left: 15px;
-					margin-top: 5px;
-					overflow: hidden;
-					max-height: 500px;
-					transition: max-height 0.3s ease;
-				}
-				.category-list.collapsed {
-					max-height: 0;
-				}
-				.category-list li {
-					padding: 5px 0;
-				}
-				.category-list li a {
-					display: block;
-					padding: 5px 10px;
-					color: #333;
-					text-decoration: none;
-					border-bottom: 1px solid #eee;
-					transition: all 0.2s ease;
-				}
-				.category-list li a:hover {
-					background-color: #f5f5f5;
-					padding-left: 15px;
-					color: #1B54FF;
-				}
-				.empty-item {
-					color: #888;
-					font-style: italic;
-					padding: 5px 10px;
-				}
-				
-				/* Ensure the containers maintain fixed height even when empty */
-				.custom-categories-container, 
-				.custom-latest-posts-container {
-					min-height: 200px;
-				}
-			</style>
 		</div>
 	</div>
 
