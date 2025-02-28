@@ -73,12 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       
-      const password = passwordInput.value;
+      const password = passwordInput.value.trim();
       if (!password) {
         displayError('Please enter a password');
         return;
       }
-
+      
       // Show loading state
       const submitButton = passwordForm.querySelector('button[type="submit"]');
       const originalButtonText = submitButton.innerHTML;
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
           },
           body: JSON.stringify({
             subgalleryId: subgalleryId,
-            password: password.trim()
+            password: password
           })
         });
 

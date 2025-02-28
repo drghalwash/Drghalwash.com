@@ -45,7 +45,13 @@ export const validatePassword = async (req, res) => {
     let validPins = [];
     try {
       // The password field contains JSON string with pins in quotes
-      validPins = JSON.parse(subgallery.password);
+      // Some pins may be in the format "050255" (with quotes)
+      const passwordString = subgallery.password.replace(/^"|"$/g, '');
+      const pinsArray = passwordString.split(',').map(pin => {
+        // Clean up each pin (remove quotes and trim spaces)
+        return pin.replace(/^"|"$/g, '').trim();
+      });
+      validPins = pinsArray;
       console.log('Valid pins:', validPins);
     } catch (e) {
       console.error('Error parsing password JSON:', e);
