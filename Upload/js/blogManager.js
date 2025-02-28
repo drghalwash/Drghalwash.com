@@ -490,3 +490,247 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 });
+/**
+ * Blog Manager Script
+ * Handles blog-related functionality including categories display,
+ * search functionality, and empty state management
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Blog Manager: Initializing");
+    
+    // Initialize category links for smooth scrolling
+    initCategoryLinks();
+    
+    // Handle empty state if needed
+    handleEmptyState();
+    
+    // Handle search functionality if enabled
+    if (document.getElementById('blogSearch')) {
+        initSearchFunctionality();
+    }
+    
+    // Initialize the right column with categories and zones
+    initRightColumn();
+});
+
+/**
+ * Initialize category links with smooth scrolling
+ */
+function initCategoryLinks() {
+    const categoryLinks = document.querySelectorAll('.custom-categories-container a');
+    
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    console.log("Blog Manager: Category links initialized");
+}
+
+/**
+ * Handle empty state by creating placeholder elements
+ */
+function handleEmptyState() {
+    const leftColumn = document.querySelector('.custom-left-column');
+    const rightColumn = document.querySelector('.custom-right-column');
+    
+    if (leftColumn && leftColumn.children.length === 0) {
+        // Create empty state placeholder
+        const emptyState = document.createElement('div');
+        emptyState.className = 'empty-state-placeholder';
+        emptyState.innerHTML = `
+            <div class="empty-state-icon">📝</div>
+            <h3>No Blog Posts Yet</h3>
+            <p>Check back soon for informative articles and updates.</p>
+        `;
+        leftColumn.appendChild(emptyState);
+        console.log("Blog Manager: Empty state detected, creating placeholders");
+    }
+    
+    // Ensure right column always has content even if database is empty
+    if (rightColumn) {
+        ensureRightColumnContent(rightColumn);
+    }
+}
+
+/**
+ * Ensure right column always has content
+ */
+function ensureRightColumnContent(rightColumn) {
+    const categoriesContainer = rightColumn.querySelector('.custom-categories-container');
+    const latestPostsContainer = rightColumn.querySelector('.custom-latest-posts-container');
+    
+    // If categories container is empty, add placeholder
+    if (categoriesContainer && categoriesContainer.querySelector('ul').children.length === 0) {
+        const categoryList = categoriesContainer.querySelector('ul');
+        const placeholderCategories = ['Facial Procedures', 'Body Procedures', 'Non-Surgical', 'Patient Stories'];
+        
+        placeholderCategories.forEach(category => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#${category.replace(/\s+/g, '_')}">${category}</a>`;
+            categoryList.appendChild(li);
+        });
+    }
+    
+    // If latest posts container is empty, add placeholder
+    if (latestPostsContainer && latestPostsContainer.querySelector('ul').children.length === 0) {
+        const postsList = latestPostsContainer.querySelector('ul');
+        const placeholderPosts = [
+            'Understanding Plastic Surgery Recovery',
+            'How to Choose the Right Procedure',
+            'Patient Safety: Our Top Priority',
+            'Before and After: What to Expect'
+        ];
+        
+        placeholderPosts.forEach(post => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#">${post}</a>`;
+            postsList.appendChild(li);
+        });
+    }
+}
+
+/**
+ * Initialize search functionality for blogs
+ */
+function initSearchFunctionality() {
+    const searchInput = document.getElementById('blogSearch');
+    const blogCards = document.querySelectorAll('.custom-card');
+    const searchCount = document.getElementById('blogSearchCount');
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        let matchCount = 0;
+        
+        blogCards.forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            const category = card.dataset.category.toLowerCase();
+            
+            if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                card.style.display = 'flex';
+                matchCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        if (searchCount) {
+            if (searchTerm) {
+                searchCount.textContent = `Found ${matchCount} result${matchCount !== 1 ? 's' : ''}`;
+            } else {
+                searchCount.textContent = '';
+            }
+        }
+    });
+}
+
+/**
+ * Initialize right column with zones and categories
+ * Uses similar styling and behavior as categoryManager.js
+ */
+function initRightColumn() {
+    console.log("Blog Manager: Initializing...");
+    
+    const categoriesContainer = document.querySelector('.custom-categories-container');
+    
+    if (categoriesContainer) {
+        // Add collapsible functionality to category headers
+        const categoryHeaders = categoriesContainer.querySelectorAll('h4');
+        
+        categoryHeaders.forEach(header => {
+            header.style.backgroundColor = '#1B54FF';
+            header.style.color = 'white';
+            header.style.padding = '10px 15px';
+            header.style.borderRadius = '5px';
+            header.style.marginBottom = '10px';
+            header.style.cursor = 'pointer';
+            header.style.position = 'relative';
+            
+            // Add arrow indicator
+            const arrow = document.createElement('span');
+            arrow.innerHTML = '▼';
+            arrow.style.position = 'absolute';
+            arrow.style.right = '15px';
+            arrow.className = 'category-arrow';
+            header.appendChild(arrow);
+            
+            const nextUl = header.nextElementSibling;
+            if (nextUl && nextUl.tagName === 'UL') {
+                header.addEventListener('click', function() {
+                    nextUl.style.display = nextUl.style.display === 'none' ? 'block' : 'none';
+                    arrow.innerHTML = nextUl.style.display === 'none' ? '▶' : '▼';
+                });
+            }
+        });
+        
+        // Style the category links
+        const categoryLinks = categoriesContainer.querySelectorAll('a');
+        categoryLinks.forEach(link => {
+            link.style.color = '#333';
+            link.style.textDecoration = 'none';
+            link.style.display = 'block';
+            link.style.padding = '8px 5px';
+            link.style.borderBottom = '1px solid #eee';
+            link.style.transition = 'all 0.3s ease';
+            
+            link.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f5f5f5';
+                this.style.paddingLeft = '10px';
+                this.style.color = '#1B54FF';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+                this.style.paddingLeft = '5px';
+                this.style.color = '#333';
+            });
+        });
+    }
+    
+    // Apply the same styling to latest posts container
+    const latestPostsContainer = document.querySelector('.custom-latest-posts-container');
+    if (latestPostsContainer) {
+        const latestHeader = latestPostsContainer.querySelector('h4');
+        if (latestHeader) {
+            latestHeader.style.backgroundColor = '#1B54FF';
+            latestHeader.style.color = 'white';
+            latestHeader.style.padding = '10px 15px';
+            latestHeader.style.borderRadius = '5px';
+            latestHeader.style.marginBottom = '10px';
+        }
+        
+        const postLinks = latestPostsContainer.querySelectorAll('a');
+        postLinks.forEach(link => {
+            link.style.color = '#333';
+            link.style.textDecoration = 'none';
+            link.style.display = 'block';
+            link.style.padding = '8px 5px';
+            link.style.borderBottom = '1px solid #eee';
+            link.style.transition = 'all 0.3s ease';
+            
+            link.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f5f5f5';
+                this.style.paddingLeft = '10px';
+                this.style.color = '#1B54FF';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+                this.style.paddingLeft = '5px';
+                this.style.color = '#333';
+            });
+        });
+    }
+}
