@@ -40,21 +40,27 @@ export const validatePassword = async (req, res) => {
     }
 
     console.log('Subgallery password:', subgallery.password);
+    console.log('Submitted password:', password);
 
-    // Parse the password string which contains multiple pins as a JSON array
+    // Parse the password string which contains multiple pins
     let validPins = [];
     try {
-      // The password field contains JSON string with pins in quotes
-      // Some pins may be in the format "050255" (with quotes)
-      const passwordString = subgallery.password.replace(/^"|"$/g, '');
-      const pinsArray = passwordString.split(',').map(pin => {
-        // Clean up each pin (remove quotes and trim spaces)
-        return pin.replace(/^"|"$/g, '').trim();
-      });
-      validPins = pinsArray;
-      console.log('Valid pins:', validPins);
+      if (subgallery.password) {
+        // Handle nested quotes in the password field from CSV
+        const passwordString = subgallery.password.toString();
+        
+        // Split by commas and remove all quotes and trim whitespace
+        const pinsArray = passwordString.split(',').map(pin => {
+          // Replace all quotes and trim spaces
+          return pin.replace(/"/g, '').trim();
+        });
+        
+        // Filter out empty strings
+        validPins = pinsArray.filter(pin => pin.length > 0);
+        console.log('Valid pins after parsing:', validPins);
+      }
     } catch (e) {
-      console.error('Error parsing password JSON:', e);
+      console.error('Error parsing password data:', e);
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
