@@ -164,14 +164,22 @@
 	<div class="custom-container">
 		<!-- Left Column -->
 		<div class="custom-left-column">
+			{{#if isEmpty}}
+			<!-- Empty State Message -->
+			<div class="empty-state-placeholder">
+				<div class="empty-state-icon">📝</div>
+				<h3>No Blog Posts Yet</h3>
+				<p>Check back soon for informative articles and updates.</p>
+			</div>
+			{{else}}
 			{{#each groupedBlogs}}
 			<!-- Display Category Name -->
 			<h4 id="{{@key}}">{{@key}}</h4>
 
 			<!-- Display Blogs in the Category -->
 			{{#each this}}
-			<div class="custom-card">
-				<img src="/images/Blog/{{image}}" alt="{{title}}">
+			<div class="custom-card" data-category="{{@../key}}">
+				<img src="/images/Blog/{{image}}" onerror="this.src='/images/Blog/default-blog.jpg'" alt="{{title}}">
 				<div class="custom-card-content">
 					<h3>{{title}}</h3>
 					<p>
@@ -180,8 +188,17 @@
 					<a href="/Read_More/{{title}}">Read More</a>
 				</div>
 			</div>
+			{{else}}
+			<!-- Empty Category Message -->
+			<div class="custom-card empty-category" data-category="{{@key}}">
+				<div class="custom-card-content text-center">
+					<h3>Coming Soon</h3>
+					<p>New articles will be added to this category soon.</p>
+				</div>
+			</div>
 			{{/each}}
 			{{/each}}
+			{{/if}}
 		</div>
 
 		<!-- Right Column -->

@@ -132,47 +132,77 @@ export const index = async (req, res) => {
         console.log('[BlogController] Fetching data for blog page');
         
         // Fetch all required data in parallel for better performance
-        const [galleryResponse, zonesResponse, blogsResponse] = await Promise.all([
+        const [galleryResponse, zonesResponse, blogsResponse, categoriesResponse] = await Promise.all([
             supabase.from('gallery').select('*'),
             supabase.from('blog_zones').select('*'),
-            supabase.from('blogs').select('*')
+            supabase.from('blogs').select('*'),
+            supabase.from('categories').select('*')
         ]);
         
-        // Check for errors in responses
-        if (galleryResponse.error) throw new Error(`Gallery fetch error: ${galleryResponse.error.message}`);
-        if (zonesResponse.error) throw new Error(`Zones fetch error: ${zonesResponse.error.message}`);
-        if (blogsResponse.error) throw new Error(`Blogs fetch error: ${blogsResponse.error.message}`);
+        // Check for errors in responses and provide empty arrays as fallbacks
+        const galleries = galleryResponse.error ? (console.error(`Gallery fetch error: ${galleryResponse.error.message}`), []) : galleryResponse.data || [];
+        const zones = zonesResponse.error ? (console.error(`Zones fetch error: ${zonesResponse.error.message}`), []) : zonesResponse.data || [];
+        const blogs = blogsResponse.error ? (console.error(`Blogs fetch error: ${blogsResponse.error.message}`), []) : blogsResponse.data || [];
+        const categories = categoriesResponse.error ? (console.error(`Categories fetch error: ${categoriesResponse.error.message}`), []) : categoriesResponse.data || [];
         
-        const galleries = galleryResponse.data;
-        const zones = zonesResponse.data;
-        const blogs = blogsResponse.data;
+        console.log(`[BlogController] Fetched ${galleries.length} galleries, ${zones.length} zones, ${blogs.length} blogs, ${categories.length} categories`);
         
-        console.log(`[BlogController] Fetched ${galleries.length} galleries, ${zones.length} zones, ${blogs.length} blogs`);
-        
-        // Group blogs by zones with validation
+        // Group blogs by zones with validation and fallbacks
         const groupedBlogs = {};
-        zones.forEach(zone => {
-            if (!zone || !zone.name || !zone.id) return;
-            
-            const blogsInZone = blogs.filter(blog => blog && blog.zone_id === zone.id);
-            if (blogsInZone.length > 0) {
+        
+        // If we have zones but no blogs, create placeholder categories
+        if (zones.length > 0 && blogs.length === 0) {
+            console.log('[BlogController] No blogs found, adding placeholder categories');
+            zones.forEach(zone => {
+                if (zone && zone.name) {
+                    groupedBlogs[zone.name] = []; // Empty array to maintain structure
+                }
+            });
+        } 
+        // If no zones but blogs exist, create an "Uncategorized" group
+        else if (zones.length === 0 && blogs.length > 0) {
+            console.log('[BlogController] No zones found, adding all blogs to Uncategorized');
+            groupedBlogs['Uncategorized'] = blogs;
+        }
+        // Normal case: zones and blogs both exist
+        else {
+            zones.forEach(zone => {
+                if (!zone || !zone.name || !zone.id) return;
+                
+                const blogsInZone = blogs.filter(blog => blog && blog.zone_id === zone.id);
                 groupedBlogs[zone.name] = blogsInZone;
                 console.log(`[BlogController] Zone "${zone.name}" has ${blogsInZone.length} blogs`);
+            });
+            
+            // Add any blogs that don't have a zone to 'Uncategorized'
+            const uncategorizedBlogs = blogs.filter(blog => blog && (!blog.zone_id || !zones.some(zone => zone.id === blog.zone_id)));
+            if (uncategorizedBlogs.length > 0) {
+                groupedBlogs['Uncategorized'] = uncategorizedBlogs;
+                console.log(`[BlogController] "Uncategorized" has ${uncategorizedBlogs.length} blogs`);
             }
-        });
+        }
+        
+        // Ensure at least one category exists for layout purposes
+        if (Object.keys(groupedBlogs).length === 0) {
+            console.log('[BlogController] No categories found, adding default category');
+            groupedBlogs['Latest Articles'] = [];
+        }
         
         // Get latest blogs for the sidebar with validation to avoid date parsing errors
-        const latestBlogs = [...blogs]
-            .filter(blog => blog && blog.created_at)
-            .sort((a, b) => {
-                try {
-                    return new Date(b.created_at) - new Date(a.created_at);
-                } catch (e) {
-                    console.error(`[BlogController] Date parsing error: ${e.message}`);
-                    return 0;
-                }
-            })
-            .slice(0, 5);
+        let latestBlogs = [];
+        if (blogs.length > 0) {
+            latestBlogs = [...blogs]
+                .filter(blog => blog && blog.created_at)
+                .sort((a, b) => {
+                    try {
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    } catch (e) {
+                        console.error(`[BlogController] Date parsing error: ${e.message}`);
+                        return 0;
+                    }
+                })
+                .slice(0, 5);
+        }
         
         console.log(`[BlogController] Prepared ${latestBlogs.length} latest blogs for sidebar`);
         
@@ -188,7 +218,9 @@ export const index = async (req, res) => {
             galleries, 
             groupedBlogs,
             latestBlogs,
+            pageTitle: 'Blog',
             searchEnabled: true,
+            isEmpty: blogs.length === 0,
             helpers: hbsHelpers
         });
     } catch (error) {
