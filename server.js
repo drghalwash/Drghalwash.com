@@ -38,7 +38,6 @@ const __dirname = dirname(__filename);
 
 // Initialize Express app
 const app = express();
-app.use(express.json()); // Add JSON body parsing middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser()); // Initialize cookie-parser

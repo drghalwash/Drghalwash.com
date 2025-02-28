@@ -9,14 +9,13 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    console.log('Request body:', req.body);
     const { subgalleryId, password } = req.body;
     
     if (!subgalleryId || !password) {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
-    console.log(`Validating password for subgallery ID: ${subgalleryId}, password: ${password}`);
+    console.log(`Validating password for subgallery ID: ${subgalleryId}`);
 
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase

@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(`Found ${galleryLinks.length} gallery links`);
     
     galleryLinks.forEach(link => {
-      // Check if this is a private gallery by looking for the custom-div-private class
-      const customDiv = link.querySelector('div');
+      // Check if this is a private gallery by looking for status="Private" in the data
+      const customDiv = link.querySelector('div[class]');
       
       if (customDiv && customDiv.classList.contains('custom-div-private')) {
         console.log('Found private gallery link:', link.getAttribute('data-id'));
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         displayError('Please enter a password');
         return;
       }
-      
+
       // Show loading state
       const submitButton = passwordForm.querySelector('button[type="submit"]');
       const originalButtonText = submitButton.innerHTML;
@@ -86,11 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.innerHTML = 'Validating...';
 
       try {
-        console.log('Sending request with:', {
-          subgalleryId: subgalleryId,
-          password: password
-        });
-        
         const response = await fetch('/galleries/validate-password', {
           method: 'POST',
           headers: {
@@ -105,26 +100,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset button state
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
-        
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Server error:', response.status, errorText);
-          displayError('Invalid password or server error. Please try again.');
+          
+          try {
+            const errorData = JSON.parse(errorText);
+            displayError(errorData.message || 'Invalid password. Please try again.');
+          } catch (e) {
+            displayError('Invalid password or server error. Please try again.');
+          }
           return;
         }
         
+        // Success - handle redirect
         const data = await response.json();
-        if (data.success && data.redirectUrl) {
-          // Redirect to the gallery page
+        if (data.redirectUrl) {
           window.location.href = data.redirectUrl;
         } else {
-          displayError(data.message || 'Unknown error occurred.');
+          // Close the modal if no redirect
+          const modal = bootstrap.Modal.getInstance(document.getElementById('passwordModal'));
+          if (modal) {
+            modal.hide();
+          }
         }
       } catch (error) {
+        console.error('Error validating password:', error);
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
-        console.error('Error validating password:', error);
-        displayError('Error connecting to server. Please try again.');
+        displayError('A network error occurred. Please try again.');
       }
     });
   } else {
