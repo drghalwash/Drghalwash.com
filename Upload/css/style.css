@@ -9830,39 +9830,20 @@ text-decoration: none; }
     border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 
 .site-footer {
-  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  background: #0E1A3C;
   font-size: 15px;
-  color: #212529;
+  color: white;
   padding: 70px 0; 
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 60%),
-    radial-gradient(circle at top right, rgba(255,255,255,0.9), transparent 60%),
-    radial-gradient(circle at bottom left, rgba(255,255,255,0.9), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(255,255,255,0.9), transparent 60%);
-  z-index: 0;
-  pointer-events: none;
-}
-.site-footer ol,
-.site-footer ul{
-  color: #212529 !important;
-}
-.site-footer a {
-  color: #0056b3 !important;
-  text-decoration: none;
-  position: relative;
-  display: inline-block;
-}
+  width: 100%;}
+ .site-footer ol,
+    .site-footer ul{
+    color: white !important;
+    }
+  .site-footer a {
+     color: white !important;
+    text-decoration: none;
+    position: relative;
+    display: inline-block; }
   .site-footer .btn:before {
     display: none; }
   .site-footer .widget {
@@ -9872,7 +9853,7 @@ text-decoration: none; }
     z-index: 1; }
      .site-footer .widget h3, .site-footer .widget .h3 {
       font-size: 20px;
-      color: #212529;
+      color: white;
       margin-bottom: 15px;
       font-weight: bold; 
     }
@@ -9889,7 +9870,7 @@ text-decoration: none; }
       width: 30px;
       height: 30px;
       position: relative;
-      background: #0056b3;
+      background: #777;
       border-radius: 50%;
       color: #fff; }
       .site-footer .social li a:before {
@@ -9902,22 +9883,17 @@ text-decoration: none; }
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%); }
       .site-footer .social li a:hover {
-        background: #003d82;
+        background: #265AEF;
         color: #fff; }
 
         .footer-headers{
-    color: #212529 !important;
-    position: relative;
-    z-index: 1;
-}
+          color: white !important;
+        }
         .Copyright{
-    text-align: center;
+          text-align: center;
     font-size: 16px; /* Default size */
     padding: 10px;
-    color: #212529;
-    background-color: rgba(233, 236, 239, 0.7);
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
+        }
  /* Ensure Contact header stays left-aligned on mobile */
 @media (max-width: 768px) {
   .site-footer .widget h3, 
