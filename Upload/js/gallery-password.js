@@ -12,21 +12,23 @@ document.addEventListener('DOMContentLoaded', function() {
       const customDiv = link.querySelector('div[class]');
 
       if (customDiv && customDiv.classList.contains('custom-div-private')) {
-        console.log('Found private gallery link:', link.getAttribute('data-id'));
+        const subgalleryId = link.getAttribute('data-id');
+        console.log('Found private gallery link:', subgalleryId);
 
         // Add click event listener to private galleries
         link.addEventListener('click', function(e) {
           e.preventDefault();
 
-          const galleryId = this.getAttribute('data-id');
-          if (galleryId) {
+          const subgalleryId = this.getAttribute('data-id');
+          if (subgalleryId) {
             // Show password modal
             const modal = document.getElementById('passwordModal');
             if (modal) {
               // Set the subgallery ID in the hidden field
               const imageIdField = document.getElementById('imageId');
               if (imageIdField) {
-                imageIdField.value = galleryId;
+                imageIdField.value = subgalleryId;
+                console.log('Set subgallery ID in form:', subgalleryId);
               }
 
               // Clear any previous error messages
@@ -64,11 +66,25 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       console.log('Password form submitted');
 
-      const subgalleryId = document.getElementById('imageId').value;
-      const passwordInput = document.querySelector('#passwordModal input[name="password"]');
+      const subgalleryIdField = document.getElementById('imageId');
+      if (!subgalleryIdField) {
+        console.error('Cannot find imageId field');
+        displayError('Missing required information: subgallery ID');
+        return;
+      }
+      
+      const subgalleryId = subgalleryIdField.value;
+      console.log('Using subgallery ID from form:', subgalleryId);
+      
+      if (!subgalleryId) {
+        console.error('subgalleryId is empty');
+        displayError('Missing required information: subgallery ID value');
+        return;
+      }
 
-      if (!subgalleryId || !passwordInput) {
-        displayError('Missing required information');
+      const passwordInput = document.querySelector('#passwordModal input[name="password"]');
+      if (!passwordInput) {
+        displayError('Missing required information: password field');
         return;
       }
 

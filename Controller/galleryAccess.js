@@ -13,10 +13,16 @@ export const validatePassword = async (req, res) => {
     const { subgalleryId, password } = req.body;
     
     console.log("Request body received:", req.body);
+    console.log("subgalleryId:", subgalleryId, "type:", typeof subgalleryId);
+    console.log("password:", password, "type:", typeof password);
     
     // Ensure both parameters exist and are not empty
-    if (!subgalleryId || password === undefined || password === '') {
-      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+    if (!subgalleryId) {
+      return res.status(400).json({ success: false, message: 'Missing required parameter: subgalleryId' });
+    }
+    
+    if (password === undefined || password === '') {
+      return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
     }
 
     console.log(`Validating password for subgallery ID: ${subgalleryId}`);
