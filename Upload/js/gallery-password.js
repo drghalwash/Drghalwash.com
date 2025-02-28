@@ -68,17 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const subgalleryId = document.getElementById('imageId').value;
       const passwordInput = document.querySelector('#passwordModal input[name="password"]');
       
-      console.log('Submitting with ID:', subgalleryId);
-      console.log('Password input element:', passwordInput);
-      
       if (!subgalleryId || !passwordInput) {
         displayError('Missing required information');
         return;
       }
       
       const password = passwordInput.value.trim();
-      console.log('Password value:', password);
-      
       if (!password) {
         displayError('Please enter a password');
         return;
@@ -91,26 +86,20 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.innerHTML = 'Validating...';
 
       try {
-        const requestData = {
-          subgalleryId: subgalleryId,
-          password: password
-        };
-        
-        console.log('Sending request with data:', requestData);
-        
         const response = await fetch('/galleries/validate-password', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(requestData)
+          body: JSON.stringify({
+            subgalleryId: subgalleryId,
+            password: password
+          })
         });
 
         // Reset button state
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
-        
-        console.log('Response status:', response.status);
 
         if (!response.ok) {
           const errorText = await response.text();
