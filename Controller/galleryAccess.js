@@ -9,10 +9,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    // Extract data from request body with enhanced detailed logging
+    // Extract data from request body with detailed logging
     const reqBody = req.body;
-    console.log("Validating password - Full request body received:", reqBody);
-    console.log("Content-Type:", req.headers['content-type']);
+    console.log("Full request body received:", reqBody);
     
     // Simplify by just looking for 'id' parameter first
     const rawId = reqBody.id || req.query.id;
@@ -50,7 +49,7 @@ export const validatePassword = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
     }
     
-    console.log(`Validating password for subgallery ID (converted): ${idStr}`);
+    console.log(`Validating password for subgallery ID (converted): ${subgalleryIdStr}`);
 
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
@@ -80,13 +79,6 @@ export const validatePassword = async (req, res) => {
     // Parse the password string which contains multiple pins
     let validPins = [];
     try {
-      if (!subgallery) {
-        console.error('Subgallery is null - cannot proceed with password validation');
-        return res.status(404).json({ success: false, message: 'Subgallery not found' });
-      }
-      
-      console.log('Subgallery found:', subgallery.id, 'status:', subgallery.status);
-      
       if (subgallery.password) {
         // Convert password value to string
         const passwordString = subgallery.password.toString();
@@ -103,8 +95,6 @@ export const validatePassword = async (req, res) => {
         // Filter out empty strings
         validPins = pinsArray.filter(pin => pin.length > 0);
         console.log('Valid PINs:', validPins);
-      } else {
-        console.warn('No password set for this private subgallery');
       }
     } catch (e) {
       console.error('Error parsing password data:', e);
