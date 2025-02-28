@@ -54,7 +54,7 @@ const fetchBlogBySlug = async (slug) => {
 const fetchRelatedBlogs = async (categoryTechnicalId, currentBlogId) => {
   try {
     console.log(`[Blog] Fetching related blogs for category: ${categoryTechnicalId}`);
-    
+
     // Fetch related blogs in the same category excluding the current blog
     const { data: relatedBlogs, error } = await supabase
       .from('blogs')
@@ -128,39 +128,51 @@ const fetchGalleries = async () => {
  * Blog Index Controller - Render Blogs Page
  */
 export const index = async (req, res) => {
-  try {
-    console.log('[Request] Blog index page requested');
+    try {
+        // Fetch galleries for header
+        const { data: galleries, error: galleryError } = await supabase.from('gallery').select('*');
+        if (galleryError) throw galleryError;
 
-    // Fetch all required data in parallel
-    const [allBlogs, latestBlogs, galleries] = await Promise.all([
-      fetchAllBlogs(),
-      fetchLatestBlogs(),
-      fetchGalleries(),
-    ]);
+        // Fetch zones (categories) for blogs
+        const { data: zones, error: zoneError } = await supabase.from('blog_zones').select('*');
+        if (zoneError) throw zoneError;
 
-    // Group blogs by category for rendering
-    const groupedBlogs = allBlogs.reduce((acc, blog) => {
-      const categoryName = blog.categories?.display_name || 'Uncategorized';
-      
-      if (!acc[categoryName]) acc[categoryName] = [];
-      
-      acc[categoryName].push(blog);
-      
-      return acc;
-    }, {});
+        // Fetch all blogs
+        const { data: blogs, error: blogError } = await supabase.from('blogs').select('*');
+        if (blogError) throw blogError;
 
-    // Render the Blogs page with grouped data and additional metadata
-    res.render('Pages/Blog', { groupedBlogs, latestBlogs, galleries });
+        // Group blogs by zones
+        const groupedBlogs = zones.map(zone => {
+            return {
+                id: zone.id,
+                name: zone.name,
+                blogs: blogs.filter(blog => blog.zone_id === zone.id)
+            };
+        });
 
-    console.log('[Success] Rendered Blogs page');
-  } catch (error) {
-    console.error('[Error] Rendering Blogs page:', error.message);
-    
-    res.status(500).render('Pages/404', { 
-      error,
-      errorDetails: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-     });
-  }
+        // Get latest blogs for the sidebar
+        const latestBlogs = [...blogs]
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 5);
+
+        // Add helper for JSON stringification in handlebars
+        const hbsHelpers = {
+            json: function(context) {
+                return JSON.stringify(context);
+            }
+        };
+
+        res.render('Pages/Blog', { 
+            galleries, 
+            groupedBlogs,
+            latestBlogs,
+            searchEnabled: true,
+            helpers: hbsHelpers
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render("Pages/404", { error });
+    }
 };
 
 /**
@@ -188,11 +200,11 @@ export const readMore = async (req, res) => {
 
     // Render the "Read More" page with all required data
     res.render('Pages/Read_More', { Blog, randomBlogs: relatedBlogs, latestBlogs, galleries });
-    
+
     console.log(`[Success] Rendered Read More page for blog slug: ${slug}`);
   } catch (error) {
     console.error('[Error] Rendering Read More page:', error.message);
-    
+
     res.status(500).render('Pages/404', { 
       error,
       errorDetails: process.env.NODE_ENV === 'development' ? error.stack : undefined,

@@ -1,0 +1,37 @@
+
+<!-- Blog Navigation Container -->
+<div class="custom-right-column">
+  <div class="custom-categories-container">
+    <h3>Categories</h3>
+    {{#if searchEnabled}}
+    <div class="search-container">
+      <input type="text" id="blogSearch" placeholder="Search blogs..." class="form-control">
+      <div id="blogSearchCount" class="search-results-count"></div>
+    </div>
+    {{/if}}
+    
+    <div class="blogs-container">
+      <div class="blogs">
+        {{#each groupedBlogs}}
+          <!-- Blog zones will be dynamically inserted here by blogManager.js -->
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest Posts Section -->
+  <div class="custom-latest-posts-container">
+    <h3>Latest Posts</h3>
+    <ul>
+      {{#each latestBlogs}}
+        <li><a href="/Read_More/{{this.slug}}">{{this.title}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Make zones data available to blogManager.js
+  window.zonesData = {{{json groupedBlogs}}};
+</script>
+<script src="/js/blogManager.js"></script>
