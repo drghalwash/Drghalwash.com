@@ -13,21 +13,43 @@ export const validatePassword = async (req, res) => {
     const reqBody = req.body;
     console.log("Full request body received:", reqBody);
     
-    // Handle null/undefined cases robustly - support both field names
-    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId;
-    const password = reqBody.password;
+    // Handle null/undefined cases robustly - support ALL possible field names
+    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId || reqBody.id || req.query.subgalleryId || req.query.imageId || req.query.id;
+    const password = reqBody.password || req.query.password;
     
-    console.log("Raw subgalleryId/imageId:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
-    console.log("password:", password, "type:", typeof password);
+    console.log("Full request object:", {
+      body: req.body,
+      query: req.query,
+      params: req.params
+    });
     
-    // Enhanced validation for subgalleryId
-    if (rawSubgalleryId === undefined || rawSubgalleryId === null || rawSubgalleryId === '') {
-      console.error('Missing subgalleryId in request:', req.body);
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Missing required parameter: subgalleryId',
-        debug: { receivedBody: req.body }
-      });
+    console.log("Raw subgalleryId value:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
+    console.log("password value:", password, "type:", typeof password);
+    
+    // Enhanced validation for subgalleryId with fallback value
+    if (!rawSubgalleryId) {
+      console.error('Missing subgalleryId in request, attempting to use fallback value');
+      
+      // If we have any URL parameter, try to use that as fallback
+      if (req.params && req.params.subSlug) {
+        console.log('Using subSlug from URL parameters as fallback:', req.params.subSlug);
+        const fallbackId = req.params.subSlug;
+        
+        // Continue with the fallback ID
+        const subgalleryIdStr = String(fallbackId).trim();
+        console.log(`Using fallback subgalleryId: '${subgalleryIdStr}'`);
+      } else {
+        console.error('No fallback subgalleryId available in request:', req.body);
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Missing required parameter: subgalleryId',
+          debug: { 
+            receivedBody: req.body,
+            receivedQuery: req.query,
+            receivedParams: req.params
+          }
+        });
+      }
     }
     
     // Always convert to string for consistency
