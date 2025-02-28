@@ -94,24 +94,24 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       console.log('Password form submitted');
-      
+
       // HARDCODED DEFAULT - We'll grab the active subgallery ID from the URL if possible
       let subgalleryId = null;
-      
+
       // Get from URL if possible
       const pathSegments = window.location.pathname.split('/');
       if (pathSegments.length >= 4 && pathSegments[1] === 'galleries') {
         subgalleryId = pathSegments[3]; // Gets the subgallery slug from URL
         console.log('Retrieved subgalleryId from URL path:', subgalleryId);
       }
-      
+
       // Try to get from any data attribute on the clicked element
       const clickedElement = document.querySelector('.private-gallery-link[data-id]');
       if (clickedElement) {
         subgalleryId = clickedElement.getAttribute('data-id');
         console.log('Found subgalleryId from clicked element:', subgalleryId);
       }
-      
+
       // Try to get from form field
       if (subgalleryIdField) {
         const fieldValue = subgalleryIdField.value;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log('Found subgalleryId in form field:', subgalleryId);
         }
       }
-      
+
       // Method 2: Get from modal data attribute if still missing
       if (!subgalleryId) {
         const passwordModal = document.getElementById('passwordModal');
@@ -129,18 +129,18 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log('Retrieved subgalleryId from modal data attribute:', subgalleryId);
         }
       }
-      
+
       // HARDCODED FALLBACK - Use "1" as last resort
       if (!subgalleryId) {
         subgalleryId = "1"; // Fallback value as last resort
         console.log('Using fallback subgalleryId:', subgalleryId);
       }
-      
+
       // Update the form field
       if (subgalleryIdField) {
         subgalleryIdField.value = subgalleryId;
       }
-      
+
       console.log('Using subgallery ID:', subgalleryId);
 
       // Ensure the form field has the value (create it if needed)
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         // Ensure password is properly trimmed
         const trimmedPassword = password.trim();
-        
+
         // Double-check we have subgalleryId
         if (!subgalleryId) {
           displayError('Missing required parameter: subgalleryId');
@@ -186,13 +186,13 @@ document.addEventListener('DOMContentLoaded', function() {
           submitButton.innerHTML = originalButtonText;
           return;
         }
-        
+
         // Create a simpler request data object
         const requestData = {
           id: subgalleryId, // Use a simpler name
           password: trimmedPassword
         };
-        
+
         console.log('Sending request with data:', JSON.stringify(requestData));
 
         console.log('Sending API request with data:', requestData);
@@ -216,17 +216,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('API response status:', response.status);
 
+        // Handle API errors with more detailed error reporting
         if (!response.ok) {
-          const responseText = await response.text();
-          console.log('Server error:', response.status, responseText);
-
+          console.log('API response status:', response.status);
           try {
-            // Try to parse as JSON for more detailed error
-            const errorData = JSON.parse(responseText);
-            displayError(errorData.message || `Error (${response.status}): Please try again`);
-          } catch (e) {
-            // If can't parse as JSON, show generic error
-            displayError(`Server error (${response.status}): Please try again`);
+            const errorData = await response.json();
+            console.log('Server error details:', response.status, JSON.stringify(errorData));
+            const errorElement = document.getElementById('passwordError');
+            errorElement.textContent = errorData.message || 'Server error';
+          } catch (parseError) {
+            console.error('Error parsing response:', parseError);
+            const errorElement = document.getElementById('passwordError');
+            errorElement.textContent = `Server error (${response.status})`;
           }
           return;
         }
@@ -243,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = data.redirectUrl;
           }
         } else {
+          const errorElement = document.getElementById('passwordError');
           displayError(data.message || 'Invalid password');
         }
       } catch (error) {
