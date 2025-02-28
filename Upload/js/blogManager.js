@@ -1,124 +1,225 @@
+
 /***********************************************************************
  * File: /js/blogManager.js
- * Description: Dynamically manages and displays blogs grouped by zones
- * from Supabase data.
+ * Description: Dynamically generates blog navigation and handles 
+ * responsive grid layout for blogs based on Supabase data.
  ***********************************************************************/
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the blogs container elements
-    const blogsContainer = document.getElementById('blogs-container');
+function generateBlogNav(zones) {
+    const navContainer = document.querySelector('.blogs-container .blogs');
+    if (!navContainer) return;
 
-    if (blogsContainer) {
-        // Setup zone navigation and content display
-        setupBlogZones();
-    }
-});
+    navContainer.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(1, minmax(200px, 1fr));
+        gap: 15px;
+        border: 2px solid #ffa500;
+        border-radius: 8px;
+        padding: 15px;
+    `;
 
-/**
- * Sets up the zone navigation and initial content display
- */
-function setupBlogZones() {
-    const zoneLinks = document.querySelectorAll('.zone-link');
-    const zoneContents = document.querySelectorAll('.zone-content');
+    zones.forEach(zone => {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'blog-group';
+        groupDiv.style.cssText = `
+            background-color: #ffffff;
+            break-inside: avoid;
+            margin-bottom: 0.11px;
+        `;
 
-    if (zoneLinks.length > 0) {
-        // Set the first zone as active by default
-        zoneLinks[0].classList.add('active');
-        if (zoneContents.length > 0) {
-            zoneContents[0].classList.add('active');
-        }
+        const header = document.createElement('h3');
+        header.textContent = zone.name + ' ▶'; // Changed to ▶ for collapsed state
+        header.style.cssText = `
+            background-color: #394464;
+            color: white;
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 8px 15px;
+            margin-bottom: 0.1px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease;
+        `;
 
-        // Add click event listener to each zone link
-        zoneLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
+        const categoriesContainer = document.createElement('div');
+        categoriesContainer.style.cssText = `
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        `;
+        
+        header.addEventListener('click', () => {
+            const isExpanded = categoriesContainer.style.maxHeight !== '0px';
 
-                // Get the zone ID from the data attribute
-                const zoneId = this.getAttribute('data-zone-id');
-
-                // Remove active class from all links and contents
-                zoneLinks.forEach(l => l.classList.remove('active'));
-                zoneContents.forEach(c => c.classList.remove('active'));
-
-                // Add active class to the clicked link
-                this.classList.add('active');
-
-                // Show the corresponding content
-                const content = document.querySelector(`.zone-content[data-zone-id="${zoneId}"]`);
-                if (content) {
-                    content.classList.add('active');
+            // Collapse all other categories
+            const allCategories = document.querySelectorAll('.blogs-container .blogs > .blog-group > div');
+            allCategories.forEach(container => {
+                if (container !== categoriesContainer) {
+                    container.style.maxHeight = '0';
+                    const otherZoneHeader = container.previousElementSibling;
+                    otherZoneHeader.textContent = otherZoneHeader.dataset.zoneName + ' ▶'; // Use data attribute
+                    otherZoneHeader.style.backgroundColor = '#394464';
                 }
             });
-        });
-    }
 
-    // Initialize the blog card hover effects
-    initializeBlogCards();
+            // Expand the clicked category
+            categoriesContainer.style.maxHeight = isExpanded ? '0' : '1000px';
+            header.textContent = zone.name + (isExpanded ? ' ▶' : ' ▼'); // Use correct zone name
+            header.style.backgroundColor = isExpanded ? '#394464' : '#2c3e50';
+        });
+
+        // Set data attribute for the zone name
+        header.dataset.zoneName = zone.name;
+        
+        zone.blogs.forEach(blog => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'blog-item';
+            itemDiv.style.cssText = `
+                padding: 8px 15px;
+                margin: 0.3px 0;
+                transition: all 0.3s ease;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            `;
+            
+            // Add soon tag if blog has no content
+            if (!blog.content || blog.content.length === 0) {
+                const soonTag = document.createElement('span');
+                soonTag.textContent = 'soon';
+                soonTag.style.cssText = `
+                    background: linear-gradient(45deg, #FF8C42, #FFA07A);
+                    color: white;
+                    padding: 2px 8px;
+                    border-radius: 12px;
+                    font-size: 0.7em;
+                    font-weight: bold;
+                    margin-left: 8px;
+                `;
+                itemDiv.appendChild(soonTag);
+            }
+
+            const link = document.createElement('a');
+            link.href = `/Read_More/${blog.slug || blog.id}`;
+
+            const words = blog.title.split(' ');
+            const firstTwoWords = words.slice(0, 2).join(' ');
+            const remainingWords = words.slice(2).join(' ');
+
+            link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
+            link.style.cssText = `
+                color: #495057;
+                text-decoration: none;
+                font-family: Verdana, sans-serif;
+                font-size: 0.95em;
+                display: block;
+                transition: all 0.3s ease;
+            `;
+
+            link.addEventListener('mouseenter', () => {
+                link.style.color = '#007bff';
+                itemDiv.style.backgroundColor = '#f8f9fa';
+            });
+
+            link.addEventListener('mouseleave', () => {
+                link.style.color = '#495057';
+                itemDiv.style.backgroundColor = 'transparent';
+            });
+
+            itemDiv.appendChild(link);
+            categoriesContainer.appendChild(itemDiv);
+        });
+
+        groupDiv.appendChild(header);
+        groupDiv.appendChild(categoriesContainer);
+        navContainer.appendChild(groupDiv);
+    });
 }
 
-/**
- * Initializes hover effects for blog cards
- */
-function initializeBlogCards() {
-    const blogCards = document.querySelectorAll('.custom-card');
+function handleResponsiveDesign() {
+    const blogs = document.querySelector('.blogs-container .blogs');
+    if (!blogs) return;
 
-    blogCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.classList.add('card-hover');
-        });
+    const updateGrid = () => {
+        const width = window.innerWidth;
+        blogs.style.gridTemplateColumns = 'repeat(1, minmax(200px, auto))';
+    };
 
-        card.addEventListener('mouseleave', function() {
-            this.classList.remove('card-hover');
+    updateGrid();
+    window.addEventListener('resize', updateGrid);
+}
+
+function enableAutoScroll() {
+    document.querySelectorAll('.blog-item a').forEach(link => {
+        link.addEventListener('click', (event) => {
+            // Allow normal link navigation for blogs
         });
     });
 }
 
-/**
- * Handles the search functionality for blogs
- */
-function searchBlogs() {
-    const searchInput = document.getElementById('blog-search-input');
-    const blogCards = document.querySelectorAll('.custom-card');
-
-    if (searchInput && blogCards) {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-
-        blogCards.forEach(card => {
-            const title = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('p') ? 
-                card.querySelector('p').textContent.toLowerCase() : '';
-
-            if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        // Show/hide empty state message
-        const zoneContents = document.querySelectorAll('.zone-content');
-        zoneContents.forEach(zone => {
-            const visibleCards = zone.querySelectorAll('.custom-card[style="display: block;"]');
-            const emptyMessage = zone.querySelector('.empty-search-results');
-
-            if (visibleCards.length === 0 && searchTerm !== '') {
-                if (!emptyMessage) {
-                    const message = document.createElement('p');
-                    message.className = 'empty-search-results';
-                    message.textContent = 'No blogs found matching your search.';
-                    zone.appendChild(message);
-                }
-            } else if (emptyMessage) {
-                emptyMessage.remove();
-            }
-        });
-    }
+function injectBlogStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      .blog-group h3:hover {
+        background-color: #2c3e50 !important;
+      }
+      .blog-item:hover {
+        background-color: #f8f9fa;
+      }
+      .extra-bold {
+        font-weight: 700;
+      }
+      @media (max-width: 768px) {
+        .blogs-container .blogs {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
 }
 
-// Initialize search if the search box exists
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('blog-search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', searchBlogs);
+function handleBlogSearch() {
+    const searchInput = document.getElementById('blogSearch');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', () => {
+        const term = searchInput.value.toLowerCase().trim();
+        let matchCount = 0;
+
+        // Filter blog navigation
+        document.querySelectorAll('.blog-group').forEach(group => {
+            let hasVisibleItems = false;
+
+            group.querySelectorAll('.blog-item').forEach(item => {
+                const isMatch = item.textContent.toLowerCase().includes(term);
+                item.style.display = isMatch ? '' : 'none';
+                if (isMatch) hasVisibleItems = true;
+            });
+
+            group.style.display = hasVisibleItems ? '' : 'none';
+        });
+
+        // Update search results count
+        const countDisplay = document.getElementById('blogSearchCount');
+        if (countDisplay) {
+            countDisplay.textContent = matchCount > 0 
+                ? `Found ${matchCount} results` 
+                : 'No results found';
+            countDisplay.className = matchCount > 0 
+                ? 'search-results-count' 
+                : 'search-no-results';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.zonesData) {
+        generateBlogNav(window.zonesData);
+        handleResponsiveDesign();
+        enableAutoScroll();
+        injectBlogStyles();
+        handleBlogSearch();
     }
 });
