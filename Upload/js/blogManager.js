@@ -1,76 +1,80 @@
+
 /**
- * Blog Zone Manager - Manages blog display categorized by zones
- * Similar to categoryManager.js but specialized for the blog page
+ * Blog Manager - Comprehensive solution for blog display
+ * Handles categories, search, navigation, and empty state handling
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    const customRightColumn = document.querySelector('.custom-right-column');
-    const categoriesContainer = document.querySelector('.custom-categories-container ul');
+    console.log('Blog Manager: Initializing...');
+    
+    // Get key DOM elements with safe checks
     const leftColumn = document.querySelector('.custom-left-column');
+    const rightColumn = document.querySelector('.custom-right-column');
+    const categoriesContainer = document.querySelector('.custom-categories-container ul');
     const searchInput = document.getElementById('blogSearch');
-
-    // Initialize component
-    initializeBlogManager();
-
-    /**
-     * Main initialization function
-     */
-    function initializeBlogManager() {
-        if (!customRightColumn || !categoriesContainer) {
-            console.warn('Blog Manager: Required DOM elements not found');
-            return;
-        }
-
-        console.log('Blog Manager: Initializing');
-
-        // Setup event listeners and functionality
+    const searchCountElement = document.getElementById('blogSearchCount');
+    
+    // Apply default styles to maintain layout even with empty data
+    applyStyles();
+    
+    // Handle potential empty state
+    handleEmptyState();
+    
+    // Initialize other features only if required elements exist
+    if (categoriesContainer) {
         setupCategoryLinks();
-        handleEmptyState();
-        setupSearchFunctionality();
-
-        // Set initial active category based on URL hash or first available
-        window.addEventListener('hashchange', styleActiveCategory);
     }
-
+    
+    if (searchInput) {
+        setupSearch();
+    }
+    
+    setupScrollButtons();
+    
     /**
-     * Handles empty state styling for blog zones
+     * Creates proper fallback content for empty states
      */
     function handleEmptyState() {
-        const isEmpty = leftColumn.querySelector('.empty-state-placeholder');
-
-        if (isEmpty) {
-            console.log('Blog Manager: Empty state detected, creating placeholders');
-
-            // Create placeholder categories if needed
+        // Check if we have any blog cards
+        const blogCards = document.querySelectorAll('.custom-card');
+        const categoryHeaders = document.querySelectorAll('.custom-left-column h4');
+        
+        // If no blog cards, add a placeholder message
+        if (blogCards.length === 0 && leftColumn) {
+            console.log('Blog Manager: No blog cards found, showing placeholder');
+            
+            // Create placeholder content
+            const placeholder = document.createElement('div');
+            placeholder.className = 'empty-state-placeholder';
+            placeholder.innerHTML = `
+                <div class="empty-state-icon">📝</div>
+                <h3>No Blog Posts Yet</h3>
+                <p>Check back soon for informative articles and updates.</p>
+            `;
+            
+            // Add placeholder to left column
+            leftColumn.appendChild(placeholder);
+            
+            // Add at least one placeholder category to maintain layout
             if (categoriesContainer && categoriesContainer.children.length === 0) {
-                const zoneNames = ['Face Procedures', 'Body Procedures', 'Non-Surgical', 'Latest Articles'];
-
-                zoneNames.forEach(zoneName => {
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = `#${zoneName.replace(/\s+/g, '-')}`;
-                    link.textContent = zoneName;
-                    link.classList.add('disabled-link');
-                    listItem.appendChild(link);
-                    categoriesContainer.appendChild(listItem);
-                });
-
-                // Add placeholder zone headers to left column
-                if (leftColumn) {
-                    for (const zoneName of zoneNames) {
-                        const placeholderHeader = document.createElement('h4');
-                        placeholderHeader.id = zoneName.replace(/\s+/g, '-');
-                        placeholderHeader.textContent = zoneName;
-
-                        if (isEmpty) {
-                            leftColumn.insertBefore(placeholderHeader, leftColumn.querySelector('.empty-state-placeholder'));
-                        } else {
-                            leftColumn.appendChild(placeholderHeader);
-                        }
+                const placeholderCategory = document.createElement('li');
+                placeholderCategory.innerHTML = '<a href="#coming-soon">Coming Soon</a>';
+                categoriesContainer.appendChild(placeholderCategory);
+                
+                // Add placeholder header in left column
+                if (categoryHeaders.length === 0) {
+                    const placeholderHeader = document.createElement('h4');
+                    placeholderHeader.id = 'coming-soon';
+                    placeholderHeader.textContent = 'Coming Soon';
+                    
+                    // Insert before the placeholder if it exists
+                    if (leftColumn.querySelector('.empty-state-placeholder')) {
+                        leftColumn.insertBefore(placeholderHeader, leftColumn.querySelector('.empty-state-placeholder'));
+                    } else {
+                        leftColumn.appendChild(placeholderHeader);
                     }
                 }
             }
-
+            
             // Create placeholder latest posts
             const latestPostsContainer = document.querySelector('.custom-latest-posts-container ul');
             if (latestPostsContainer && latestPostsContainer.children.length === 0) {
@@ -82,49 +86,46 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-
+    
     /**
      * Sets up category navigation
      */
     function setupCategoryLinks() {
         if (!categoriesContainer) return;
-
+        
         const categoryLinks = categoriesContainer.querySelectorAll('a');
         if (categoryLinks.length === 0) return;
-
+        
         // Add click listeners safely
         categoryLinks.forEach(link => {
             if (link && link.getAttribute('href')) {
                 link.addEventListener('click', handleCategoryClick);
             }
         });
-
+        
         // Style active category based on URL hash or default to first
         styleActiveCategory();
-
+        
         console.log('Blog Manager: Category links initialized');
     }
-
+    
     /**
      * Handles category link clicks with smooth scrolling
      */
     function handleCategoryClick(e) {
         e.preventDefault();
-
-        const target = e.target.closest('a');
-        if (!target) return;
-
-        const targetId = target.getAttribute('href');
+        
+        const targetId = e.target.getAttribute('href');
         if (!targetId) return;
-
+        
         // Remove 'active' class from all links
         categoriesContainer.querySelectorAll('a').forEach(link => {
             link.classList.remove('active');
         });
-
+        
         // Add 'active' class to clicked link
-        target.classList.add('active');
-
+        e.target.classList.add('active');
+        
         // Find the target element and scroll to it
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
@@ -134,126 +135,130 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
+    
     /**
      * Styles active category based on URL hash or defaults to first category
      */
     function styleActiveCategory() {
         if (!categoriesContainer) return;
-
+        
         // Get current hash or default to first category
         const currentHash = window.location.hash || 
             (categoriesContainer.querySelector('a') ? 
             categoriesContainer.querySelector('a').getAttribute('href') : null);
-
+        
         if (currentHash) {
-            // Reset all links
-            categoriesContainer.querySelectorAll('a').forEach(link => {
-                link.classList.remove('active');
-            });
-
             // Find matching category link
             const activeLink = categoriesContainer.querySelector(`a[href="${currentHash}"]`);
             if (activeLink) {
                 activeLink.classList.add('active');
-            } else if (categoriesContainer.querySelector('a')) {
-                // Default to first if no match
-                categoriesContainer.querySelector('a').classList.add('active');
+                
+                // Scroll to section after a short delay
+                setTimeout(() => {
+                    const targetElement = document.querySelector(currentHash);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
             }
         }
     }
-
+    
     /**
      * Sets up blog search functionality
      */
-    function setupSearchFunctionality() {
+    function setupSearch() {
         if (!searchInput) return;
-
+        
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase().trim();
-            const blogCards = document.querySelectorAll('.custom-card');
             let visibleCount = 0;
-
-            // Hide/show blog cards based on search
+            const blogCards = document.querySelectorAll('.custom-card');
+            const categoryHeaders = document.querySelectorAll('.custom-left-column h4');
+            
+            // Create a mapping of category headers to their visible cards
+            const categoryVisibility = {};
+            categoryHeaders.forEach(header => {
+                categoryVisibility[header.id] = false;
+            });
+            
+            // Check all blog cards for matches
             blogCards.forEach(card => {
-                const titleEl = card.querySelector('h3');
-                const descEl = card.querySelector('p');
-
-                if (!titleEl || !descEl) return;
-
-                const title = titleEl.textContent.toLowerCase();
-                const description = descEl.textContent.toLowerCase();
-
-                const isVisible = title.includes(searchTerm) || description.includes(searchTerm);
-                card.style.display = isVisible ? 'flex' : 'none';
-
-                if (isVisible) visibleCount++;
-            });
-
-            // Update category headers visibility
-            document.querySelectorAll('.custom-left-column h4').forEach(header => {
-                if (!header || !header.id) return;
-
-                const categoryId = header.id;
-                const categoryCards = document.querySelectorAll(`.custom-card[data-category="${categoryId}"]`);
-
-                let hasVisibleCards = false;
-                categoryCards.forEach(card => {
-                    if (card.style.display !== 'none') {
-                        hasVisibleCards = true;
+                if (!card) return;
+                
+                const titleElement = card.querySelector('h3');
+                const descElement = card.querySelector('p');
+                
+                if (!titleElement || !descElement) return;
+                
+                const title = titleElement.textContent.toLowerCase();
+                const description = descElement.textContent.toLowerCase();
+                const categoryId = card.getAttribute('data-category') || 
+                                  (card.closest('div[id]') ? card.closest('div[id]').id : null);
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                    
+                    // Mark the category as having visible cards
+                    if (categoryId && categoryVisibility.hasOwnProperty(categoryId)) {
+                        categoryVisibility[categoryId] = true;
                     }
-                });
-
-                header.style.display = hasVisibleCards || searchTerm === '' ? 'block' : 'none';
-            });
-
-            // Show search results count
-            const searchCountEl = document.getElementById('blogSearchCount');
-            if (searchCountEl) {
-                if (searchTerm === '') {
-                    searchCountEl.textContent = '';
                 } else {
-                    searchCountEl.textContent = `Found ${visibleCount} result${visibleCount !== 1 ? 's' : ''}`;
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update category headers visibility
+            categoryHeaders.forEach(header => {
+                if (header.id && categoryVisibility.hasOwnProperty(header.id)) {
+                    header.style.display = categoryVisibility[header.id] ? 'block' : 'none';
+                }
+            });
+            
+            // Update search count
+            if (searchCountElement) {
+                if (searchTerm) {
+                    searchCountElement.textContent = `Found ${visibleCount} result${visibleCount !== 1 ? 's' : ''}`;
+                    searchCountElement.style.display = 'block';
+                } else {
+                    searchCountElement.style.display = 'none';
                 }
             }
         });
+        
+        console.log('Blog Manager: Search functionality initialized');
     }
-
-    // Add CSS styles for active links and search results
-    function addStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .custom-categories-container ul li a.active {
-                color: #007bff !important;
-                font-weight: bold;
-            }
-            .disabled-link {
-                color: #999 !important;
-                cursor: default;
-            }
-            #blogSearchCount {
-                margin-top: 5px;
-                font-size: 14px;
-                color: #666;
-            }
-            .empty-state-placeholder {
-                text-align: center;
-                padding: 40px 20px;
-                background-color: #f8f9fa;
-                border-radius: 8px;
-                margin: 20px 0;
-            }
-            .empty-state-icon {
-                font-size: 48px;
-                margin-bottom: 15px;
-            }
-        `;
-        document.head.appendChild(style);
+    
+    /**
+     * Handle scroll events for the back-to-top button
+     */
+    function setupScrollButtons() {
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const scrollBottomBtn = document.getElementById('scrollBottomBtn');
+        
+        if (scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        if (scrollBottomBtn) {
+            scrollBottomBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+        }
     }
-
-    // Add styles
-    addStyles();
-
+    
     /**
      * Adds CSS styling for all blog components
      * Including empty state styling
