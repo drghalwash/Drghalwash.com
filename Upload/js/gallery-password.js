@@ -81,10 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.innerHTML = originalButtonText;
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => {
-            return { message: 'Invalid password or server error. Please try again.' };
-          });
-          displayError(errorData.message || 'Invalid password. Please try again.');
+          const errorText = await response.text();
+          console.error('Server error:', response.status, errorText);
+          displayError('Invalid password or server error. Please try again.');
           return;
         }
         
@@ -109,25 +108,15 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.error('Password form not found in the DOM');
   }
-
+  
   // Helper function to display error messages
   function displayError(message) {
-    // Try to find or create an error element
-    let errorElement = document.getElementById('passwordError');
-    
-    if (!errorElement) {
-      errorElement = document.createElement('div');
-      errorElement.id = 'passwordError';
-      errorElement.className = 'alert alert-danger mt-3';
-      
-      // Find where to insert the error
-      const formGroup = document.querySelector('.form-group');
-      if (formGroup) {
-        formGroup.parentNode.insertBefore(errorElement, formGroup.nextSibling);
-      }
+    const errorElement = document.getElementById('passwordError');
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    } else {
+      alert(message);
     }
-    
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
   }
 });
