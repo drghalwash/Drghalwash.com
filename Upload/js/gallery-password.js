@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log("Gallery password script loaded");
-  
+
   // Make sure the password modal element exists
   const passwordModal = document.getElementById('passwordModal');
   if (!passwordModal) {
@@ -73,20 +73,44 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Password form submitted');
 
       const subgalleryIdField = document.getElementById('imageId');
-      if (!subgalleryIdField) {
-        console.error('Cannot find imageId field');
+      // Try multiple ways to get the subgalleryId
+      let subgalleryId = null;
+
+      // Method 1: Get from form field
+      if (subgalleryIdField) {
+        subgalleryId = subgalleryIdField.value;
+        console.log('Found subgalleryId in form field:', subgalleryId);
+      }
+
+      // Method 2: Get from modal data attribute if form field is missing or empty
+      if (!subgalleryId) {
+        const modalDataId = passwordModal.dataset.subgalleryId;
+        if (modalDataId) {
+          subgalleryId = modalDataId;
+          console.log('Retrieved subgalleryId from modal data attribute:', subgalleryId);
+        }
+      }
+
+      // Final check
+      if (!subgalleryId) {
+        console.error('Could not retrieve subgalleryId from any source');
         displayError('Missing required information: subgallery ID');
         return;
       }
-      
-      const subgalleryId = subgalleryIdField.value;
-      console.log('Using subgallery ID from form:', subgalleryId);
-      
-      if (!subgalleryId) {
-        console.error('subgalleryId is empty');
-        displayError('Missing required information: subgallery ID value');
-        return;
+
+      console.log('Using subgallery ID:', subgalleryId);
+
+      // Ensure the form field has the value (create it if needed)
+      if (!subgalleryIdField) {
+        subgalleryIdField = document.createElement('input');
+        subgalleryIdField.type = 'hidden';
+        subgalleryIdField.id = 'imageId';
+        subgalleryIdField.name = 'imageId';
+        passwordForm.appendChild(subgalleryIdField);
+        subgalleryIdField.value = subgalleryId;
+        console.log('Created missing imageId field with value:', subgalleryId);
       }
+
 
       const passwordInput = document.querySelector('#passwordModal input[name="password"]');
       if (!passwordInput) {
@@ -96,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const password = passwordInput.value.trim();
       console.log('Submitted password (trimmed):', password);
-      
+
       if (!password) {
         displayError('Please enter a password');
         return;
@@ -110,10 +134,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
       try {
         // Ensure password is properly trimmed
-      const trimmedPassword = password.trim();
-      
-      const requestData = {
-          subgalleryId: subgalleryId,
+        const trimmedPassword = password.trim();
+
+        // Ensure we have the subgalleryId as a direct value
+        const currentSubgalleryId = subgalleryId;
+        console.log('Using subgalleryId for request:', currentSubgalleryId);
+
+        // Create form data directly with key-value pairs
+        const formData = new FormData();
+        formData.append('subgalleryId', currentSubgalleryId);
+        formData.append('password', trimmedPassword);
+
+        // Also create a JSON object for fetch request
+        const requestData = {
+          subgalleryId: currentSubgalleryId,
           password: trimmedPassword
         };
 

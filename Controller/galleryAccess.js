@@ -9,21 +9,32 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    // Extract data from request body
-    const { subgalleryId, password } = req.body;
+    // Extract data from request body with detailed logging
+    const reqBody = req.body;
+    console.log("Full request body received:", reqBody);
     
-    console.log("Request body received:", req.body);
-    console.log("subgalleryId:", subgalleryId, "type:", typeof subgalleryId);
+    // Handle null/undefined cases robustly
+    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId;
+    const password = reqBody.password;
+    
+    console.log("Raw subgalleryId:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
     console.log("password:", password, "type:", typeof password);
     
-    // Ensure subgalleryId exists, is not empty, and is converted to string if needed
-    if (!subgalleryId) {
-      return res.status(400).json({ success: false, message: 'Missing required parameter: subgalleryId' });
+    // Enhanced validation for subgalleryId
+    if (rawSubgalleryId === undefined || rawSubgalleryId === null || rawSubgalleryId === '') {
+      console.error('Missing subgalleryId in request:', req.body);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required parameter: subgalleryId',
+        debug: { receivedBody: req.body }
+      });
     }
     
-    // Convert subgalleryId to string if it's a number
-    const subgalleryIdStr = String(subgalleryId);
+    // Always convert to string for consistency
+    const subgalleryIdStr = String(rawSubgalleryId).trim();
+    console.log(`Using normalized subgalleryId: '${subgalleryIdStr}'`);
     
+    // Password validation
     if (password === undefined || password === '') {
       return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
     }
