@@ -187,25 +187,27 @@ document.addEventListener('DOMContentLoaded', function() {
           return;
         }
         
-        // Create the request data with extra debug info
+        // Create a simpler request data object
         const requestData = {
-          subgalleryId: subgalleryId,
-          imageId: subgalleryId,
-          id: subgalleryId,
-          password: trimmedPassword,
-          timestamp: new Date().getTime() // Add timestamp for cache busting
+          id: subgalleryId, // Use a simpler name
+          password: trimmedPassword
         };
         
         console.log('Sending request with data:', JSON.stringify(requestData));
 
         console.log('Sending API request with data:', requestData);
 
+        // Use a URLSearchParams object for form data instead of JSON
+        const formData = new URLSearchParams();
+        formData.append('id', subgalleryId);
+        formData.append('password', trimmedPassword);
+
         const response = await fetch('/galleries/validate-password', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify(requestData)
+          body: formData
         });
 
         // Reset button state

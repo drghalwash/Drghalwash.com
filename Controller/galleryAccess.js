@@ -13,8 +13,8 @@ export const validatePassword = async (req, res) => {
     const reqBody = req.body;
     console.log("Full request body received:", reqBody);
     
-    // Handle null/undefined cases robustly - support ALL possible field names
-    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId || reqBody.id || req.query.subgalleryId || req.query.imageId || req.query.id;
+    // Simplify by just looking for 'id' parameter first
+    const rawId = reqBody.id || req.query.id;
     const password = reqBody.password || req.query.password;
     
     console.log("Full request object:", {
@@ -23,38 +23,26 @@ export const validatePassword = async (req, res) => {
       params: req.params
     });
     
-    console.log("Raw subgalleryId value:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
+    console.log("Raw ID value:", rawId, "type:", typeof rawId);
     console.log("password value:", password, "type:", typeof password);
     
-    // Enhanced validation for subgalleryId with fallback value
-    if (!rawSubgalleryId) {
-      console.error('Missing subgalleryId in request, attempting to use fallback value');
-      
-      // If we have any URL parameter, try to use that as fallback
-      if (req.params && req.params.subSlug) {
-        console.log('Using subSlug from URL parameters as fallback:', req.params.subSlug);
-        const fallbackId = req.params.subSlug;
-        
-        // Continue with the fallback ID
-        const subgalleryIdStr = String(fallbackId).trim();
-        console.log(`Using fallback subgalleryId: '${subgalleryIdStr}'`);
-      } else {
-        console.error('No fallback subgalleryId available in request:', req.body);
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Missing required parameter: subgalleryId',
-          debug: { 
-            receivedBody: req.body,
-            receivedQuery: req.query,
-            receivedParams: req.params
-          }
-        });
-      }
+    // Enhanced validation with simpler logic
+    if (!rawId) {
+      console.error('Missing ID in request');
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required parameter: id',
+        debug: { 
+          receivedBody: req.body,
+          receivedQuery: req.query,
+          receivedParams: req.params
+        }
+      });
     }
     
     // Always convert to string for consistency
-    const subgalleryIdStr = String(rawSubgalleryId).trim();
-    console.log(`Using normalized subgalleryId: '${subgalleryIdStr}'`);
+    const idStr = String(rawId).trim();
+    console.log(`Using normalized ID: '${idStr}'`);
     
     // Password validation
     if (password === undefined || password === '') {
@@ -67,7 +55,7 @@ export const validatePassword = async (req, res) => {
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
       .select('*, gallery:gallery_id(slug)')
-      .eq('id', subgalleryIdStr)
+      .eq('id', idStr)
       .single();
     
     if (subgalleryError || !subgallery) {
