@@ -1,225 +1,192 @@
+/**
+ * Blog Manager - Manages blogs display, category navigation, and search
+ * Works with the existing Blog.handlebars template structure
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const rightColumn = document.querySelector('.custom-right-column');
+    const categoriesContainer = document.querySelector('.custom-categories-container ul');
+    const leftColumn = document.querySelector('.custom-left-column');
+    const searchInput = document.getElementById('blogSearch');
 
-/***********************************************************************
- * File: /js/blogManager.js
- * Description: Dynamically generates blog navigation and handles 
- * responsive grid layout for blogs based on Supabase data.
- ***********************************************************************/
+    if (!rightColumn || !categoriesContainer) return;
 
-function generateBlogNav(zones) {
-    const navContainer = document.querySelector('.blogs-container .blogs');
-    if (!navContainer) return;
+    // Function to handle category link click
+    function handleCategoryClick(e) {
+        e.preventDefault();
 
-    navContainer.style.cssText = `
-        display: grid;
-        grid-template-columns: repeat(1, minmax(200px, 1fr));
-        gap: 15px;
-        border: 2px solid #ffa500;
-        border-radius: 8px;
-        padding: 15px;
-    `;
+        const targetId = e.target.getAttribute('href');
+        if (!targetId) return;
 
-    zones.forEach(zone => {
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'blog-group';
-        groupDiv.style.cssText = `
-            background-color: #ffffff;
-            break-inside: avoid;
-            margin-bottom: 0.11px;
-        `;
+        // Remove 'active' class from all links
+        categoriesContainer.querySelectorAll('a').forEach(link => {
+            link.classList.remove('active');
+        });
 
-        const header = document.createElement('h3');
-        header.textContent = zone.name + ' ▶'; // Changed to ▶ for collapsed state
-        header.style.cssText = `
-            background-color: #394464;
-            color: white;
-            font-family: Verdana, sans-serif;
-            font-weight: bold;
-            font-size: 1.1em;
-            padding: 8px 15px;
-            margin-bottom: 0.1px;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            user-select: none;
-            transition: background-color 0.3s ease;
-        `;
+        // Add 'active' class to clicked link
+        e.target.classList.add('active');
 
-        const categoriesContainer = document.createElement('div');
-        categoriesContainer.style.cssText = `
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        `;
-        
-        header.addEventListener('click', () => {
-            const isExpanded = categoriesContainer.style.maxHeight !== '0px';
+        // Find the target element and scroll to it
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+    }
 
-            // Collapse all other categories
-            const allCategories = document.querySelectorAll('.blogs-container .blogs > .blog-group > div');
-            allCategories.forEach(container => {
-                if (container !== categoriesContainer) {
-                    container.style.maxHeight = '0';
-                    const otherZoneHeader = container.previousElementSibling;
-                    otherZoneHeader.textContent = otherZoneHeader.dataset.zoneName + ' ▶'; // Use data attribute
-                    otherZoneHeader.style.backgroundColor = '#394464';
+    // Add click event listeners to category links
+    categoriesContainer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', handleCategoryClick);
+    });
+
+    // Function to handle blog search
+    function handleBlogSearch() {
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const blogCards = document.querySelectorAll('.custom-card');
+            let visibleCount = 0;
+
+            // Create object to track which categories have visible items
+            const categoryVisibility = {};
+
+            // First, check cards and track which categories will have visible items
+            blogCards.forEach(card => {
+                const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                const description = card.querySelector('p')?.textContent.toLowerCase() || '';
+                const categoryId = card.closest('section')?.id || 
+                                  card.previousElementSibling?.id ||
+                                  card.parentElement.querySelector('h4')?.id;
+
+                const isVisible = searchTerm === '' || 
+                                 title.includes(searchTerm) || 
+                                 description.includes(searchTerm);
+
+                // Mark the card as visible or hidden
+                card.style.display = isVisible ? 'flex' : 'none';
+
+                if (isVisible) {
+                    visibleCount++;
+                    if (categoryId) {
+                        categoryVisibility[categoryId] = true;
+                    }
                 }
             });
 
-            // Expand the clicked category
-            categoriesContainer.style.maxHeight = isExpanded ? '0' : '1000px';
-            header.textContent = zone.name + (isExpanded ? ' ▶' : ' ▼'); // Use correct zone name
-            header.style.backgroundColor = isExpanded ? '#394464' : '#2c3e50';
-        });
+            // Then, update category headers visibility
+            document.querySelectorAll('.custom-left-column h4').forEach(header => {
+                const categoryId = header.id;
+                header.style.display = categoryVisibility[categoryId] ? 'block' : 'none';
+            });
 
-        // Set data attribute for the zone name
-        header.dataset.zoneName = zone.name;
-        
-        zone.blogs.forEach(blog => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'blog-item';
-            itemDiv.style.cssText = `
-                padding: 8px 15px;
-                margin: 0.3px 0;
-                transition: all 0.3s ease;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            `;
-            
-            // Add soon tag if blog has no content
-            if (!blog.content || blog.content.length === 0) {
-                const soonTag = document.createElement('span');
-                soonTag.textContent = 'soon';
-                soonTag.style.cssText = `
-                    background: linear-gradient(45deg, #FF8C42, #FFA07A);
-                    color: white;
-                    padding: 2px 8px;
-                    border-radius: 12px;
-                    font-size: 0.7em;
-                    font-weight: bold;
-                    margin-left: 8px;
-                `;
-                itemDiv.appendChild(soonTag);
+            // Update search count if element exists
+            const searchCountEl = document.getElementById('blogSearchCount');
+            if (searchCountEl) {
+                if (searchTerm === '') {
+                    searchCountEl.style.display = 'none';
+                } else {
+                    searchCountEl.style.display = 'block';
+                    searchCountEl.textContent = `Found ${visibleCount} result${visibleCount !== 1 ? 's' : ''}`;
+                }
             }
-
-            const link = document.createElement('a');
-            link.href = `/Read_More/${blog.slug || blog.id}`;
-
-            const words = blog.title.split(' ');
-            const firstTwoWords = words.slice(0, 2).join(' ');
-            const remainingWords = words.slice(2).join(' ');
-
-            link.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
-            link.style.cssText = `
-                color: #495057;
-                text-decoration: none;
-                font-family: Verdana, sans-serif;
-                font-size: 0.95em;
-                display: block;
-                transition: all 0.3s ease;
-            `;
-
-            link.addEventListener('mouseenter', () => {
-                link.style.color = '#007bff';
-                itemDiv.style.backgroundColor = '#f8f9fa';
-            });
-
-            link.addEventListener('mouseleave', () => {
-                link.style.color = '#495057';
-                itemDiv.style.backgroundColor = 'transparent';
-            });
-
-            itemDiv.appendChild(link);
-            categoriesContainer.appendChild(itemDiv);
         });
+    }
 
-        groupDiv.appendChild(header);
-        groupDiv.appendChild(categoriesContainer);
-        navContainer.appendChild(groupDiv);
-    });
-}
+    // Style active category when page loads
+    function styleActiveCategory() {
+        // Get the current hash from URL or first category if none
+        const currentHash = window.location.hash || 
+            (categoriesContainer.querySelector('a') ? 
+            categoriesContainer.querySelector('a').getAttribute('href') : null);
 
-function handleResponsiveDesign() {
-    const blogs = document.querySelector('.blogs-container .blogs');
-    if (!blogs) return;
+        if (currentHash) {
+            // Find and activate the matching category link
+            const activeLink = categoriesContainer.querySelector(`a[href="${currentHash}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
 
-    const updateGrid = () => {
-        const width = window.innerWidth;
-        blogs.style.gridTemplateColumns = 'repeat(1, minmax(200px, auto))';
-    };
+                // Scroll to the section
+                const targetElement = document.querySelector(currentHash);
+                if (targetElement) {
+                    // Small delay to ensure DOM is ready
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }, 300);
+                }
+            }
+        }
+    }
 
-    updateGrid();
-    window.addEventListener('resize', updateGrid);
-}
-
-function enableAutoScroll() {
-    document.querySelectorAll('.blog-item a').forEach(link => {
-        link.addEventListener('click', (event) => {
-            // Allow normal link navigation for blogs
+    // Add smooth scrolling to "Read More" links
+    function setupReadMoreLinks() {
+        document.querySelectorAll('.custom-card-content a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Allow normal link behavior but add a nice transition
+                document.body.style.opacity = '0.8';
+                setTimeout(() => {
+                    document.body.style.opacity = '1';
+                }, 300);
+            });
         });
-    });
-}
+    }
 
-function injectBlogStyles() {
+    // Add styles for categories and latest posts
     const style = document.createElement('style');
     style.textContent = `
-      .blog-group h3:hover {
-        background-color: #2c3e50 !important;
-      }
-      .blog-item:hover {
-        background-color: #f8f9fa;
-      }
-      .extra-bold {
-        font-weight: 700;
-      }
-      @media (max-width: 768px) {
-        .blogs-container .blogs {
-          grid-template-columns: 1fr !important;
+        .custom-categories-container ul a {
+            text-decoration: none;
+            color: #555;
+            display: block;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
         }
-      }
+
+        .custom-categories-container ul a:hover,
+        .custom-categories-container ul a.active {
+            color: #007bff;
+            font-weight: bold;
+            border-left: 3px solid #007bff;
+            padding-left: 15px;
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        .custom-latest-posts-container ul a {
+            text-decoration: none;
+            color: #555;
+            display: block;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .custom-latest-posts-container ul a:hover {
+            color: #007bff;
+        }
+
+        #blogSearchCount {
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+            font-size: 14px;
+            color: #555;
+        }
     `;
     document.head.appendChild(style);
-}
 
-function handleBlogSearch() {
-    const searchInput = document.getElementById('blogSearch');
-    if (!searchInput) return;
-
-    searchInput.addEventListener('input', () => {
-        const term = searchInput.value.toLowerCase().trim();
-        let matchCount = 0;
-
-        // Filter blog navigation
-        document.querySelectorAll('.blog-group').forEach(group => {
-            let hasVisibleItems = false;
-
-            group.querySelectorAll('.blog-item').forEach(item => {
-                const isMatch = item.textContent.toLowerCase().includes(term);
-                item.style.display = isMatch ? '' : 'none';
-                if (isMatch) hasVisibleItems = true;
-            });
-
-            group.style.display = hasVisibleItems ? '' : 'none';
-        });
-
-        // Update search results count
-        const countDisplay = document.getElementById('blogSearchCount');
-        if (countDisplay) {
-            countDisplay.textContent = matchCount > 0 
-                ? `Found ${matchCount} results` 
-                : 'No results found';
-            countDisplay.className = matchCount > 0 
-                ? 'search-results-count' 
-                : 'search-no-results';
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.zonesData) {
-        generateBlogNav(window.zonesData);
-        handleResponsiveDesign();
-        enableAutoScroll();
-        injectBlogStyles();
-        handleBlogSearch();
-    }
+    // Initialize all components
+    styleActiveCategory();
+    handleBlogSearch();
+    setupReadMoreLinks();
 });

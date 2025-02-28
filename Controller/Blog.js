@@ -141,13 +141,13 @@ export const index = async (req, res) => {
         const { data: blogs, error: blogError } = await supabase.from('blogs').select('*');
         if (blogError) throw blogError;
 
-        // Group blogs by zones
-        const groupedBlogs = zones.map(zone => {
-            return {
-                id: zone.id,
-                name: zone.name,
-                blogs: blogs.filter(blog => blog.zone_id === zone.id)
-            };
+        // Group blogs by zones into object format for handlebars templates
+        const groupedBlogs = {};
+        zones.forEach(zone => {
+            const blogsInZone = blogs.filter(blog => blog.zone_id === zone.id);
+            if (blogsInZone.length > 0 && zone.name) {
+                groupedBlogs[zone.name] = blogsInZone;
+            }
         });
 
         // Get latest blogs for the sidebar

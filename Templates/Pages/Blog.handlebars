@@ -151,6 +151,13 @@
 		<h1>Blog</h1>
 		<p><a href="/Home">Home </a> > Discussion Corner > Blog </p>
 	</div>
+    
+    {{#if searchEnabled}}
+    <div class="search-container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px; margin-bottom: 20px;">
+        <input type="text" id="blogSearch" placeholder="Search blogs..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
+        <div id="blogSearchCount" class="search-results-count"></div>
+    </div>
+    {{/if}}
 
 
 
@@ -356,6 +363,7 @@
 				});
 			</script>
 			<script src="/js/header.js"></script>
+			<script src="/js/blogManager.js"></script>
 			<script>
 				const toggleButton = document.getElementById('toggle-button');
 				const menu = document.getElementById('menu');
