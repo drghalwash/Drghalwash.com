@@ -9,52 +9,60 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    // Extract data from request body with detailed logging
-    const reqBody = req.body;
-    console.log("Full request body received:", reqBody);
-    
-    // Handle null/undefined cases robustly - support ALL possible field names
-    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId || reqBody.id || req.query.subgalleryId || req.query.imageId || req.query.id;
-    const password = reqBody.password || req.query.password;
-    
-    console.log("Full request object:", {
-      body: req.body,
-      query: req.query,
-      params: req.params
+    // ===== COMPREHENSIVE DEBUG LOGGING =====
+    console.log("=== FULL REQUEST DEBUG INFO ===");
+    console.log("Request body:", JSON.stringify(req.body, null, 2));
+    console.log("Request query:", JSON.stringify(req.query, null, 2));
+    console.log("Request params:", JSON.stringify(req.params, null, 2));
+    console.log("Request headers:", JSON.stringify(req.headers, null, 2));
+    console.log("================================");
+
+    // Extract subgalleryId from ALL possible sources with robust conversion
+    const possibleIdSources = [
+      { value: req.body.subgalleryId, source: 'body.subgalleryId' },
+      { value: req.body.imageId, source: 'body.imageId' },
+      { value: req.body.id, source: 'body.id' },
+      { value: req.query.subgalleryId, source: 'query.subgalleryId' },
+      { value: req.query.imageId, source: 'query.imageId' },
+      { value: req.query.id, source: 'query.id' },
+      { value: req.params.id, source: 'params.id' },
+      { value: req.params.subSlug, source: 'params.subSlug' }
+    ];
+
+    // Log each source for debugging
+    possibleIdSources.forEach(source => {
+      console.log(`ID Source [${source.source}]:`, source.value, 
+                  source.value !== undefined ? `(type: ${typeof source.value})` : '(undefined)');
     });
-    
-    console.log("Raw subgalleryId value:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
-    console.log("password value:", password, "type:", typeof password);
-    
-    // Enhanced validation for subgalleryId with fallback value
-    if (!rawSubgalleryId) {
-      console.error('Missing subgalleryId in request, attempting to use fallback value');
-      
-      // If we have any URL parameter, try to use that as fallback
-      if (req.params && req.params.subSlug) {
-        console.log('Using subSlug from URL parameters as fallback:', req.params.subSlug);
-        const fallbackId = req.params.subSlug;
-        
-        // Continue with the fallback ID
-        const subgalleryIdStr = String(fallbackId).trim();
-        console.log(`Using fallback subgalleryId: '${subgalleryIdStr}'`);
-      } else {
-        console.error('No fallback subgalleryId available in request:', req.body);
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Missing required parameter: subgalleryId',
-          debug: { 
-            receivedBody: req.body,
-            receivedQuery: req.query,
-            receivedParams: req.params
-          }
-        });
-      }
+
+    // Find the first non-empty value
+    const idSource = possibleIdSources.find(source => 
+      source.value !== undefined && source.value !== null && String(source.value).trim() !== ''
+    );
+
+    // Handle case where no ID is found
+    if (!idSource) {
+      console.error('CRITICAL ERROR: No valid subgalleryId found in ANY request properties');
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required parameter: subgalleryId',
+        debug: { 
+          receivedBody: req.body,
+          receivedQuery: req.query,
+          receivedParams: req.params,
+          receivedHeaders: req.headers
+        }
+      });
     }
-    
-    // Always convert to string for consistency
+
+    // Always normalize to string with trimming
+    const rawSubgalleryId = idSource.value;
     const subgalleryIdStr = String(rawSubgalleryId).trim();
-    console.log(`Using normalized subgalleryId: '${subgalleryIdStr}'`);
+    
+    console.log(`✅ Found valid subgalleryId from ${idSource.source}: '${subgalleryIdStr}'`);
+    
+    // Get password with fallback to query
+    const password = (req.body.password !== undefined) ? req.body.password : req.query.password;
     
     // Password validation
     if (password === undefined || password === '') {
