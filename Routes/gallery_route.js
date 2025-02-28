@@ -2,6 +2,7 @@ import express from 'express';
 import { index } from '../Controller/gallery.js';
 import { validatePassword, checkAccess } from '../Controller/galleryAccess.js';
 import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
