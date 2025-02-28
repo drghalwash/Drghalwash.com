@@ -9,19 +9,53 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    const { subgalleryId, password } = req.body;
+    // Extract data from request body with detailed logging
+    const reqBody = req.body;
+    console.log("Full request body received:", reqBody);
     
-    if (!subgalleryId || !password) {
-      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+    // Simplify by just looking for 'id' parameter first
+    const rawId = reqBody.id || req.query.id;
+    const password = reqBody.password || req.query.password;
+    
+    console.log("Full request object:", {
+      body: req.body,
+      query: req.query,
+      params: req.params
+    });
+    
+    console.log("Raw ID value:", rawId, "type:", typeof rawId);
+    console.log("password value:", password, "type:", typeof password);
+    
+    // Enhanced validation with simpler logic
+    if (!rawId) {
+      console.error('Missing ID in request');
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required parameter: id',
+        debug: { 
+          receivedBody: req.body,
+          receivedQuery: req.query,
+          receivedParams: req.params
+        }
+      });
     }
-
-    console.log(`Validating password for subgallery ID: ${subgalleryId}`);
+    
+    // Always convert to string for consistency
+    const idStr = String(rawId).trim();
+    console.log(`Using normalized ID: '${idStr}'`);
+    
+    // Password validation
+    if (password === undefined || password === '') {
+      return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
+    }
+    
+    console.log(`Validating password for subgallery ID (converted): ${subgalleryIdStr}`);
 
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
       .select('*, gallery:gallery_id(slug)')
-      .eq('id', subgalleryId)
+      .eq('id', idStr)
       .single();
     
     if (subgalleryError || !subgallery) {
@@ -46,26 +80,53 @@ export const validatePassword = async (req, res) => {
     let validPins = [];
     try {
       if (subgallery.password) {
-        // Handle nested quotes in the password field from CSV
+        // Convert password value to string
         const passwordString = subgallery.password.toString();
+        console.log('Raw password from database:', passwordString);
         
-        // Split by commas and remove all quotes and trim whitespace
+        // Split by commas and properly clean each PIN
         const pinsArray = passwordString.split(',').map(pin => {
-          // Replace all quotes and trim spaces
-          return pin.replace(/"/g, '').trim();
+          // Remove all quotes and trim whitespace
+          return pin.replace(/["']+/g, '').trim();
         });
+        
+        console.log('Parsed PIN array:', pinsArray);
         
         // Filter out empty strings
         validPins = pinsArray.filter(pin => pin.length > 0);
-        console.log('Valid pins after parsing:', validPins);
+        console.log('Valid PINs:', validPins);
       }
     } catch (e) {
       console.error('Error parsing password data:', e);
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
+    // Ensure password is trimmed and handle any numeric vs string issues
+    const trimmedPassword = password.toString().trim();
+    console.log('Checking if provided password:', trimmedPassword, 'matches any valid PINs');
+    
+    // Try different comparison methods to ensure matching works
+    const passwordMatches = validPins.some(pin => {
+      // Exact string comparison
+      if (pin === trimmedPassword) {
+        console.log('Exact string match found for PIN:', pin);
+        return true;
+      }
+      
+      // Try comparing as numbers if both are numeric
+      if (!isNaN(pin) && !isNaN(trimmedPassword)) {
+        const numericMatch = Number(pin) === Number(trimmedPassword);
+        if (numericMatch) {
+          console.log('Numeric match found for PIN:', pin);
+        }
+        return numericMatch;
+      }
+      
+      return false;
+    });
+    
     // Check if the provided password matches any of the pins
-    if (validPins.includes(password)) {
+    if (passwordMatches) {
       console.log('Password validated successfully');
       
       // Create a URL for redirection
