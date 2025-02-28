@@ -13,11 +13,11 @@ export const validatePassword = async (req, res) => {
     const reqBody = req.body;
     console.log("Full request body received:", reqBody);
     
-    // Handle null/undefined cases robustly
+    // Handle null/undefined cases robustly - support both field names
     const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId;
     const password = reqBody.password;
     
-    console.log("Raw subgalleryId:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
+    console.log("Raw subgalleryId/imageId:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
     console.log("password:", password, "type:", typeof password);
     
     // Enhanced validation for subgalleryId
@@ -40,8 +40,6 @@ export const validatePassword = async (req, res) => {
     }
     
     console.log(`Validating password for subgallery ID (converted): ${subgalleryIdStr}`);
-
-    console.log(`Validating password for subgallery ID: ${subgalleryId}`);
 
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
@@ -93,12 +91,32 @@ export const validatePassword = async (req, res) => {
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
-    // Ensure password is trimmed
-    const trimmedPassword = password.trim();
+    // Ensure password is trimmed and handle any numeric vs string issues
+    const trimmedPassword = password.toString().trim();
     console.log('Checking if provided password:', trimmedPassword, 'matches any valid PINs');
     
+    // Try different comparison methods to ensure matching works
+    const passwordMatches = validPins.some(pin => {
+      // Exact string comparison
+      if (pin === trimmedPassword) {
+        console.log('Exact string match found for PIN:', pin);
+        return true;
+      }
+      
+      // Try comparing as numbers if both are numeric
+      if (!isNaN(pin) && !isNaN(trimmedPassword)) {
+        const numericMatch = Number(pin) === Number(trimmedPassword);
+        if (numericMatch) {
+          console.log('Numeric match found for PIN:', pin);
+        }
+        return numericMatch;
+      }
+      
+      return false;
+    });
+    
     // Check if the provided password matches any of the pins
-    if (validPins.includes(trimmedPassword)) {
+    if (passwordMatches) {
       console.log('Password validated successfully');
       
       // Create a URL for redirection

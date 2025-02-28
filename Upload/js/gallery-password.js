@@ -136,18 +136,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ensure password is properly trimmed
         const trimmedPassword = password.trim();
 
-        // Ensure we have the subgalleryId as a direct value
-        const currentSubgalleryId = subgalleryId;
-        console.log('Using subgalleryId for request:', currentSubgalleryId);
-
-        // Create form data directly with key-value pairs
-        const formData = new FormData();
-        formData.append('subgalleryId', currentSubgalleryId);
-        formData.append('password', trimmedPassword);
-
-        // Also create a JSON object for fetch request
+        // Create the request data - include both field names for maximum compatibility
         const requestData = {
-          subgalleryId: currentSubgalleryId,
+          subgalleryId: subgalleryId,
+          imageId: subgalleryId,  // Include both field names to be safe
           password: trimmedPassword
         };
 
@@ -158,10 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            subgalleryId: subgalleryId,
-            password: trimmedPassword
-          })
+          body: JSON.stringify(requestData)
         });
 
         // Reset button state
