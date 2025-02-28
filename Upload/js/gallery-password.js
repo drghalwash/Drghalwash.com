@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log("Gallery password script loaded");
+  
+  // Make sure the password modal element exists
+  const passwordModal = document.getElementById('passwordModal');
+  if (!passwordModal) {
+    console.error('Password modal not found in the DOM. Password protection will not work.');
+  }
 
   // Find all gallery links
   const galleryLinks = document.querySelectorAll('.gallery-link');
@@ -118,7 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(requestData)
+          body: JSON.stringify({
+            subgalleryId: subgalleryId,
+            password: trimmedPassword
+          })
         });
 
         // Reset button state

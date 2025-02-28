@@ -16,14 +16,19 @@ export const validatePassword = async (req, res) => {
     console.log("subgalleryId:", subgalleryId, "type:", typeof subgalleryId);
     console.log("password:", password, "type:", typeof password);
     
-    // Ensure both parameters exist and are not empty
+    // Ensure subgalleryId exists, is not empty, and is converted to string if needed
     if (!subgalleryId) {
       return res.status(400).json({ success: false, message: 'Missing required parameter: subgalleryId' });
     }
     
+    // Convert subgalleryId to string if it's a number
+    const subgalleryIdStr = String(subgalleryId);
+    
     if (password === undefined || password === '') {
       return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
     }
+    
+    console.log(`Validating password for subgallery ID (converted): ${subgalleryIdStr}`);
 
     console.log(`Validating password for subgallery ID: ${subgalleryId}`);
 
@@ -31,7 +36,7 @@ export const validatePassword = async (req, res) => {
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
       .select('*, gallery:gallery_id(slug)')
-      .eq('id', subgalleryId)
+      .eq('id', subgalleryIdStr)
       .single();
     
     if (subgalleryError || !subgallery) {
