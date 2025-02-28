@@ -129,7 +129,7 @@
           <div class="custom-row {{this.type}}">
             {{#each this.items}}
               <a href="/galleries/{{../../gallery.slug}}/{{this.slug}}" class="gallery-link" data-id="{{this.id}}">
-                <div class="{{#if this.password_id}}custom-div-private{{else}}custom-div{{/if}}">
+                <div class="{{#if (eq this.status 'Private')}}custom-div-private{{else}}custom-div{{/if}}">
                   <img 
                     src="{{this.icon}}" 
                     alt="{{this.name}}" 
