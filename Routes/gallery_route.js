@@ -1,13 +1,17 @@
-
-import { Router } from 'express';
+import express from 'express';
 import { index } from '../Controller/gallery.js';
 import { validatePassword, checkAccess } from '../Controller/galleryAccess.js';
+import cookieParser from 'cookie-parser';
 
-const router = new Router();
+const router = express.Router();
 
-router.get('/', index);
-router.get('/:slug', index);
-router.get('/:slug/:subSlug', checkAccess, index);
+// Apply cookie-parser middleware
+router.use(cookieParser());
+
+// Route for password validation
 router.post('/validate-password', validatePassword);
+
+// Route for gallery/subgallery pages with access check
+router.get('/:slug?/:subSlug?', checkAccess, index);
 
 export default router;

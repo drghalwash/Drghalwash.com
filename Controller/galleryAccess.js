@@ -15,6 +15,8 @@ export const validatePassword = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing required parameters' });
     }
 
+    console.log(`Validating password for subgallery ID: ${subgalleryId}`);
+
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
@@ -37,11 +39,14 @@ export const validatePassword = async (req, res) => {
       return res.status(400).json({ success: false, message: 'This private subgallery has no associated password' });
     }
 
+    console.log('Subgallery password:', subgallery.password);
+
     // Parse the password string which contains multiple pins as a JSON array
     let validPins = [];
     try {
       // The password field contains JSON string with pins in quotes
       validPins = JSON.parse(subgallery.password);
+      console.log('Valid pins:', validPins);
     } catch (e) {
       console.error('Error parsing password JSON:', e);
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
@@ -49,6 +54,8 @@ export const validatePassword = async (req, res) => {
 
     // Check if the provided password matches any of the pins
     if (validPins.includes(password)) {
+      console.log('Password validated successfully');
+      
       // Create a URL for redirection
       const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
       
@@ -65,6 +72,7 @@ export const validatePassword = async (req, res) => {
         redirectUrl
       });
     } else {
+      console.log('Invalid password provided');
       return res.status(401).json({ success: false, message: 'Invalid password' });
     }
   } catch (error) {
@@ -97,7 +105,7 @@ export const checkAccess = async (req, res, next) => {
     // Get the subgallery details
     const { data: subgallery } = await supabase
       .from('subgallery')
-      .select('id, password, status')
+      .select('id, status, password')
       .eq('gallery_id', gallery.id)
       .eq('slug', subSlug)
       .single();

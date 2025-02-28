@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
           document.getElementById('imageId').value = galleryId;
           const modal = document.getElementById('passwordModal');
           if (modal) {
+            // Clear any previous error messages
+            const errorElement = document.getElementById('passwordError');
+            if (errorElement) {
+              errorElement.textContent = '';
+              errorElement.style.display = 'none';
+            }
+            
+            // Clear the password field
+            const passwordField = document.querySelector('input[name="password"]');
+            if (passwordField) {
+              passwordField.value = '';
+            }
+            
             const passwordModal = new bootstrap.Modal(modal);
             passwordModal.show();
             console.log('Showing password modal for gallery ID:', galleryId);
@@ -41,9 +54,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const password = document.querySelector('input[name="password"]').value;
       
       if (!subgalleryId || !password) {
-        alert('Please enter a password');
+        displayError('Please enter a password');
         return;
       }
+
+      // Show loading state
+      const submitButton = passwordForm.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.innerHTML;
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Validating...';
 
       try {
         const response = await fetch('/galleries/validate-password', {
@@ -57,10 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
           })
         });
 
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+
         if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Server error:', response.status, errorText);
-          alert('Invalid password or server error. Please try again.');
+          const errorData = await response.json().catch(() => {
+            return { message: 'Invalid password or server error. Please try again.' };
+          });
+          displayError(errorData.message || 'Invalid password. Please try again.');
           return;
         }
         
@@ -71,14 +95,39 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = data.redirectUrl;
         } else {
           console.error('Invalid password:', data.message);
-          alert(data.message || 'Invalid password. Please try again.');
+          displayError(data.message || 'Invalid password. Please try again.');
         }
       } catch (error) {
         console.error('Error validating password:', error);
-        alert('An error occurred while validating the password. Please try again later.');
+        displayError('An error occurred while validating the password. Please try again later.');
+        
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
       }
     });
   } else {
     console.error('Password form not found in the DOM');
+  }
+
+  // Helper function to display error messages
+  function displayError(message) {
+    // Try to find or create an error element
+    let errorElement = document.getElementById('passwordError');
+    
+    if (!errorElement) {
+      errorElement = document.createElement('div');
+      errorElement.id = 'passwordError';
+      errorElement.className = 'alert alert-danger mt-3';
+      
+      // Find where to insert the error
+      const formGroup = document.querySelector('.form-group');
+      if (formGroup) {
+        formGroup.parentNode.insertBefore(errorElement, formGroup.nextSibling);
+      }
+    }
+    
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
   }
 });
