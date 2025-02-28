@@ -7,13 +7,13 @@ const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.su
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// JWT secret key - should be in environment variables
-const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret-key-change-this-in-production';
+// JWT secret key - using the provided secret
+const JWT_SECRET = process.env.JWT_SECRET || 'kemowyaya';
 
 // Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    console.log("Request received:", {
+    console.log("Password validation request received:", {
       body: req.body,
       query: req.query,
       params: req.params
@@ -23,6 +23,7 @@ export const validatePassword = async (req, res) => {
     const { slug, password } = req.body;
     
     if (!slug) {
+      console.error('Missing required parameter: slug');
       return res.status(400).json({ 
         success: false, 
         message: 'Missing required parameter: slug'
@@ -46,9 +47,14 @@ export const validatePassword = async (req, res) => {
       .single();
     
     if (subgalleryError || !subgallery) {
-      console.error('Subgallery not found:', subgalleryError);
+      console.error('Subgallery lookup failed:', {
+        slug,
+        error: subgalleryError ? subgalleryError.message : 'No subgallery found'
+      });
       return res.status(404).json({ success: false, message: 'Subgallery not found' });
     }
+    
+    console.log(`Found subgallery: ID=${subgallery.id}, Status=${subgallery.status}`);
 
     // Check if the subgallery is private
     if (subgallery.status !== 'Private') {
@@ -65,10 +71,15 @@ export const validatePassword = async (req, res) => {
     try {
       if (subgallery.password) {
         const passwordString = subgallery.password.toString();
+        console.log(`Raw password data: ${passwordString}`);
+        
         const pinsArray = passwordString.split(',').map(pin => {
           return pin.replace(/["']+/g, '').trim();
         });
         validPins = pinsArray.filter(pin => pin.length > 0);
+        console.log(`Parsed valid pins: ${JSON.stringify(validPins)}`);
+      } else {
+        console.warn(`Subgallery ${subgallery.id} has no password set but is marked as private`);
       }
     } catch (e) {
       console.error('Error parsing password data:', e);
@@ -92,36 +103,44 @@ export const validatePassword = async (req, res) => {
     });
     
     if (passwordMatches) {
-      console.log('Password validated successfully');
+      console.log('Password validated successfully for subgallery ID:', subgallery.id);
       
-      // Create a JWT token with subgallery info
-      const token = jwt.sign(
-        { 
-          subgalleryId: subgallery.id,
-          gallerySlug: subgallery.gallery.slug,
-          subgallerySlug: subgallery.slug,
-          authenticated: true
-        }, 
-        JWT_SECRET,
-        { expiresIn: '24h' }
-      );
-      
-      // Create redirect URL
-      const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
-      
-      // Set the JWT token as a cookie
-      res.cookie('gallery_auth_token', token, { 
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        httpOnly: true,
-        sameSite: 'strict'
-      });
-      
-      return res.json({ 
-        success: true, 
-        redirectUrl
-      });
+      try {
+        // Create a JWT token with subgallery info
+        const token = jwt.sign(
+          { 
+            subgalleryId: subgallery.id,
+            gallerySlug: subgallery.gallery.slug,
+            subgallerySlug: subgallery.slug,
+            authenticated: true,
+            timestamp: new Date().toISOString()
+          }, 
+          JWT_SECRET,
+          { expiresIn: '24h' }
+        );
+        
+        // Create redirect URL
+        const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
+        
+        // Set the JWT token as a cookie
+        res.cookie('gallery_auth_token', token, { 
+          maxAge: 24 * 60 * 60 * 1000, // 24 hours
+          httpOnly: true,
+          sameSite: 'strict'
+        });
+        
+        console.log(`Authentication successful, redirecting to: ${redirectUrl}`);
+        
+        return res.json({ 
+          success: true, 
+          redirectUrl
+        });
+      } catch (jwtError) {
+        console.error('JWT signing error:', jwtError);
+        return res.status(500).json({ success: false, message: 'Server error creating authentication token' });
+      }
     } else {
-      console.log('Invalid password provided');
+      console.log('Invalid password provided for subgallery:', subgallery.id);
       return res.status(401).json({ success: false, message: 'Invalid password' });
     }
   } catch (error) {

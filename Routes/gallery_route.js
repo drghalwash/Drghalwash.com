@@ -9,8 +9,9 @@ const router = express.Router();
 // Apply cookie-parser middleware
 router.use(cookieParser());
 
-// Add URL-encoded form data parser
+// Add body parsers for different content types
 router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
 
 // Route for password validation
 router.post('/validate-password', validatePassword);

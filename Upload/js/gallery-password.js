@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       try {
-        // Create a simpler request data object
+        // Create request data object with slug and password
         const requestData = {
           slug: slug,
           password: password
