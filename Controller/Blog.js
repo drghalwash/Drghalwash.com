@@ -147,6 +147,20 @@ export const index = async (req, res) => {
         
         console.log(`[BlogController] Fetched ${galleries.length} galleries, ${zones.length} zones, ${blogs.length} blogs, ${categories.length} categories`);
         
+        // Organize data hierarchically similar to Questions_And_Answer
+        const organizedZones = zones.map(zone => ({
+            ...zone,
+            categories: categories
+                .filter(category => category.zone_id === zone.id)
+                .map(category => ({
+                    ...category,
+                    blogs: blogs.filter(blog => blog.category_id === category.id)
+                }))
+        }));
+        
+        console.log('[BlogController] Organized zones hierarchically:', 
+            organizedZones.length > 0 ? 'Success' : 'Empty structure');
+        
         // Group blogs by zones with validation and fallbacks
         const groupedBlogs = {};
         
@@ -213,6 +227,9 @@ export const index = async (req, res) => {
             }
         };
         
+        // Add zones data to window object for client-side access
+        const clientSideZones = JSON.stringify(organizedZones);
+        
         console.log('[BlogController] Rendering blog page');
         res.render('Pages/Blog', { 
             galleries, 
@@ -221,6 +238,8 @@ export const index = async (req, res) => {
             pageTitle: 'Blog',
             searchEnabled: true,
             isEmpty: blogs.length === 0,
+            zones: organizedZones,
+            zonesJson: clientSideZones,
             helpers: hbsHelpers
         });
     } catch (error) {
