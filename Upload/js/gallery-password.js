@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const password = passwordInput.value.trim();
+      console.log('Submitted password (trimmed):', password);
+      
       if (!password) {
         displayError('Please enter a password');
         return;

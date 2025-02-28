@@ -46,17 +46,21 @@ export const validatePassword = async (req, res) => {
     let validPins = [];
     try {
       if (subgallery.password) {
-        // Handle nested quotes in the password field from CSV
+        // Convert password value to string
         const passwordString = subgallery.password.toString();
+        console.log('Raw password from database:', passwordString);
         
-        // Split by commas and remove all quotes and trim whitespace
+        // Split by commas and properly clean each PIN
         const pinsArray = passwordString.split(',').map(pin => {
-          // Replace all quotes and trim spaces
-          return pin.replace(/"/g, '').trim();
+          // Remove all quotes and trim whitespace
+          return pin.replace(/["']+/g, '').trim();
         });
+        
+        console.log('Parsed PIN array:', pinsArray);
         
         // Filter out empty strings
         validPins = pinsArray.filter(pin => pin.length > 0);
+        console.log('Valid PINs:', validPins);
         console.log('Valid pins after parsing:', validPins);
       }
     } catch (e) {
@@ -64,6 +68,8 @@ export const validatePassword = async (req, res) => {
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
+    console.log('Checking if provided password:', password, 'matches any valid PINs');
+    
     // Check if the provided password matches any of the pins
     if (validPins.includes(password)) {
       console.log('Password validated successfully');
