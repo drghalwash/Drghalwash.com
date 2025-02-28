@@ -19,8 +19,17 @@ export const validatePassword = async (req, res) => {
       params: req.params
     });
     
-    // Extract slug from request body
-    const { slug, password } = req.body;
+    // Extract slug and password from request
+    let slug, password;
+    
+    // Check if the request is JSON or form data
+    if (req.is('application/json')) {
+      ({ slug, password } = req.body);
+    } else {
+      // For form-urlencoded
+      slug = req.body.slug;
+      password = req.body.password;
+    }
     
     if (!slug) {
       console.error('Missing required parameter: slug');
