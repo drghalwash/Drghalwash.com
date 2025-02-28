@@ -40,21 +40,38 @@ export const validatePassword = async (req, res) => {
     }
 
     console.log('Subgallery password:', subgallery.password);
+    console.log('Submitted password:', password);
+    console.log('Subgallery ID:', subgalleryId);
 
-    // Parse the password string which contains multiple pins as a JSON array
+    // Parse the password string which contains multiple pins
     let validPins = [];
     try {
-      // The password field contains JSON string with pins in quotes
-      // Some pins may be in the format "050255" (with quotes)
-      const passwordString = subgallery.password.replace(/^"|"$/g, '');
-      const pinsArray = passwordString.split(',').map(pin => {
-        // Clean up each pin (remove quotes and trim spaces)
-        return pin.replace(/^"|"$/g, '').trim();
-      });
-      validPins = pinsArray;
-      console.log('Valid pins:', validPins);
+      if (subgallery.password) {
+        // Handle different possible formats of the password field
+        if (typeof subgallery.password === 'string') {
+          // Remove outer quotes if they exist
+          let passwordStr = subgallery.password.trim();
+          
+          // Check if it's a JSON-like string with multiple pins
+          if (passwordStr.includes('"') || passwordStr.includes(',')) {
+            // Handle the comma-separated format with quotes
+            const pinsArray = passwordStr.split(',').map(pin => {
+              // Remove all quotes and trim spaces
+              return pin.replace(/"/g, '').trim();
+            });
+            validPins = pinsArray.filter(pin => pin.length > 0);
+          } else {
+            // It's a single password
+            validPins = [passwordStr];
+          }
+        } else {
+          // If it's already an array or other type
+          validPins = [String(subgallery.password)];
+        }
+        console.log('Valid pins processed:', validPins);
+      }
     } catch (e) {
-      console.error('Error parsing password JSON:', e);
+      console.error('Error parsing password data:', e);
       return res.status(500).json({ success: false, message: 'Server error parsing password data' });
     }
 
