@@ -6,7 +6,7 @@ const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.su
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Validate the password against the Passwords table in Supabase
+// Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
     const { subgalleryId, password } = req.body;
@@ -18,11 +18,12 @@ export const validatePassword = async (req, res) => {
     // Get the subgallery to check if it's private and password protected
     const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
-      .select('*, password:password_id(password)')
+      .select('*, gallery:gallery_id(slug)')
       .eq('id', subgalleryId)
       .single();
     
     if (subgalleryError || !subgallery) {
+      console.error('Subgallery not found:', subgalleryError);
       return res.status(404).json({ success: false, message: 'Subgallery not found' });
     }
 
@@ -31,22 +32,25 @@ export const validatePassword = async (req, res) => {
       return res.status(400).json({ success: false, message: 'This subgallery is not private' });
     }
 
-    // If the subgallery is private but doesn't have a password_id
-    if (!subgallery.password_id) {
+    // If the subgallery is private but doesn't have a password
+    if (!subgallery.password) {
       return res.status(400).json({ success: false, message: 'This private subgallery has no associated password' });
     }
 
-    // Check if the provided password matches
-    if (subgallery.password && subgallery.password.password === password) {
-      // Find the gallery slug
-      const { data: gallery } = await supabase
-        .from('gallery')
-        .select('slug')
-        .eq('id', subgallery.gallery_id)
-        .single();
-      
+    // Parse the password string which contains multiple pins as a JSON array
+    let validPins = [];
+    try {
+      // The password field contains JSON string with pins in quotes
+      validPins = JSON.parse(subgallery.password);
+    } catch (e) {
+      console.error('Error parsing password JSON:', e);
+      return res.status(500).json({ success: false, message: 'Server error parsing password data' });
+    }
+
+    // Check if the provided password matches any of the pins
+    if (validPins.includes(password)) {
       // Create a URL for redirection
-      const redirectUrl = `/galleries/${gallery.slug}/${subgallery.slug}`;
+      const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
       
       // Set a cookie to remember the authenticated state
       // This cookie will be specific to the subgallery
@@ -93,7 +97,7 @@ export const checkAccess = async (req, res, next) => {
     // Get the subgallery details
     const { data: subgallery } = await supabase
       .from('subgallery')
-      .select('id, password_id, status')
+      .select('id, password, status')
       .eq('gallery_id', gallery.id)
       .eq('slug', subSlug)
       .single();

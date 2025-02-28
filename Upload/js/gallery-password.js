@@ -1,17 +1,51 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the password form element
-  const passwordForm = document.getElementById('passwordForm');
 
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("Gallery password script loaded");
+  
+  // Find all gallery links that have private galleries
+  document.querySelectorAll('.gallery-link').forEach(link => {
+    const privateDiv = link.querySelector('.custom-div-private');
+    
+    if (privateDiv) {
+      console.log('Found private gallery:', link.getAttribute('data-id'));
+      
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const galleryId = this.getAttribute('data-id');
+        if (galleryId) {
+          document.getElementById('imageId').value = galleryId;
+          const modal = document.getElementById('passwordModal');
+          if (modal) {
+            const passwordModal = new bootstrap.Modal(modal);
+            passwordModal.show();
+            console.log('Showing password modal for gallery ID:', galleryId);
+          } else {
+            console.error('Password modal not found in the DOM');
+          }
+        } else {
+          console.error('Missing data-id attribute on gallery link');
+        }
+      });
+    }
+  });
+
+  // Handle form submission for password validation
+  const passwordForm = document.getElementById('passwordForm');
   if (passwordForm) {
     passwordForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-
-      // Get the form data
+      console.log('Password form submitted');
+      
       const subgalleryId = document.getElementById('imageId').value;
       const password = document.querySelector('input[name="password"]').value;
+      
+      if (!subgalleryId || !password) {
+        alert('Please enter a password');
+        return;
+      }
 
       try {
-        // Send the password to the server for validation
         const response = await fetch('/galleries/validate-password', {
           method: 'POST',
           headers: {
@@ -23,42 +57,28 @@ document.addEventListener('DOMContentLoaded', function() {
           })
         });
 
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Server error:', response.status, errorText);
+          alert('Invalid password or server error. Please try again.');
+          return;
+        }
+        
         const data = await response.json();
-
+        
         if (data.success) {
-          // If successful, redirect to the subgallery page
+          console.log('Password valid, redirecting to:', data.redirectUrl);
           window.location.href = data.redirectUrl;
         } else {
-          // If failed, show an error message
-          alert('Invalid password. Please try again or contact Dr. Khaled for access.');
+          console.error('Invalid password:', data.message);
+          alert(data.message || 'Invalid password. Please try again.');
         }
       } catch (error) {
         console.error('Error validating password:', error);
-        alert('An error occurred. Please try again later.');
+        alert('An error occurred while validating the password. Please try again later.');
       }
     });
+  } else {
+    console.error('Password form not found in the DOM');
   }
-
-  // Handle click events on gallery links to check if they're private
-  document.querySelectorAll('.gallery-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Check if this is a private gallery by looking at parent container
-      const galleryItem = this.querySelector('.custom-div-private');
-
-      if (galleryItem) {
-        // Prevent the default navigation
-        e.preventDefault();
-
-        // Set the subgallery ID in the modal
-        if (this.dataset.id) {
-          document.getElementById('imageId').value = this.dataset.id;
-
-          // Show the password modal
-          const passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
-          passwordModal.show();
-        }
-      }
-      // If not private, the link will work normally
-    });
-  });
 });
