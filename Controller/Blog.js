@@ -130,7 +130,7 @@ const fetchGalleries = async () => {
 export const index = async (req, res) => {
     try {
         console.log('[BlogController] Fetching data for blog page');
-        
+
         // Fetch all required data in parallel for better performance
         const [galleryResponse, zonesResponse, blogsResponse, categoriesResponse] = await Promise.all([
             supabase.from('gallery').select('*'),
@@ -138,24 +138,29 @@ export const index = async (req, res) => {
             supabase.from('blogs').select('*'),
             supabase.from('categories').select('*')
         ]);
-        
+
         // Check for errors in responses and provide empty arrays as fallbacks
         const galleries = galleryResponse.error ? (console.error(`Gallery fetch error: ${galleryResponse.error.message}`), []) : galleryResponse.data || [];
         const zones = zonesResponse.error ? (console.error(`Zones fetch error: ${zonesResponse.error.message}`), []) : zonesResponse.data || [];
         const blogs = blogsResponse.error ? (console.error(`Blogs fetch error: ${blogsResponse.error.message}`), []) : blogsResponse.data || [];
         const categories = categoriesResponse.error ? (console.error(`Categories fetch error: ${categoriesResponse.error.message}`), []) : categoriesResponse.data || [];
-        
+
         console.log(`[BlogController] Fetched ${galleries.length} galleries, ${zones.length} zones, ${blogs.length} blogs, ${categories.length} categories`);
-        
+
         // Group blogs by zones with validation and fallbacks
         const groupedBlogs = {};
-        
+        const zoneDataForNav = [];
+
         // If we have zones but no blogs, create placeholder categories
         if (zones.length > 0 && blogs.length === 0) {
             console.log('[BlogController] No blogs found, adding placeholder categories');
             zones.forEach(zone => {
                 if (zone && zone.name) {
                     groupedBlogs[zone.name] = []; // Empty array to maintain structure
+                    zoneDataForNav.push({
+                        id: zone.id,
+                        name: zone.name
+                    });
                 }
             });
         } 
@@ -168,12 +173,25 @@ export const index = async (req, res) => {
         else {
             zones.forEach(zone => {
                 if (!zone || !zone.name || !zone.id) return;
-                
+
                 const blogsInZone = blogs.filter(blog => blog && blog.zone_id === zone.id);
-                groupedBlogs[zone.name] = blogsInZone;
+                // Add zone data for navigation
+                zoneDataForNav.push({
+                    id: zone.id,
+                    name: zone.name
+                });
+                // Add blogs to grouped object
+                if (blogsInZone.length > 0) {
+                    // Add zone_id to each blog for category filtering
+                    const enrichedBlogs = blogsInZone.map(blog => ({
+                        ...blog,
+                        zone_name: zone.name
+                    }));
+                    groupedBlogs[zone.name] = enrichedBlogs;
+                }
                 console.log(`[BlogController] Zone "${zone.name}" has ${blogsInZone.length} blogs`);
             });
-            
+
             // Add any blogs that don't have a zone to 'Uncategorized'
             const uncategorizedBlogs = blogs.filter(blog => blog && (!blog.zone_id || !zones.some(zone => zone.id === blog.zone_id)));
             if (uncategorizedBlogs.length > 0) {
@@ -181,13 +199,13 @@ export const index = async (req, res) => {
                 console.log(`[BlogController] "Uncategorized" has ${uncategorizedBlogs.length} blogs`);
             }
         }
-        
+
         // Ensure at least one category exists for layout purposes
         if (Object.keys(groupedBlogs).length === 0) {
             console.log('[BlogController] No categories found, adding default category');
             groupedBlogs['Latest Articles'] = [];
         }
-        
+
         // Get latest blogs for the sidebar with validation to avoid date parsing errors
         let latestBlogs = [];
         if (blogs.length > 0) {
@@ -203,24 +221,26 @@ export const index = async (req, res) => {
                 })
                 .slice(0, 5);
         }
-        
+
         console.log(`[BlogController] Prepared ${latestBlogs.length} latest blogs for sidebar`);
-        
+
         // Add helper for JSON stringification in handlebars
         const hbsHelpers = {
             json: function(context) {
                 return JSON.stringify(context);
             }
         };
-        
+
         console.log('[BlogController] Rendering blog page');
+        const isEmpty = Object.keys(groupedBlogs).length === 0;
         res.render('Pages/Blog', { 
             galleries, 
             groupedBlogs,
             latestBlogs,
+            zoneData: zoneDataForNav,
+            isEmpty: isEmpty,
             pageTitle: 'Blog',
             searchEnabled: true,
-            isEmpty: blogs.length === 0,
             helpers: hbsHelpers
         });
     } catch (error) {

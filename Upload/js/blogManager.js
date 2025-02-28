@@ -1,225 +1,324 @@
 
 /**
- * Blog Manager - Comprehensive solution for blog display
- * Handles categories, search, navigation, and empty state handling
+ * Blog Manager - Manages blog navigation similar to categoryManager.js
+ * Creates zone-based navigation with collapsible sections and proper styling
  */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Blog Manager: Initializing...');
     
-    // Get key DOM elements with safe checks
+    // Main DOM elements
     const leftColumn = document.querySelector('.custom-left-column');
     const rightColumn = document.querySelector('.custom-right-column');
-    const categoriesContainer = document.querySelector('.custom-categories-container ul');
     const searchInput = document.getElementById('blogSearch');
     const searchCountElement = document.getElementById('blogSearchCount');
     
-    // Apply default styles to maintain layout even with empty data
+    // Apply additional styles to ensure consistency with categoryManager.js
     applyStyles();
     
-    // Handle potential empty state
-    handleEmptyState();
+    // Setup categories navigation with exact categoryManager.js styling
+    setupCategoriesNav();
     
-    // Initialize other features only if required elements exist
-    if (categoriesContainer) {
-        setupCategoryLinks();
-    }
-    
+    // Setup search functionality if input exists
     if (searchInput) {
         setupSearch();
     }
     
+    // Setup scroll buttons
     setupScrollButtons();
     
     /**
-     * Creates proper fallback content for empty states
+     * Generate category navigation similar to categoryManager.js
      */
-    function handleEmptyState() {
-        // Check if we have any blog cards
-        const blogCards = document.querySelectorAll('.custom-card');
-        const categoryHeaders = document.querySelectorAll('.custom-left-column h4');
+    function setupCategoriesNav() {
+        if (!rightColumn) return;
         
-        // If no blog cards, add a placeholder message
-        if (blogCards.length === 0 && leftColumn) {
-            console.log('Blog Manager: No blog cards found, showing placeholder');
-            
-            // Create placeholder content
-            const placeholder = document.createElement('div');
-            placeholder.className = 'empty-state-placeholder';
-            placeholder.innerHTML = `
-                <div class="empty-state-icon">📝</div>
-                <h3>No Blog Posts Yet</h3>
-                <p>Check back soon for informative articles and updates.</p>
-            `;
-            
-            // Add placeholder to left column
-            leftColumn.appendChild(placeholder);
-            
-            // Add at least one placeholder category to maintain layout
-            if (categoriesContainer && categoriesContainer.children.length === 0) {
-                const placeholderCategory = document.createElement('li');
-                placeholderCategory.innerHTML = '<a href="#coming-soon">Coming Soon</a>';
-                categoriesContainer.appendChild(placeholderCategory);
-                
-                // Add placeholder header in left column
-                if (categoryHeaders.length === 0) {
-                    const placeholderHeader = document.createElement('h4');
-                    placeholderHeader.id = 'coming-soon';
-                    placeholderHeader.textContent = 'Coming Soon';
-                    
-                    // Insert before the placeholder if it exists
-                    if (leftColumn.querySelector('.empty-state-placeholder')) {
-                        leftColumn.insertBefore(placeholderHeader, leftColumn.querySelector('.empty-state-placeholder'));
-                    } else {
-                        leftColumn.appendChild(placeholderHeader);
-                    }
-                }
-            }
-            
-            // Create placeholder latest posts
-            const latestPostsContainer = document.querySelector('.custom-latest-posts-container ul');
-            if (latestPostsContainer && latestPostsContainer.children.length === 0) {
-                for (let i = 0; i < 3; i++) {
-                    const placeholderPost = document.createElement('li');
-                    placeholderPost.innerHTML = `<a href="#">Upcoming Blog Post ${i+1}</a>`;
-                    latestPostsContainer.appendChild(placeholderPost);
-                }
-            }
-        }
-    }
-    
-    /**
-     * Sets up category navigation
-     */
-    function setupCategoryLinks() {
+        // Get the categories container
+        const categoriesContainer = rightColumn.querySelector('.custom-categories-container');
         if (!categoriesContainer) return;
         
-        const categoryLinks = categoriesContainer.querySelectorAll('a');
-        if (categoryLinks.length === 0) return;
+        // Clean existing content
+        categoriesContainer.innerHTML = '<h4>Categories</h4>';
         
-        // Add click listeners safely
-        categoryLinks.forEach(link => {
-            if (link && link.getAttribute('href')) {
-                link.addEventListener('click', handleCategoryClick);
-            }
-        });
+        // Create a new container for zones with proper styling
+        const zonesContainer = document.createElement('div');
+        zonesContainer.className = 'zones-container';
+        zonesContainer.style.cssText = `
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        `;
         
-        // Style active category based on URL hash or default to first
-        styleActiveCategory();
+        // Get all zone headers from the left column
+        const zoneHeaders = leftColumn ? leftColumn.querySelectorAll('h4') : [];
         
-        console.log('Blog Manager: Category links initialized');
-    }
-    
-    /**
-     * Handles category link clicks with smooth scrolling
-     */
-    function handleCategoryClick(e) {
-        e.preventDefault();
-        
-        const targetId = e.target.getAttribute('href');
-        if (!targetId) return;
-        
-        // Remove 'active' class from all links
-        categoriesContainer.querySelectorAll('a').forEach(link => {
-            link.classList.remove('active');
-        });
-        
-        // Add 'active' class to clicked link
-        e.target.classList.add('active');
-        
-        // Find the target element and scroll to it
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 100, // Add some offset for header
-                behavior: 'smooth'
+        if (zoneHeaders.length === 0) {
+            // Create placeholder for empty state
+            createEmptyStateZones(zonesContainer);
+        } else {
+            // Create zone sections with collapsible behavior
+            zoneHeaders.forEach(header => {
+                const zoneName = header.textContent;
+                const zoneId = header.id;
+                
+                // Create zone group
+                const zoneGroup = document.createElement('div');
+                zoneGroup.className = 'zone-group';
+                zoneGroup.style.cssText = `
+                    background-color: #ffffff;
+                    break-inside: avoid;
+                    margin-bottom: 2px;
+                    border-radius: 5px;
+                    overflow: hidden;
+                `;
+                
+                // Create zone header (styled like categoryManager.js)
+                const zoneHeader = document.createElement('h3');
+                zoneHeader.textContent = zoneName + ' ▶';
+                zoneHeader.dataset.targetId = zoneId;
+                zoneHeader.style.cssText = `
+                    background-color: #394464;
+                    color: white;
+                    font-family: Verdana, sans-serif;
+                    font-weight: bold;
+                    font-size: 1.1em;
+                    padding: 8px 15px;
+                    margin: 0;
+                    border-radius: 0 20px 20px 0;
+                    cursor: pointer;
+                    user-select: none;
+                    transition: background-color 0.3s ease;
+                `;
+                
+                // Create categories container for this zone
+                const zoneCategories = document.createElement('div');
+                zoneCategories.className = 'zone-categories';
+                zoneCategories.style.cssText = `
+                    padding: 10px;
+                    display: none;
+                `;
+                
+                // Get blogs for this zone
+                const blogs = leftColumn ? leftColumn.querySelectorAll(`.custom-card[data-category="${zoneId}"]`) : [];
+                
+                if (blogs.length === 0) {
+                    // Create placeholder item
+                    const placeholderItem = document.createElement('div');
+                    placeholderItem.className = 'category-item';
+                    placeholderItem.style.cssText = `
+                        padding: 8px 15px;
+                        margin: 5px 0;
+                        border-radius: 4px;
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    const placeholderLink = document.createElement('a');
+                    placeholderLink.href = '#';
+                    placeholderLink.textContent = 'Coming Soon';
+                    placeholderLink.style.cssText = `
+                        color: #495057;
+                        text-decoration: none;
+                        font-family: Verdana, sans-serif;
+                        font-size: 0.95em;
+                        display: block;
+                        transition: all 0.3s ease;
+                        opacity: 0.7;
+                    `;
+                    
+                    placeholderItem.appendChild(placeholderLink);
+                    zoneCategories.appendChild(placeholderItem);
+                } else {
+                    // Create link to the zone
+                    const zoneItem = document.createElement('div');
+                    zoneItem.className = 'category-item';
+                    zoneItem.style.cssText = `
+                        padding: 8px 15px;
+                        margin: 5px 0;
+                        border-radius: 4px;
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    const zoneLink = document.createElement('a');
+                    zoneLink.href = `#${zoneId}`;
+                    
+                    // Split text into first two words and remaining words for styling
+                    const words = zoneName.split(' ');
+                    const firstTwoWords = words.slice(0, 2).join(' ');
+                    const remainingWords = words.slice(2).join(' ');
+                    
+                    zoneLink.innerHTML = `<span class="extra-bold">${firstTwoWords}</span> ${remainingWords}`;
+                    zoneLink.style.cssText = `
+                        color: #495057;
+                        text-decoration: none;
+                        font-family: Verdana, sans-serif;
+                        font-size: 0.95em;
+                        display: block;
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    zoneLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        scrollToElement(zoneId);
+                    });
+                    
+                    // Add hover effects
+                    zoneItem.addEventListener('mouseenter', () => {
+                        zoneLink.style.color = '#007bff';
+                        zoneItem.style.backgroundColor = '#f8f9fa';
+                    });
+                    
+                    zoneItem.addEventListener('mouseleave', () => {
+                        zoneLink.style.color = '#495057';
+                        zoneItem.style.backgroundColor = 'transparent';
+                    });
+                    
+                    zoneItem.appendChild(zoneLink);
+                    zoneCategories.appendChild(zoneItem);
+                }
+                
+                // Toggle zone categories visibility on header click
+                zoneHeader.addEventListener('click', function() {
+                    const isCollapsed = zoneCategories.style.display === 'none';
+                    zoneCategories.style.display = isCollapsed ? 'block' : 'none';
+                    zoneHeader.textContent = zoneName + (isCollapsed ? ' ▼' : ' ▶');
+                    zoneHeader.style.backgroundColor = isCollapsed ? '#1B54FF' : '#394464';
+                });
+                
+                zoneGroup.appendChild(zoneHeader);
+                zoneGroup.appendChild(zoneCategories);
+                zonesContainer.appendChild(zoneGroup);
             });
         }
+        
+        categoriesContainer.appendChild(zonesContainer);
     }
     
     /**
-     * Styles active category based on URL hash or defaults to first category
+     * Create placeholder zones when no data is available
      */
-    function styleActiveCategory() {
-        if (!categoriesContainer) return;
+    function createEmptyStateZones(container) {
+        // Create placeholder zones
+        const placeholderZones = ['Blog Categories', 'More Coming Soon'];
         
-        // Get current hash or default to first category
-        const currentHash = window.location.hash || 
-            (categoriesContainer.querySelector('a') ? 
-            categoriesContainer.querySelector('a').getAttribute('href') : null);
-        
-        if (currentHash) {
-            // Find matching category link
-            const activeLink = categoriesContainer.querySelector(`a[href="${currentHash}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
+        placeholderZones.forEach(zoneName => {
+            const zoneGroup = document.createElement('div');
+            zoneGroup.className = 'zone-group';
+            zoneGroup.style.cssText = `
+                background-color: #ffffff;
+                break-inside: avoid;
+                margin-bottom: 2px;
+                border-radius: 5px;
+                overflow: hidden;
+            `;
+            
+            const zoneHeader = document.createElement('h3');
+            zoneHeader.textContent = zoneName + ' ▶';
+            zoneHeader.style.cssText = `
+                background-color: #394464;
+                color: white;
+                font-family: Verdana, sans-serif;
+                font-weight: bold;
+                font-size: 1.1em;
+                padding: 8px 15px;
+                margin: 0;
+                border-radius: 0 20px 20px 0;
+                cursor: pointer;
+                user-select: none;
+                transition: background-color 0.3s ease;
+                opacity: 0.8;
+            `;
+            
+            const zoneCategories = document.createElement('div');
+            zoneCategories.className = 'zone-categories';
+            zoneCategories.style.cssText = `
+                padding: 10px;
+                display: none;
+            `;
+            
+            // Create placeholder items
+            const placeholderItems = ['Coming Soon', 'Stay Tuned', 'New Content'];
+            
+            placeholderItems.forEach(itemText => {
+                const placeholderItem = document.createElement('div');
+                placeholderItem.className = 'category-item';
+                placeholderItem.style.cssText = `
+                    padding: 8px 15px;
+                    margin: 5px 0;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                `;
                 
-                // Scroll to section after a short delay
-                setTimeout(() => {
-                    const targetElement = document.querySelector(currentHash);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 100);
-            }
-        }
+                const placeholderLink = document.createElement('a');
+                placeholderLink.href = '#';
+                placeholderLink.textContent = itemText;
+                placeholderLink.style.cssText = `
+                    color: #495057;
+                    text-decoration: none;
+                    font-family: Verdana, sans-serif;
+                    font-size: 0.95em;
+                    display: block;
+                    transition: all 0.3s ease;
+                    opacity: 0.7;
+                `;
+                
+                placeholderItem.appendChild(placeholderLink);
+                zoneCategories.appendChild(placeholderItem);
+            });
+            
+            // Toggle zone categories visibility on header click
+            zoneHeader.addEventListener('click', function() {
+                const isCollapsed = zoneCategories.style.display === 'none';
+                zoneCategories.style.display = isCollapsed ? 'block' : 'none';
+                zoneHeader.textContent = zoneName + (isCollapsed ? ' ▼' : ' ▶');
+                zoneHeader.style.backgroundColor = isCollapsed ? '#1B54FF' : '#394464';
+            });
+            
+            zoneGroup.appendChild(zoneHeader);
+            zoneGroup.appendChild(zoneCategories);
+            container.appendChild(zoneGroup);
+        });
     }
     
     /**
-     * Sets up blog search functionality
+     * Setup blog search functionality
      */
     function setupSearch() {
-        if (!searchInput) return;
-        
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase().trim();
             let visibleCount = 0;
+            
+            // Get all blog cards
             const blogCards = document.querySelectorAll('.custom-card');
-            const categoryHeaders = document.querySelectorAll('.custom-left-column h4');
             
-            // Create a mapping of category headers to their visible cards
-            const categoryVisibility = {};
-            categoryHeaders.forEach(header => {
-                categoryVisibility[header.id] = false;
-            });
-            
-            // Check all blog cards for matches
             blogCards.forEach(card => {
-                if (!card) return;
-                
-                const titleElement = card.querySelector('h3');
-                const descElement = card.querySelector('p');
-                
-                if (!titleElement || !descElement) return;
-                
-                const title = titleElement.textContent.toLowerCase();
-                const description = descElement.textContent.toLowerCase();
-                const categoryId = card.getAttribute('data-category') || 
-                                  (card.closest('div[id]') ? card.closest('div[id]').id : null);
+                const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                const description = card.querySelector('p')?.textContent.toLowerCase() || '';
                 
                 if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                     visibleCount++;
-                    
-                    // Mark the category as having visible cards
-                    if (categoryId && categoryVisibility.hasOwnProperty(categoryId)) {
-                        categoryVisibility[categoryId] = true;
-                    }
                 } else {
                     card.style.display = 'none';
                 }
             });
             
             // Update category headers visibility
+            const categoryHeaders = document.querySelectorAll('.custom-left-column h4');
             categoryHeaders.forEach(header => {
-                if (header.id && categoryVisibility.hasOwnProperty(header.id)) {
-                    header.style.display = categoryVisibility[header.id] ? 'block' : 'none';
-                }
+                const categoryId = header.id;
+                const categoryCards = document.querySelectorAll(`.custom-card[data-category="${categoryId}"]`);
+                
+                let visibleCategoryCards = 0;
+                categoryCards.forEach(card => {
+                    if (card.style.display !== 'none') {
+                        visibleCategoryCards++;
+                    }
+                });
+                
+                header.style.display = visibleCategoryCards > 0 ? 'block' : 'none';
             });
             
-            // Update search count
+            // Update search count display
             if (searchCountElement) {
                 if (searchTerm) {
                     searchCountElement.textContent = `Found ${visibleCount} result${visibleCount !== 1 ? 's' : ''}`;
@@ -229,12 +328,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-        
-        console.log('Blog Manager: Search functionality initialized');
     }
     
     /**
-     * Handle scroll events for the back-to-top button
+     * Setup scroll to top/bottom buttons
      */
     function setupScrollButtons() {
         const scrollTopBtn = document.getElementById('scrollTopBtn');
@@ -260,87 +357,127 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
-     * Adds CSS styling for all blog components
-     * Including empty state styling
+     * Scroll to an element by ID with offset
+     */
+    function scrollToElement(elementId) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const offsetTop = element.getBoundingClientRect().top + window.pageYOffset;
+        
+        window.scrollTo({
+            top: offsetTop - 100, // Offset for fixed header
+            behavior: 'smooth'
+        });
+    }
+    
+    /**
+     * Apply additional styles to match categoryManager.js
      */
     function applyStyles() {
+        // Create style element
         const style = document.createElement('style');
         style.textContent = `
-            /* Category links styling */
-            .custom-categories-container ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
+            /* Categories container styling */
+            .custom-categories-container {
+                border: 2px solid #ffa500 !important;
+                border-radius: 8px !important;
+                padding: 15px !important;
             }
             
-            .custom-categories-container ul a {
-                text-decoration: none;
-                color: #555;
-                display: block;
-                padding: 8px 10px;
-                margin: 2px 0;
-                border-radius: 4px;
-                transition: all 0.3s ease;
+            .custom-categories-container h4 {
+                color: #394464 !important;
+                font-family: Verdana, sans-serif !important;
+                font-size: 1.2em !important;
+                margin-bottom: 10px !important;
+                padding-bottom: 10px !important;
+                border-bottom: 2px solid #f0f0f0 !important;
             }
             
-            .custom-categories-container ul a:hover,
-            .custom-categories-container ul a.active {
-                color: #007bff;
+            /* Zone styling */
+            .zone-group {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            
+            .zone-group h3:hover {
+                background-color: #1B54FF !important;
+            }
+            
+            /* Category item styling */
+            .category-item {
+                border-left: 3px solid transparent;
+            }
+            
+            .category-item:hover {
+                border-left: 3px solid #1B54FF;
+                padding-left: 17px !important;
+            }
+            
+            /* Extra bold class for first words */
+            .extra-bold {
                 font-weight: bold;
-                background-color: rgba(0, 123, 255, 0.05);
-                border-left: 3px solid #007bff;
-                padding-left: 15px;
+                color: #333;
+            }
+            
+            /* Ensure minimum height for empty containers */
+            .custom-left-column, 
+            .custom-right-column {
+                min-height: 400px;
             }
             
             /* Latest posts styling */
+            .custom-latest-posts-container {
+                border: 2px solid #ffa500 !important;
+                border-radius: 8px !important;
+                padding: 15px !important;
+            }
+            
+            .custom-latest-posts-container h4 {
+                color: #394464 !important;
+                font-family: Verdana, sans-serif !important;
+                font-size: 1.2em !important;
+                margin-bottom: 10px !important;
+                padding-bottom: 10px !important;
+                border-bottom: 2px solid #f0f0f0 !important;
+            }
+            
             .custom-latest-posts-container ul {
                 list-style: none;
                 padding: 0;
                 margin: 0;
             }
             
-            .custom-latest-posts-container ul a {
+            .custom-latest-posts-container li {
+                margin-bottom: 5px;
+                padding-left: 15px;
+                position: relative;
+            }
+            
+            .custom-latest-posts-container li:before {
+                content: "▶";
+                color: #394464;
+                font-size: 10px;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .custom-latest-posts-container a {
+                color: #495057;
                 text-decoration: none;
-                color: #555;
+                font-family: Verdana, sans-serif;
+                font-size: 0.95em;
                 display: block;
-                padding: 8px 0;
-                transition: color 0.3s ease;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                border-bottom: 1px solid #f0f0f0;
+                transition: all 0.3s ease;
+                padding: 5px 0;
             }
             
-            .custom-latest-posts-container ul a:hover {
-                color: #007bff;
+            .custom-latest-posts-container a:hover {
+                color: #1B54FF;
             }
             
-            /* Search results count */
-            .search-results-count {
-                background-color: #f8f9fa;
-                padding: 8px 15px;
-                border-radius: 4px;
-                margin-top: 10px;
-                display: none;
-                font-size: 14px;
-                color: #555;
-            }
-            
-            /* Blog card animations */
-            .custom-card {
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                margin-bottom: 30px;
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-            
-            .custom-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            }
-            
-            /* Empty state styling */
+            /* Empty state styling for categories */
             .empty-state-placeholder {
                 text-align: center;
                 padding: 40px 20px;
@@ -349,40 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 margin: 20px 0;
                 border: 1px dashed #dee2e6;
             }
-            
-            .empty-state-icon {
-                font-size: 50px;
-                margin-bottom: 20px;
-            }
-            
-            .empty-state-placeholder h3 {
-                color: #6c757d;
-                margin-bottom: 10px;
-            }
-            
-            .empty-state-placeholder p {
-                color: #adb5bd;
-            }
-            
-            /* Ensure containers have minimum height */
-            .custom-container {
-                min-height: 500px;
-            }
-            
-            .custom-left-column, 
-            .custom-right-column {
-                min-height: 400px;
-            }
-            
-            /* Maintain proper spacing with headers */
-            .custom-left-column h4 {
-                margin-top: 30px;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid #f0f0f0;
-            }
         `;
         document.head.appendChild(style);
-        console.log('Blog Manager: Styles applied');
     }
 });
