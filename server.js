@@ -1,10 +1,9 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import Handlebars from 'handlebars';
-import dotenv from 'dotenv';
-dotenv.config();
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser'; // Added cookie-parser
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import Home_route from "./Routes/Home_route.js";
 import Contact_route from "./Routes/Contact_route.js";
@@ -39,9 +38,9 @@ const __dirname = dirname(__filename);
 // Initialize Express app
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(express.json());
 app.use(cookieParser()); // Initialize cookie-parser
-
+app.use(methodOverride('_method'));
 
 // Handlebars Helpers
 Handlebars.registerHelper("hasQuestions", function (categories) {
