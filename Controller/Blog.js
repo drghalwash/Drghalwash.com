@@ -129,31 +129,52 @@ const fetchGalleries = async () => {
  */
 export const index = async (req, res) => {
     try {
+        console.log('[Blog] Starting to fetch data for blog page...');
+        
         // Fetch galleries for header
         const { data: galleries, error: galleryError } = await supabase.from('gallery').select('*');
-        if (galleryError) throw galleryError;
+        if (galleryError) {
+            console.error('[Blog] Gallery fetch error:', galleryError);
+            throw galleryError;
+        }
+        console.log('[Blog] Galleries fetched successfully:', galleries.length);
 
-        // Fetch zones (categories) for blogs
+        // Fetch zones for blogs
         const { data: zones, error: zoneError } = await supabase.from('blog_zones').select('*');
-        if (zoneError) throw zoneError;
+        if (zoneError) {
+            console.error('[Blog] Zone fetch error:', zoneError);
+            throw zoneError;
+        }
+        console.log('[Blog] Zones fetched successfully:', zones.length, zones);
 
         // Fetch all blogs
         const { data: blogs, error: blogError } = await supabase.from('blogs').select('*');
-        if (blogError) throw blogError;
+        if (blogError) {
+            console.error('[Blog] Blog fetch error:', blogError);
+            throw blogError;
+        }
+        console.log('[Blog] Blogs fetched successfully:', blogs ? blogs.length : 0);
 
         // Group blogs by zones
         const groupedBlogs = zones.map(zone => {
+            const zoneBlogs = blogs ? blogs.filter(blog => blog.zone_id === zone.id) : [];
+            console.log(`[Blog] Zone ${zone.name} has ${zoneBlogs.length} blogs`);
+            
             return {
                 id: zone.id,
                 name: zone.name,
-                blogs: blogs.filter(blog => blog.zone_id === zone.id)
+                blogs: zoneBlogs
             };
         });
+        console.log('[Blog] Grouped blogs by zones successfully');
 
-        // Get latest blogs for the sidebar
-        const latestBlogs = [...blogs]
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(0, 5);
+        // Get latest blogs for the sidebar (up to 5)
+        const latestBlogs = blogs ? 
+            [...blogs]
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 5) : 
+            [];
+        console.log('[Blog] Latest blogs processed:', latestBlogs.length);
 
         // Add helper for JSON stringification in handlebars
         const hbsHelpers = {
@@ -162,6 +183,7 @@ export const index = async (req, res) => {
             }
         };
 
+        console.log('[Blog] Rendering blog page with data');
         res.render('Pages/Blog', { 
             galleries, 
             groupedBlogs,
@@ -170,7 +192,7 @@ export const index = async (req, res) => {
             helpers: hbsHelpers
         });
     } catch (error) {
-        console.error(error);
+        console.error('[Blog] Error in index controller:', error);
         res.status(500).render("Pages/404", { error });
     }
 };
