@@ -13,12 +13,8 @@ router.use(cookieParser());
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-// Handle multipart form data
-import multer from 'multer';
-const upload = multer();
-
-// Route for password validation - handle various content types
-router.post('/validate-password', upload.none(), validatePassword);
+// Route for password validation
+router.post('/validate-password', validatePassword);
 
 // Route for gallery/subgallery pages with access check
 router.get('/:slug?/:subSlug?', checkAccess, index);

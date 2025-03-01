@@ -15,22 +15,12 @@ export const validatePassword = async (req, res) => {
   try {
     console.log("Password validation request received:", {
       body: req.body,
-      contentType: req.headers['content-type']
+      query: req.query,
+      params: req.params
     });
     
-    // Extract slug and password from request body
-    let slug, password;
-    
-    // Handle different content types
-    if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
-      slug = req.body.slug;
-      password = req.body.password;
-    } else {
-      slug = req.body.slug;
-      password = req.body.password;
-    }
-    
-    console.log(`Processing password validation for slug: ${slug}`);
+    // Extract slug from request body
+    const { slug, password } = req.body;
     
     if (!slug) {
       console.error('Missing required parameter: slug');
