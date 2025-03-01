@@ -73,14 +73,83 @@ export const index = async (req, res) => {
 
     // Fetch galleries and hierarchical zone data concurrently
     const [galleries, organizedZones] = await Promise.all([
-      getGalleries(), // CHANGED: Photo_Gallary to gallery
+      getGalleries(),
       getZonesWithDetails(),
     ]);
 
-    // Render the Handlebars template with fetched data
+    // Process data based on search term if provided
+    let filteredZones = organizedZones;
+    let hasResults = true;
+    let searchTerm = req.query.search || '';
+    searchTerm = searchTerm.trim().toLowerCase();
+    
+    if (searchTerm) {
+      console.log(`[Search] Processing search for term: "${searchTerm}"`);
+      
+      // Filter questions that match the search term
+      filteredZones = organizedZones.map(zone => {
+        return {
+          ...zone,
+          categories: zone.categories.map(category => {
+            return {
+              ...category,
+              questions: category.questions.filter(question => {
+                // Search in question text, title, and answer content
+                const questionText = (question.question_text || question.question || '').toLowerCase();
+                const answer = (question.answer || '').toLowerCase();
+                
+                return (
+                  questionText.includes(searchTerm) ||
+                  answer.includes(searchTerm)
+                );
+              }),
+              // Mark if this category has any matching questions
+              hasMatches: category.questions.some(question => {
+                const questionText = (question.question_text || question.question || '').toLowerCase();
+                const answer = (question.answer || '').toLowerCase();
+                
+                return (
+                  questionText.includes(searchTerm) ||
+                  answer.includes(searchTerm)
+                );
+              })
+            };
+          }).filter(category => category.questions.length > 0), // Remove empty categories
+          // Mark if this zone has any matching questions
+          hasAnyMatches: zone.categories.some(category => 
+            category.questions.some(question => {
+              const questionText = (question.question_text || question.question || '').toLowerCase();
+              const answer = (question.answer || '').toLowerCase();
+              
+              return (
+                questionText.includes(searchTerm) ||
+                answer.includes(searchTerm)
+              );
+            })
+          )
+        };
+      }).filter(zone => zone.categories.length > 0); // Remove empty zones
+      
+      // Calculate total results for UI display
+      const totalResults = filteredZones.reduce((total, zone) => 
+        total + zone.categories.reduce((catTotal, category) => 
+          catTotal + category.questions.length, 0), 0);
+          
+      hasResults = totalResults > 0;
+      
+      console.log(`[Search] Found ${totalResults} results for "${searchTerm}"`);
+    }
+
+    // Render the Handlebars template with fetched and processed data
     res.render('Pages/Questions_And_Answer', {
-      galleries, // CHANGED: Photo_Gallary to galleries
-      zones: organizedZones,
+      galleries,
+      zones: filteredZones,
+      searchTerm,
+      hasSearch: !!searchTerm,
+      hasResults,
+      searchCount: filteredZones.reduce((total, zone) => 
+        total + zone.categories.reduce((catTotal, category) => 
+          catTotal + category.questions.length, 0), 0)
     });
 
     console.log('[Controller] Data successfully sent to the template.');

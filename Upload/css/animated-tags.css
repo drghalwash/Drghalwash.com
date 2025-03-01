@@ -1,0 +1,114 @@
+
+.tag-container {
+  overflow: hidden;
+  position: relative;
+  height: 120px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.tag-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+}
+
+.tag-row {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll 80s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.tag-row:hover {
+  animation-play-state: paused;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.2rem;
+  margin: 0.375rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  transform-origin: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 20px;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.tag::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tag:hover, .tag.active {
+  transform: translateY(-10px) scale(1.1);
+  background-color: rgba(10, 200, 255, 0.2);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tag:hover::after, .tag.active::after {
+  opacity: 0.3;
+}
+
+.tag.center {
+  transform: translateY(-8px) scale(1.05);
+  background-color: rgba(10, 200, 255, 0.3);
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  .tag-container {
+    height: 100px;
+  }
+  
+  .tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,124 @@
+
+.qa-search-container {
+  position: relative;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.qa-search-input {
+  width: 100%;
+  padding: 1.2rem 4rem 1.2rem 1.5rem;
+  border-radius: 50px;
+  border: 2px solid rgba(10, 200, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.qa-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.qa-search-input:focus {
+  outline: none;
+  border-color: rgba(10, 200, 255, 0.8);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(10, 200, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.qa-search-button {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(45deg, #0cf, #08f);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(10, 200, 255, 0.3);
+}
+
+.qa-search-button:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 20px rgba(10, 200, 255, 0.4);
+}
+
+.qa-search-icon {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.qa-results-container {
+  margin-top: 2rem;
+}
+
+.qa-result-summary {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.qa-result-highlight {
+  color: #0cf;
+  font-weight: 600;
+}
+
+.qa-empty-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.qa-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.qa-empty-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.qa-suggestions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.qa-suggestion {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qa-suggestion:hover {
+  background: rgba(10, 200, 255, 0.2);
+  transform: translateY(-2px);
+}

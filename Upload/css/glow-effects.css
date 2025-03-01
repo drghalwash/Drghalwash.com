@@ -1,0 +1,62 @@
+
+.glow-text {
+  position: relative;
+  font-size: clamp(2rem, 1rem + 3vw, 5rem);
+  margin: 0;
+  background: linear-gradient(90deg, #0df 0%, #0cf 50%, #0af 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 0.5rem rgba(10, 200, 255, 0.5));
+}
+
+.glow-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  filter: blur(8px);
+  mix-blend-mode: plus-lighter;
+}
+
+.hero-headline {
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  animation: pulse 3s infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(10, 200, 255, 0.4); }
+  100% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+.gradient-border {
+  --border-width: 3px;
+  position: relative;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.gradient-border::after {
+  position: absolute;
+  content: "";
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  z-index: -1;
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+  background: linear-gradient(60deg, #0df, #0cf, #0af, #08f);
+  background-size: 300% 300%;
+  border-radius: calc(8px + var(--border-width));
+  animation: moveGradient 4s alternate infinite;
+}
+
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

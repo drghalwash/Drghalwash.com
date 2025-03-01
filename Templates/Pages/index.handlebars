@@ -141,7 +141,7 @@
 	</style>
 	<title>The best is here </title>
 </head>
-	
+
 <script>
 (function() {
     const tags = {{{tags}}} || ['What is plastic surgery?', 'How to choose a surgeon?'];
@@ -151,7 +151,7 @@
         if (!tagRow) return;
 
         const fragment = document.createDocumentFragment();
-        
+
         // Create tags three times for smooth infinite scroll
         for (let i = 0; i < 3; i++) {
             tags.forEach(tag => {
@@ -161,7 +161,7 @@
                 fragment.appendChild(div);
             });
         }
-        
+
         tagRow.appendChild(fragment);
 
         let isAnimationPaused = false;
@@ -202,10 +202,10 @@
         function checkCenter() {
             const container = document.querySelector('.tag-container');
             if (!container) return;
-            
+
             const containerRect = container.getBoundingClientRect();
             const centerX = containerRect.left + containerRect.width / 2;
-            
+
             document.querySelectorAll('.tag').forEach(tag => {
                 const rect = tag.getBoundingClientRect();
                 const tagCenter = rect.left + rect.width / 2;
@@ -343,12 +343,28 @@
 
 
 
-	<div class="video-container">
-		<iframe width="100%" height="auto" src="{{Home.video_link}}" title="YouTube video player" frameborder="0"
-			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-			referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-		</iframe>
-	</div>
+	<div class="hero-section">
+  <div class="hero-background">
+    <!-- Video background with overlay -->
+    <div class="video-container">
+      <iframe width="100%" height="auto" src="{{Home.video_link}}" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <h1 class="hero-title glow-text" data-text="{{Home.title}}">{{Home.title}}</h1>
+    <p class="hero-subtitle">Trust Your Beauty to Board-Certified Plastic Surgeons</p>
+
+    <div class="hero-buttons">
+      <a href="/galleries" class="hero-button primary">View Our Work</a>
+      <a href="/Contact" class="hero-button secondary">Schedule Consultation</a>
+    </div>
+  </div>
+</div>
 
 
 
@@ -510,7 +526,7 @@
 			</div>
 	</div>
 
-	
+
 
 	<!-- infinite ends , start  -->
 	<div class="home-slider">
@@ -526,7 +542,7 @@
 			<div class="right1">{{Home.description3}}</div>
 		</div>
 
-		
+
 
 		<div class="carousel1">
 			<div class="carousel-inner1">
@@ -935,7 +951,7 @@
     function handleSearchRedirect() {
         window.location.href = '/Questions_And_Answer';
     }
-    
+
     // Add click handler for the search icon as well
     document.addEventListener('DOMContentLoaded', function() {
         const searchIcon = document.querySelector('.search-icon');
@@ -973,103 +989,6 @@
 
 		// Initial check to reset menu on page load
 		resetMenu();
-	</script>
-
-
-
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			const mediaEntries = document.querySelectorAll(".media-entry");
-			const showMoreBtn = document.getElementById("show-more-btn");
-			const initialVisibleCount = 8; // Number of entries to show initially
-			let currentlyVisibleCount = initialVisibleCount;
-
-			// Hide all entries beyond the initial visible count
-			mediaEntries.forEach((entry, index) => {
-				if (index >= initialVisibleCount) {
-					entry.style.display = "none";
-				}
-			});
-
-			// Show more entries when the button is clicked
-			showMoreBtn.addEventListener("click", function () {
-				const hiddenEntries = Array.from(mediaEntries).filter(
-					(entry) => entry.style.display === "none"
-				);
-
-				hiddenEntries.slice(0, initialVisibleCount).forEach((entry) => {
-					entry.style.display = "";
-				});
-
-				currentlyVisibleCount += initialVisibleCount;
-
-				// Hide the button if all entries are visible
-				if (currentlyVisibleCount >= mediaEntries.length) {
-					showMoreBtn.style.display = "none";
-				}
-			});
-		});
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-	<script>
-		// Select the navbar, logo, links, and toggle spans
-		const navbar = document.querySelector(".unique-navbar");
-		const logo = document.querySelector(".distinct-logo img");
-		const links = document.querySelectorAll(".uncommon-link");
-		const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
-
-		// Paths for the original and scrolled state logos
-		const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
-		const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
-
-		// Function to handle scroll behavior
-		function handleScroll() {
-			if (window.scrollY > 0) {
-				// Add scrolled class when the user scrolls down
-				navbar.classList.add("scrolled");
-
-				// Update logo for scrolled state
-				logo.src = scrolledLogoSrc;
-
-				// Update link colors
-				links.forEach((link) => {
-					link.style.color = "#4c4b4b"; // Dark links for scrolled state
-				});
-
-				// Update toggle span colors
-				toggleSpans.forEach((span) => {
-					span.style.backgroundColor = "#4c4b4b"; // Black for scrolled state
-				});
-			} else {
-				// Remove scrolled class when at the top of the page
-				navbar.classList.remove("scrolled");
-
-				// Ensure the logo is white when at the top
-				logo.src = originalLogoSrc;
-
-				// Reset link colors to inherit the default color
-				links.forEach((link) => {
-					link.style.color = "white";
-				});
-
-				// Reset toggle span colors
-				toggleSpans.forEach((span) => {
-					span.style.backgroundColor = "white"; // White for default state
-				});
-			}
-		}
-
-		// Ensure the logo is white when the page loads
-		window.addEventListener("DOMContentLoaded", () => {
-			if (window.scrollY === 0) {
-				logo.src = originalLogoSrc;
-			}
-		});
-
-		// Attach the scroll event listener
-		window.addEventListener("scroll", handleScroll);
 	</script>
 
 
