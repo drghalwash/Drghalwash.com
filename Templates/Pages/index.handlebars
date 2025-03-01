@@ -142,7 +142,103 @@
 	<title>The best is here </title>
 </head>
 	
-<link rel="stylesheet" href="css/animated-tags.css">
+<script>
+(function() {
+    const tags = {{{tags}}} || ['What is plastic surgery?', 'How to choose a surgeon?'];
+
+    function createTags() {
+        const tagRow = document.querySelector('.tag-row');
+        if (!tagRow) return;
+
+        const fragment = document.createDocumentFragment();
+        
+        // Create tags three times for smooth infinite scroll
+        for (let i = 0; i < 3; i++) {
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'tag';
+                div.textContent = tag;
+                fragment.appendChild(div);
+            });
+        }
+        
+        tagRow.appendChild(fragment);
+
+        let isAnimationPaused = false;
+        let activeTag = null;
+
+        tagRow.addEventListener('click', (e) => {
+            const tag = e.target.closest('.tag');
+            if (!tag) return;
+
+            if (activeTag === tag) {
+                tag.classList.remove('active');
+                activeTag = null;
+                tagRow.style.animationPlayState = 'running';
+                isAnimationPaused = false;
+                return;
+            }
+
+            if (activeTag) {
+                activeTag.classList.remove('active');
+            }
+
+            tag.classList.add('active');
+            activeTag = tag;
+            tagRow.style.animationPlayState = 'paused';
+            isAnimationPaused = true;
+
+            setTimeout(() => {
+                if (isAnimationPaused) {
+                    tag.classList.remove('active');
+                    tagRow.style.animationPlayState = 'running';
+                    isAnimationPaused = false;
+                    activeTag = null;
+                }
+            }, 2000);
+        });
+
+        // Check for center position
+        function checkCenter() {
+            const container = document.querySelector('.tag-container');
+            if (!container) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+            
+            document.querySelectorAll('.tag').forEach(tag => {
+                const rect = tag.getBoundingClientRect();
+                const tagCenter = rect.left + rect.width / 2;
+                if (Math.abs(tagCenter - centerX) < 50) {
+                    tag.classList.add('center');
+                } else {
+                    tag.classList.remove('center');
+                }
+            });
+        }
+
+        setInterval(checkCenter, 100);
+
+        tagRow.addEventListener('mouseenter', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'paused';
+            }
+        });
+
+        tagRow.addEventListener('mouseleave', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'running';
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', createTags);
+    } else {
+        createTags();
+    }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <body>
@@ -409,8 +505,12 @@
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 	<div class="tag-container">
-		<div class="tag-row"></div>
+			<div class="tag-list">
+					<div class="tag-row"></div>
+			</div>
 	</div>
+
+	
 
 	<!-- infinite ends , start  -->
 	<div class="home-slider">
@@ -831,7 +931,6 @@
 	<script src="js/flatpickr.js"></script>
 	<script src="js/glightbox.min.js"></script>
 	<script src="js/custom.js"></script>
-	<script src="js/hero-animations.js"></script>
 	<script>
     function handleSearchRedirect() {
         window.location.href = '/Questions_And_Answer';
