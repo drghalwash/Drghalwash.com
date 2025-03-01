@@ -8,6 +8,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // JWT secret key - should be moved to environment variables in production
 const JWT_SECRET = process.env.JWT_SECRET || 'kemowyaya';
+// Token expiration - 7 days by default
+const TOKEN_EXPIRY = '7d';
 
 /**
  * Validates password against the subgallery database
@@ -27,18 +29,26 @@ export const validatePassword = async (req, res) => {
     
     console.log(`Validating password for subgallery slug: ${slug}`);
     
-    // Query subgallery by slug
+    // Query subgallery by slug with gallery info
     const { data: subgallery, error } = await supabase
       .from('subgallery')
-      .select('*, gallery:gallery_id(slug)')
+      .select('*, gallery:gallery_id(slug, id)')
       .eq('slug', slug)
       .single();
     
-    if (error || !subgallery) {
-      console.error('Subgallery lookup failed:', error?.message || 'No subgallery found');
+    if (error) {
+      console.error('Supabase query error:', error.message);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Database error when querying subgallery'
+      });
+    }
+    
+    if (!subgallery) {
+      console.error('No subgallery found with slug:', slug);
       return res.status(404).json({ 
         success: false, 
-        message: 'Subgallery not found' 
+        message: 'Subgallery not found'
       });
     }
     
@@ -46,52 +56,77 @@ export const validatePassword = async (req, res) => {
     if (subgallery.status !== 'Private') {
       return res.status(400).json({ 
         success: false, 
-        message: 'This subgallery is not password protected' 
+        message: 'This subgallery is not password protected'
       });
     }
     
     // Verify the subgallery has a password configured
     if (!subgallery.password) {
+      console.error('Subgallery has no password configured:', slug);
       return res.status(400).json({ 
         success: false, 
-        message: 'This subgallery has no password configured' 
+        message: 'This subgallery has no password configured'
       });
     }
     
     // Parse password string from database into array of valid pins
-    const validPins = subgallery.password
-      .toString()
-      .split(',')
-      .map(pin => pin.trim().replace(/["']+/g, ''))
-      .filter(pin => pin.length > 0);
+    let validPins = [];
+    try {
+      if (typeof subgallery.password === 'string') {
+        // Handle comma-separated string
+        validPins = subgallery.password
+          .split(',')
+          .map(pin => pin.trim().replace(/["']+/g, ''))
+          .filter(pin => pin.length > 0);
+      } else if (Array.isArray(subgallery.password)) {
+        // Handle array format
+        validPins = subgallery.password
+          .map(pin => pin.toString().trim())
+          .filter(pin => pin.length > 0);
+      }
+    } catch (err) {
+      console.error('Error parsing password data:', err);
+      validPins = [subgallery.password.toString()];
+    }
+    
+    if (validPins.length === 0) {
+      console.error('No valid passwords found after parsing:', subgallery.password);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid password configuration'
+      });
+    }
     
     // Check if submitted password matches any valid pin
-    const passwordMatches = validPins.some(pin => pin === password.trim());
+    const submittedPassword = password.trim();
+    const passwordMatches = validPins.some(pin => pin === submittedPassword);
     
     if (!passwordMatches) {
       console.log('Invalid password attempt for:', slug);
       return res.status(401).json({ 
         success: false, 
-        message: 'Invalid password' 
+        message: 'Invalid password'
       });
     }
     
     // Password is valid - create JWT token with necessary claims
     const token = jwt.sign({ 
       subgalleryId: subgallery.id,
+      galleryId: subgallery.gallery.id,
       gallerySlug: subgallery.gallery.slug,
       subgallerySlug: subgallery.slug,
       authenticated: true,
-      timestamp: new Date().toISOString()
+      timestamp: Date.now()
     }, JWT_SECRET, { 
-      expiresIn: '24h' // Token valid for 24 hours
+      expiresIn: TOKEN_EXPIRY
     });
     
     // Set JWT in an HTTP-only cookie
     res.cookie('gallery_auth_token', token, { 
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
       httpOnly: true,
-      sameSite: 'strict'
+      sameSite: 'lax',
+      path: '/' // Make cookie available site-wide
     });
     
     console.log('Password validation successful for:', slug);
@@ -106,7 +141,7 @@ export const validatePassword = async (req, res) => {
     console.error('Error validating password:', error);
     return res.status(500).json({ 
       success: false, 
-      message: 'Server error processing your request' 
+      message: 'Server error processing your request'
     });
   }
 };
@@ -124,7 +159,7 @@ export const checkAccess = async (req, res, next) => {
     }
     
     // Check for JWT token in cookies
-    const token = req.cookies.gallery_auth_token;
+    const token = req.cookies?.gallery_auth_token;
     
     if (token) {
       try {
@@ -137,6 +172,8 @@ export const checkAccess = async (req, res, next) => {
             decoded.authenticated === true) {
           console.log('Auth token valid for:', subSlug);
           return next();
+        } else {
+          console.log('Token exists but not for this gallery/subgallery');
         }
       } catch (err) {
         // Token invalid or expired - continue to check subgallery status
@@ -145,37 +182,74 @@ export const checkAccess = async (req, res, next) => {
     }
     
     // If no valid token, check if the subgallery is private
-    // First get the gallery ID
-    const { data: gallery } = await supabase
-      .from('gallery')
-      .select('id')
-      .eq('slug', slug)
-      .single();
-    
-    if (!gallery) {
-      // Gallery not found, let the controller handle the 404
-      return next();
+    try {
+      // First get the gallery ID
+      const { data: gallery, error: galleryError } = await supabase
+        .from('gallery')
+        .select('id')
+        .eq('slug', slug)
+        .single();
+      
+      if (galleryError || !gallery) {
+        console.error('Gallery not found:', slug, galleryError?.message || 'No data returned');
+        // Gallery not found, let the controller handle the 404
+        return next();
+      }
+      
+      // Now check if the subgallery is private
+      const { data: subgallery, error: subgalleryError } = await supabase
+        .from('subgallery')
+        .select('status, name')
+        .eq('gallery_id', gallery.id)
+        .eq('slug', subSlug)
+        .single();
+      
+      if (subgalleryError) {
+        console.error('Error querying subgallery:', subgalleryError.message);
+        return next();
+      }
+      
+      // If doesn't exist, allow request to flow to controller for 404 handling
+      if (!subgallery) {
+        console.log('Subgallery not found in middleware:', subSlug);
+        return next();
+      }
+      
+      // If not private, allow access
+      if (subgallery.status !== 'Private') {
+        console.log('Subgallery is public, granting access:', subgallery.name);
+        return next();
+      }
+      
+      // If we reach here, the subgallery is private and user doesn't have a valid token
+      console.log('Access denied to private subgallery:', subgallery.name);
+      
+      // Store subgallery info in session for the password modal
+      if (!req.session) {
+        req.session = {};
+      }
+      req.session.pendingPrivateAccess = {
+        gallerySlug: slug,
+        subgallerySlug: subSlug,
+        timestamp: Date.now()
+      };
+      
+      // Redirect to gallery page with a query parameter indicating need for auth
+      return res.redirect(`/galleries/${slug}?auth_required=${subSlug}`);
+    } catch (error) {
+      console.error('Unexpected error in access control middleware:', error);
+      return next(); // Allow access in case of error for graceful degradation
     }
-    
-    // Now check if the subgallery is private
-    const { data: subgallery } = await supabase
-      .from('subgallery')
-      .select('status')
-      .eq('gallery_id', gallery.id)
-      .eq('slug', subSlug)
-      .single();
-    
-    // If not private or doesn't exist, allow access
-    if (!subgallery || subgallery.status !== 'Private') {
-      return next();
-    }
-    
-    // If we reach here, the subgallery is private and user doesn't have a valid token
-    console.log('Access denied to private subgallery:', subSlug);
-    return res.redirect(`/galleries/${slug}`);
-    
   } catch (error) {
     console.error('Error checking access:', error);
     return next(); // Allow access in case of error for graceful degradation
   }
+};
+
+/**
+ * Clears authentication tokens
+ */
+export const clearAuth = (req, res) => {
+  res.clearCookie('gallery_auth_token', { path: '/' });
+  res.redirect('/galleries');
 };

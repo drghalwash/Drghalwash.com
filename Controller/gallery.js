@@ -247,22 +247,46 @@ const arrangeSubgalleriesInRows = (subgalleries) => {
 
 const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   try {
-    const { data: gallery } = await supabase
+    // Check inputs
+    if (!gallerySlug || !subgallerySlug) {
+      console.error('[Error] Missing required parameters:', { gallerySlug, subgallerySlug });
+      return null;
+    }
+
+    // First get the gallery ID
+    const { data: gallery, error: galleryError } = await supabase
       .from('gallery')
-      .select('id')
+      .select('id, name')
       .eq('slug', gallerySlug)
       .single();
 
-    if (!gallery) return null;
+    if (galleryError) {
+      console.error('[Error] Gallery lookup failed:', galleryError.message);
+      return null;
+    }
 
-    const { data: subgallery, error } = await supabase
+    if (!gallery) {
+      console.error('[Error] Gallery not found with slug:', gallerySlug);
+      return null;
+    }
+
+    // Then get the subgallery
+    const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
       .select('*')
       .eq('gallery_id', gallery.id)
       .eq('slug', subgallerySlug)
       .single();
 
-    if (error || !subgallery) return null;
+    if (subgalleryError) {
+      console.error('[Error] Subgallery query failed:', subgalleryError.message);
+      return null;
+    }
+
+    if (!subgallery) {
+      console.error('[Error] Subgallery not found:', { galleryId: gallery.id, subgallerySlug });
+      return null;
+    }
     
     // Handle icon path
     const iconPath = getImagePath(subgallery.icon, 'icon');
@@ -276,6 +300,8 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     } else if (Array.isArray(rawImages)) {
       processedImages = rawImages.map(img => getImagePath(img));
     }
+    
+    console.log(`[Success] Found subgallery "${subgallery.name}" in gallery "${gallery.name}"`);
     
     return {
       ...subgallery,
