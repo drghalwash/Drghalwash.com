@@ -1,93 +1,146 @@
+
 import { createClient } from '@supabase/supabase-js';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
-dotenv.config();
-
-const supabaseUrl = 'https://drwismqxtzpptshsqphb.supabase.co';
+const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// JWT secret - in production, this should be stored in environment variables
-const JWT_SECRET = process.env.JWT_SECRET || 'pK4FJ7hX2sL9qR5tU3vW1yZ8aB6cD0eE';
-const TOKEN_EXPIRY = '24h'; // Token expires after 24 hours
-
-// Validate password for a specific gallery
+// Validate the password against the password column in subgallery table
 export const validatePassword = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const { password } = req.body;
-
-    if (!password) {
-      return res.status(400).json({ success: false, message: 'Password is required' });
+    // Extract data from request body with detailed logging
+    const reqBody = req.body;
+    console.log("Full request body received:", reqBody);
+    
+    // Handle null/undefined cases robustly - support both field names
+    const rawSubgalleryId = reqBody.subgalleryId || reqBody.imageId;
+    const password = reqBody.password;
+    
+    console.log("Raw subgalleryId/imageId:", rawSubgalleryId, "type:", typeof rawSubgalleryId);
+    console.log("password:", password, "type:", typeof password);
+    
+    // Enhanced validation for subgalleryId
+    if (rawSubgalleryId === undefined || rawSubgalleryId === null || rawSubgalleryId === '') {
+      console.error('Missing subgalleryId in request:', req.body);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required parameter: subgalleryId',
+        debug: { receivedBody: req.body }
+      });
     }
+    
+    // Always convert to string for consistency
+    const subgalleryIdStr = String(rawSubgalleryId).trim();
+    console.log(`Using normalized subgalleryId: '${subgalleryIdStr}'`);
+    
+    // Password validation
+    if (password === undefined || password === '') {
+      return res.status(400).json({ success: false, message: 'Missing required parameter: password' });
+    }
+    
+    console.log(`Validating password for subgallery ID (converted): ${subgalleryIdStr}`);
 
-    // Get the gallery by slug
-    const { data: gallery, error: galleryError } = await supabase
+    // Get the subgallery to check if it's private and password protected
+    const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
-      .select('id, password, gallery_id')
-      .eq('slug', slug)
+      .select('*, gallery:gallery_id(slug)')
+      .eq('id', subgalleryIdStr)
       .single();
-
-    if (galleryError || !gallery) {
-      console.error('Gallery not found:', galleryError);
-      return res.status(404).json({ success: false, message: 'Gallery not found' });
+    
+    if (subgalleryError || !subgallery) {
+      console.error('Subgallery not found:', subgalleryError);
+      return res.status(404).json({ success: false, message: 'Subgallery not found' });
     }
 
-    // Check if gallery has a password
-    if (!gallery.password) {
-      return res.status(200).json({ success: true, message: 'Gallery does not require a password' });
+    // Check if the subgallery is private
+    if (subgallery.status !== 'Private') {
+      return res.status(400).json({ success: false, message: 'This subgallery is not private' });
     }
 
-    // Split password string and check if provided password matches any of the valid passwords
-    const validPasswords = gallery.password.split(',').map(pw => pw.trim());
+    // If the subgallery is private but doesn't have a password
+    if (!subgallery.password) {
+      return res.status(400).json({ success: false, message: 'This private subgallery has no associated password' });
+    }
 
-    if (validPasswords.includes(password)) {
-      // Create a JWT token
-      const token = jwt.sign(
-        { 
-          galleryId: gallery.id,
-          parentGalleryId: gallery.gallery_id,
-          slug 
-        },
-        JWT_SECRET,
-        { expiresIn: TOKEN_EXPIRY }
-      );
+    console.log('Subgallery password:', subgallery.password);
+    console.log('Submitted password:', password);
 
-      return res.status(200).json({ 
+    // Parse the password string which contains multiple pins
+    let validPins = [];
+    try {
+      if (subgallery.password) {
+        // Convert password value to string
+        const passwordString = subgallery.password.toString();
+        console.log('Raw password from database:', passwordString);
+        
+        // Split by commas and properly clean each PIN
+        const pinsArray = passwordString.split(',').map(pin => {
+          // Remove all quotes and trim whitespace
+          return pin.replace(/["']+/g, '').trim();
+        });
+        
+        console.log('Parsed PIN array:', pinsArray);
+        
+        // Filter out empty strings
+        validPins = pinsArray.filter(pin => pin.length > 0);
+        console.log('Valid PINs:', validPins);
+      }
+    } catch (e) {
+      console.error('Error parsing password data:', e);
+      return res.status(500).json({ success: false, message: 'Server error parsing password data' });
+    }
+
+    // Ensure password is trimmed and handle any numeric vs string issues
+    const trimmedPassword = password.toString().trim();
+    console.log('Checking if provided password:', trimmedPassword, 'matches any valid PINs');
+    
+    // Try different comparison methods to ensure matching works
+    const passwordMatches = validPins.some(pin => {
+      // Exact string comparison
+      if (pin === trimmedPassword) {
+        console.log('Exact string match found for PIN:', pin);
+        return true;
+      }
+      
+      // Try comparing as numbers if both are numeric
+      if (!isNaN(pin) && !isNaN(trimmedPassword)) {
+        const numericMatch = Number(pin) === Number(trimmedPassword);
+        if (numericMatch) {
+          console.log('Numeric match found for PIN:', pin);
+        }
+        return numericMatch;
+      }
+      
+      return false;
+    });
+    
+    // Check if the provided password matches any of the pins
+    if (passwordMatches) {
+      console.log('Password validated successfully');
+      
+      // Create a URL for redirection
+      const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
+      
+      // Set a cookie to remember the authenticated state
+      // This cookie will be specific to the subgallery
+      res.cookie(`auth_${subgallery.id}`, 'true', { 
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        httpOnly: true,
+        sameSite: 'strict'
+      });
+      
+      return res.json({ 
         success: true, 
-        message: 'Password is valid',
-        token
+        redirectUrl
       });
     } else {
-      return res.status(403).json({ success: false, message: 'Invalid password' });
+      console.log('Invalid password provided');
+      return res.status(401).json({ success: false, message: 'Invalid password' });
     }
   } catch (error) {
     console.error('Error validating password:', error);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
-  }
-};
-
-// Validate JWT token
-export const validateToken = async (req, res) => {
-  try {
-    const { token } = req.body;
-
-    if (!token) {
-      return res.status(400).json({ valid: false, message: 'Token is required' });
-    }
-
-    // Verify the token
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      return res.status(200).json({ valid: true, decoded });
-    } catch (jwtError) {
-      console.error('JWT verification failed:', jwtError);
-      return res.status(403).json({ valid: false, message: 'Token is invalid or expired' });
-    }
-  } catch (error) {
-    console.error('Error validating token:', error);
-    return res.status(500).json({ valid: false, message: 'Internal server error' });
+    return res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
@@ -97,23 +150,11 @@ export const checkAccess = async (req, res, next) => {
     const { slug, subSlug } = req.params;
     
     if (!subSlug) {
+      // If not accessing a subgallery, proceed
       return next();
     }
 
-    const token = req.body.token; // Assuming token is sent in the request body
-
-    if (token) {
-      try {
-        const { valid, decoded } = await validateToken({ body: { token } }, res); // use new function
-        if (valid) {
-          return next();
-        }
-      } catch (err) {
-        console.log('Token validation error:', err);
-      }
-    }
-
-    // Get the gallery ID from the slug (This part remains largely the same)
+    // Get the gallery ID from the slug
     const { data: gallery } = await supabase
       .from('gallery')
       .select('id')
@@ -124,20 +165,31 @@ export const checkAccess = async (req, res, next) => {
       return next();
     }
 
+    // Get the subgallery details
     const { data: subgallery } = await supabase
       .from('subgallery')
-      .select('id, status')
+      .select('id, status, password')
       .eq('gallery_id', gallery.id)
       .eq('slug', subSlug)
       .single();
     
     if (!subgallery || subgallery.status !== 'Private') {
+      // If subgallery doesn't exist or isn't private, proceed
       return next();
     }
 
-    return res.redirect(`/galleries/${slug}`);
+    // Check if user has the auth cookie for this specific subgallery
+    const authCookie = req.cookies[`auth_${subgallery.id}`];
+    
+    if (authCookie) {
+      // User has the authentication cookie, allow access
+      return next();
+    } else {
+      // User doesn't have the authentication cookie, redirect to gallery page
+      return res.redirect(`/galleries/${slug}`);
+    }
   } catch (error) {
     console.error('Error checking access:', error);
-    return next(); 
+    return next(); // Proceed in case of error
   }
 };
