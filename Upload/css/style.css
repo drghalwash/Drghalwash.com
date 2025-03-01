@@ -8592,14 +8592,14 @@ textarea {
       left: 0;
       width: 100%;
       z-index: 1000;
-      background-color: transparent; /* Default background */
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background: linear-gradient(to bottom, #ffffff 0%, #f7f7f8 100%); /* Seamless white to light gray gradient */
+      transition: all 0.3s ease;
   }
   
   .site-nav.scrolled {
-      background-color: white; /* Background when scrolling */
+      background: linear-gradient(to bottom, #ffffff 0%, #f1f1f3 100%); /* Slightly more pronounced gradient when scrolled */
       height: 100px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Lighter subtle shadow */
       margin-top: 0px !important;
   }
   
@@ -9830,17 +9830,17 @@ text-decoration: none; }
     border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 
 .site-footer {
-  background: #0E1A3C;
+  background: linear-gradient(to top, #ffffff 0%, #f7f7f8 100%); /* Seamless white to light gray gradient for footer */
   font-size: 15px;
-  color: white;
+  color: #333333; /* Darker text for better contrast on light background */
   padding: 70px 0; 
   width: 100%;}
  .site-footer ol,
     .site-footer ul{
-    color: white !important;
+    color: #444444 !important;
     }
   .site-footer a {
-     color: white !important;
+     color: #444444 !important;
     text-decoration: none;
     position: relative;
     display: inline-block; }
@@ -9853,7 +9853,7 @@ text-decoration: none; }
     z-index: 1; }
      .site-footer .widget h3, .site-footer .widget .h3 {
       font-size: 20px;
-      color: white;
+      color: #333333;
       margin-bottom: 15px;
       font-weight: bold; 
     }
@@ -9887,12 +9887,14 @@ text-decoration: none; }
         color: #fff; }
 
         .footer-headers{
-          color: white !important;
+          color: #333333 !important;
         }
         .Copyright{
           text-align: center;
     font-size: 16px; /* Default size */
-    padding: 10px;
+    padding: 15px 0;
+    background: linear-gradient(to bottom, #f7f7f8 0%, #f1f1f3 100%); /* Final gradient at bottom */
+    color: #444444;
         }
  /* Ensure Contact header stays left-aligned on mobile */
 @media (max-width: 768px) {
