@@ -1,258 +1,145 @@
-
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Gallery password script loaded');
-  
-  // Ensure modal exists in DOM
+  console.log('Gallery password script initialized');
+
+  // Create modal if it doesn't exist
   ensureModalExists();
-  
-  // Find all private gallery links
+
+  // Set up click handlers for private galleries
   setupPrivateGalleryLinks();
-  
-  // Initialize password form handler
-  initializeFormHandler();
 });
 
-// Make sure the password modal exists
+// Create password modal in DOM if it doesn't exist
 function ensureModalExists() {
   if (!document.getElementById('passwordModal')) {
-    console.log('Creating password modal in DOM');
     const modalHTML = `
       <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="passwordModalLabel">Enter Password</h5>
+              <h5 class="modal-title" id="passwordModalLabel">Password Protected Content</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form id="passwordForm">
                 <div class="mb-3">
-                  <label for="password" class="form-label">This content is password protected. Please enter the password to view:</label>
-                  <input type="password" class="form-control" name="password" required>
+                  <label for="password" class="form-label">This content is password protected. Please enter the password:</label>
+                  <input type="password" class="form-control" id="password" name="password" required autocomplete="off">
                   <input type="hidden" id="subgallerySlug" name="slug">
-                  <div id="passwordError" class="alert alert-danger mt-2" style="display: none;"></div>
+                  <div id="passwordFeedback" class="invalid-feedback mt-2"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
               </form>
             </div>
           </div>
         </div>
       </div>
     `;
-    
-    const modalContainer = document.createElement('div');
-    modalContainer.innerHTML = modalHTML;
-    document.body.appendChild(modalContainer.firstElementChild);
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Set up the form submit handler
+    const form = document.getElementById('passwordForm');
+    form.addEventListener('submit', handlePasswordSubmit);
   }
 }
 
-// Set up click handlers on all private gallery links
+// Set up click handlers for private gallery links
 function setupPrivateGalleryLinks() {
-  // Look for links with data-slug attribute
-  const galleryLinks = document.querySelectorAll('[data-slug]');
-  console.log(`Found ${galleryLinks.length} gallery links with data-slug attribute`);
-  
-  galleryLinks.forEach(function(link) {
+  // Find all elements with data-slug attribute (private galleries)
+  document.querySelectorAll('[data-slug]').forEach(link => {
     const slug = link.getAttribute('data-slug');
     if (slug) {
-      console.log('Found private gallery link with slug:', slug);
-      
-      // Remove any existing event listeners first
+      // Remove existing event listeners
       const newLink = link.cloneNode(true);
       link.parentNode.replaceChild(newLink, link);
-      
+
+      // Add click handler
       newLink.addEventListener('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
-        
-        const clickedSlug = this.getAttribute('data-slug');
-        console.log('Private gallery link clicked, slug:', clickedSlug);
-        
-        if (clickedSlug) {
-          showPasswordModal(clickedSlug);
-        } else {
-          console.error('Slug not found on clicked link');
-        }
-        
-        return false; // Prevent default and stop propagation
+        showPasswordModal(slug);
+        return false;
       });
     }
   });
 }
 
-// Initialize form submission handler
-function initializeFormHandler() {
-  const passwordForm = document.getElementById('passwordForm');
-  if (passwordForm) {
-    // Remove any existing event listeners first
-    const newForm = passwordForm.cloneNode(true);
-    passwordForm.parentNode.replaceChild(newForm, passwordForm);
-    
-    newForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleFormSubmit(e);
-      return false;
-    });
-    
-    console.log('Password form handler initialized');
-  } else {
-    console.warn('Password form not found, will retry');
-    setTimeout(initializeFormHandler, 500);
-  }
-}
-
-// Function to show the password modal
+// Show the password modal for a specific subgallery
 function showPasswordModal(slug) {
-  console.log('Showing password modal for slug:', slug);
-  
-  // Ensure modal exists before proceeding
-  ensureModalExists();
-  
-  // Get modal element
+  console.log('Opening password modal for:', slug);
+
+  // Set the slug in the hidden input
+  document.getElementById('subgallerySlug').value = slug;
+
+  // Clear previous password and errors
+  const passwordInput = document.getElementById('password');
+  passwordInput.value = '';
+  passwordInput.classList.remove('is-invalid');
+
+  // Show the modal using Bootstrap
   const modal = document.getElementById('passwordModal');
-  if (!modal) {
-    console.error('Password modal not found in DOM');
-    alert('Unable to show password form. Please refresh the page and try again.');
-    return;
-  }
-  
-  // Set the subgallery slug in the hidden field
-  const slugField = document.getElementById('subgallerySlug');
-  if (slugField) {
-    slugField.value = slug;
-    console.log('Set subgallery slug in form:', slug);
+  if (typeof bootstrap !== 'undefined') {
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
   } else {
-    console.error('Slug field not found in form');
-  }
-  
-  // Clear any previous error messages
-  const errorElement = document.getElementById('passwordError');
-  if (errorElement) {
-    errorElement.textContent = '';
-    errorElement.style.display = 'none';
-  }
-  
-  // Clear the password field
-  const passwordField = modal.querySelector('input[name="password"]');
-  if (passwordField) {
-    passwordField.value = '';
-  }
-  
-  // Show the modal using Bootstrap if available, or fallback
-  try {
-    if (typeof bootstrap !== 'undefined') {
-      console.log('Using Bootstrap to show modal');
-      const bootstrapModal = new bootstrap.Modal(modal);
-      bootstrapModal.show();
-    } else {
-      console.log('Bootstrap not available, using fallback');
-      modal.classList.add('show');
-      modal.style.display = 'block';
-      document.body.classList.add('modal-open');
-      
-      // Add backdrop
-      const backdrop = document.createElement('div');
-      backdrop.className = 'modal-backdrop fade show';
-      document.body.appendChild(backdrop);
-    }
-  } catch (error) {
-    console.error('Error showing modal:', error);
-    
-    // Last resort fallback
+    // Fallback for if Bootstrap JS isn't available
     modal.style.display = 'block';
     modal.classList.add('show');
+    document.body.classList.add('modal-open');
+
+    // Add backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show';
+    document.body.appendChild(backdrop);
   }
+
+  // Focus the password input
+  setTimeout(() => passwordInput.focus(), 300);
 }
 
-// Display error message in the form
-function displayError(message) {
-  const errorElement = document.getElementById('passwordError');
-  if (errorElement) {
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
-  } else {
-    console.error('Error element not found, message:', message);
-    alert('Error: ' + message);
-  }
-}
+// Handle password form submission
+async function handlePasswordSubmit(e) {
+  e.preventDefault();
 
-// Handle form submission
-async function handleFormSubmit(e) {
-  console.log('Password form submitted');
-  
-  // Get slug and password from form
-  const slugField = document.getElementById('subgallerySlug');
-  const passwordField = document.querySelector('#passwordModal input[name="password"]');
-  
-  if (!slugField || !passwordField) {
-    displayError('Form fields not found');
-    return;
-  }
-  
-  const slug = slugField.value.trim();
-  const password = passwordField.value.trim();
-  
-  if (!slug) {
-    displayError('Missing subgallery slug');
-    return;
-  }
-  
-  if (!password) {
-    displayError('Please enter a password');
-    return;
-  }
-  
-  console.log('Validating password for slug:', slug);
-  
-  // Get submit button for updating UI state
-  const submitButton = document.querySelector('#passwordForm button[type="submit"]');
-  const originalButtonText = submitButton ? submitButton.innerHTML : 'Submit';
-  
-  if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.innerHTML = 'Verifying...';
-  }
-  
+  const form = e.target;
+  const submitButton = form.querySelector('button[type="submit"]');
+  const passwordInput = document.getElementById('password');
+  const feedback = document.getElementById('passwordFeedback');
+  const slug = document.getElementById('subgallerySlug').value;
+  const password = passwordInput.value.trim();
+
+  // Disable form during submission
+  submitButton.disabled = true;
+  submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
+
   try {
-    // Create form data for the request
-    const formData = new URLSearchParams();
-    formData.append('slug', slug);
-    formData.append('password', password);
-    
-    console.log('Sending API request with data:', {
-      slug: slug,
-      password: password
-    });
-    
+    // Send password validation request
     const response = await fetch('/galleries/validate-password', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: formData
+      body: JSON.stringify({ slug, password })
     });
-    
-    // Handle the response
+
     const result = await response.json();
-    
+
     if (response.ok && result.success) {
-      console.log('Password validation successful, redirecting to:', result.redirectUrl);
+      // Success - redirect to protected content
       window.location.href = result.redirectUrl;
-      return; // Exit early to prevent further execution
     } else {
-      // Handle error response
-      console.log('Server error details:', response.status, JSON.stringify(result));
-      displayError(result.message || 'Invalid password. Please try again.');
+      // Show error message
+      passwordInput.classList.add('is-invalid');
+      feedback.textContent = result.message || 'Invalid password';
     }
   } catch (error) {
-    console.error('Error during password validation:', error);
-    displayError('An error occurred. Please try again.');
+    console.error('Password validation error:', error);
+    passwordInput.classList.add('is-invalid');
+    feedback.textContent = 'An error occurred. Please try again.';
   } finally {
-    // Always re-enable submit button
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.innerHTML = originalButtonText;
-    }
+    // Reset button state
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Submit';
   }
 }
