@@ -122,17 +122,11 @@ export const validatePassword = async (req, res) => {
         // Create redirect URL
         const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
         
-        // Set the JWT token as a cookie
-        res.cookie('gallery_auth_token', token, { 
-          maxAge: 24 * 60 * 60 * 1000, // 24 hours
-          httpOnly: true,
-          sameSite: 'strict'
-        });
-        
         console.log(`Authentication successful, redirecting to: ${redirectUrl}`);
         
         return res.json({ 
-          success: true, 
+          success: true,
+          token: token, // Send token in response
           redirectUrl
         });
       } catch (jwtError) {
@@ -159,8 +153,18 @@ export const checkAccess = async (req, res, next) => {
       return next();
     }
 
-    // First check for JWT token
-    const token = req.cookies.gallery_auth_token;
+    // Get token from Authorization header or custom header
+    const authHeader = req.headers.authorization;
+    let token = null;
+    
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    }
+    
+    // Alternative: Check query parameter for token (for direct links)
+    if (!token && req.query.token) {
+      token = req.query.token;
+    }
     
     if (token) {
       try {

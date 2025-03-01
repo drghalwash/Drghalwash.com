@@ -251,3 +251,47 @@ function setupPrivateGalleryLinks() {
     }
   });
 }
+// Gallery password handling script
+document.addEventListener('DOMContentLoaded', function() {
+  const passwordForm = document.getElementById('passwordForm');
+  
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const password = document.getElementById('galleryPassword').value;
+      const slug = document.getElementById('gallerySlug').value;
+      
+      try {
+        const response = await fetch('/galleries/validate-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ password, slug })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Store token in localStorage instead of using cookies
+          if (data.token) {
+            localStorage.setItem('gallery_auth_token', data.token);
+          }
+          
+          // Redirect to the protected gallery
+          window.location.href = data.redirectUrl;
+        } else {
+          // Show error message
+          const errorElement = document.getElementById('passwordError');
+          if (errorElement) {
+            errorElement.textContent = data.message || 'Invalid password';
+            errorElement.style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error('Error validating password:', error);
+      }
+    });
+  }
+});
