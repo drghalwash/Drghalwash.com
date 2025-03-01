@@ -1,22 +1,15 @@
+
 import express from 'express';
-import { index } from '../Controller/gallery.js';
-import { validatePassword, checkAccess } from '../Controller/galleryAccess.js';
-import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
+import * as galleryAccess from '../Controller/galleryAccess.js';
+import * as galleryController from '../Controller/gallery.js';
 
 const router = express.Router();
 
-// Apply cookie-parser middleware
-router.use(cookieParser());
+// Get gallery by slug
+router.get('/:slug', galleryController.showGallery);
 
-// Add body parsers for different content types
-router.use(express.urlencoded({ extended: true }));
-router.use(express.json());
-
-// Route for password validation
-router.post('/validate-password', validatePassword);
-
-// Route for gallery/subgallery pages with access check
-router.get('/:slug?/:subSlug?', checkAccess, index);
+// API routes for password validation and token validation
+router.post('/access/:slug', galleryAccess.validatePassword);
+router.post('/validate/:slug', galleryAccess.validateToken);
 
 export default router;
