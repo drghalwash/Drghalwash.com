@@ -109,8 +109,6 @@ app.use((err, req, res, next) => {
 app.use(serveStatic('Templates'));
 app.use(serveStatic('Upload'));
 app.use(serveStatic('Qapartials'));
-app.use(serveStatic('public')); // Added to serve static files from the 'public' directory
-
 
 // Handle 404 for static files
 app.use((req, res, next) => {
@@ -126,15 +124,6 @@ app.use((req, res, next) => {
   req.supabase = supabase;
   next();
 });
-
-// Include blogManager.js script in the layout
-app.use((req, res, next) => {
-  if (req.path === '/Blog') {
-    res.locals.includesBlogManager = true;
-  }
-  next();
-});
-
 
 // Routes
 app.use('/', Home_route);
