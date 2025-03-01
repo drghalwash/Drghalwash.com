@@ -1,6 +1,6 @@
+
 import express from 'express';
-import { index } from '../Controller/gallery.js';
-import { validatePassword, checkAccess } from '../Controller/galleryAccess.js';
+import { index, validatePassword } from '../Controller/gallery.js';
 import cookieParser from 'cookie-parser';
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.use(cookieParser());
 // Route for password validation
 router.post('/validate-password', validatePassword);
 
-// Route for gallery/subgallery pages with access check
-router.get('/:slug?/:subSlug?', checkAccess, index);
+// Route for gallery/subgallery pages
+router.get('/:slug?/:subSlug?', index);
 
 export default router;
