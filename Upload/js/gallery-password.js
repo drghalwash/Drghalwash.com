@@ -1,38 +1,43 @@
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to show the password modal
-    function showPasswordModal(subgallerySlug) {
-        const modal = document.getElementById('passwordModal');
-        if (modal) {
-            // Set the subgallery slug as a data attribute
-            modal.setAttribute('data-slug', subgallerySlug);
-
-            // Reset form fields and errors
-            const passwordInput = document.getElementById('gallery-password');
-            const errorElement = document.getElementById('password-error');
-            if (passwordInput) passwordInput.value = '';
-            if (errorElement) errorElement.textContent = '';
-
-            // Show the modal
-            modal.style.display = 'flex';
-        }
-    }
-
-    // Add click event listeners to all private gallery items
-    const privateItems = document.querySelectorAll('.private-gallery-item');
-    privateItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const subgallerySlug = this.getAttribute('data-slug');
-            if (subgallerySlug) {
-                showPasswordModal(subgallerySlug);
-            } else {
-                console.error('Missing subgallery slug on private item');
-            }
+    // Gallery items click event
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const modal = document.getElementById('passwordModal');
+    const closeBtn = document.querySelector('.close-button');
+    
+    if (galleryItems) {
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const slug = this.getAttribute('data-slug');
+                const status = this.getAttribute('data-status');
+                
+                if (status === 'Private') {
+                    // Show password modal for private galleries
+                    modal.style.display = 'block';
+                    modal.setAttribute('data-slug', slug);
+                } else {
+                    // Navigate to subgallery for public galleries
+                    const gallerySlug = window.location.pathname.split('/').pop();
+                    window.location.href = `/galleries/${gallerySlug}/${slug}`;
+                }
+            });
         });
+    }
+    
+    // Close modal when clicking the close button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     });
-
+    
     // Handle form submission
     const passwordForm = document.getElementById('password-form');
     if (passwordForm) {
@@ -103,21 +108,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    // Close modal when the close button is clicked
-    const closeButtons = document.querySelectorAll('.close-modal');
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const modal = document.getElementById('passwordModal');
-            if (modal) modal.style.display = 'none';
-        });
-    });
-
-    // Close modal when clicking outside the modal content
-    window.addEventListener('click', function(event) {
-        const modal = document.getElementById('passwordModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
 });
