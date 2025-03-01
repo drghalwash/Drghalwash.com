@@ -29,15 +29,28 @@ export const validatePassword = async (req, res) => {
     
     console.log(`Validating password for subgallery slug: ${slug}`);
     
-    // Query subgallery by slug with gallery info
-    const { data: subgallery, error } = await supabase
+    // First get the gallery ID from the slug
+    // Extract gallery slug from subgallery slug pattern (e.g., "face-surgery-27-hash")
+    const slugParts = slug.split('-');
+    const subgalleryId = parseInt(slugParts[slugParts.length - 2], 10);
+    
+    if (isNaN(subgalleryId)) {
+      console.error('Invalid subgallery slug format:', slug);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid subgallery identifier'
+      });
+    }
+    
+    // Query subgallery directly by ID instead of slug to avoid relationship errors
+    const { data: subgallery, error: subgalleryError } = await supabase
       .from('subgallery')
-      .select('*, gallery:gallery_id(slug, id)')
-      .eq('slug', slug)
+      .select('id, gallery_id, name, slug, status, password')
+      .eq('id', subgalleryId)
       .single();
     
-    if (error) {
-      console.error('Supabase query error:', error.message);
+    if (subgalleryError) {
+      console.error('Supabase subgallery query error:', subgalleryError.message);
       return res.status(500).json({ 
         success: false, 
         message: 'Database error when querying subgallery'
@@ -45,10 +58,33 @@ export const validatePassword = async (req, res) => {
     }
     
     if (!subgallery) {
-      console.error('No subgallery found with slug:', slug);
+      console.error('No subgallery found with ID:', subgalleryId);
       return res.status(404).json({ 
         success: false, 
         message: 'Subgallery not found'
+      });
+    }
+    
+    // Now get the gallery info in a separate query
+    const { data: gallery, error: galleryError } = await supabase
+      .from('gallery')
+      .select('id, slug')
+      .eq('id', subgallery.gallery_id)
+      .single();
+    
+    if (galleryError) {
+      console.error('Supabase gallery query error:', galleryError.message);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Database error when querying gallery'
+      });
+    }
+    
+    if (!gallery) {
+      console.error('No gallery found for subgallery:', subgallery.id);
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Parent gallery not found'
       });
     }
     
@@ -62,7 +98,7 @@ export const validatePassword = async (req, res) => {
     
     // Verify the subgallery has a password configured
     if (!subgallery.password) {
-      console.error('Subgallery has no password configured:', slug);
+      console.error('Subgallery has no password configured:', subgallery.id);
       return res.status(400).json({ 
         success: false, 
         message: 'This subgallery has no password configured'
@@ -112,8 +148,8 @@ export const validatePassword = async (req, res) => {
     // Password is valid - create JWT token with necessary claims
     const token = jwt.sign({ 
       subgalleryId: subgallery.id,
-      galleryId: subgallery.gallery.id,
-      gallerySlug: subgallery.gallery.slug,
+      galleryId: gallery.id,
+      gallerySlug: gallery.slug,
       subgallerySlug: subgallery.slug,
       authenticated: true,
       timestamp: Date.now()
@@ -129,12 +165,12 @@ export const validatePassword = async (req, res) => {
       path: '/' // Make cookie available site-wide
     });
     
-    console.log('Password validation successful for:', slug);
+    console.log('Password validation successful for subgallery ID:', subgallery.id);
     
     // Return success with redirect URL
     return res.json({ 
       success: true, 
-      redirectUrl: `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`
+      redirectUrl: `/galleries/${gallery.slug}/${subgallery.slug}`
     });
     
   } catch (error) {
@@ -156,6 +192,13 @@ export const checkAccess = async (req, res, next) => {
     // If no subgallery slug, allow access to main gallery page
     if (!subSlug) {
       return next();
+    }
+    
+    // Extract subgallery ID from the slug if it follows our pattern
+    let subgalleryId = null;
+    const slugParts = subSlug.split('-');
+    if (slugParts.length >= 2) {
+      subgalleryId = parseInt(slugParts[slugParts.length - 2], 10);
     }
     
     // Check for JWT token in cookies
@@ -196,13 +239,28 @@ export const checkAccess = async (req, res, next) => {
         return next();
       }
       
-      // Now check if the subgallery is private
-      const { data: subgallery, error: subgalleryError } = await supabase
-        .from('subgallery')
-        .select('status, name')
-        .eq('gallery_id', gallery.id)
-        .eq('slug', subSlug)
-        .single();
+      // Query approach depends on if we have an ID or need to use the slug
+      let subgalleryQuery;
+      
+      if (subgalleryId && !isNaN(subgalleryId)) {
+        // Use ID for more reliable lookup if we can extract it
+        subgalleryQuery = await supabase
+          .from('subgallery')
+          .select('id, status, name, slug')
+          .eq('id', subgalleryId)
+          .eq('gallery_id', gallery.id)
+          .single();
+      } else {
+        // Fall back to slug lookup
+        subgalleryQuery = await supabase
+          .from('subgallery')
+          .select('id, status, name, slug')
+          .eq('gallery_id', gallery.id)
+          .eq('slug', subSlug)
+          .single();
+      }
+      
+      const { data: subgallery, error: subgalleryError } = subgalleryQuery;
       
       if (subgalleryError) {
         console.error('Error querying subgallery:', subgalleryError.message);

@@ -81,7 +81,19 @@ function setupPasswordForm() {
       const errorDiv = document.getElementById('passwordError');
       const submitButton = this.querySelector('button[type="submit"]');
       const passwordField = this.querySelector('input[name="password"]');
-      const subgallerySlug = document.getElementById('subgallerySlug').value;
+      const subgallerySlugField = document.getElementById('subgallerySlug');
+      
+      if (!subgallerySlugField || !subgallerySlugField.value) {
+        console.error('Missing subgallery slug in form');
+        if (errorDiv) {
+          errorDiv.textContent = 'Missing gallery information. Please try again.';
+          errorDiv.style.display = 'block';
+        }
+        return;
+      }
+      
+      const subgallerySlug = subgallerySlugField.value;
+      console.log('Submitting password for subgallery:', subgallerySlug);
       
       // Disable the button and show loading state
       if (submitButton) {
@@ -90,6 +102,12 @@ function setupPasswordForm() {
       }
       
       try {
+        // Clear any previous error messages
+        if (errorDiv) {
+          errorDiv.style.display = 'none';
+          errorDiv.textContent = '';
+        }
+        
         // Send the password validation request
         const response = await fetch('/galleries/validate-password', {
           method: 'POST',
@@ -102,10 +120,32 @@ function setupPasswordForm() {
           })
         });
         
+        // Check for non-200 responses
+        if (!response.ok) {
+          console.error('Server responded with status:', response.status);
+          let errorMessage = 'Server error. Please try again.';
+          
+          // Try to get more specific error message if available
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error('Could not parse error response:', e);
+          }
+          
+          if (errorDiv) {
+            errorDiv.textContent = errorMessage;
+            errorDiv.style.display = 'block';
+          }
+          return;
+        }
+        
         const data = await response.json();
+        console.log('Password validation response:', data.success ? 'success' : 'failed');
         
         if (data.success) {
           // Success - redirect to the protected content
+          console.log('Redirecting to:', data.redirectUrl);
           window.location.href = data.redirectUrl;
         } else {
           // Show error message
@@ -134,6 +174,10 @@ function setupPasswordForm() {
         }
       }
     });
+  } else {
+    console.error('Password form not found in the DOM');
+    // Dynamically create the form if needed
+    ensureModalExists();
   }
 }
 
