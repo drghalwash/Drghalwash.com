@@ -270,13 +270,36 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       return null;
     }
 
-    // Then get the subgallery
-    const { data: subgallery, error: subgalleryError } = await supabase
-      .from('subgallery')
-      .select('*')
-      .eq('gallery_id', gallery.id)
-      .eq('slug', subgallerySlug)
-      .single();
+    // Try to extract the numeric ID from the subgallery slug
+    // Assuming format like: face-surgery-27-2d97519489c1e845fe3ee11ab50cd380
+    let subgalleryId = null;
+    const slugParts = subgallerySlug.split('-');
+    if (slugParts.length >= 2) {
+      subgalleryId = parseInt(slugParts[slugParts.length - 2], 10);
+    }
+
+    let subgalleryQuery;
+    
+    // Query by ID if possible, otherwise fallback to slug
+    if (subgalleryId && !isNaN(subgalleryId)) {
+      console.log(`[Info] Querying subgallery by ID: ${subgalleryId}`);
+      subgalleryQuery = await supabase
+        .from('subgallery')
+        .select('*')
+        .eq('id', subgalleryId)
+        .eq('gallery_id', gallery.id)
+        .single();
+    } else {
+      console.log(`[Info] Querying subgallery by slug: ${subgallerySlug}`);
+      subgalleryQuery = await supabase
+        .from('subgallery')
+        .select('*')
+        .eq('gallery_id', gallery.id)
+        .eq('slug', subgallerySlug)
+        .single();
+    }
+
+    const { data: subgallery, error: subgalleryError } = subgalleryQuery;
 
     if (subgalleryError) {
       console.error('[Error] Subgallery query failed:', subgalleryError.message);
@@ -284,7 +307,11 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
     }
 
     if (!subgallery) {
-      console.error('[Error] Subgallery not found:', { galleryId: gallery.id, subgallerySlug });
+      console.error('[Error] Subgallery not found:', { 
+        galleryId: gallery.id, 
+        subgalleryId: subgalleryId || 'unknown',
+        subgallerySlug 
+      });
       return null;
     }
     
@@ -301,7 +328,7 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
       processedImages = rawImages.map(img => getImagePath(img));
     }
     
-    console.log(`[Success] Found subgallery "${subgallery.name}" in gallery "${gallery.name}"`);
+    console.log(`[Success] Found subgallery "${subgallery.name}" (ID: ${subgallery.id}) in gallery "${gallery.name}"`);
     
     return {
       ...subgallery,
