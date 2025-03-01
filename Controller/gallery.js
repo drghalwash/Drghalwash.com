@@ -1,7 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 import Handlebars from 'handlebars';
-import jwt from 'jsonwebtoken';
 
 // Add a comparison helper for Handlebars
 Handlebars.registerHelper('eq', function(a, b) {
@@ -11,7 +10,6 @@ Handlebars.registerHelper('eq', function(a, b) {
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
-const JWT_SECRET = process.env.JWT_SECRET || 'kemowyaya';
 
 /**
  * Standardizes image paths for gallery and subgallery images
@@ -290,119 +288,6 @@ const fetchSubGalleryBySlug = async (gallerySlug, subgallerySlug) => {
   }
 };
 
-/**
- * Checks if a user has access to a private subgallery using JWT
- */
-const hasSubgalleryAccess = (req, subgallerySlug) => {
-  try {
-    // Check for JWT token in cookies
-    const token = req.cookies.galleryAccessToken;
-    
-    if (!token) {
-      return false;
-    }
-    
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET);
-    
-    // Check if the token contains access to this specific subgallery
-    if (decoded && decoded.subgalleries && decoded.subgalleries.includes(subgallerySlug)) {
-      return true;
-    }
-    
-    return false;
-  } catch (error) {
-    console.error('[Error] Checking gallery access:', error);
-    return false;
-  }
-};
-
-/**
- * Validate password against the subgallery's password field
- */
-export const validatePassword = async (req, res) => {
-  try {
-    const { slug, password } = req.body;
-    console.log('Validating password for subgallery slug:', slug);
-
-    if (!slug || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Missing required parameters: slug and password', 
-      });
-    }
-
-    // Find the subgallery by slug
-    const { data: subgallery, error } = await supabase
-      .from('subgallery')
-      .select('*, gallery:gallery_id(slug)')
-      .eq('slug', slug)
-      .single();
-
-    if (error || !subgallery) {
-      console.error('Subgallery not found:', error || 'No subgallery returned');
-      return res.status(404).json({ success: false, message: 'Subgallery not found' });
-    }
-
-    // Check if subgallery is private
-    if (subgallery.status !== 'Private') {
-      return res.status(400).json({ success: false, message: 'This subgallery is not private' });
-    }
-
-    // Parse passwords from subgallery
-    let validPins = [];
-    if (subgallery.password) {
-      const passwordStr = subgallery.password.toString();
-      validPins = passwordStr.split(',').map(pin => pin.replace(/["']+/g, '').trim()).filter(pin => pin.length > 0);
-    }
-
-    if (validPins.length === 0) {
-      return res.status(400).json({ success: false, message: 'This private subgallery has no associated password' });
-    }
-
-    // Check if the provided password matches any pins
-    const trimmedPassword = password.toString().trim();
-    const passwordMatches = validPins.some(pin => {
-      if (pin === trimmedPassword) {
-        return true;
-      }
-      
-      if (!isNaN(pin) && !isNaN(trimmedPassword)) {
-        return Number(pin) === Number(trimmedPassword);
-      }
-      
-      return false;
-    });
-
-    if (!passwordMatches) {
-      return res.status(401).json({ success: false, message: 'Invalid password' });
-    }
-
-    // Generate JWT token with access to this subgallery
-    const token = jwt.sign({
-      subgalleries: [subgallery.slug],
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // Expires in 24 hours
-    }, JWT_SECRET);
-
-    // Set the JWT token as a cookie
-    res.cookie('galleryAccessToken', token, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      sameSite: 'strict'
-    });
-
-    // Redirect to the subgallery page
-    const redirectUrl = `/galleries/${subgallery.gallery.slug}/${subgallery.slug}`;
-    return res.json({
-      success: true,
-      redirectUrl
-    });
-  } catch (error) {
-    console.error('Error validating password:', error);
-    return res.status(500).json({ success: false, message: 'Server error' });
-  }
-};
-
 export const index = async (req, res) => {
   try {
     const { slug, subSlug } = req.params;
@@ -417,7 +302,6 @@ export const index = async (req, res) => {
       });
     }
 
-    // Handling subgallery request
     if (subSlug) {
       const [gallery, subgallery] = await Promise.all([
         fetchGalleryBySlug(slug),
@@ -433,17 +317,6 @@ export const index = async (req, res) => {
         });
       }
 
-      // Check if this is a private subgallery
-      if (subgallery.status === 'Private') {
-        // Check if user has access via JWT
-        const hasAccess = hasSubgalleryAccess(req, subSlug);
-        
-        if (!hasAccess) {
-          // Redirect to gallery page if no access
-          return res.redirect(`/galleries/${slug}`);
-        }
-      }
-
       return res.render('Pages/subgallery', {
         gallery,
         subgallery,
@@ -453,7 +326,6 @@ export const index = async (req, res) => {
       });
     }
 
-    // Handling gallery page request
     const [gallery, subgalleries] = await Promise.all([
       fetchGalleryBySlug(slug),
       fetchSubGalleriesByGallerySlug(slug)
