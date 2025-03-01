@@ -1,93 +1,88 @@
 document.addEventListener('DOMContentLoaded', function() {
-  setupPrivateGalleryLinks();
-  setupPasswordForm();
-});
+  console.log('Gallery password script initialized');
 
-function setupPrivateGalleryLinks() {
-  // Find all elements with data-slug attribute (private galleries)
-  document.querySelectorAll('[data-slug]').forEach(link => {
+  // Find all private gallery links and attach click handlers
+  const privateGalleryLinks = document.querySelectorAll('.private-gallery[data-slug]');
+
+  privateGalleryLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const slug = this.getAttribute('data-slug');
-      console.log('Private gallery clicked:', slug);
-      showPasswordModal(slug);
+      console.log('Opening password modal for:', slug);
+
+      // Set the subgallery slug in the form
+      const slugInput = document.getElementById('subgallerySlug');
+      if (slugInput) {
+        slugInput.value = slug;
+      }
+
+      // Clear any previous errors
+      const errorElement = document.getElementById('passwordError');
+      if (errorElement) {
+        errorElement.style.display = 'none';
+      }
+
+      // Reset password field
+      const passwordField = document.querySelector('#passwordForm input[name="password"]');
+      if (passwordField) {
+        passwordField.value = '';
+      }
+
+      // Show the modal using Bootstrap
+      const passwordModal = document.getElementById('passwordModal');
+      if (passwordModal) {
+        const bsModal = new bootstrap.Modal(passwordModal);
+        bsModal.show();
+      }
     });
   });
-}
 
-function setupPasswordForm() {
-  const form = document.getElementById('passwordForm');
-  if (form) {
-    form.addEventListener('submit', handlePasswordSubmit);
-  }
-}
+  // Set up the password form submission
+  const passwordForm = document.getElementById('passwordForm');
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-function showPasswordModal(slug) {
-  console.log('Opening password modal for:', slug);
-  const modal = document.getElementById('passwordModal');
+      // Get form values
+      const slug = document.getElementById('subgallerySlug').value;
+      const password = passwordForm.querySelector('input[name="password"]').value;
+      const errorElement = document.getElementById('passwordError');
 
-  // Clear previous errors
-  const errorElement = document.getElementById('passwordError');
-  if (errorElement) {
-    errorElement.style.display = 'none';
-  }
+      // Validate inputs
+      if (!slug || !password) {
+        errorElement.textContent = 'Both slug and password are required';
+        errorElement.style.display = 'block';
+        return;
+      }
 
-  // Reset form
-  const form = document.getElementById('passwordForm');
-  if (form) {
-    form.reset();
-  }
+      try {
+        // Send password validation request
+        const response = await fetch('/galleries/validate-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ slug, password })
+        });
 
-  // Set hidden input value
-  const slugInput = document.getElementById('subgallerySlug');
-  if (slugInput) {
-    slugInput.value = slug;
-  }
+        const result = await response.json();
 
-  // Show modal using Bootstrap
-  const modalInstance = new bootstrap.Modal(modal);
-  modalInstance.show();
-}
-
-async function handlePasswordSubmit(e) {
-  e.preventDefault();
-
-  const password = document.querySelector('input[name="password"]').value;
-  const slug = document.getElementById('subgallerySlug').value;
-  const errorElement = document.getElementById('passwordError');
-
-  if (!password || !slug) {
-    errorElement.textContent = 'Password is required';
-    errorElement.style.display = 'block';
-    return;
-  }
-
-  try {
-    // Send password validation request
-    const response = await fetch('/galleries/validate-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ slug, password })
+        if (result.success) {
+          // Success - redirect to the protected page
+          window.location.href = result.redirectUrl;
+        } else {
+          // Show error message
+          errorElement.textContent = result.message || 'Invalid password';
+          errorElement.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error validating password:', error);
+        errorElement.textContent = 'An error occurred. Please try again.';
+        errorElement.style.display = 'block';
+      }
     });
-
-    const result = await response.json();
-
-    if (response.ok && result.success) {
-      // Success - redirect to protected content
-      window.location.href = result.redirectUrl;
-    } else {
-      // Show error message
-      errorElement.textContent = result.message || 'Invalid password';
-      errorElement.style.display = 'block';
-    }
-  } catch (error) {
-    console.error('Password validation error:', error);
-    errorElement.textContent = 'An error occurred. Please try again.';
-    errorElement.style.display = 'block';
   }
-}
+});
 
 // Create password modal in DOM if it doesn't exist
 function ensureModalExists() {

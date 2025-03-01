@@ -189,6 +189,29 @@
         </div>
     </div>
   </div>
+  
+  <!-- Custom styles for private galleries -->
+  <style>
+    .private-gallery {
+      position: relative;
+      cursor: pointer;
+    }
+    .private-gallery:after {
+      content: "🔒";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 18px;
+    }
+    .custom-div-private {
+      border: 1px solid #f8d7da;
+      background-color: rgba(248, 215, 218, 0.1);
+    }
+    #passwordError {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
 
 <div class="moving-background2">
 	<div class="overlay"></div>
