@@ -33,18 +33,54 @@ const getZonesWithDetails = async () => {
       let formattedText = text;
 
       try {
+        // Pre-process: Fix any existing broken HTML patterns before adding new ones
+        // Handle existing specialtext tags (convert them to our new format)
+        formattedText = formattedText.replace(/<(\/?)specialtext>/gi, '<$1span class="special-text">');
+        formattedText = formattedText.replace(/<(\/?)important-term>/gi, '<$1span class="important-term">');
+        
+        // Handle any malformed opening/closing tags
+        formattedText = formattedText.replace(/<specialtext([^>]*)>/gi, '<span class="special-text"$1>');
+        formattedText = formattedText.replace(/<important-term([^>]*)>/gi, '<span class="important-term"$1>');
+        
+        // Fix unopened/unclosed tags
+        const openSpecialTextCount = (formattedText.match(/<span class="special-text"/g) || []).length;
+        const closeSpecialTextCount = (formattedText.match(/<\/span>/g) || []).length;
+        
+        if (openSpecialTextCount > closeSpecialTextCount) {
+          // Add missing closing tags
+          const missingClosingTags = openSpecialTextCount - closeSpecialTextCount;
+          for (let i = 0; i < missingClosingTags; i++) {
+            formattedText += '</span>';
+          }
+        }
+
+        // SMAS cleanup - fix the specific term that's causing issues
+        formattedText = formattedText.replace(/SMAS(?!\w)/g, '<span class="special-text">SMAS</span>');
+        
         // 1. Medical terminology highlighting with safer replacement approach
         const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection|consultation|operation|pain|medication|complication|side effect|discomfort|result|scar|tissue|outcome|treatment|doctor|surgeon|specialist|clinic|hospital|appointment|health|patient|care|examination|risk|benefit|technique|method|approach|option|alternative|solution|problem|concern|improvement|enhancement|qualified|experienced|skin|face|body|breast|abdomen|thigh|arm|neck|chin|eye|nose|lip)\b/gi;
-        formattedText = formattedText.replace(medicalTerms, '<span class="special-text">$1</span>');
+        
+        // Only apply to text not already inside a span tag
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(medicalTerms, '<span class="special-text">$1</span>');
+        });
 
         // 2. Important terms emphasis (quoted terms and key phrases)
-        formattedText = formattedText.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
+        });
+
         // Key phrases emphasis with safer regex
         const keyPhrases = /\b(most importantly|key point|essential|crucial|significant|recommended|advised|suggested|best practice|optimal|ideal|common concern|important|note|remember|consider|expect|typically|usually|generally|often|always|never|ensure|guarantee|priority|focus|attention|safety|comfort|satisfaction|success|excellent|quality|value|experience|expertise|knowledge|skill)\b/gi;
-        formattedText = formattedText.replace(keyPhrases, '<span class="important-term">$1</span>');
+        
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(keyPhrases, '<span class="important-term">$1</span>');
+        });
 
         // 3. Statistics & percentages highlight
-        formattedText = formattedText.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent|\d+\s*out of\s*\d+)/gi, '<span class="marked">$1</span>');
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent|\d+\s*out of\s*\d+)/gi, '<span class="marked">$1</span>');
+        });
 
         // 4. Bullet point detection and formatting
         if (formattedText.match(/^[\s]*[-*•][\s]+.+$/gm)) {
@@ -80,12 +116,16 @@ const getZonesWithDetails = async () => {
         }
 
         // 5. Warning/caution highlighting with safer pattern
-        formattedText = formattedText.replace(/(warning|caution|important|note|attention|remember|alert)[:!]?\s*([^.!?]+[.!?])/gi, 
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(/(warning|caution|important|note|attention|remember|alert)[:!]?\s*([^.!?]+[.!?])/gi, 
                                       '<span class="alert-highlight">$1: $2</span>');
+        });
 
         // 6. Time periods & measurements with safer pattern
-        formattedText = formattedText.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|minutes?|cm|mm|inches?|pounds?|kg)\b/gi, 
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|minutes?|cm|mm|inches?|pounds?|kg)\b/gi, 
                                        '<span class="color-system">$1 $2</span>');
+        });
 
         // 7. Section heading detection with safer pattern
         formattedText = formattedText.replace(/^([A-Za-z][^:]+)[:]\s*$/gm, '<h4>$1</h4>');
@@ -98,7 +138,9 @@ const getZonesWithDetails = async () => {
         }
 
         // 9. ALL CAPS emphasis with safer pattern
-        formattedText = formattedText.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
+        });
 
         // Add first sentence emphasis with safer approach
         formattedText = formattedText.replace(/<p>([^.!?]+[.!?])/g, function(match, p1) {
@@ -113,14 +155,32 @@ const getZonesWithDetails = async () => {
           'Mommy Makeover', 'Blepharoplasty', 'Abdominoplasty', 'Facial Rejuvenation',
           'Breast Reduction', 'Body Lift', 'Arm Lift', 'Thigh Lift', 'Neck Lift'
         ];
+        
         for (const procedure of procedures) {
           const safeRegex = new RegExp(`\\b${procedure}\\b`, 'g');
-          formattedText = formattedText.replace(safeRegex, `<span class="category-highlight">${procedure}</span>`);
+          formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+            return match.replace(safeRegex, `<span class="category-highlight">${procedure}</span>`);
+          });
         }
 
         // Benefits highlighting with safer approach
         const benefitTerms = /\b(benefit|advantage|improvement|enhancement|satisfaction|result)\b/gi;
-        formattedText = formattedText.replace(benefitTerms, '<span class="benefit-highlight">$1</span>');
+        formattedText = formattedText.replace(/([^>]+)(?=<|$)/g, function(match) {
+          return match.replace(benefitTerms, '<span class="benefit-highlight">$1</span>');
+        });
+        
+        // Final cleanup: fix any double-nested spans
+        formattedText = formattedText.replace(/<span class="[^"]+">(.*?)<span class="([^"]+)">(.*?)<\/span>(.*?)<\/span>/g, 
+                                           function(match, prefix, className, content, suffix) {
+          return `<span class="${className}">${prefix}${content}${suffix}</span>`;
+        });
+        
+        // Ensure all tags are properly closed
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(formattedText, 'text/html');
+        if (doc.body) {
+          formattedText = doc.body.innerHTML;
+        }
       } catch (error) {
         console.error('[Format] Error during text formatting:', error);
         // Return original text if formatting fails

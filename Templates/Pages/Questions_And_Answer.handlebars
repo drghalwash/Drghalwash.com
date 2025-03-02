@@ -349,79 +349,95 @@ font-family: Verdana, sans-serif;
     color: #34495e;
   }
 /* Semantic Bold Emphasis */
-
 .important-term {
-
-font-weight: 800;
-
-color: #16a085; /* Emerald green */
-
+    font-weight: 800;
+    color: #16a085; /* Emerald green */
+    display: inline-block;
+    position: relative;
+    padding: 0 2px;
 }
 
 /* Contextual Highlighting */
-
 .marked {
-
-background: linear-gradient(120deg, #ffe06640 0%, #ffd43b40 100%);
-
+    background: linear-gradient(120deg, rgba(255, 224, 102, 0.4) 0%, rgba(255, 212, 59, 0.4) 100%);
+    padding: 0 3px;
+    border-radius: 2px;
+    display: inline-block;
 }
-      .extra-bold { font-weight: bold; /* Makes the text bold */ font-size: 1.2em; /* Optional: Increases the font size */ /* Add any other styles you want */ }
+
+.extra-bold { 
+    font-weight: bold; 
+    font-size: 1.2em;
+}
 
 .alert-highlight {
-
-background-color: #ff6b6b;
-
-padding: 2px 4px;
-
-border-radius: 3px;
-
+    background-color: rgba(255, 107, 107, 0.2);
+    padding: 2px 4px;
+    border-radius: 3px;
+    border-left: 2px solid #ff6b6b;
+    display: inline-block;
+    margin: 2px 0;
 }
 
 /* Dynamic Underlining */
-
 .interactive-underline {
-
-border-bottom: 2px solid #e74c3c;
-
-transition: border-color 0.3s ease;
-
+    border-bottom: 2px solid #e74c3c;
+    transition: border-color 0.3s ease;
+    display: inline-block;
 }
 
 .interactive-underline:hover {
-
-border-color: #c0392b;
-
+    border-color: #c0392b;
 }
 
 /* Color-Coded Text */
-
 .color-system {
-
-font-weight: 600;
-
-padding: 2px 4px;
-
+    font-weight: 600;
+    padding: 2px 4px;
+    display: inline-block;
 }
 
 /* Accessible Extra-Bold */
-
 .accessibility-bold {
-
-font-weight: 900;
-
-letter-spacing: 0.5px;
-
-text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    display: inline-block;
 }
 
 /* Root Variables for Consistent Theming */
 :root {
+    --primary-highlight: #fff3cd;
+    --secondary-alert: #f8d7da;
+}
 
---primary-highlight: #fff3cd;
+/* Fix for specialtext/special-text compatibility */
+.specialtext,
+.special-text {
+    color: #007bff !important; /* Force blue color */
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px; /* Space for underline */
+    border-bottom: 1px dotted #007bff; /* Add subtle underline */
+    padding: 0 2px;
+}
 
---secondary-alert: #f8d7da;
+/* Fix for nested tags and ensure proper spacing */
+span[class] {
+    display: inline-block;
+    white-space: normal;
+    vertical-align: baseline;
+}
 
+/* Prevent overlapping styles */
+span[class] span[class] {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-weight: inherit;
+    color: inherit;
+    background: none;
 }
 
   /* Text formatting */
