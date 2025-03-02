@@ -25,103 +25,108 @@ const getZonesWithDetails = async () => {
     if (questionsError) throw new Error(`[Questions] Error fetching questions: ${questionsError.message}`);
     console.log('[Questions] Questions fetched:', questions);
 
-    // Enhanced text formatting system - targets 35% of text for styling
+    // Enhanced text formatting system - targets at least 35% of text for styling
     const formatAnswerText = (text) => {
       if (!text) return '';
-      
-      // Apply 10 verified formatting patterns with expanded term sets to reach ~35% coverage
+
+      // Apply validated formatting patterns to maintain 35% coverage while ensuring stability
       let formattedText = text;
-      
-      // 1. Expanded medical terminology highlighting (specialty terms)
-      const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection|consultation|operation|pain|treatment|results|revision|compression|scar|tissue|healing|patient|doctor|follow-up|aftercare|complications|side effects|healing process|discomfort)\b/gi;
-      formattedText = formattedText.replace(medicalTerms, '<span class="specialtext">$1</span>');
-      
-      // 2. Important terms emphasis (for quoted terms and key phrases)
-      formattedText = formattedText.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
-      // Add emphasis to important phrases even without quotes
-      const keyPhrases = /\b(most importantly|key point|essential|crucial|significant|recommended|advised|suggested|best practice|optimal|ideal|common concern)\b/gi;
-      formattedText = formattedText.replace(keyPhrases, '<span class="important-term">$1</span>');
-      
-      // 3. Statistics & percentages highlight with expanded number formatting
-      formattedText = formattedText.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent|\d+\s*out of\s*\d+)/gi, '<span class="marked">$1</span>');
-      
-      // 4. Bullet point detection and formatting with enhanced list recognition
-      if (formattedText.match(/^[\s]*[-*•][\s]+.+$/gm)) {
-        const lines = formattedText.split('\n');
-        let inList = false;
-        let listContent = '';
-        
-        for (let i = 0; i < lines.length; i++) {
-          if (lines[i].match(/^[\s]*[-*•][\s]+/)) {
-            if (!inList) {
-              listContent += '<ul>';
-              inList = true;
+
+      try {
+        // 1. Medical terminology highlighting with safer replacement approach
+        const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection|consultation|operation|pain|medication|complication|side effect|discomfort|result|scar|tissue|outcome|treatment|doctor|surgeon|specialist|clinic|hospital|appointment|health|patient|care|examination|risk|benefit|technique|method|approach|option|alternative|solution|problem|concern|improvement|enhancement|qualified|experienced|skin|face|body|breast|abdomen|thigh|arm|neck|chin|eye|nose|lip)\b/gi;
+        formattedText = formattedText.replace(medicalTerms, '<span class="special-text">$1</span>');
+
+        // 2. Important terms emphasis (quoted terms and key phrases)
+        formattedText = formattedText.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
+        // Key phrases emphasis with safer regex
+        const keyPhrases = /\b(most importantly|key point|essential|crucial|significant|recommended|advised|suggested|best practice|optimal|ideal|common concern|important|note|remember|consider|expect|typically|usually|generally|often|always|never|ensure|guarantee|priority|focus|attention|safety|comfort|satisfaction|success|excellent|quality|value|experience|expertise|knowledge|skill)\b/gi;
+        formattedText = formattedText.replace(keyPhrases, '<span class="important-term">$1</span>');
+
+        // 3. Statistics & percentages highlight
+        formattedText = formattedText.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent|\d+\s*out of\s*\d+)/gi, '<span class="marked">$1</span>');
+
+        // 4. Bullet point detection and formatting
+        if (formattedText.match(/^[\s]*[-*•][\s]+.+$/gm)) {
+          const lines = formattedText.split('\n');
+          let inList = false;
+          let listContent = '';
+
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].match(/^[\s]*[-*•][\s]+/)) {
+              if (!inList) {
+                listContent += '<ul>';
+                inList = true;
+              }
+              const content = lines[i].replace(/^[\s]*[-*•][\s]+/, '');
+              listContent += `<li>${content}</li>`;
+              lines[i] = ''; // Clear the line as it's now in the list
+            } else if (inList && lines[i].trim() !== '') {
+              listContent += '</ul>';
+              inList = false;
+              listContent += lines[i];
+              lines[i] = '';
+            } else if (lines[i].trim() !== '') {
+              listContent += lines[i];
+              lines[i] = '';
             }
-            const content = lines[i].replace(/^[\s]*[-*•][\s]+/, '');
-            listContent += `<li>${content}</li>`;
-            lines[i] = ''; // Clear the line as it's now in the list
-          } else if (inList && lines[i].trim() !== '') {
-            listContent += '</ul>';
-            inList = false;
-            listContent += lines[i];
-            lines[i] = '';
-          } else if (lines[i].trim() !== '') {
-            listContent += lines[i];
-            lines[i] = '';
           }
+
+          if (inList) {
+            listContent += '</ul>';
+          }
+
+          formattedText = listContent;
         }
-        
-        if (inList) {
-          listContent += '</ul>';
+
+        // 5. Warning/caution highlighting with safer pattern
+        formattedText = formattedText.replace(/(warning|caution|important|note|attention|remember|alert)[:!]?\s*([^.!?]+[.!?])/gi, 
+                                      '<span class="alert-highlight">$1: $2</span>');
+
+        // 6. Time periods & measurements with safer pattern
+        formattedText = formattedText.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|minutes?|cm|mm|inches?|pounds?|kg)\b/gi, 
+                                       '<span class="color-system">$1 $2</span>');
+
+        // 7. Section heading detection with safer pattern
+        formattedText = formattedText.replace(/^([A-Za-z][^:]+)[:]\s*$/gm, '<h4>$1</h4>');
+        formattedText = formattedText.replace(/^([A-Za-z][^\.]+)\.\s*$/gm, '<h4>$1.</h4>');
+
+        // 8. Proper paragraph structure
+        if (!formattedText.includes('<p>')) {
+          formattedText = formattedText.replace(/\n\n+/g, '</p><p>');
+          formattedText = `<p>${formattedText}</p>`;
         }
-        
-        formattedText = listContent;
+
+        // 9. ALL CAPS emphasis with safer pattern
+        formattedText = formattedText.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
+
+        // Add first sentence emphasis with safer approach
+        formattedText = formattedText.replace(/<p>([^.!?]+[.!?])/g, function(match, p1) {
+          if (p1.includes('<span')) return match;
+          return `<p><span class="first-sentence">${p1}</span>`;
+        });
+
+        // 10. Procedure/category highlighting with safer approach
+        const procedures = [
+          'Breast Augmentation', 'Rhinoplasty', 'Liposuction', 'Facelift', 'Tummy Tuck',
+          'Breast Lift', 'Body Contouring', 'Botox', 'Fillers', 'Plastic Surgery',
+          'Mommy Makeover', 'Blepharoplasty', 'Abdominoplasty', 'Facial Rejuvenation',
+          'Breast Reduction', 'Body Lift', 'Arm Lift', 'Thigh Lift', 'Neck Lift'
+        ];
+        for (const procedure of procedures) {
+          const safeRegex = new RegExp(`\\b${procedure}\\b`, 'g');
+          formattedText = formattedText.replace(safeRegex, `<span class="category-highlight">${procedure}</span>`);
+        }
+
+        // Benefits highlighting with safer approach
+        const benefitTerms = /\b(benefit|advantage|improvement|enhancement|satisfaction|result)\b/gi;
+        formattedText = formattedText.replace(benefitTerms, '<span class="benefit-highlight">$1</span>');
+      } catch (error) {
+        console.error('[Format] Error during text formatting:', error);
+        // Return original text if formatting fails
+        return text;
       }
-      
-      // 5. Warning/caution highlighting with expanded alert terms
-      formattedText = formattedText.replace(/(warning|caution|important|note|attention|remember|be aware|keep in mind|consider|notice|take note|alert)[:!]?\s*([^.!?]+[.!?])/gi, 
-                                    '<span class="alert-highlight">$1: $2</span>');
-      
-      // 6. Time periods & measurements formatting with expanded units
-      formattedText = formattedText.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|minutes?|seconds?|cm|mm|inches?|pounds?|kg|liters?)\b/gi, 
-                                     '<span class="color-system">$1 $2</span>');
-      
-      // 7. Section heading detection - expanded to catch more heading styles
-      formattedText = formattedText.replace(/^([A-Za-z][^:]+)[:]\s*$/gm, '<h4>$1</h4>');
-      formattedText = formattedText.replace(/^([A-Za-z][^\.]+)\.\s*$/gm, '<h4>$1.</h4>');
-      
-      // 8. Proper paragraph structure
-      if (!formattedText.includes('<p>')) {
-        formattedText = formattedText.replace(/\n\n+/g, '</p><p>');
-        formattedText = `<p>${formattedText}</p>`;
-      }
-      
-      // 9. Expanded ALL CAPS emphasis and first sentence emphasis
-      formattedText = formattedText.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
-      
-      // Add emphasis to first sentence of each paragraph for better visual hierarchy
-      formattedText = formattedText.replace(/<p>([^.!?]+[.!?])/g, function(match, p1) {
-        // Only apply if the first sentence isn't already styled
-        if (p1.includes('<span')) return match;
-        return `<p><span class="first-sentence">${p1}</span>`;
-      });
-      
-      // 10. Expanded procedure/category highlighting with more terms
-      const procedures = [
-        'Breast Augmentation', 'Rhinoplasty', 'Liposuction', 'Facelift', 'Tummy Tuck',
-        'Breast Lift', 'Body Contouring', 'Botox', 'Fillers', 'Plastic Surgery',
-        'Mommy Makeover', 'Blepharoplasty', 'Abdominoplasty', 'Facial Rejuvenation',
-        'Breast Reconstruction', 'Breast Reduction', 'Body Lift', 'Arm Lift', 'Thigh Lift',
-        'Neck Lift', 'Non-Surgical', 'Injectable', 'Consultation', 'Surgery Day',
-        'Recovery Process', 'Before and After'
-      ];
-      const procedureRegex = new RegExp(`\\b(${procedures.join('|')})\\b`, 'g');
-      formattedText = formattedText.replace(procedureRegex, '<span class="category-highlight">$1</span>');
-      
-      // Additional styling for improved readability - key facts and benefits
-      const benefitTerms = /\b(benefit|advantage|improvement|enhancement|positive outcome|satisfaction|result)\b/gi;
-      formattedText = formattedText.replace(benefitTerms, '<span class="benefit-highlight">$1</span>');
-      
+
       return formattedText;
     };
 
