@@ -201,78 +201,6 @@
 		<p><a href="/Home">Home </a>> Patient Info > Diet and Nutrition</p>
 	</div>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center mb-4">Post-Surgery Diet Guidelines</h1>
-                <div class="diet-content">
-                    <h2>Nutrition for Optimal Recovery</h2>
-                    <p>Following the right diet after surgery is crucial for healing and recovery. These guidelines will help you manage your nutrition effectively during the post-operative period.</p>
-
-                    <div style="text-align: center; margin: 20px 0;">
-                        {{#each galleries}}
-                            {{#if (eq this.category "diet")}}
-                                {{#if (eq this.type "image")}}
-                                    <img src="{{this.url}}" alt="{{this.title}}" style="max-width: 100%; height: auto; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                                {{else if (eq this.type "video")}}
-                                    <video controls style="max-width: 100%; height: auto; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                                        <source src="{{this.url}}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                {{/if}}
-                            {{/if}}
-                        {{/each}}
-                    </div>
-
-                    <h3>General Diet Recommendations:</h3>
-                    <ul>
-                        <li><strong>Protein-rich foods</strong> to promote healing (lean meats, eggs, dairy, legumes)</li>
-                        <li><strong>Fiber-rich foods</strong> to prevent constipation (whole grains, fruits, vegetables)</li>
-                        <li><strong>Vitamin C sources</strong> for collagen production (citrus fruits, berries, bell peppers)</li>
-                        <li><strong>Zinc-rich foods</strong> for immune function (seafood, meat, nuts)</li>
-                        <li><strong>Adequate hydration</strong> - aim for 8-10 glasses of water daily</li>
-                    </ul>
-
-                    <h3>Foods to Limit or Avoid:</h3>
-                    <ul>
-                        <li>Processed foods high in sodium</li>
-                        <li>Sugary foods and beverages</li>
-                        <li>Alcoholic beverages</li>
-                        <li>Caffeine (may interfere with some medications)</li>
-                    </ul>
-
-                    <div class="alert alert-info mt-4">
-                        <p><strong>Note:</strong> These are general guidelines. Your surgeon may provide specific dietary instructions based on your procedure and health status.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<style>
-    /* Responsive styling for Diet page media */
-    @media (max-width: 576px) {
-        .diet-content img, 
-        .diet-content video {
-            width: 95%;
-        }
-    }
-
-    @media (min-width: 577px) and (max-width: 991px) {
-        .diet-content img,
-        .diet-content video {
-            width: 85%;
-        }
-    }
-
-    @media (min-width: 992px) {
-        .diet-content img,
-        .diet-content video {
-            width: 70%;
-        }
-    }
-</style>
-
   <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -284,6 +212,7 @@
         </div>
     </div>
 </div>
+
 
 
 	<div class="scroll-container1">
@@ -415,6 +344,7 @@
 
 
 
+
 	<div class="scroll-container">
 		<div class="inner-scroll-container">
 		<div class="text2">
@@ -492,6 +422,7 @@
 		</div>
 		</div>
 	  </div>
+
 
 
       <div class="scroll-container1">
@@ -609,6 +540,7 @@
     </div>
 
 
+
 	  <div class="moving-background2">
 		<div class="overlay"></div>
 		<div class="content-of-moving-background">
@@ -619,6 +551,7 @@
 		</div>
 	</div>
 	</div>
+
 
 
 	<div class="site-footer">
@@ -710,6 +643,7 @@
 		</div>
 	</div>
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
 
 
 		<script src="/js/bootstrap.bundle.min.js"></script>
