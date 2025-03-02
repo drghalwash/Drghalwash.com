@@ -2,7 +2,7 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import Handlebars from 'handlebars';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env' });
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser'; // Added cookie-parser
 
