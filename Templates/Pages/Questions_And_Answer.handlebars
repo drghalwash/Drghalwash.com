@@ -510,21 +510,21 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 /* Add to your existing styles */
 .special-text {
-    color: #007bff; /* Solid blue color */
+    color: #007bff !important; /* Solid blue color */
     font-weight: bold;
     position: relative;
-    display: inline-block;
+    display: inline;
+    padding-bottom: 2px; /* Space for underline */
+    border-bottom: 1px dotted #007bff; /* Add subtle underline */
 }
 
+/* For backward compatibility */
 .specialtext {
     color: #007bff !important; /* Force blue color */
     font-weight: bold;
     position: relative;
-    display: inline;  /* Changed from inline-block */
+    display: inline;
     padding-bottom: 2px; /* Space for underline */
-    text-decoration: none;
-    background: none; /* Remove gradient background */
-    -webkit-text-fill-color: initial; /* Remove transparent text */
     border-bottom: 1px dotted #007bff; /* Add subtle underline */
 }
 
