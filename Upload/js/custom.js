@@ -9,9 +9,13 @@
 		once: true
 	});
 
-	// Only initialize Rellax if elements with .rellax class exist
-	if (document.querySelector('.rellax')) {
-		var rellax = new Rellax('.rellax');
+	// Safely initialize Rellax only if elements exist
+	try {
+		if (document.querySelector('.rellax')) {
+			var rellax = new Rellax('.rellax');
+		}
+	} catch (err) {
+		console.log('Element not found: .rellax');
 	}
 
 	var preloader = function() {
