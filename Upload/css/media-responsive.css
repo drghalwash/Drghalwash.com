@@ -1,0 +1,137 @@
+
+/* Universal Media Container Styles */
+.media-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin: 20px 0;
+}
+
+/* Image Styling */
+.media-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Make videos responsive with 16:9 aspect ratio */
+.video-container.aspect-16-9 {
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+}
+
+/* Make videos responsive with 4:3 aspect ratio */
+.video-container.aspect-4-3 {
+  padding-bottom: 75%; /* 4:3 Aspect Ratio */
+  height: 0;
+}
+
+/* Video iframe */
+.video-container iframe,
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Side-by-side layout for media and text */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.flex-container .media-section {
+  flex: 1 1 45%;
+  min-width: 300px;
+}
+
+.flex-container .text-section {
+  flex: 1 1 45%;
+  min-width: 300px;
+}
+
+/* Circular image style */
+.circular-image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Media highlighted with border */
+.bordered-media {
+  border: 3px solid #3d76d9;
+  padding: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
+  
+  .flex-container .media-section,
+  .flex-container .text-section {
+    flex: 1 1 100%;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .media-container img,
+  .video-container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+
+/* Ensure consistent image sizes in galleries */
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.gallery-container .gallery-item {
+  width: 100%;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+}
+
+.gallery-container .gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-container .gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Highlighted content (like instructions) */
+.highlighted-content {
+  background-color: #f8f9fa;
+  border-left: 4px solid #3d76d9;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
