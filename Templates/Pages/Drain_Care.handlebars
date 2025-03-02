@@ -330,12 +330,67 @@
                     </div>
                 </div>
                 <div class="drain-media-container">
-                <img src="/images/gallery/drain-care.jpg" alt="Drain Care" class="responsive-media">
-                <video controls class="responsive-media">
-                    <source src="/images/gallery/drain-care-video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+                    <img src="/images/gallery/drain-care.jpg" alt="Drain Care" class="responsive-media">
+                    <video controls class="responsive-media">
+                        <source src="/images/gallery/drain-care-video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <style>
+                    /* More specific responsive styles for images and videos */
+                    .drain-media-container {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 20px;
+                        margin: 30px auto;
+                        width: 100%;
+                        max-width: 1200px;
+                    }
+                    
+                    .responsive-media {
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        object-fit: cover;
+                        transition: transform 0.3s ease;
+                    }
+                    
+                    .responsive-media:hover {
+                        transform: scale(1.02);
+                    }
+                    
+                    /* Large screens */
+                    @media (min-width: 992px) {
+                        .responsive-media {
+                            flex: 0 0 45%;
+                            max-width: 45%;
+                            max-height: 400px;
+                        }
+                    }
+                    
+                    /* Medium screens */
+                    @media (min-width: 768px) and (max-width: 991px) {
+                        .responsive-media {
+                            flex: 0 0 45%;
+                            max-width: 45%;
+                            max-height: 350px;
+                        }
+                    }
+                    
+                    /* Small screens */
+                    @media (max-width: 767px) {
+                        .drain-media-container {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        .responsive-media {
+                            width: 90%;
+                            max-width: 450px;
+                            margin-bottom: 15px;
+                        }
+                    }
+                </style>
             </div>
         </div>
     </div>
@@ -562,33 +617,38 @@
 
 <script src="js/header.js"></script>
 <script>
-  const toggleButton = document.getElementById('toggle-button');
-  const menu = document.getElementById('menu');
-
-  // Toggle the menu visibility on button click
-  toggleButton.addEventListener('click', (event) => {
-    event.stopPropagation(); // Prevent click from propagating to the document
-    menu.classList.toggle('active');
-  });
-
-  // Close the menu when clicking outside of it
-  document.addEventListener('click', (event) => {
-    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
-      menu.classList.remove('active'); // Remove the active class if clicking outside
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('toggle-button');
+    const menu = document.getElementById('menu');
+    
+    if (toggleButton && menu) {
+      // Toggle the menu visibility on button click
+      toggleButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent click from propagating to the document
+        menu.classList.toggle('active');
+      });
+      
+      // Close the menu when clicking outside of it
+      document.addEventListener('click', (event) => {
+        if (menu && !menu.contains(event.target) && !toggleButton.contains(event.target)) {
+          menu.classList.remove('active'); // Remove the active class if clicking outside
+        }
+      });
+      
+      // Function to reset menu visibility for larger screens
+      const resetMenu = () => {
+        if (window.innerWidth > 768 && menu) {
+          menu.classList.remove('active'); // Remove the active class in desktop view
+        }
+      };
+      
+      // Listen for window resize events
+      window.addEventListener('resize', resetMenu);
+      
+      // Initial check to reset menu on page load
+      resetMenu();
     }
   });
-
-  // Function to reset menu visibility for larger screens
-  const resetMenu = () => {
-    if (window.innerWidth > 768) {
-      menu.classList.remove('active'); // Remove the active class in desktop view    }
-  };
-
-  // Listen for window resize events
-  window.addEventListener('resize', resetMenu);
-
-  // Initial check to reset menu on page load
-  resetMenu();
 </script>
 <script>
   // Select the navbar, logo, links, and toggle spans
