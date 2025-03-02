@@ -40,12 +40,11 @@ Return the response as a JSON object with the following structure:
         'X-Title': 'QA to Blog Converter'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-opus',
+        model: 'google/gemini-2.0-flash-thinking-exp:free',
         messages: [
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 4000
+        temperature: 0.7
       })
     });
 
