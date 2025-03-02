@@ -1,87 +1,113 @@
-/**
- * Accordion Manager - Controls accordion behavior across the site
- * Features:
- * - Only one accordion open at a time
- * - All accordions closed by default
- * - Consistent styling across pages
- */
+
 document.addEventListener('DOMContentLoaded', function() {
-  // Function to initialize all accordions on the page
+  // Function to initialize all accordions
   function initializeAccordions() {
-    // Get all accordion containers
-    const accordionContainers = document.querySelectorAll('.custom-accordion');
-
-    if (!accordionContainers.length) return;
-
-    // Process each accordion container
-    accordionContainers.forEach(container => {
-      // Find all collapse elements in this container
-      const collapseElements = container.querySelectorAll('.collapse');
-
+    // Close all accordion items except the first one on each page
+    document.querySelectorAll('.custom-accordion').forEach(accordion => {
+      const items = accordion.querySelectorAll('.accordion-item');
+      
       // Close all accordion items initially
-      collapseElements.forEach(collapse => {
-        collapse.classList.remove('show');
-
-        // Find the button that controls this collapse
-        const controlId = collapse.id;
-        const button = container.querySelector(`[data-bs-target="#${controlId}"]`);
-
-        if (button) {
-          button.classList.add('collapsed');
-          button.setAttribute('aria-expanded', 'false');
+      items.forEach((item, index) => {
+        const collapseEl = item.querySelector('.collapse');
+        if (collapseEl) {
+          if (index === 0) {
+            // Keep the first one open
+            collapseEl.classList.add('show');
+          } else {
+            // Close the rest
+            collapseEl.classList.remove('show');
+          }
         }
       });
+    });
 
-      // Add click event listeners to all toggle buttons
-      const toggleButtons = container.querySelectorAll('.btn-link');
+    // Set up click behavior for accordions
+    setupAccordionBehavior();
+    
+    // Style accordions based on page type
+    styleAccordions();
+  }
 
-      toggleButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-
-          // Get the target collapse element
-          const targetId = this.getAttribute('data-bs-target');
-          const targetCollapse = document.querySelector(targetId);
-
-          if (!targetCollapse) return;
-
-          // Check if the clicked item is already open
-          const isExpanded = this.getAttribute('aria-expanded') === 'true';
-
-          // Close all items in this accordion first
-          collapseElements.forEach(collapse => {
-            // Skip the target if we're opening it
-            if (collapse === targetCollapse && !isExpanded) return;
-
-            collapse.classList.remove('show');
-
-            // Find and update the corresponding button
-            const collapseId = collapse.id;
-            const collapseButton = container.querySelector(`[data-bs-target="#${collapseId}"]`);
-
-            if (collapseButton) {
-              collapseButton.classList.add('collapsed');
-              collapseButton.setAttribute('aria-expanded', 'false');
+  // Function to set up accordion click behavior
+  function setupAccordionBehavior() {
+    // Add click event listeners to all accordion buttons
+    document.querySelectorAll('.accordion-item .btn-link').forEach(button => {
+      button.addEventListener('click', function(e) {
+        // Get the parent accordion
+        const accordion = this.closest('.custom-accordion');
+        if (!accordion) return;
+        
+        // Get the target collapse element
+        const targetId = this.getAttribute('data-bs-target');
+        const target = document.querySelector(targetId);
+        if (!target) return;
+        
+        // Check if we should close other panels
+        const isMultiple = accordion.getAttribute('data-allow-multiple') === 'true';
+        if (!isMultiple) {
+          // Close all other items in this accordion
+          accordion.querySelectorAll('.collapse.show').forEach(item => {
+            if (item.id !== targetId.substring(1)) {
+              item.classList.remove('show');
+              
+              // Update the button's aria-expanded attribute
+              const otherButton = accordion.querySelector(`[data-bs-target="#${item.id}"]`);
+              if (otherButton) {
+                otherButton.setAttribute('aria-expanded', 'false');
+                otherButton.classList.add('collapsed');
+              }
             }
           });
+        }
+        
+        // Toggle the target
+        const isExpanded = target.classList.contains('show');
+        if (isExpanded) {
+          target.classList.remove('show');
+          this.setAttribute('aria-expanded', 'false');
+          this.classList.add('collapsed');
+        } else {
+          target.classList.add('show');
+          this.setAttribute('aria-expanded', 'true');
+          this.classList.remove('collapsed');
+        }
+      });
+    });
+  }
 
-          // Toggle the target item
-          if (isExpanded) {
-            // Close it if it was already open
-            targetCollapse.classList.remove('show');
-            this.classList.add('collapsed');
-            this.setAttribute('aria-expanded', 'false');
-          } else {
-            // Open it if it was closed
-            targetCollapse.classList.add('show');
-            this.classList.remove('collapsed');
-            this.setAttribute('aria-expanded', 'true');
+  // Function to apply styles to accordions
+  function styleAccordions() {
+    // Doctor profile page accordions
+    const doctorAccordions = document.querySelectorAll('#accordion_1');
+    
+    doctorAccordions.forEach(accordion => {
+      const buttons = accordion.querySelectorAll('.btn-link');
+      buttons.forEach(button => {
+        // Use a subtle gradient background
+        button.style.background = 'linear-gradient(to right, #f8f9fa, #e9ecef)';
+        button.style.color = '#333';
+        button.style.fontWeight = '600';
+        button.style.borderRadius = '4px';
+        button.style.padding = '12px 20px';
+        button.style.transition = 'all 0.3s ease';
+        button.style.border = '1px solid #dee2e6';
+        button.style.textDecoration = 'none';
+        button.style.position = 'relative';
+        
+        // Add hover effect
+        button.addEventListener('mouseenter', function() {
+          this.style.background = 'linear-gradient(to right, #e9ecef, #dee2e6)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('collapsed')) {
+            this.style.background = 'linear-gradient(to right, #f8f9fa, #e9ecef)';
           }
         });
       });
     });
 
-    // Special handling for Q&A page accordions
+    // Q&A page accordions
     const qaAccordions = document.querySelectorAll('.qa-right-column .custom-accordion');
 
     qaAccordions.forEach(accordion => {
@@ -89,9 +115,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
       accordionItems.forEach(item => {
         // Add curved styling to accordion items
-        item.style.borderRadius = '10px';
+        item.style.borderRadius = '8px';
         item.style.marginBottom = '10px';
         item.style.overflow = 'hidden';
+        item.style.border = '1px solid #dee2e6';
+        item.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
 
         // Find the button in this item
         const button = item.querySelector('.btn-link');
@@ -103,18 +131,43 @@ document.addEventListener('DOMContentLoaded', function() {
           button.style.textAlign = 'left';
           button.style.padding = '15px 20px';
           button.style.position = 'relative';
-          button.style.backgroundColor = '#1a2c55';
-          button.style.color = 'white';
+          button.style.backgroundColor = '#f8f9fa';
+          button.style.color = '#333';
           button.style.textDecoration = 'none';
           button.style.fontWeight = '500';
-          button.style.borderRadius = '5px';
+          button.style.borderRadius = '0';
+          button.style.transition = 'all 0.3s ease';
+          button.style.border = 'none';
+          
+          // Open state styling
+          if (!button.classList.contains('collapsed')) {
+            button.style.backgroundColor = '#f1f8ff';
+            button.style.color = '#0056b3';
+          }
+          
+          // Handle hover effect
+          button.addEventListener('mouseenter', function() {
+            if (this.classList.contains('collapsed')) {
+              this.style.backgroundColor = '#f0f0f0';
+            } else {
+              this.style.backgroundColor = '#e6f0ff';
+            }
+          });
+          
+          button.addEventListener('mouseleave', function() {
+            if (this.classList.contains('collapsed')) {
+              this.style.backgroundColor = '#f8f9fa';
+            } else {
+              this.style.backgroundColor = '#f1f8ff';
+            }
+          });
         }
 
         // Style the content area
         const collapseEl = item.querySelector('.collapse');
         if (collapseEl) {
           collapseEl.style.padding = '15px 20px';
-          collapseEl.style.backgroundColor = '#f8f9fa';
+          collapseEl.style.backgroundColor = 'white';
           collapseEl.style.borderTop = '1px solid #dee2e6';
         }
       });
@@ -123,7 +176,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize all accordions when DOM is loaded
   initializeAccordions();
-
-  // Re-initialize accordions when the page content might have changed
-  document.addEventListener('contentChanged', initializeAccordions);
 });
