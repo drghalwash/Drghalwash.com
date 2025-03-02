@@ -28,7 +28,6 @@
 	<link rel="stylesheet" href="css/header.css">
 
 
-
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 	@media (max-width: 700px) {
@@ -184,6 +183,79 @@
                         width: 100%;
                     }
                 }
+        /* Responsive media styling from edited code */
+        .media-section {
+          margin: 30px 0;
+        }
+        .media-section img, 
+        .media-section video {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          margin: 0 auto 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .media-section img,
+          .media-section video {
+            width: 100%;
+          }
+        }
+
+        @media (min-width: 769px) {
+          .media-section img,
+          .media-section video {
+            max-width: 80%;
+          }
+        }
+
+        /* Optional: For multiple images side by side on larger screens */
+        .media-gallery {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+          margin: 30px 0;
+        }
+
+        .media-gallery img,
+        .media-gallery video {
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+          .media-gallery img,
+          .media-gallery video {
+            width: 100%;
+          }
+        }
+
+        @media (min-width: 769px) {
+          .media-gallery img,
+          .media-gallery video {
+            width: 45%;
+          }
+        }
+        .section-padding {
+          padding: 50px 0; /* Adjust padding as needed */
+        }
+        .content-section h3, .content-section h4 {
+          margin-bottom: 15px; /* Adjust spacing as needed */
+        }
+        .content-section p {
+          margin-bottom: 20px; /* Adjust spacing as needed */
+        }
+        .content-section ul {
+          list-style-type: disc;
+          padding-left: 20px;
+        }
+        .content-section li {
+          margin-bottom: 10px; /* Adjust spacing as needed */
+        }
 </style>
 	<title>Drain Care Instructions</title>
 </head>
@@ -259,85 +331,58 @@
 		<p><a href="/Home">Home </a>> Patient Info > Drain Care</p>
 	</div>
 
-    <div class="container" style="padding: 50px 20px;">
+    <div class="section-padding">
+      <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h2 style="text-align: center; margin-bottom: 30px; color: #2367ef;">Dr. Mohammed Ghalwash - Dr. Khaled Ghalwash</h2>
-                <p style="text-align: center; font-style: italic; margin-bottom: 40px;">Surgical excellence through meticulous care and attention to detail</p>
+          <div class="col-lg-12">
+            <div class="section-title text-center">
+              <h2>Drain Care</h2>
+            </div>
 
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <p>Please watch this brief video on how to correctly strip, empty, and care for your Jackson-Pratt Drain:</p>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/watch?v=ComeOn" title="Jackson-Pratt Drain Care Instructions" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
+            <div class="content-section">
+              <h3>Important Information About Your Drain Care</h3>
+              <p>Managing your drains properly is a critical part of your recovery process. Our team has compiled this comprehensive guide to help you understand drain care procedures and ensure optimal healing.</p>
 
-                <div class="drain-instructions">
-                    <h2>Instructions for Stripping and Emptying The Drain:</h2>
+              <div class="media-section">
+                <h4>Understanding Your Surgical Drains</h4>
+                <p>Surgical drains are essential tools used to remove excess fluid from the surgical site, helping to prevent infection and promote healing.</p>
+                <img src="/images/drain-care-1.jpg" alt="Surgical Drain Example">
+              </div>
 
-                    <p><strong>Please be sure to fill out the drain record sheet after surgery. This will determine when your drains are ready to be removed.</strong></p>
-
-                    <h4 style="margin-top: 30px; color: #333;"><strong>STRIP the drains every 2 hours</strong></h4>
-                    <ul>
-                        <li>It is important to strip or "milk" the drainage tube in the direction going from the skin exit site toward the bulb. This is done by pinching the drainage tube with both hands and fingers close together, then sliding one hand down the compressed tube toward the bulb, then releasing. Dr. Romano calls this "pinch, strip, release".</li>
-                        <li>You will need to do this every two hours with about 3-4 repetitions.</li>
-                    </ul>
-
-                    <h4 style="margin-top: 30px; color: #333;"><strong>EMPTY the drains TWICE a day or approximately 12 hours apart or when they are half full</strong></h4>
-                    <ul>
-                        <li>Remove the stopper from the bulb's spout or drainage port. This will release the vacuum and the bulb will expand. Take note of the amount of drainage in the bulb by reading the numbers on the bulb.</li>
-                        <li><strong>Record the amount on the chart.</strong> If the drain fills up a lot, empty it more than two times a day. Then, discard any fluid. Flatten/squeeze the bulb to create a vacuum and plug the stopper back into the drainage hole. The drain should appear somewhat flat. <strong>If the drain is not flat, the suction is not working.</strong></li>
-                    </ul>
-
-                    <div class="important-note">
-                        <p><strong>This is what a Jackson-Pratt drain should look like if it's working properly. This is prior to the stopper being opened and the drain being emptied.</strong></p>
-                        <p>Remember to bring your output record with you to your post-operative appointments. The amount of drainage recorded below will determine when the drain will be removed.</p>
-                    </div>
-
-                    <div class="record-chart">
-                        <h4 style="text-align: center;">New Patient Information</h4>
-                        <p style="text-align: center; font-size: 0.9em;">Record drain output here:</p>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Morning Amount (ml)</th>
-                                    <th>Evening Amount (ml)</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="drain-media-container">
-                <img src="/images/gallery/drain-care.jpg" alt="Drain Care" class="responsive-media">
-                <video controls class="responsive-media">
-                    <source src="/images/gallery/drain-care-video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
+              <div class="media-section">
+                <h4>Drain Care Instructions</h4>
+                <p>Follow these step-by-step instructions to properly care for your drains:</p>
+                <video controls>
+                  <source src="/images/drain-care-video.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
                 </video>
+              </div>
+
+              <h4>Common Questions About Drain Care</h4>
+              <ul>
+                <li><strong>How often should I empty my drains?</strong> Empty your drains when they are half full or as instructed by your surgeon, typically 2-3 times per day.</li>
+                <li><strong>How do I measure the drainage?</strong> Use the measurement markings on the drainage bulb or a measuring cup to record the amount of drainage.</li>
+                <li><strong>When will my drains be removed?</strong> Drains are typically removed when drainage decreases to less than 30ml per 24-hour period, usually within 1-2 weeks after surgery.</li>
+              </ul>
+
+              <div class="media-gallery">
+                <img src="/images/drain-care-2.jpg" alt="Drain Care Process">
+                <img src="/images/drain-care-3.jpg" alt="Drain Emptying Procedure">
+              </div>
+
+              <h4>When to Call Your Doctor</h4>
+              <p>Contact your surgeon immediately if you experience any of the following:</p>
+              <ul>
+                <li>Fever above 101.5°F (38.6°C)</li>
+                <li>Increased pain, redness, or swelling around the drain site</li>
+                <li>Cloudy or foul-smelling drainage</li>
+                <li>Drain comes out or becomes dislodged</li>
+                <li>Significant increase in drainage volume</li>
+              </ul>
             </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="scroll-container1">
@@ -545,7 +590,6 @@
 		</div>
 	</div>
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
-
 
 
 	<script src="/js/bootstrap.bundle.min.js"></script>

@@ -28,7 +28,6 @@
 	<link rel="stylesheet" href="css/header.css">
 
 
-
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 	@media (max-width: 700px) {
@@ -126,6 +125,63 @@
             width: 100%;
         }
     }
+    /* Responsive media styling */
+            .media-section {
+              margin: 30px 0;
+            }
+            .media-section img, 
+            .media-section video {
+              max-width: 100%;
+              height: auto;
+              display: block;
+              margin: 0 auto 20px;
+              border-radius: 8px;
+              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+              .media-section img,
+              .media-section video {
+                width: 100%;
+              }
+            }
+
+            @media (min-width: 769px) {
+              .media-section img,
+              .media-section video {
+                max-width: 80%;
+              }
+            }
+
+            /* Optional: For multiple images side by side on larger screens */
+            .media-gallery {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 20px;
+              justify-content: center;
+              margin: 30px 0;
+            }
+
+            .media-gallery img,
+            .media-gallery video {
+              border-radius: 8px;
+              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            @media (max-width: 768px) {
+              .media-gallery img,
+              .media-gallery video {
+                width: 100%;
+              }
+            }
+
+            @media (min-width: 769px) {
+              .media-gallery img,
+              .media-gallery video {
+                width: 45%;
+              }
+            }
 </style>
 	<title>Diet and Nutrition </title>
 </head>
@@ -201,18 +257,69 @@
 		<p><a href="/Home">Home </a>> Patient Info > Diet and Nutrition</p>
 	</div>
 
+  <div class="section-padding">
   <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h2>Diet and Nutrition</h2>
-            <div class="diet-media-container">
-                <img src="/images/gallery/nutrition-guide.jpg" alt="Nutrition Guide" class="responsive-media">
-                <img src="/images/gallery/healthy-diet.jpg" alt="Healthy Diet" class="responsive-media">
-            </div>
+      <div class="col-lg-12">
+        <div class="section-title text-center">
+          <h2>Nutrition and Diet Guidelines</h2>
         </div>
-    </div>
-</div>
 
+        <div class="content-section">
+          <h3>Optimizing Your Nutrition for Recovery</h3>
+          <p>Proper nutrition plays a vital role in your recovery process. Following these dietary guidelines will help support healing and improve your overall results.</p>
+
+          <div class="media-section">
+            <h4>Pre-Surgery Nutrition</h4>
+            <p>In the weeks before surgery, focus on consuming a nutrient-rich diet to prepare your body for the procedure and recovery.</p>
+            <img src="/images/diet-presurgery.jpg" alt="Pre-Surgery Nutrition">
+          </div>
+
+          <h4>Key Nutritional Components for Healing</h4>
+          <ul>
+            <li><strong>Protein:</strong> Essential for tissue repair and immune function (lean meats, fish, eggs, legumes)</li>
+            <li><strong>Vitamin C:</strong> Supports collagen formation and wound healing (citrus fruits, berries, bell peppers)</li>
+            <li><strong>Zinc:</strong> Important for immune function and wound healing (oysters, beef, pumpkin seeds)</li>
+            <li><strong>Vitamin A:</strong> Supports epithelial tissue regeneration (sweet potatoes, carrots, spinach)</li>
+            <li><strong>Omega-3 Fatty Acids:</strong> Helps reduce inflammation (fatty fish, flaxseeds, walnuts)</li>
+          </ul>
+
+          <div class="media-gallery">
+            <img src="/images/diet-proteins.jpg" alt="Protein-Rich Foods">
+            <img src="/images/diet-vitamins.jpg" alt="Vitamin-Rich Foods">
+          </div>
+
+          <div class="media-section">
+            <h4>Meal Planning After Surgery</h4>
+            <p>Watch this helpful video on preparing nutritious, easy-to-digest meals for your recovery period:</p>
+            <video controls>
+              <source src="/images/diet-meal-planning.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <h4>Hydration Guidelines</h4>
+          <p>Proper hydration is crucial for recovery. Aim to drink at least 8-10 glasses of water daily, unless otherwise instructed by your surgeon.</p>
+
+          <h4>Foods to Avoid</h4>
+          <ul>
+            <li>Highly processed foods and refined sugars</li>
+            <li>Excessive sodium (can increase swelling)</li>
+            <li>Alcohol (interferes with healing and can interact with medications)</li>
+            <li>Caffeine (can be dehydrating)</li>
+          </ul>
+
+          <div class="media-section">
+            <h4>Sample Meal Plan</h4>
+            <img src="/images/diet-meal-plan.jpg" alt="Recovery Meal Plan">
+          </div>
+
+          <p><strong>Important:</strong> These are general guidelines. Always follow the specific dietary instructions provided by your surgeon and healthcare team.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 	<div class="scroll-container1">
@@ -343,8 +450,6 @@
 	  </div>
 
 
-
-
 	<div class="scroll-container">
 		<div class="inner-scroll-container">
 		<div class="text2">
@@ -422,7 +527,6 @@
 		</div>
 		</div>
 	  </div>
-
 
 
       <div class="scroll-container1">
@@ -504,7 +608,6 @@
 		</div>
 	  </div>
 
-
       <div class="photo-gallery">
         <div>
     <h1>New Patient Information</h1>
@@ -540,7 +643,6 @@
     </div>
 
 
-
 	  <div class="moving-background2">
 		<div class="overlay"></div>
 		<div class="content-of-moving-background">
@@ -551,7 +653,6 @@
 		</div>
 	</div>
 	</div>
-
 
 
 	<div class="site-footer">
@@ -643,7 +744,6 @@
 		</div>
 	</div>
 	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
-
 
 
 		<script src="/js/bootstrap.bundle.min.js"></script>
