@@ -575,6 +575,48 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
     background-color: rgba(0, 123, 255, 0.05);
 }
 
+/* First sentence emphasis - new */
+.first-sentence {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Benefit highlight styling - new */
+.benefit-highlight {
+    color: #2ecc71 !important;
+    font-weight: 600;
+    position: relative;
+    display: inline;
+    border-bottom: 1px dashed #2ecc71;
+}
+
+/* Enhanced styling for key phrases */
+.important-term {
+    font-weight: 700;
+    color: #16a085 !important; /* Emerald green */
+    padding: 0 2px;
+    position: relative;
+    display: inline-block;
+}
+
+.important-term::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(22, 160, 133, 0.3), rgba(22, 160, 133, 0));
+}
+
+/* Enhanced statistics styling */
+.marked {
+    background: linear-gradient(90deg, rgba(255, 224, 102, 0.35), rgba(255, 224, 102, 0.1));
+    padding: 0 4px;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
 .special-text::after {
     content: '';
     position: absolute;
