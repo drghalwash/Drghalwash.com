@@ -1,8 +1,11 @@
 // Import Supabase client
 import { createClient } from '@supabase/supabase-js';
+import { processBatchQuestionsToBlogs } from './openRouterService.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const supabaseUrl = 'https://drwismqxtzpptshsqphb.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
+const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 /**
@@ -125,6 +128,57 @@ const fetchGalleries = async () => {
 };
 
 /**
+ * Fetch questions from Supabase.
+ */
+const fetchQuestions = async (limit = 10) => {
+  try {
+    console.log('[Questions] Fetching questions for blog generation...');
+    const { data: questions, error } = await supabase
+      .from('questions')
+      .select('*')
+      .limit(limit);
+    
+    if (error) throw new Error(`Error fetching questions: ${error.message}`);
+    return questions;
+  } catch (error) {
+    console.error('[Error] Fetching questions:', error.message);
+    throw error;
+  }
+};
+
+/**
+ * Convert questions to blogs via OpenRouter API.
+ */
+const convertQuestionsToBlogsAPI = async (req, res) => {
+  try {
+    console.log('[API] Convert questions to blogs initiated');
+    
+    // Authentication check if needed
+    // if (!req.headers.authorization) {
+    //   return res.status(401).json({ error: 'Unauthorized' });
+    // }
+    
+    const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+    const questions = await fetchQuestions(limit);
+    
+    if (!questions || questions.length === 0) {
+      return res.status(200).json({ message: 'No questions found to process' });
+    }
+    
+    // Process questions to blogs using OpenRouter
+    const results = await processBatchQuestionsToBlogs(questions, supabase);
+    
+    res.status(200).json({
+      message: 'Question to blog conversion process completed',
+      stats: results
+    });
+  } catch (error) {
+    console.error('[API Error] Converting questions to blogs:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+/**
  * Blog Index Controller - Render Blogs Page
  */
 export const index = async (req, res) => {
@@ -200,4 +254,4 @@ export const readMore = async (req, res) => {
   }
 };
 
-export { fetchGalleries }
+export { fetchGalleries, convertQuestionsToBlogsAPI }
