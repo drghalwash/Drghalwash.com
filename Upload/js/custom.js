@@ -138,6 +138,17 @@
 	};
 	lightbox();
 
+  // Initialize Bootstrap components
+  if (typeof bootstrap !== 'undefined') {
+    // Use native Bootstrap initialization for tooltips, popovers, etc.
+    // but NOT for accordions (handled by accordion-manager.js)
+  }
+
+  var dropdowns = document.querySelectorAll('.has-children > a');
+
+
+	// Accordion functionality is now handled by accordion-manager.js
+	// This prevents conflicts with multiple accordion initializations
 
 
 })();
