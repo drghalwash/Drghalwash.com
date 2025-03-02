@@ -25,16 +25,100 @@ const getZonesWithDetails = async () => {
     if (questionsError) throw new Error(`[Questions] Error fetching questions: ${questionsError.message}`);
     console.log('[Questions] Questions fetched:', questions);
 
-    // Organize data hierarchically
+    // Intelligent text formatting system
+    const formatAnswerText = (text) => {
+      if (!text) return '';
+      
+      // Apply 10 verified formatting patterns
+      let formattedText = text;
+      
+      // 1. Medical terminology highlighting (specialty terms)
+      const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection)\b/gi;
+      formattedText = formattedText.replace(medicalTerms, '<span class="specialtext">$1</span>');
+      
+      // 2. Important terms emphasis (for quoted terms)
+      formattedText = formattedText.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
+      
+      // 3. Statistics & percentages highlight
+      formattedText = formattedText.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent)/gi, '<span class="marked">$1</span>');
+      
+      // 4. Bullet point detection and formatting
+      if (formattedText.match(/^[\s]*[-*•][\s]+.+$/gm)) {
+        const lines = formattedText.split('\n');
+        let inList = false;
+        let listContent = '';
+        
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].match(/^[\s]*[-*•][\s]+/)) {
+            if (!inList) {
+              listContent += '<ul>';
+              inList = true;
+            }
+            const content = lines[i].replace(/^[\s]*[-*•][\s]+/, '');
+            listContent += `<li>${content}</li>`;
+            lines[i] = ''; // Clear the line as it's now in the list
+          } else if (inList && lines[i].trim() !== '') {
+            listContent += '</ul>';
+            inList = false;
+            listContent += lines[i];
+            lines[i] = '';
+          } else if (lines[i].trim() !== '') {
+            listContent += lines[i];
+            lines[i] = '';
+          }
+        }
+        
+        if (inList) {
+          listContent += '</ul>';
+        }
+        
+        formattedText = listContent;
+      }
+      
+      // 5. Warning/caution highlighting
+      formattedText = formattedText.replace(/(warning|caution|important|note)[:!]\s*([^.!?]+[.!?])/gi, 
+                                    '<span class="alert-highlight">$1: $2</span>');
+      
+      // 6. Time periods & measurements formatting
+      formattedText = formattedText.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|cm|mm)\b/gi, 
+                                     '<span class="color-system">$1 $2</span>');
+      
+      // 7. Section heading detection
+      formattedText = formattedText.replace(/^([A-Za-z][^:]+):\s*$/gm, '<h4>$1</h4>');
+      
+      // 8. Proper paragraph structure
+      if (!formattedText.includes('<p>')) {
+        formattedText = formattedText.replace(/\n\n+/g, '</p><p>');
+        formattedText = `<p>${formattedText}</p>`;
+      }
+      
+      // 9. ALL CAPS emphasis
+      formattedText = formattedText.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
+      
+      // 10. Procedure/category highlighting
+      const procedures = [
+        'Breast Augmentation', 'Rhinoplasty', 'Liposuction', 'Facelift', 'Tummy Tuck',
+        'Breast Lift', 'Body Contouring', 'Botox', 'Fillers', 'Plastic Surgery'
+      ];
+      const procedureRegex = new RegExp(`\\b(${procedures.join('|')})\\b`, 'g');
+      formattedText = formattedText.replace(procedureRegex, '<span class="category-highlight">$1</span>');
+      
+      return formattedText;
+    };
+
+    // Organize data hierarchically with text formatting applied
     const organizedZones = zones.map((zone) => ({
       ...zone,
       categories: categories
         .filter((category) => category.zone_id === zone.id)
         .map((category) => ({
           ...category,
-          questions: questions.filter(
-            (question) => question.category_display_name === category.display_name
-          ),
+          questions: questions
+            .filter((question) => question.category_display_name === category.display_name)
+            .map((question) => ({
+              ...question,
+              answer: formatAnswerText(question.answer) // Apply formatting to each answer
+            })),
         })),
     }));
 

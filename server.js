@@ -45,7 +45,8 @@ app.use(cookieParser()); // Initialize cookie-parser
 
 // Handlebars Helpers
 Handlebars.registerHelper("hasQuestions", function (categories) {
-  return categories.some(category => category.questions && category.questions.length > 0);
+  if (!categories || !Array.isArray(categories)) return false;
+  return categories.some(category => category && category.questions && category.questions.length > 0);
 });
 
 Handlebars.registerHelper("json", function (context) {
