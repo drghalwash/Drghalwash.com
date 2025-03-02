@@ -9,7 +9,10 @@
 		once: true
 	});
 
-	var rellax = new Rellax('.rellax');
+	// Only initialize Rellax if elements with .rellax class exist
+	if (document.querySelector('.rellax')) {
+		var rellax = new Rellax('.rellax');
+	}
 
 	var preloader = function() {
 
@@ -33,11 +36,11 @@
 		}, 200);
 	};
 	preloader();
-	
+
 
 	var tinyslier = function() {
 
-		
+
 
 		var el = document.querySelectorAll('.wide-slider-testimonial');
 		if ( el.length > 0 ) {
@@ -64,7 +67,7 @@
 					350: {
 						items: 1
 					},
-					
+
 					500: {
 						items: 2
 					},
@@ -99,7 +102,7 @@
 					350: {
 						items: 1
 					},
-					
+
 					500: {
 						items: 2
 					},
