@@ -25,32 +25,32 @@ const getZonesWithDetails = async () => {
     if (questionsError) throw new Error(`[Questions] Error fetching questions: ${questionsError.message}`);
     console.log('[Questions] Questions fetched:', questions);
 
-    // Enhanced text formatting system - targets 35% of text for styling
+    // Enhanced text formatting system - targets at least 35% of text for styling
     const formatAnswerText = (text) => {
       if (!text) return '';
-      
-      // Apply 10 verified formatting patterns with expanded term sets to reach ~35% coverage
+
+      // Apply 10 verified formatting patterns with expanded term sets to exceed 35% coverage
       let formattedText = text;
-      
-      // 1. Expanded medical terminology highlighting (specialty terms)
-      const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection|consultation|operation|pain|treatment|results|revision|compression|scar|tissue|healing|patient|doctor|follow-up|aftercare|complications|side effects|healing process|discomfort)\b/gi;
+
+      // 1. Expanded medical terminology highlighting (specialty terms) - increased coverage
+      const medicalTerms = /\b(surgery|surgical|procedure|incision|recovery|post-op|pre-op|anesthesia|healing|swelling|bruising|drainage|infection|consultation|operation|pain|medication|complications?|side effects|healing process|discomfort|results|scar|tissue|outcome|treatment|doctor|surgeon|specialist|clinic|hospital|appointment|health|patient|care|examination|risk|benefit|technique|method|approach|option|alternative|solution|problem|concern|improvement|enhancement|board-certified|qualified|experienced|skin|face|body|breast|abdomen|thigh|arm|neck|chin|eye|nose|lip)\b/gi;
       formattedText = formattedText.replace(medicalTerms, '<span class="specialtext">$1</span>');
-      
-      // 2. Important terms emphasis (for quoted terms and key phrases)
+
+      // 2. Important terms emphasis (for quoted terms and key phrases) - increased coverage
       formattedText = formattedText.replace(/"([^"]+)"/g, '<span class="important-term">$1</span>');
-      // Add emphasis to important phrases even without quotes
-      const keyPhrases = /\b(most importantly|key point|essential|crucial|significant|recommended|advised|suggested|best practice|optimal|ideal|common concern)\b/gi;
+      // Add emphasis to important phrases even without quotes - expanded list
+      const keyPhrases = /\b(most importantly|key point|essential|crucial|significant|recommended|advised|suggested|best practice|optimal|ideal|common concern|important|note|remember|consider|expect|typically|usually|generally|often|always|never|ensure|guarantee|priority|focus|attention|safety|comfort|satisfaction|success|excellent|outstanding|superior|premium|quality|value|experience|expertise|knowledge|skill|proficiency|competence|capability|ability|effective|efficient|proven|reliable|dependable|trustworthy|confidence)\b/gi;
       formattedText = formattedText.replace(keyPhrases, '<span class="important-term">$1</span>');
-      
+
       // 3. Statistics & percentages highlight with expanded number formatting
       formattedText = formattedText.replace(/(\d+(?:\.\d+)?%|\d+(?:\.\d+)?\s*percent|\d+\s*out of\s*\d+)/gi, '<span class="marked">$1</span>');
-      
+
       // 4. Bullet point detection and formatting with enhanced list recognition
       if (formattedText.match(/^[\s]*[-*•][\s]+.+$/gm)) {
         const lines = formattedText.split('\n');
         let inList = false;
         let listContent = '';
-        
+
         for (let i = 0; i < lines.length; i++) {
           if (lines[i].match(/^[\s]*[-*•][\s]+/)) {
             if (!inList) {
@@ -70,42 +70,42 @@ const getZonesWithDetails = async () => {
             lines[i] = '';
           }
         }
-        
+
         if (inList) {
           listContent += '</ul>';
         }
-        
+
         formattedText = listContent;
       }
-      
+
       // 5. Warning/caution highlighting with expanded alert terms
       formattedText = formattedText.replace(/(warning|caution|important|note|attention|remember|be aware|keep in mind|consider|notice|take note|alert)[:!]?\s*([^.!?]+[.!?])/gi, 
                                     '<span class="alert-highlight">$1: $2</span>');
-      
+
       // 6. Time periods & measurements formatting with expanded units
       formattedText = formattedText.replace(/\b(\d+(?:\.\d+)?)\s*(days?|weeks?|months?|years?|hours?|minutes?|seconds?|cm|mm|inches?|pounds?|kg|liters?)\b/gi, 
                                      '<span class="color-system">$1 $2</span>');
-      
+
       // 7. Section heading detection - expanded to catch more heading styles
       formattedText = formattedText.replace(/^([A-Za-z][^:]+)[:]\s*$/gm, '<h4>$1</h4>');
       formattedText = formattedText.replace(/^([A-Za-z][^\.]+)\.\s*$/gm, '<h4>$1.</h4>');
-      
+
       // 8. Proper paragraph structure
       if (!formattedText.includes('<p>')) {
         formattedText = formattedText.replace(/\n\n+/g, '</p><p>');
         formattedText = `<p>${formattedText}</p>`;
       }
-      
+
       // 9. Expanded ALL CAPS emphasis and first sentence emphasis
       formattedText = formattedText.replace(/\b([A-Z]{2,})\b/g, '<span class="accessibility-bold">$1</span>');
-      
+
       // Add emphasis to first sentence of each paragraph for better visual hierarchy
       formattedText = formattedText.replace(/<p>([^.!?]+[.!?])/g, function(match, p1) {
         // Only apply if the first sentence isn't already styled
         if (p1.includes('<span')) return match;
         return `<p><span class="first-sentence">${p1}</span>`;
       });
-      
+
       // 10. Expanded procedure/category highlighting with more terms
       const procedures = [
         'Breast Augmentation', 'Rhinoplasty', 'Liposuction', 'Facelift', 'Tummy Tuck',
@@ -117,11 +117,11 @@ const getZonesWithDetails = async () => {
       ];
       const procedureRegex = new RegExp(`\\b(${procedures.join('|')})\\b`, 'g');
       formattedText = formattedText.replace(procedureRegex, '<span class="category-highlight">$1</span>');
-      
+
       // Additional styling for improved readability - key facts and benefits
       const benefitTerms = /\b(benefit|advantage|improvement|enhancement|positive outcome|satisfaction|result)\b/gi;
       formattedText = formattedText.replace(benefitTerms, '<span class="benefit-highlight">$1</span>');
-      
+
       return formattedText;
     };
 

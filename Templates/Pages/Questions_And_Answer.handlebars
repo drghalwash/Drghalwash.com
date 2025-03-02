@@ -710,6 +710,17 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   <script>
     // Use triple curly braces to output unescaped JSON.
     window.zonesData = {{{json zones}}};
+    
+    // Define hasQuestions helper function for Handlebars
+    Handlebars.registerHelper('hasQuestions', function(categories) {
+      if (!categories || !categories.length) return false;
+      for (let i = 0; i < categories.length; i++) {
+        if (categories[i].questions && categories[i].questions.length > 0) {
+          return true;
+        }
+      }
+      return false;
+    });
   </script>
 <!-- Include search.js for search functionality -->
 <script src="/js/search.js"></script>
@@ -765,7 +776,7 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
                     </button>
                   </h2>
                   <div id="collapse{{this.id}}" class="collapse">
-                    <div class="accordion-body">{{{this.answer}}}</div> <!-- Render HTML safely -->
+                    <div class="accordion-body qa-answer">{{{this.answer}}}</div> <!-- Render HTML safely with custom class -->
                   </div>
                 </div>
               {{/each}}
@@ -793,47 +804,84 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
-    // Handle clicks on category names in the Q&A area
-    document.querySelectorAll('.custom-accordion h4').forEach(categoryHeader => {
-        categoryHeader.addEventListener('click', () => {
-            const categoryId = categoryHeader.id; // Get the clicked category's ID
-
-            // Find related categories from zonesData
-            const relatedCategories = [];
-            window.zonesData.forEach(zone => {
-                zone.categories.forEach(category => {
-                    if (category.technical_id !== categoryId) {
-                        relatedCategories.push(category.display_name);
-                    }
+    // Safely select elements with error checking
+    const accordionHeaders = document.querySelectorAll('.custom-accordion h4');
+    const modal = document.getElementById('categoryModal');
+    const modalCategories = document.getElementById('modalCategories');
+    const closeBtn = modal ? modal.querySelector('.close') : null;
+    
+    // Only set up event handlers if elements exist
+    if (accordionHeaders.length > 0 && modal && modalCategories) {
+        // Handle clicks on category names in the Q&A area
+        accordionHeaders.forEach(categoryHeader => {
+            categoryHeader.addEventListener('click', () => {
+                const categoryId = categoryHeader.id; // Get the clicked category's ID
+                
+                // Find related categories from zonesData
+                const relatedCategories = [];
+                if (window.zonesData) {
+                    window.zonesData.forEach(zone => {
+                        if (zone.categories) {
+                            zone.categories.forEach(category => {
+                                if (category.technical_id !== categoryId) {
+                                    relatedCategories.push(category.display_name);
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                // Populate the modal with related categories
+                modalCategories.innerHTML = ''; // Clear previous content
+                relatedCategories.forEach(categoryName => {
+                    const item = document.createElement('div');
+                    item.textContent = categoryName;
+                    modalCategories.appendChild(item);
                 });
+                
+                // Show the modal
+                modal.style.display = 'block';
             });
-
-            // Populate the modal with related categories
-            const modalCategories = document.getElementById('modalCategories');
-            modalCategories.innerHTML = ''; // Clear previous content
-            relatedCategories.forEach(categoryName => {
-                const item = document.createElement('div');
-                item.textContent = categoryName;
-                modalCategories.appendChild(item);
-            });
-
-            // Show the modal
-            document.getElementById('categoryModal').style.display = 'block';
         });
-    });
-
-    // Close modal functionality
-    document.querySelector('.close').addEventListener('click', () => {
-        document.getElementById('categoryModal').style.display = 'none';
-    });
-
-    // Close modal when clicking outside of it
-    window.addEventListener('click', (event) => {
-        const modal = document.getElementById('categoryModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
+        
+        // Close modal functionality
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
         }
-    });
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+    
+    // Remove console errors from missing elements
+    const scrollBtns = {
+        top: document.getElementById('scrollTopBtn'),
+        bottom: document.getElementById('scrollBottomBtn')
+    };
+    
+    if (scrollBtns.top && scrollBtns.bottom) {
+        // Scroll to the Top
+        scrollBtns.top.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Scroll to the Bottom
+        scrollBtns.bottom.addEventListener('click', function () {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
 });
 </script>
 
@@ -946,6 +994,43 @@ text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 		<script src="/js/glightbox.min.js"></script>
 		<script src="/js/custom.js"></script>
 		<script src="/js/accordion-manager.js"></script>
+<script>
+  // Bootstrap accordion functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all accordion items
+    const accordionBtns = document.querySelectorAll('.accordion-item .btn-link');
+    
+    if (accordionBtns.length > 0) {
+      accordionBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the target collapse element
+          const targetId = this.getAttribute('data-bs-target');
+          if (!targetId) return;
+          
+          const targetCollapse = document.querySelector(targetId);
+          if (!targetCollapse) return;
+          
+          // Toggle the collapse state
+          if (targetCollapse.classList.contains('show')) {
+            targetCollapse.classList.remove('show');
+          } else {
+            // First close all other open items
+            document.querySelectorAll('.accordion-item .collapse.show').forEach(item => {
+              if (item.id !== targetId.substring(1)) { // Remove the # from targetId
+                item.classList.remove('show');
+              }
+            });
+            
+            // Open this item
+            targetCollapse.classList.add('show');
+          }
+        });
+      });
+    }
+  });
+</script>
 
 
 
