@@ -267,8 +267,8 @@
 
                 <div style="text-align: center; margin-bottom: 30px;">
                     <p>Please watch this brief video on how to correctly strip, empty, and care for your Jackson-Pratt Drain:</p>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/watch?v=ComeOn" title="Jackson-Pratt Drain Care Instructions" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="ratio ratio-16x9" style="max-width: 800px; margin: 0 auto;">
+                        <iframe src="https://www.youtube.com/embed/watch?v=ComeOn" title="Jackson-Pratt Drain Care Instructions" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -329,16 +329,9 @@
                         </table>
                     </div>
                 </div>
-                <div class="drain-media-container">
-                    <img src="/images/gallery/drain-care.jpg" alt="Drain Care" class="responsive-media">
-                    <video controls class="responsive-media">
-                        <source src="/images/gallery/drain-care-video.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
                 
                 <style>
-                    /* More specific responsive styles for images and videos */
+                    /* Improved responsive styles for images and videos */
                     .drain-media-container {
                         display: flex;
                         flex-wrap: wrap;
@@ -349,33 +342,32 @@
                         max-width: 1200px;
                     }
                     
+                    .media-item {
+                        flex: 1 1 45%;
+                        min-width: 300px;
+                        max-width: 550px;
+                        aspect-ratio: 16/9;
+                        position: relative;
+                    }
+                    
                     .responsive-media {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
                         border-radius: 8px;
                         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        object-fit: cover;
                         transition: transform 0.3s ease;
+                        background-color: #f8f9fa;
+                    }
+                    
+                    .video-container video {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
                     }
                     
                     .responsive-media:hover {
                         transform: scale(1.02);
-                    }
-                    
-                    /* Large screens */
-                    @media (min-width: 992px) {
-                        .responsive-media {
-                            flex: 0 0 45%;
-                            max-width: 45%;
-                            max-height: 400px;
-                        }
-                    }
-                    
-                    /* Medium screens */
-                    @media (min-width: 768px) and (max-width: 991px) {
-                        .responsive-media {
-                            flex: 0 0 45%;
-                            max-width: 45%;
-                            max-height: 350px;
-                        }
                     }
                     
                     /* Small screens */
@@ -384,9 +376,10 @@
                             flex-direction: column;
                             align-items: center;
                         }
-                        .responsive-media {
-                            width: 90%;
-                            max-width: 450px;
+                        
+                        .media-item {
+                            width: 100%;
+                            max-width: 500px;
                             margin-bottom: 15px;
                         }
                     }
@@ -398,7 +391,7 @@
     <div class="scroll-container1">
 		<div class="inner-scroll-container">
 			<div class="scroll-image1">
-				<img class="scrollable" src="/images/Drain_Care/drain-care.jpg" alt="Jackson-Pratt Drain" />
+				<img class="scrollable" src="/images/Drain_Care/drain-care.jpg" alt="Jackson-Pratt Drain" style="aspect-ratio: 4/3; object-fit: contain;" />
 			</div>
 		<div class="text">
 			<h4 class="heading">Types of Surgical Drains</h4>
@@ -461,7 +454,7 @@
 			<p class="p">Drain removal is a quick procedure performed in our office. While you may feel a brief, pulling sensation, most patients find the process less uncomfortable than anticipated. After removal, a small dressing will be placed over the site, which can typically be removed after 48 hours.</p>
 		</div>
 		<div class="scroll-image">
-		  <img class="scrollable" src="/images/Drain_Care/drain-care2.jpg" alt="Proper Drain Care" />
+		  <img class="scrollable" src="/images/Drain_Care/drain-care2.jpg" alt="Proper Drain Care" style="aspect-ratio: 4/3; object-fit: contain;" />
 		</div>
 		</div>
 	</div>

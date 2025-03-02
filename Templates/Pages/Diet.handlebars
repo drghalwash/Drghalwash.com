@@ -205,10 +205,173 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Diet and Nutrition</h2>
-            <div class="diet-media-container">
-                <img src="/images/gallery/nutrition-guide.jpg" alt="Nutrition Guide" class="responsive-media">
-                <img src="/images/gallery/healthy-diet.jpg" alt="Healthy Diet" class="responsive-media">
+            
+            <!-- Navigation Tabs -->
+            <div class="diet-nav-tabs">
+                <div class="nav-tab active" data-target="nutrition-guide">
+                    <img src="/images/icons/nutrition-icon.png" alt="" class="tab-icon">
+                    <span>Nutrition Guide</span>
+                </div>
+                <div class="nav-tab" data-target="healthy-diet">
+                    <img src="/images/icons/healthy-diet-icon.png" alt="" class="tab-icon">
+                    <span>Healthy Diet</span>
+                </div>
             </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="nutrition-guide">
+                <div class="diet-media-container">
+                    <img src="/images/gallery/nutrition-guide.jpg" alt="Nutrition Guide" class="responsive-media">
+                    <div class="media-description">
+                        <h3>Nutrition Guidelines for Recovery</h3>
+                        <p>Our comprehensive guide provides a general overview of nutritional guidelines and dietary advice tailored to your specific needs and medical history. Consult with your surgeon or a registered dietitian for personalized recommendations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="healthy-diet">
+                <div class="diet-media-container">
+                    <img src="/images/gallery/healthy-diet.jpg" alt="Healthy Diet" class="responsive-media">
+                    <div class="media-description">
+                        <h3>Balanced Diet for Optimal Healing</h3>
+                        <p>A well-balanced diet should include plenty of protein from lean sources, fruits, vegetables, and healthy proteins to support optimal healing. These recommendations are tailored to enhance recovery and reduce complications following surgery.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                /* Tab Navigation Styling */
+                .diet-nav-tabs {
+                    display: flex;
+                    justify-content: center;
+                    margin: 30px 0 20px;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                }
+                
+                .nav-tab {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    border-radius: 30px;
+                    background-color: #f8f9fa;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                }
+                
+                .nav-tab.active {
+                    background-color: #2367ef;
+                    color: white;
+                }
+                
+                .tab-icon {
+                    width: 20px;
+                    height: 20px;
+                    object-fit: contain;
+                }
+                
+                /* Tab Content Styling */
+                .tab-content {
+                    display: none;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                
+                .tab-content.active {
+                    display: block;
+                    opacity: 1;
+                }
+                
+                /* Media Container Updates */
+                .diet-media-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 20px;
+                    margin: 20px 0 40px;
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                }
+                
+                .responsive-media {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    transition: transform 0.3s ease;
+                }
+                
+                .responsive-media:hover {
+                    transform: scale(1.02);
+                }
+                
+                .media-description {
+                    text-align: center;
+                    max-width: 90%;
+                }
+                
+                .media-description h3 {
+                    color: #2367ef;
+                    margin-bottom: 15px;
+                }
+                
+                @media (min-width: 768px) {
+                    .diet-media-container {
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                    }
+                    
+                    .responsive-media {
+                        max-width: 45%;
+                        margin: 0 10px;
+                    }
+                    
+                    .media-description {
+                        max-width: 100%;
+                        padding: 0 20px;
+                    }
+                }
+                
+                @media (max-width: 767px) {
+                    .responsive-media {
+                        width: 100%;
+                    }
+                    
+                    .nav-tab {
+                        padding: 8px 15px;
+                        font-size: 14px;
+                    }
+                }
+            </style>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Get all tabs and content
+                    const tabs = document.querySelectorAll('.nav-tab');
+                    const contents = document.querySelectorAll('.tab-content');
+                    
+                    // Add click handlers to tabs
+                    tabs.forEach(tab => {
+                        tab.addEventListener('click', function() {
+                            // Remove active class from all tabs and contents
+                            tabs.forEach(t => t.classList.remove('active'));
+                            contents.forEach(c => c.classList.remove('active'));
+                            
+                            // Add active class to clicked tab
+                            this.classList.add('active');
+                            
+                            // Show corresponding content
+                            const target = this.getAttribute('data-target');
+                            document.getElementById(target).classList.add('active');
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>
