@@ -24,6 +24,22 @@ const LOG_LEVEL_PRIORITY = {
   [LOG_LEVELS.TRACE]: 4
 };
 
+// ANSI color codes for console output
+const COLORS = {
+  RESET: '\x1b[0m',
+  RED: '\x1b[31m',
+  YELLOW: '\x1b[33m',
+  GREEN: '\x1b[32m',
+  BLUE: '\x1b[34m',
+  MAGENTA: '\x1b[35m',
+  CYAN: '\x1b[36m',
+  WHITE: '\x1b[37m',
+  BRIGHT_RED: '\x1b[91m',
+  BRIGHT_GREEN: '\x1b[92m',
+  BRIGHT_YELLOW: '\x1b[93m',
+  BRIGHT_BLUE: '\x1b[94m'
+};
+
 /**
  * Determines if a log at the given level should be shown
  */
@@ -36,7 +52,27 @@ const shouldLog = (level) => {
  */
 const formatLogMessage = (level, module, message) => {
   const timestamp = new Date().toISOString();
-  return `[${timestamp}] [${level}] [${module}] ${message}`;
+  let color = COLORS.WHITE;
+  
+  switch(level) {
+    case LOG_LEVELS.ERROR:
+      color = COLORS.BRIGHT_RED;
+      break;
+    case LOG_LEVELS.WARN:
+      color = COLORS.BRIGHT_YELLOW;
+      break;
+    case LOG_LEVELS.INFO:
+      color = COLORS.BRIGHT_GREEN;
+      break;
+    case LOG_LEVELS.DEBUG:
+      color = COLORS.BRIGHT_BLUE;
+      break;
+    case LOG_LEVELS.TRACE:
+      color = COLORS.CYAN;
+      break;
+  }
+  
+  return `${color}[${timestamp}] [${level}] [${module}]${COLORS.RESET} ${message}`;
 };
 
 /**
@@ -93,8 +129,35 @@ const logDbOperation = (logger, operation, tableName, data = null, error = null)
   logger.debug(`${operation} operation successful on ${tableName}`, { data });
 };
 
+/**
+ * Function to inspect database record count
+ */
+const inspectDatabaseTable = async (supabase, tableName) => {
+  try {
+    console.log(`${COLORS.BRIGHT_YELLOW}Checking for ${tableName} in database...${COLORS.RESET}`);
+    const { data, error, count } = await supabase
+      .from(tableName)
+      .select('*', { count: 'exact', head: true });
+      
+    if (error) {
+      console.error(`${COLORS.BRIGHT_RED}Error checking ${tableName}: ${error.message}${COLORS.RESET}`);
+      return;
+    }
+    
+    console.log(`${COLORS.BRIGHT_YELLOW}Total ${tableName} in database: ${COLORS.BRIGHT_GREEN}${count}${COLORS.RESET}`);
+    if (count === 0) {
+      console.log(`${COLORS.BRIGHT_YELLOW}No ${tableName} found in database.${COLORS.RESET}`);
+    }
+    
+    return { count, error };
+  } catch (err) {
+    console.error(`${COLORS.BRIGHT_RED}Failed to inspect ${tableName}: ${err.message}${COLORS.RESET}`);
+  }
+};
+
 export {
   createLogger,
   LOG_LEVELS,
-  logDbOperation
+  logDbOperation,
+  inspectDatabaseTable
 };

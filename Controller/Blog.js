@@ -149,13 +149,24 @@ const fetchQuestions = async (limit = 10) => {
       throw new Error(`Error fetching questions: ${error.message}`);
     }
     
-    // If no questions are found or there's an issue with the structure, log detailed info
+    // If no questions are found or there's an issue with the structure, try the questions_rows table
     if (!questions || questions.length === 0) {
-      console.log('[Questions] No questions found in the questions table. Checking for alternative data sources...');
+      console.log('[Questions] No questions found in the questions table. Trying questions_rows table...');
       
-      // You could add alternative data sources here, such as a different table
-      // For now, we'll just return an empty array
-      return [];
+      const { data: rowQuestions, error: rowsError } = await supabase
+        .from('questions_rows')
+        .select('*')
+        .limit(limit);
+        
+      if (rowsError) {
+        console.error('[Questions] Error fetching from questions_rows table:', rowsError.message);
+      } else if (rowQuestions && rowQuestions.length > 0) {
+        console.log(`[Questions] Found ${rowQuestions.length} questions in questions_rows table`);
+        questions = rowQuestions;
+      } else {
+        console.log('[Questions] No questions found in questions_rows table either');
+        return [];
+      }
     }
     
     console.log(`[Questions] Successfully fetched ${questions.length} questions`);
@@ -165,7 +176,7 @@ const fetchQuestions = async (limit = 10) => {
     const cleanedQuestions = questions.map(q => {
       // Make sure we have all the required fields
       return {
-        id: q.id || Date.now(), // Fallback to timestamp if no ID
+        id: q.id || q.question_id || Date.now(), // Try different id fields
         question: q.question || q.question_text || '',
         answer: q.answer || q.answer_text || '',
         category_display_name: q.category_display_name || 'Uncategorized',
@@ -173,8 +184,17 @@ const fetchQuestions = async (limit = 10) => {
       };
     });
     
-    console.log(`[Questions] Cleaned and normalized ${cleanedQuestions.length} questions`);
-    return cleanedQuestions;
+    // Filter out questions with empty values
+    const validQuestions = cleanedQuestions.filter(q => 
+      q.question.trim() !== '' && q.answer.trim() !== ''
+    );
+    
+    if (validQuestions.length < cleanedQuestions.length) {
+      console.log(`[Questions] Filtered out ${cleanedQuestions.length - validQuestions.length} invalid questions`);
+    }
+    
+    console.log(`[Questions] Final set of ${validQuestions.length} valid questions`);
+    return validQuestions;
   } catch (error) {
     console.error('[Error] Fetching questions:', error.message);
     console.error('[Error] Stack trace:', error.stack);

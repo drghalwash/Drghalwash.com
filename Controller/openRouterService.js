@@ -108,12 +108,42 @@ Return the response as a JSON object with the following structure:
  */
 export const processBatchQuestionsToBlogs = async (questionsData, supabase) => {
   console.log(`[OpenRouter] Processing batch of ${questionsData.length} questions to blogs`);
+  
+  // Check if supabase connection is valid
+  try {
+    const { data: healthCheck, error: healthError } = await supabase.from('blogs').select('id').limit(1);
+    if (healthError) {
+      console.error('[OpenRouter] Supabase connection error:', healthError.message);
+      throw new Error(`Database connection error: ${healthError.message}`);
+    }
+    console.log('[OpenRouter] Database connection verified');
+  } catch (connError) {
+    console.error('[OpenRouter] Failed to verify database connection:', connError.message);
+    throw connError;
+  }
+  
+  if (questionsData.length === 0) {
+    console.warn('[OpenRouter] Empty questions data provided, nothing to process');
+    return {
+      success: 0,
+      failures: 0,
+      errors: [],
+      message: 'No questions data provided'
+    };
+  }
+  
   console.log('[OpenRouter] Question data structure:', JSON.stringify(questionsData[0] ? Object.keys(questionsData[0]) : 'No data'));
+  console.log('[OpenRouter] First question preview:', 
+    questionsData[0] ? 
+    `ID: ${questionsData[0].id}, Question: "${questionsData[0].question?.substring(0, 30)}...", Answer length: ${questionsData[0].answer?.length || 0}` : 
+    'No question data'
+  );
   
   const results = {
     success: 0,
     failures: 0,
-    errors: []
+    errors: [],
+    processingDetails: []
   };
   
   for (const item of questionsData) {
