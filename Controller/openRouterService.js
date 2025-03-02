@@ -125,7 +125,7 @@ export const processBatchQuestionsToBlogs = async (questionsData, supabase) => {
           slug: slug,
           read_more_titles: sections.titles || [],
           read_more_texts: sections.texts || [],
-          category_technical_id: 1, // Default category - adjust as needed
+          category_display_name: 1, // Default category - adjust as needed
           tags: blogData.tags,
           image_url: 'default-blog-image.jpg', // Default image - adjust as needed
           source_question_id: item.id,
