@@ -133,15 +133,47 @@ const fetchGalleries = async () => {
 const fetchQuestions = async (limit = 10) => {
   try {
     console.log('[Questions] Fetching questions for blog generation...');
-    const { data: questions, error } = await supabase
+    
+    // First try to get from the questions table
+    let { data: questions, error } = await supabase
       .from('questions')
       .select('*')
       .limit(limit);
     
-    if (error) throw new Error(`Error fetching questions: ${error.message}`);
-    return questions;
+    if (error) {
+      console.error('[Questions] Error fetching from questions table:', error.message);
+      throw new Error(`Error fetching questions: ${error.message}`);
+    }
+    
+    // If no questions are found or there's an issue with the structure, log detailed info
+    if (!questions || questions.length === 0) {
+      console.log('[Questions] No questions found in the questions table. Checking for alternative data sources...');
+      
+      // You could add alternative data sources here, such as a different table
+      // For now, we'll just return an empty array
+      return [];
+    }
+    
+    console.log(`[Questions] Successfully fetched ${questions.length} questions`);
+    console.log('[Questions] Sample question structure:', JSON.stringify(Object.keys(questions[0])));
+    
+    // Clean up the data to ensure it has the right format
+    const cleanedQuestions = questions.map(q => {
+      // Make sure we have all the required fields
+      return {
+        id: q.id || Date.now(), // Fallback to timestamp if no ID
+        question: q.question || q.question_text || '',
+        answer: q.answer || q.answer_text || '',
+        category_display_name: q.category_display_name || 'Uncategorized',
+        // Add any other fields that need to be normalized
+      };
+    });
+    
+    console.log(`[Questions] Cleaned and normalized ${cleanedQuestions.length} questions`);
+    return cleanedQuestions;
   } catch (error) {
     console.error('[Error] Fetching questions:', error.message);
+    console.error('[Error] Stack trace:', error.stack);
     throw error;
   }
 };
@@ -159,14 +191,31 @@ const convertQuestionsToBlogsAPI = async (req, res) => {
     // }
     
     const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+    console.log(`[API] Fetching up to ${limit} questions`);
+    
     const questions = await fetchQuestions(limit);
+    console.log(`[API] Fetched ${questions ? questions.length : 0} questions`);
     
     if (!questions || questions.length === 0) {
       return res.status(200).json({ message: 'No questions found to process' });
     }
     
+    // Log the structure of the first question for debugging
+    if (questions.length > 0) {
+      console.log('[API] First question structure:', JSON.stringify(Object.keys(questions[0])));
+      console.log('[API] First question sample:', JSON.stringify({
+        id: questions[0].id,
+        question: questions[0].question ? questions[0].question.substring(0, 50) + '...' : 'N/A',
+        answer: questions[0].answer ? questions[0].answer.substring(0, 50) + '...' : 'N/A',
+        category: questions[0].category_display_name
+      }));
+    }
+    
     // Process questions to blogs using OpenRouter
+    console.log('[API] Calling processBatchQuestionsToBlogs with questions data');
     const results = await processBatchQuestionsToBlogs(questions, supabase);
+    
+    console.log('[API] Process completed with results:', JSON.stringify(results));
     
     res.status(200).json({
       message: 'Question to blog conversion process completed',
@@ -174,6 +223,7 @@ const convertQuestionsToBlogsAPI = async (req, res) => {
     });
   } catch (error) {
     console.error('[API Error] Converting questions to blogs:', error.message);
+    console.error('[API Error] Stack trace:', error.stack);
     res.status(500).json({ error: error.message });
   }
 };
