@@ -1,61 +1,100 @@
 
 /**
- * Enhanced logging utility for debugging
+ * Enhanced logging utility for debugging and tracing
  */
 
-// Enable debug logs
-const DEBUG = true;
-
-// Log levels
-const LEVELS = {
+// Different log levels
+const LOG_LEVELS = {
+  ERROR: 'ERROR',
+  WARN: 'WARN',
   INFO: 'INFO',
   DEBUG: 'DEBUG',
-  WARN: 'WARN',
-  ERROR: 'ERROR'
+  TRACE: 'TRACE'
 };
 
-// Utility for formatting dates
-const formatDate = () => {
-  const now = new Date();
-  return now.toISOString();
+// Configure the current log level (adjust as needed)
+const CURRENT_LOG_LEVEL = process.env.LOG_LEVEL || LOG_LEVELS.DEBUG;
+
+// Log level priorities
+const LOG_LEVEL_PRIORITY = {
+  [LOG_LEVELS.ERROR]: 0,
+  [LOG_LEVELS.WARN]: 1,
+  [LOG_LEVELS.INFO]: 2,
+  [LOG_LEVELS.DEBUG]: 3,
+  [LOG_LEVELS.TRACE]: 4
 };
 
-// Main logger function
-export const log = (level, module, message, data) => {
-  // Only log DEBUG level if DEBUG is enabled
-  if (level === LEVELS.DEBUG && !DEBUG) return;
+/**
+ * Determines if a log at the given level should be shown
+ */
+const shouldLog = (level) => {
+  return LOG_LEVEL_PRIORITY[level] <= LOG_LEVEL_PRIORITY[CURRENT_LOG_LEVEL];
+};
+
+/**
+ * Format a log message with timestamp, level, and module name
+ */
+const formatLogMessage = (level, module, message) => {
+  const timestamp = new Date().toISOString();
+  return `[${timestamp}] [${level}] [${module}] ${message}`;
+};
+
+/**
+ * General purpose logging function
+ */
+const log = (level, module, message, data = null) => {
+  if (!shouldLog(level)) return;
   
-  const timestamp = formatDate();
-  const prefix = `[${timestamp}] [${level}] [${module}]`;
+  const formattedMessage = formatLogMessage(level, module, message);
   
-  if (data !== undefined) {
-    const dataStr = typeof data === 'object' ? JSON.stringify(data) : data.toString();
-    console.log(`${prefix} ${message} ${dataStr}`);
-  } else {
-    console.log(`${prefix} ${message}`);
+  switch (level) {
+    case LOG_LEVELS.ERROR:
+      console.error(formattedMessage);
+      if (data) console.error(data);
+      break;
+    case LOG_LEVELS.WARN:
+      console.warn(formattedMessage);
+      if (data) console.warn(data);
+      break;
+    case LOG_LEVELS.INFO:
+      console.log(formattedMessage);
+      if (data) console.log(data);
+      break;
+    case LOG_LEVELS.DEBUG:
+    case LOG_LEVELS.TRACE:
+    default:
+      console.log(formattedMessage);
+      if (data) console.log(data);
   }
 };
 
-// Convenience methods
-export const info = (module, message, data) => log(LEVELS.INFO, module, message, data);
-export const debug = (module, message, data) => log(LEVELS.DEBUG, module, message, data);
-export const warn = (module, message, data) => log(LEVELS.WARN, module, message, data);
-export const error = (module, message, data) => log(LEVELS.ERROR, module, message, data);
+/**
+ * Logger factory that creates a logger for a specific module
+ */
+const createLogger = (moduleName) => {
+  return {
+    error: (message, data = null) => log(LOG_LEVELS.ERROR, moduleName, message, data),
+    warn: (message, data = null) => log(LOG_LEVELS.WARN, moduleName, message, data),
+    info: (message, data = null) => log(LOG_LEVELS.INFO, moduleName, message, data),
+    debug: (message, data = null) => log(LOG_LEVELS.DEBUG, moduleName, message, data),
+    trace: (message, data = null) => log(LOG_LEVELS.TRACE, moduleName, message, data)
+  };
+};
 
-// Export a factory for creating module-specific loggers
-export const createLogger = (moduleName) => ({
-  info: (message, data) => info(moduleName, message, data),
-  debug: (message, data) => debug(moduleName, message, data),
-  warn: (message, data) => warn(moduleName, message, data),
-  error: (message, data) => error(moduleName, message, data)
-});
+/**
+ * Helper to log database operations
+ */
+const logDbOperation = (logger, operation, tableName, data = null, error = null) => {
+  if (error) {
+    logger.error(`${operation} operation failed on ${tableName}`, { error, data });
+    return;
+  }
+  
+  logger.debug(`${operation} operation successful on ${tableName}`, { data });
+};
 
-export default {
-  log,
-  info,
-  debug,
-  warn,
-  error,
+export {
   createLogger,
-  LEVELS
+  LOG_LEVELS,
+  logDbOperation
 };

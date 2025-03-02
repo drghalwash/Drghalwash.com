@@ -1,12 +1,15 @@
 import { Router } from 'express';
 import { index, convertQuestionsToBlogsAPI } from '../Controller/Blog.js';
+import { createLogger } from '../Controller/logUtil.js';
+
+const logger = createLogger('BlogRoute');
 const router = new Router();
 router.get('/', index);
 router.get('/api/generate-from-qa', convertQuestionsToBlogsAPI);
 
 router.get('/api/test-generate-from-csv', async (req, res) => {
   try {
-    console.log('[TEST] Manually generating blogs from CSV data');
+    logger.info('Manually generating blogs from CSV data');
     
     // Read the test data from the CSV file
     const fs = require('fs');

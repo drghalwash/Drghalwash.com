@@ -1,13 +1,17 @@
 
 import fetch from 'node-fetch';
+import { createLogger } from './logUtil.js';
+
+// Create module-specific logger
+const logger = createLogger('OpenRouter');
 
 /**
  * Service for interacting with OpenRouter API to generate blog content
  */
 export const generateBlogFromQA = async (question, answer) => {
   try {
-    console.log(`[OpenRouter] Generating blog from Q&A: "${question}"`);
-    console.log(`[OpenRouter] Answer length: ${answer.length} characters`);
+    logger.info(`Generating blog from Q&A: "${question.substring(0, 50)}..."`);
+    logger.debug(`Answer length: ${answer.length} characters`);
     
     const prompt = `
 Convert the following question and answer into a well-structured blog post:

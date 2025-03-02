@@ -1,8 +1,12 @@
 // Import Supabase client
 import { createClient } from '@supabase/supabase-js';
 import { processBatchQuestionsToBlogs } from './openRouterService.js';
+import { createLogger, logDbOperation } from './logUtil.js';
 import dotenv from 'dotenv';
 dotenv.config();
+
+// Create module-specific logger
+const logger = createLogger('Blog');
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
@@ -183,7 +187,7 @@ const fetchQuestions = async (limit = 10) => {
  */
 const convertQuestionsToBlogsAPI = async (req, res) => {
   try {
-    console.log('[API] Convert questions to blogs initiated');
+    logger.info('Convert questions to blogs initiated');
     
     // Authentication check if needed
     // if (!req.headers.authorization) {
@@ -191,39 +195,39 @@ const convertQuestionsToBlogsAPI = async (req, res) => {
     // }
     
     const limit = req.query.limit ? parseInt(req.query.limit) : 5;
-    console.log(`[API] Fetching up to ${limit} questions`);
+    logger.info(`Fetching up to ${limit} questions`);
     
     const questions = await fetchQuestions(limit);
-    console.log(`[API] Fetched ${questions ? questions.length : 0} questions`);
+    logger.info(`Fetched ${questions ? questions.length : 0} questions`);
     
     if (!questions || questions.length === 0) {
+      logger.warn('No questions found to process');
       return res.status(200).json({ message: 'No questions found to process' });
     }
     
     // Log the structure of the first question for debugging
     if (questions.length > 0) {
-      console.log('[API] First question structure:', JSON.stringify(Object.keys(questions[0])));
-      console.log('[API] First question sample:', JSON.stringify({
+      logger.debug('First question structure:', Object.keys(questions[0]));
+      logger.debug('First question sample:', {
         id: questions[0].id,
         question: questions[0].question ? questions[0].question.substring(0, 50) + '...' : 'N/A',
         answer: questions[0].answer ? questions[0].answer.substring(0, 50) + '...' : 'N/A',
         category: questions[0].category_display_name
-      }));
+      });
     }
     
     // Process questions to blogs using OpenRouter
-    console.log('[API] Calling processBatchQuestionsToBlogs with questions data');
+    logger.info('Calling processBatchQuestionsToBlogs with questions data');
     const results = await processBatchQuestionsToBlogs(questions, supabase);
     
-    console.log('[API] Process completed with results:', JSON.stringify(results));
+    logger.info('Process completed with results:', results);
     
     res.status(200).json({
       message: 'Question to blog conversion process completed',
       stats: results
     });
   } catch (error) {
-    console.error('[API Error] Converting questions to blogs:', error.message);
-    console.error('[API Error] Stack trace:', error.stack);
+    logger.error('Converting questions to blogs:', { message: error.message, stack: error.stack });
     res.status(500).json({ error: error.message });
   }
 };
