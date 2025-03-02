@@ -1,17 +1,12 @@
-(function() {
-	'use strict';
+(function () {
+
+	'use strict'
+
 
 	AOS.init({
 		duration: 800,
 		easing: 'slide',
 		once: true
-	});
-
-	// Initialize the accordion manager
-	document.addEventListener('DOMContentLoaded', function() {
-		// Trigger accordion manager initialization
-		const event = new CustomEvent('contentChanged');
-		document.dispatchEvent(event);
 	});
 
 	// Safely initialize Rellax only if elements exist
