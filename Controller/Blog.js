@@ -205,9 +205,160 @@ const fetchQuestions = async (limit = 10) => {
 /**
  * Convert questions to blogs via OpenRouter API.
  */
+import { createClient } from '@supabase/supabase-js';
+import { createLogger, logDatabaseOperation } from './logUtil.js';
+import { processBatchQuestionsToBlogs } from './openRouterService.js';
+
+const logger = createLogger('Blog');
+
+// Initialize Supabase client
+const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+/**
+ * Helper function to fetch questions from the database
+ */
+const fetchQuestions = async (limit) => {
+  try {
+    logger.info(`Fetching questions with limit ${limit}`);
+    // Verify database connection first
+    const { data: testData, error: testError } = await supabase
+      .from('questions')
+      .select('count')
+      .limit(1);
+      
+    if (testError) {
+      logger.error(`Database connection test failed: ${testError.message}`);
+      throw new Error(`Database connection error: ${testError.message}`);
+    }
+    
+    logger.info('Database connection verified, proceeding to fetch questions');
+    
+    const { data, error } = await supabase
+      .from('questions')
+      .select('id, category_display_name, question, answer')
+      .limit(limit);
+      
+    logDatabaseOperation('SELECT', 'questions', { limit }, data, error);
+      
+    if (error) {
+      logger.error(`Error fetching questions: ${error.message}`);
+      throw new Error(`Error fetching questions: ${error.message}`);
+    }
+    
+    logger.info(`Successfully fetched ${data ? data.length : 0} questions`);
+    return data;
+  } catch (error) {
+    logger.error(`Exception in fetchQuestions: ${error.message}`);
+    logger.error(`Stack trace: ${error.stack}`);
+    throw error;
+  }
+};
+
+/**
+ * Check for existing blogs in the database
+ */
+export const checkBlogsInDatabase = async () => {
+  try {
+    console.log('Checking for blogs in database...');
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('count');
+      
+    logDatabaseOperation('SELECT COUNT', 'blogs', null, data, error);
+    
+    if (error) {
+      console.error(`Error checking blogs: ${error.message}`);
+      return { count: 0, error: error.message };
+    }
+    
+    const count = data.length > 0 ? parseInt(data[0].count, 10) : 0;
+    console.log(`Total blogs in database: \x1b[33m${count}\x1b[0m`);
+    
+    if (count === 0) {
+      console.log('No blogs found in database.');
+    } else {
+      // List some blogs to debug
+      const { data: sampleBlogs, error: sampleError } = await supabase
+        .from('blogs')
+        .select('id, title, slug, created_at')
+        .limit(5);
+        
+      if (!sampleError && sampleBlogs) {
+        console.log('Sample blogs:');
+        sampleBlogs.forEach(blog => {
+          console.log(`- ID: ${blog.id}, Title: ${blog.title}, Created: ${blog.created_at}`);
+        });
+      }
+    }
+    
+    return { count, blogs: count > 0 };
+  } catch (error) {
+    console.error(`Exception in checkBlogsInDatabase: ${error.message}`);
+    return { count: 0, error: error.message };
+  }
+};
+
+/**
+ * Manual insertion of a test blog
+ */
+export const insertTestBlog = async () => {
+  try {
+    console.log('Attempting to insert a test blog...');
+    
+    const testBlog = {
+      title: "Test Blog Post",
+      summary: "This is a test blog post to verify database insertion",
+      content: "<p>This is a test blog post content.</p><p>If you can see this, database insertion is working!</p>",
+      slug: "test-blog-post-" + Date.now(),
+      read_more_titles: ["Introduction", "Test Section", "Conclusion"],
+      read_more_texts: ["This is the introduction", "This is the test section content", "This is the conclusion"],
+      category_display_name: "Test Category",
+      tags: ["test", "debug"],
+      image_url: "default-blog-image.jpg",
+      created_at: new Date().toISOString()
+    };
+    
+    // Insert the test blog
+    const { data, error } = await supabase
+      .from('blogs')
+      .insert(testBlog);
+      
+    logDatabaseOperation('INSERT', 'blogs', testBlog, data, error);
+    
+    if (error) {
+      console.error(`Error inserting test blog: ${error.message}`);
+      return { success: false, error: error.message };
+    }
+    
+    console.log('Test blog inserted successfully!');
+    return { success: true };
+  } catch (error) {
+    console.error(`Exception in insertTestBlog: ${error.message}`);
+    return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Convert questions to blogs via OpenRouter API.
+ */
 const convertQuestionsToBlogsAPI = async (req, res) => {
   try {
     logger.info('Convert questions to blogs initiated');
+    console.log('==== CONVERT QUESTIONS TO BLOGS ====');
+    
+    // Test database connection
+    try {
+      const { count, error } = await checkBlogsInDatabase();
+      if (error) {
+        logger.error(`Database check failed: ${error}`);
+        return res.status(500).json({ error: `Database check failed: ${error}` });
+      }
+      logger.info(`Current blog count in database: ${count}`);
+    } catch (dbError) {
+      logger.error(`Database check exception: ${dbError.message}`);
+    }
     
     // Authentication check if needed
     // if (!req.headers.authorization) {
@@ -227,7 +378,7 @@ const convertQuestionsToBlogsAPI = async (req, res) => {
     
     // Log the structure of the first question for debugging
     if (questions.length > 0) {
-      logger.debug('First question structure:', Object.keys(questions[0]));
+      logger.debug('First question structure:', { keys: Object.keys(questions[0]) });
       logger.debug('First question sample:', {
         id: questions[0].id,
         question: questions[0].question ? questions[0].question.substring(0, 50) + '...' : 'N/A',

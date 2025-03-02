@@ -1,3 +1,31 @@
+import * as winston from 'winston';
+
+export function createLogger(module) {
+  return winston.createLogger({
+    level: 'debug', // Set to debug to get more detailed logs
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.printf(({ timestamp, level, message, ...rest }) => {
+        const meta = Object.keys(rest).length ? JSON.stringify(rest) : '';
+        return `[${timestamp}] [${level.toUpperCase()}] [${module}] ${message} ${meta}`;
+      })
+    ),
+    transports: [
+      new winston.transports.Console()
+    ]
+  });
+}
+
+// For debug purpose only - logs database operations
+export function logDatabaseOperation(operation, table, data = null, result = null, error = null) {
+  console.log(`==== DATABASE OPERATION ====`);
+  console.log(`Operation: ${operation}`);
+  console.log(`Table: ${table}`);
+  if (data) console.log(`Data: ${JSON.stringify(data, null, 2)}`);
+  if (result) console.log(`Result: ${JSON.stringify(result, null, 2)}`);
+  if (error) console.log(`Error: ${error.message}`);
+  console.log(`==========================`);
+}
 
 /**
  * Enhanced logging utility for debugging and tracing
@@ -53,7 +81,7 @@ const shouldLog = (level) => {
 const formatLogMessage = (level, module, message) => {
   const timestamp = new Date().toISOString();
   let color = COLORS.WHITE;
-  
+
   switch(level) {
     case LOG_LEVELS.ERROR:
       color = COLORS.BRIGHT_RED;
@@ -71,7 +99,7 @@ const formatLogMessage = (level, module, message) => {
       color = COLORS.CYAN;
       break;
   }
-  
+
   return `${color}[${timestamp}] [${level}] [${module}]${COLORS.RESET} ${message}`;
 };
 
@@ -80,9 +108,9 @@ const formatLogMessage = (level, module, message) => {
  */
 const log = (level, module, message, data = null) => {
   if (!shouldLog(level)) return;
-  
+
   const formattedMessage = formatLogMessage(level, module, message);
-  
+
   switch (level) {
     case LOG_LEVELS.ERROR:
       console.error(formattedMessage);
@@ -125,7 +153,7 @@ const logDbOperation = (logger, operation, tableName, data = null, error = null)
     logger.error(`${operation} operation failed on ${tableName}`, { error, data });
     return;
   }
-  
+
   logger.debug(`${operation} operation successful on ${tableName}`, { data });
 };
 
@@ -138,17 +166,17 @@ const inspectDatabaseTable = async (supabase, tableName) => {
     const { data, error, count } = await supabase
       .from(tableName)
       .select('*', { count: 'exact', head: true });
-      
+
     if (error) {
       console.error(`${COLORS.BRIGHT_RED}Error checking ${tableName}: ${error.message}${COLORS.RESET}`);
       return;
     }
-    
+
     console.log(`${COLORS.BRIGHT_YELLOW}Total ${tableName} in database: ${COLORS.BRIGHT_GREEN}${count}${COLORS.RESET}`);
     if (count === 0) {
       console.log(`${COLORS.BRIGHT_YELLOW}No ${tableName} found in database.${COLORS.RESET}`);
     }
-    
+
     return { count, error };
   } catch (err) {
     console.error(`${COLORS.BRIGHT_RED}Failed to inspect ${tableName}: ${err.message}${COLORS.RESET}`);
@@ -159,5 +187,6 @@ export {
   createLogger,
   LOG_LEVELS,
   logDbOperation,
-  inspectDatabaseTable
+  inspectDatabaseTable,
+  logDatabaseOperation as logDbOperation //added alias for backward compatibility
 };

@@ -111,14 +111,36 @@ export const processBatchQuestionsToBlogs = async (questionsData, supabase) => {
   
   // Check if supabase connection is valid
   try {
+    console.log('[OpenRouter] Verifying database connection...');
     const { data: healthCheck, error: healthError } = await supabase.from('blogs').select('id').limit(1);
+    
+    // Log the raw results for debug
+    console.log('[OpenRouter] Database health check results:');
+    console.log('[OpenRouter] Data:', JSON.stringify(healthCheck));
+    console.log('[OpenRouter] Error:', healthError ? JSON.stringify(healthError) : 'None');
+    
     if (healthError) {
       console.error('[OpenRouter] Supabase connection error:', healthError.message);
       throw new Error(`Database connection error: ${healthError.message}`);
     }
-    console.log('[OpenRouter] Database connection verified');
+    console.log('[OpenRouter] Database connection verified successfully');
+    
+    // Check if blogs table exists and has expected structure
+    try {
+      console.log('[OpenRouter] Inspecting blogs table structure...');
+      const { error: descError } = await supabase.rpc('describe_table', { table_name: 'blogs' });
+      
+      if (descError) {
+        console.error('[OpenRouter] Error inspecting blogs table:', descError.message);
+      } else {
+        console.log('[OpenRouter] Blogs table structure looks valid');
+      }
+    } catch (structError) {
+      console.warn('[OpenRouter] Table inspection failed:', structError.message);
+    }
   } catch (connError) {
     console.error('[OpenRouter] Failed to verify database connection:', connError.message);
+    console.error('[OpenRouter] Error stack:', connError.stack);
     throw connError;
   }
   
@@ -146,15 +168,25 @@ export const processBatchQuestionsToBlogs = async (questionsData, supabase) => {
     processingDetails: []
   };
   
-  for (const item of questionsData) {
+  // We'll try with just one question first for debugging
+  const testMode = true;
+  const itemsToProcess = testMode ? questionsData.slice(0, 1) : questionsData;
+  
+  console.log(`[OpenRouter] Processing ${itemsToProcess.length} items in ${testMode ? 'TEST' : 'FULL'} mode`);
+  
+  for (const item of itemsToProcess) {
     try {
       console.log(`[OpenRouter] Processing question ID ${item.id}`);
       
       // Skip if this question has already been processed
-      const { data: existingBlogs } = await supabase
+      console.log(`[OpenRouter] Checking if question ${item.id} has already been processed...`);
+      const { data: existingBlogs, error: existingError } = await supabase
         .from('blogs')
         .select('id')
         .eq('source_question_id', item.id);
+      
+      console.log(`[OpenRouter] Existing blogs check:`, JSON.stringify(existingBlogs));
+      console.log(`[OpenRouter] Existing blogs error:`, existingError ? JSON.stringify(existingError) : 'None');
         
       if (existingBlogs && existingBlogs.length > 0) {
         console.log(`[OpenRouter] Skipping question ID ${item.id} - already processed`);
