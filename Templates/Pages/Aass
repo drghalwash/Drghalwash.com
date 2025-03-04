@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Grid</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #grid-container {
+            position: absolute;
+            transform-origin: 0 0;
+            cursor: grab;
+            transition: transform 0.1s ease-out;
+        }
+        #grid-container.grabbing {
+            cursor: grabbing;
+        }
+        .grid-cell {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            user-select: none;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .control-btn {
+            width: 35px;
+            height: 35px;
+            background: #444;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .control-btn:hover {
+            background: #666;
+        }
+        #position-indicator {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            z-index: 10;
+        }
+        .qa-question {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .qa-options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+        .option-button {
+            padding: 5px;
+            background: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+        .option-button:hover {
+            background: #f0f0f0;
+        }
+        .option-button.correct {
+            background: #aaffaa;
+        }
+        .option-button.wrong {
+            background: #ffaaaa;
+        }
+        .qa-extra {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #0066cc;
+            cursor: pointer;
+        }
+        .qa-extra:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="control-btn" id="zoom-in">+</div>
+        <div class="control-btn" id="zoom-out">−</div>
+        <div class="control-btn" id="reset-view">⟳</div>
+        <div class="control-btn" id="back-home">🏠</div>
+    </div>
+    <div id="grid-container"></div>
+    <div id="position-indicator"></div>
+
+    <script>
+        window.appData = {
+            zones: {{{json zones}}}
+        };
+    </script>
+    <script>
+        // config.js
+        const config = {
+            cellWidth: 200,       // Width of each grid cell in pixels
+            cellHeight: 150,      // Height of each grid cell in pixels
+            cellGap: 20,          // Gap between cells in pixels
+            minZoom: 0.4,         // Minimum zoom level
+            maxZoom: 3.5,         // Maximum zoom level
+            zoomStep: 0.2,        // Zoom increment per action
+            questionsPerRow: 3    // Number of questions per row at level 3
+        };
+
+        export default config;
+    </script>
+    <script>
+        // gridManager.js
+        import config from './config.js';
+
+        const container = document.getElementById('grid-container');
+        const positionIndicator = document.getElementById('position-indicator');
+
+        let currentLevel = 1;         // 1 = zones, 2 = categories, 3 = questions
+        let currentZone = null;       // Selected zone at level 2+
+        let currentCategory = null;   // Selected category at level 3
+        let scale = 1;                // Current zoom scale
+        let translateX = 0;           // X-axis translation
+        let translateY = 0;           // Y-axis translation
+        const activeCells = new Map(); // Tracks rendered cells
+
+        // Create a single grid cell
+        function createCell(row, col) {
+            const cellKey = `${row},${col}`;
+            if (activeCells.has(cellKey)) return;
+
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            const x = col * (config.cellWidth + config.cellGap);
+            const y = row * (config.cellHeight + config.cellGap);
+            cell.style.left = `${x}px`;
+            cell.style.top = `${y}px`;
+
+            if (currentLevel === 1) {
+                const zones = window.appData.zones;
+                if (row === 0 && col >= 0 && col < zones.length) {
+                    cell.textContent = zones[col].name;
+                } else {
+                    return;
+                }
+            } else if (currentLevel === 2) {
+                if (!currentZone) return;
+                const categories = currentZone.categories;
+                if (row === 0 && col >= 0 && col < categories.length) {
+                    cell.textContent = categories[col].display_name;
+                } else {
+                    return;
+                }
+            } else if (currentLevel === 3) {
+                if (!currentCategory) return;
+                const questions = currentCategory.questions;
+                const index = row * config.questionsPerRow + col;
+                if (index >= 0 && index < questions.length) {
+                    const qa = questions[index];
+                    cell.innerHTML = `
+                        <div class="qa-question">${qa.question}</div>
+                        <div class="qa-options">
+                            ${qa.options.map(opt => `<button class="option-button" data-answer="${opt}">${opt}</button>`).join('')}
+                        </div>
+                        <div class="qa-extra" data-action="more">More</div>
+                        <div class="qa-extra" data-action="discussion">Discuss</div>
+                    `;
+                    // Add interactivity to options
+                    cell.querySelectorAll('.option-button').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const selected = btn.dataset.answer;
+                            if (selected === qa.answer) {
+                                btn.classList.add('correct');
+                                alert('Correct!');
+                            } else {
+                                btn.classList.add('wrong');
+                                alert(`Wrong! Correct answer: ${qa.answer}`);
+                            }
+                            cell.querySelectorAll('.option-button').forEach(b => b.disabled = true);
+                        });
+                    });
+                    cell.querySelector('[data-action="more"]').addEventListener('click', () => {
+                        alert(`Answer: ${qa.correct_answer}`);
+                    });
+                    cell.querySelector('[data-action="discussion"]').addEventListener('click', () => {
+                        alert(`Discussion for question ID ${qa.id}`);
+                    });
+                } else {
+                    return;
+                }
+            }
+
+            container.appendChild(cell);
+            activeCells.set(cellKey, cell);
+        }
+
+        // Update visible cells based on viewport
+        function updateVisibleCells() {
+            const cellTotalWidth = config.cellWidth + config.cellGap;
+            const cellTotalHeight = config.cellHeight + config.cellGap;
+            const left = -translateX / scale;
+            const top = -translateY / scale;
+            const right = left + window.innerWidth / scale;
+            const bottom = top + window.innerHeight / scale;
+
+            // Determine visible range
+            if (currentLevel === 1) {
+                const zones = window.appData.zones;
+                const startCol = Math.max(0, Math.floor(left / cellTotalWidth));
+                const endCol = Math.min(zones.length - 1, Math.ceil(right / cellTotalWidth));
+                for (let col = startCol; col <= endCol; col++) {
+                    createCell(0, col);
+                }
+            } else if (currentLevel === 2) {
+                if (!currentZone) return;
+                const categories = currentZone.categories;
+                const startCol = Math.max(0, Math.floor(left / cellTotalWidth));
+                const endCol = Math.min(categories.length - 1, Math.ceil(right / cellTotalWidth));
+                for (let col = startCol; col <= endCol; col++) {
+                    createCell(0, col);
+                }
+            } else if (currentLevel === 3) {
+                if (!currentCategory) return;
+                const questions = currentCategory.questions;
+                const numRows = Math.ceil(questions.length / config.questionsPerRow);
+                const startRow = Math.max(0, Math.floor(top / cellTotalHeight));
+                const endRow = Math.min(numRows - 1, Math.ceil(bottom / cellTotalHeight));
+                const startCol = Math.max(0, Math.floor(left / cellTotalWidth));
+                const endCol = Math.min(config.questionsPerRow - 1, Math.ceil(right / cellTotalWidth));
+                for (let row = startRow; row <= endRow; row++) {
+                    for (let col = startCol; col <= endCol; col++) {
+                        createCell(row, col);
+                    }
+                }
+            }
+
+            // Remove out-of-bounds cells
+            activeCells.forEach((cell, key) => {
+                const [row, col] = key.split(',').map(Number);
+                let shouldRemove = false;
+                if (currentLevel === 1) {
+                    shouldRemove = row !== 0 || col < 0 || col >= window.appData.zones.length;
+                } else if (currentLevel === 2) {
+                    shouldRemove = row !== 0 || col < 0 || col >= currentZone.categories.length;
+                } else if (currentLevel === 3) {
+                    const index = row * config.questionsPerRow + col;
+                    const numRows = Math.ceil(currentCategory.questions.length / config.questionsPerRow);
+                    shouldRemove = row < 0 || row >= numRows || col < 0 || col >= config.questionsPerRow || index >= currentCategory.questions.length;
+                }
+                if (shouldRemove) {
+                    container.removeChild(cell);
+                    activeCells.delete(key);
+                }
+            });
+
+            // Update position indicator
+            let path = 'Zones';
+            if (currentLevel >= 2 && currentZone) path = currentZone.name;
+            if (currentLevel === 3 && currentCategory) path += ` > ${currentCategory.display_name}`;
+            positionIndicator.textContent = `Level ${currentLevel} | ${path} | Zoom: ${Math.round(scale * 100)}%`;
+        }
+
+        // Apply current transformation
+        function applyTransform() {
+            container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        // Export for event handlers
+        export {
+            currentLevel, currentZone, currentCategory, scale, translateX, translateY, activeCells,
+            createCell, updateVisibleCells, applyTransform
+        };
+
+        // Initialize
+        updateVisibleCells();
+        applyTransform();
+
+</script>
+    <script>
+        // eventHandlers.js
+        import config from './config.js';
+        import { updateVisibleCells, applyTransform, activeCells, scale, translateX, translateY, currentLevel, currentZone, currentCategory } from './gridManager.js';
+
+        const container = document.getElementById('grid-container');
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const resetBtn = document.getElementById('reset-view');
+        const backBtn = document.getElementById('back-home');
+
+        // Mutable state
+        let _scale = scale;
+        let _translateX = translateX;
+        let _translateY = translateY;
+        let _currentLevel = currentLevel;
+        let _currentZone = currentZone;
+        let _currentCategory = currentCategory;
+
+        // Determine level based on zoom scale
+        function getLevelFromScale(scaleValue) {
+            if (scaleValue <= 1.5) return 1;
+            if (scaleValue <= 2.5) return 2;
+            return 3;
+        }
+
+        // Get cell under viewport center
+        function getCenterCell() {
+            const centerX = (window.innerWidth / 2 - _translateX) / _scale;
+            const centerY = (window.innerHeight / 2 - _translateY) / _scale;
+            const col = Math.floor(centerX / (config.cellWidth + config.cellGap));
+            const row = Math.floor(centerY / (config.cellHeight + config.cellGap));
+            return { row, col };
+        }
+
+        // Handle zoom with optional mouse position
+        function handleZoom(delta, mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2) {
+            const oldScale = _scale;
+            _scale = Math.max(config.minZoom, Math.min(config.maxZoom, _scale + delta));
+
+            // Adjust translation to zoom towards mouse
+            const gridX = (mouseX - _translateX) / oldScale;
+            const gridY = (mouseY - _translateY) / oldScale;
+            _translateX = mouseX - gridX * _scale;
+            _translateY = mouseY - gridY * _scale;
+
+            // Update level if changed
+            const newLevel = getLevelFromScale(_scale);
+            if (newLevel !== _currentLevel) {
+                const { col } = getCenterCell();
+                if (newLevel > _currentLevel) {
+                    if (_currentLevel === 1) {
+                        const zones = window.appData.zones;
+                        if (col >= 0 && col < zones.length) _currentZone = zones[col];
+                    } else if (_currentLevel === 2 && _currentZone) {
+                        const categories = _currentZone.categories;
+                        if (col >= 0 && col < categories.length) _currentCategory = categories[col];
+                    }
+                } else {
+                    if (newLevel === 1) {
+                        _currentZone = null;
+                        _currentCategory = null;
+                    } else if (newLevel === 2) {
+                        _currentCategory = null;
+                    }
+                }
+                _currentLevel = newLevel;
+                activeCells.forEach(cell => container.removeChild(cell));
+                activeCells.clear();
+            }
+
+            applyTransform();
+            updateVisibleCells();
+        }
+
+        // Zoom controls
+        zoomInBtn.addEventListener('click', () => handleZoom(config.zoomStep));
+        zoomOutBtn.addEventListener('click', () => handleZoom(-config.zoomStep));
+
+        // Mouse wheel zoom
+        container.addEventListener('wheel', e => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -config.zoomStep : config.zoomStep;
+            handleZoom(delta, e.clientX, e.clientY);
+        });
+
+        // Panning
+        let isDragging = false;
+        let startX, startY;
+
+        container.addEventListener('mousedown', e => {
+            isDragging = true;
+            startX = e.clientX - _translateX;
+            startY = e.clientY - _translateY;
+            container.classList.add('grabbing');
+        });
+
+        container.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            _translateX = e.clientX - startX;
+            _translateY = e.clientY - startY;
+            applyTransform();
+            updateVisibleCells();
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.classList.remove('grabbing');
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.classList.remove('grabbing');
+        });
+
+        // Reset view
+        resetBtn.addEventListener('click', () => {
+            _scale = 1;
+            _translateX = 0;
+            _translateY = 0;
+            _currentLevel = 1;
+            _currentZone = null;
+            _currentCategory = null;
+            activeCells.forEach(cell => container.removeChild(cell));
+            activeCells.clear();
+            applyTransform();
+            updateVisibleCells();
+        });
+
+        // Back to top level
+        backBtn.addEventListener('click', () => {
+            if (_currentLevel === 1) return;
+            _scale = _currentLevel === 3 ? 2 : 1;
+            _currentLevel = _currentLevel === 3 ? 2 : 1;
+            if (_currentLevel === 1) _currentZone = null;
+            _currentCategory = null;
+            activeCells.forEach(cell => container.removeChild(cell));
+            activeCells.clear();
+            applyTransform();
+            updateVisibleCells();
+        });
+
+</script>
+</body>
+</html>

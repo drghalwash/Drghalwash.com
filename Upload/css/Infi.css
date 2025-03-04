@@ -1,0 +1,37 @@
+.tag-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+    background: transparent;
+}
+
+.tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tag-row {
+    display: flex;
+    white-space: nowrap;
+    animation: scrollTags 30s linear infinite;
+}
+
+.tag {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 4px;
+    border-radius: 20px;
+    color: white;
+    background: rgba(255,255,255,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tag:hover {
+    transform: translateY(-5px);
+}
+
+@keyframes scrollTags {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}

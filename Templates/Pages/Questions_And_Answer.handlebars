@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/blog.css">
+	<link rel="stylesheet" href="/css/header.css">
+		<link rel="stylesheet" href="/css/categories.css">
+
+		<link rel="stylesheet" href="/css/blog-2.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+    <!-- <link rel="stylesheet" href="css/photo-gallery.css"> -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/faqs/faq-3/assets/css/faq-3.css">
+
+
+{{!-- <style>
+	/* Basic Styling */
+.qa-container {
+  width: 90%;
+  max-width: none;
+  margin: 20px auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.qa-category {
+  
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+   flex: 1 1 calc(25% - 10px); /* Equal width for all items, minus gap */
+  box-sizing: border-box; /* Include padding/border in width calculation */
+}
+
+.qa-heading {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.qa-heading:hover {
+  background-color: #e9ecef;
+}
+
+.qa-content {
+  display: none; /* Hidden by default */
+  padding: 10px 15px;
+}
+
+.qa-item {
+  margin-bottom: 10px;
+}
+
+.question {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #1d367b;
+}
+
+.answer {
+  margin: 0;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .qa-heading {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .qa-content {
+    padding: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .qa-category {
+    flex: 1 1 calc(50% - 10px); /* Two columns on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .qa-category {
+    flex: 1 1 100%; /* Single column on very small screens */
+  }
+}
+
+</style> --}}
+<style>
+	section h3, h2{
+font-family: Verdana, sans-serif;
+	}
+	/* General container styles */
+/* Container with modern gradient */
+
+
+.accordion-body {
+    max-width: 800px; /* Set a max width for answers */
+    margin: 0 auto; /* Center align */
+    line-height: 1.6; /* Improve line spacing */
+}
+
+.accordion-body{
+	padding: 0 0 !important;
+}
+. accordion-flush{
+		padding: 0 0 !important;
+
+}
+
+
+.accordion-body{
+   text-align: justify; /* Ensures even spacing between words */
+
+
+}
+
+/* Accordion Components */
+.accordion-collapse {
+    transition: all 0.3s ease;
+}
+
+.custom-accordion {
+  
+    isolation: isolate;
+    position: relative;
+}
+	.categories-container {
+  
+  border-radius: 10px;
+  padding: 5px;
+ 
+ 
+  height: fit-content;
+  overflow-x: hidden;
+}
+	.categories {
+  display: grid;
+  grid-template-columns: repeat(4); /* Four columns on desktop */
+  gap: 15px; /* Space between groups */
+}
+
+
+/* Custom scrollbar styling for the categories container */
+.categories-container::-webkit-scrollbar
+{
+  width: 8px;
+}
+
+.categories-container::-webkit-scrollbar-thumb
+ {
+  background: #007bff;
+  border-radius: 10px;
+}
+
+.categories-container::-webkit-scrollbar-thumb:hover
+{
+  background: #0056b3;
+}
+
+.categories-container::-webkit-scrollbar-track {
+
+  background: #f1f1f1;
+}
+</style>
+</style>
+
+<style>
+    .qa-horizontal-layout {
+        display: flex;
+        gap: 30px;
+        margin: 20px auto;
+        padding: 0 20px;
+        max-width: 1400px;
+    }
+
+    .qa-left-column {
+        flex: 1;
+        max-width: 300px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+    }
+
+  
+    .qa-right-column {
+    flex: 3;
+    min-width: 0;
+    height: calc(100vh - 40px); /* Use calc to subtract header and footer */
+    overflow-y: scroll; /* Enable vertical scrolling only on the right column */
+    padding-right: 20px; /* Add some padding for visual balance */
+    }
+
+    @media (max-width: 768px) {
+        .qa-horizontal-layout {
+            flex-direction: column;
+        }
+
+        .qa-left-column {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .qa-main-container {
+            width: 95%;
+            padding: 0 10px;
+        }
+    }
+
+    .search-container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .search-wrapper {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-box {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+</style>
+
+		<style>
+
+
+			.modal {
+    display: none; /* Hidden by default popup cat*/
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Adjust as needed */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+  .qa-container {
+    margin-bottom: 30px;
+  }
+
+  .question {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+  }
+			.qa-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.qa-wrapper > * {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+
+  .answer {
+    font-size: 1em;
+    color: #34495e;
+  }
+/* Semantic Bold Emphasis */
+
+.important-term {
+
+font-weight: 800;
+
+color: #16a085; /* Emerald green */
+
+}
+
+/* Contextual Highlighting */
+
+.marked {
+
+background: linear-gradient(120deg, #ffe06640 0%, #ffd43b40 100%);
+
+}
+      .extra-bold { font-weight: bold; /* Makes the text bold */ font-size: 1.2em; /* Optional: Increases the font size */ /* Add any other styles you want */ }
+
+.alert-highlight {
+
+background-color: #ff6b6b;
+
+padding: 2px 4px;
+
+border-radius: 3px;
+
+}
+
+/* Dynamic Underlining */
+
+.interactive-underline {
+
+border-bottom: 2px solid #e74c3c;
+
+transition: border-color 0.3s ease;
+
+}
+
+.interactive-underline:hover {
+
+border-color: #c0392b;
+
+}
+
+/* Color-Coded Text */
+
+.color-system {
+
+font-weight: 600;
+
+padding: 2px 4px;
+
+}
+
+/* Accessible Extra-Bold */
+
+.accessibility-bold {
+
+font-weight: 900;
+
+letter-spacing: 0.5px;
+
+text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+
+}
+
+/* Root Variables for Consistent Theming */
+:root {
+
+--primary-highlight: #fff3cd;
+
+--secondary-alert: #f8d7da;
+
+}
+
+  /* Text formatting */
+  p {
+    margin-bottom: 15px;
+    text-align: justify;
+  }
+
+  h2 {
+    color: #2980b9;
+    border-bottom: 1px solid #bdc3c7;
+    padding-bottom: 5px;
+    margin-top: 20px;
+  }
+
+  strong, b {
+    font-weight: bold;
+    color: #16a085;
+  }
+
+  u {
+    text-decoration: underline;
+    text-decoration-color: #e74c3c;
+  }
+
+  /* Lists */
+  ul, ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  th, td {
+    border: 1px solid #bdc3c7;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #ecf0f1;
+    font-weight: bold;
+  }
+
+  /* Code blocks */
+  code {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-family: 'Courier New', monospace;
+  }
+
+  pre {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding: 10px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin: 15px 0;
+  }
+
+/* Add to match your inline style example */
+.category-highlight {
+    font-weight: bold;
+    color: #007bff !important; /* Override other styles */
+    border-left: 3px solid currentColor;
+    padding-left: 10px;
+}
+/* Add to your existing styles */
+.special-text {
+    color: #007bff; /* Solid blue color */
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+}
+
+.specialtext {
+    color: #007bff !important; /* Force blue color */
+    font-weight: bold;
+    position: relative;
+    display: inline;  /* Changed from inline-block */
+    padding-bottom: 2px; /* Space for underline */
+    text-decoration: none;
+    background: none; /* Remove gradient background */
+    -webkit-text-fill-color: initial; /* Remove transparent text */
+    border-bottom: 1px dotted #007bff; /* Add subtle underline */
+}
+
+/* Important term styling */
+.important-term {
+    font-weight: 700;
+    color: #16a085 !important; /* Emerald green */
+    padding: 0 2px;
+}
+
+/* Semi-transparent highlight for statistics */
+.marked {
+    background: rgba(255, 224, 102, 0.25);
+    padding: 0 3px;
+    border-radius: 2px;
+}
+
+/* Warning/alert styling */
+.alert-highlight {
+    background-color: rgba(255, 107, 107, 0.2);
+    padding: 2px 4px;
+    border-radius: 3px;
+    border-left: 2px solid #ff6b6b;
+    display: inline-block;
+    margin: 2px 0;
+}
+
+/* Time period & measurement styling */
+.color-system {
+    font-weight: 600;
+    color: #3498db;
+}
+
+/* ALL CAPS emphasis */
+.accessibility-bold {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* Category highlight styling - enhanced */
+.category-highlight {
+    font-weight: bold;
+    color: #007bff !important;
+    border-left: 3px solid currentColor;
+    padding-left: 6px;
+    padding-right: 2px;
+    margin: 0 2px;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.special-text::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%; /* Full width underline */
+    height: 2px;
+    background-color: rgba(0, 123, 255, 0.3); /* Semi-transparent blue */
+    transition: width 0.3s ease;
+}
+		</style>
+
+	<title> Q&As </title>
+</head>
+<body class="gradient-body">
+
+	<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+		<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each galleries}}
+					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+      <!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+
+
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/your_answer_is_here" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+
+	<div class="content-wrapper">
+
+  
+<!-- Expose zones data for the categoryManager to use -->
+  <script>
+    // Use triple curly braces to output unescaped JSON.
+    window.zonesData = {{{json zones}}};
+  </script>
+<!-- Include search.js for search functionality -->
+<script src="/js/search.js"></script>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <div class="search-wrapper">
+        <div class="search-box">
+            <input type="text" id="categorySearch" placeholder="Search categories & questions...">
+            <div class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="search-results-count"></div>
+</div>
+
+<!-- Include categoryManager.js for dynamic category generation -->
+<script src="/js/categoryManager.js"></script>
+
+<!-- Main Q&A Layout Container -->
+<div class="qa-horizontal-layout">
+  <!-- Left Column: Categories -->
+  <div class="qa-left-column">
+    <div class="categories-container">
+      <h2>Categories</h2>
+      <div class="categories">
+        <!-- This container will be populated dynamically by categoryManager.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Q&A Content -->
+  <div class="qa-right-column">
+    <section class="bsb-faq-3">
+      {{#each zones}}
+      <!-- Check if the zone has categories with questions -->
+      {{#if (hasQuestions this.categories)}}
+        <h3 id="{{this.display_name}}">{{this.name}}</h3> <!-- Zone name -->
+        {{#each this.categories}}
+          <!-- Check if the category has questions -->
+          {{#if this.questions.length}}
+            <h4 id="{{this.display_name}}">{{this.display_name}}</h4> <!-- Category name -->
+            <div class="custom-accordion" id="accordion_{{this.display_name}}">
+              {{#each this.questions}}
+                <div class="accordion-item">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{this.id}}">
+                      {{this.question}}
+                    </button>
+                  </h2>
+                  <div id="collapse{{this.id}}" class="collapse">
+                    <div class="accordion-body">{{{this.answer}}}</div> <!-- Render HTML safely -->
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          {{/if}}
+        {{/each}}
+      {{/if}}
+    {{/each}}
+    </section>
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal HTML Structure -->
+<div id="categoryModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Related Categories</h2>
+        <div id="modalCategories"></div>
+    </div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+    // Handle clicks on category names in the Q&A area
+    document.querySelectorAll('.custom-accordion h4').forEach(categoryHeader => {
+        categoryHeader.addEventListener('click', () => {
+            const categoryId = categoryHeader.id; // Get the clicked category's ID
+
+            // Find related categories from zonesData
+            const relatedCategories = [];
+            window.zonesData.forEach(zone => {
+                zone.categories.forEach(category => {
+                    if (category.technical_id !== categoryId) {
+                        relatedCategories.push(category.display_name);
+                    }
+                });
+            });
+
+            // Populate the modal with related categories
+            const modalCategories = document.getElementById('modalCategories');
+            modalCategories.innerHTML = ''; // Clear previous content
+            relatedCategories.forEach(categoryName => {
+                const item = document.createElement('div');
+                item.textContent = categoryName;
+                modalCategories.appendChild(item);
+            });
+
+            // Show the modal
+            document.getElementById('categoryModal').style.display = 'block';
+        });
+    });
+
+    // Close modal functionality
+    document.querySelector('.close').addEventListener('click', () => {
+        document.getElementById('categoryModal').style.display = 'none';
+    });
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('categoryModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
+
+
+<!-- Back to Top and Bottom Button -->
+<div class="scroll-buttons">
+    <button id="scrollTopBtn">⬆ </button>
+    <button id="scrollBottomBtn">⬇ </button>
+  </div>
+<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">59, Alexandria-Matruh st. , Ghalwash building, Agami, Alexandria, Egypt</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">+201-500-50-9000</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/tiny-slider.js"></script>
+		<script src="/js/aos.js"></script>
+		<script src="/js/navbar.js"></script>
+		<script src="/js/counter.js"></script>
+		<script src="/js/rellax.js"></script>
+		<script src="/js/flatpickr.js"></script>
+		<script src="/js/glightbox.min.js"></script>
+		<script src="/js/custom.js"></script>
+		<script src="/js/accordion-manager.js"></script>
+
+
+
+<script src="js/header.js"></script>
+<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+{{!-- <script>
+	function toggleQA(element) {
+  const content = element.nextElementSibling;
+  const isVisible = content.style.display === "block";
+
+  // Hide all other content
+  document.querySelectorAll(".qa-content").forEach((el) => {
+    el.style.display = "none";
+  });
+
+  // Toggle the current content
+  content.style.display = isVisible ? "none" : "block";
+}
+
+</script> --}}
+<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>// Scroll to the Top
+    document.getElementById("scrollTopBtn").addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Smooth scrolling
+      });
+    });
+
+    // Scroll to the Bottom
+    document.getElementById("scrollBottomBtn").addEventListener("click", function () {
+      window.scrollTo({
+        top: document.body.scrollHeight, // Scroll to the bottom
+        behavior: "smooth", // Smooth scrolling
+      });
+    });
+    </script>
+
+
+
+
+
+
+
+	</body>
+	</html>

@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="fonts/icomoon/style.css">
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="css/tiny-slider.css">
+	<link rel="stylesheet" href="css/aos.css">
+	<link rel="stylesheet" href="css/flatpickr.min.css">
+	<link rel="stylesheet" href="css/glightbox.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/animated-tags.css">
+
+	<!-- In the <head> -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Before </body> -->
+
+	<style>
+		.carousel1 {
+			display: grid;
+			margin: auto;
+			position: relative;
+			width: 95%;
+			height: 500px;
+
+		}
+
+
+		.carousel-inner1 {
+			display: flex;
+			gap: 10px;
+			width: calc(250*18);
+			/* Space between items */
+			animation: scroll 40s linear infinite;
+		}
+
+		.carousel-inner1:hover {
+			animation-play-state: paused;
+		}
+
+		.carousel-item1 {
+			/* Prevent items from shrinking or growing */
+			width: 250px;
+			/* Adjust width as needed */
+			display: flex;
+			align-items: center;
+			padding: 5px;
+			perspective: 100px;
+		}
+
+		.carousel-image {
+			width: 100%;
+			height: 280px;
+			border-radius: 0px;
+			transition: transform 1s;
+		}
+
+		.carousel-image:hover {
+			transform: translateZ(20px);
+		}
+
+		@keyframes scroll {
+			0% {
+				transform: translateX(0);
+			}
+
+			100% {
+				transform: translateX(calc(-250px * 9));
+			}
+		}
+
+		/* Hide scrollbar for better UX */
+		.carousel1::-webkit-scrollbar {
+			display: none;
+		}
+
+		.carousel1 {
+			-ms-overflow-style: none;
+			/* Internet Explorer 10+ */
+			scrollbar-width: none;
+			/* Firefox */
+		}
+
+		/* Hide scrollbar for clean design */
+		.carousel1::-webkit-scrollbar {
+			display: none;
+		}
+
+
+
+
+		@media (max-width: 768px) {
+			.home-slider {
+				width: 100%;
+				padding: 10px 15px;
+				text-align: left !important;
+			}
+
+			.container1 {
+				gap: 10px !important;
+			}
+
+			.container {
+				width: 100% !important;
+			}
+		}
+
+
+
+		.section {
+			background-color: #F0F5FF;
+		}
+
+		.container {
+			width: 80%;
+		}
+
+		a {
+			text-decoration: none;
+		}
+	</style>
+	<title>The best is here </title>
+</head>
+
+<script>
+(function() {
+    const tags = {{{tags}}} || ['What is plastic surgery?', 'How to choose a surgeon?'];
+
+    function createTags() {
+        const tagRow = document.querySelector('.tag-row');
+        if (!tagRow) return;
+
+        const fragment = document.createDocumentFragment();
+
+        // Create tags three times for smooth infinite scroll
+        for (let i = 0; i < 3; i++) {
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'tag';
+                div.textContent = tag;
+                fragment.appendChild(div);
+            });
+        }
+
+        tagRow.appendChild(fragment);
+
+        let isAnimationPaused = false;
+        let activeTag = null;
+
+        tagRow.addEventListener('click', (e) => {
+            const tag = e.target.closest('.tag');
+            if (!tag) return;
+
+            if (activeTag === tag) {
+                tag.classList.remove('active');
+                activeTag = null;
+                tagRow.style.animationPlayState = 'running';
+                isAnimationPaused = false;
+                return;
+            }
+
+            if (activeTag) {
+                activeTag.classList.remove('active');
+            }
+
+            tag.classList.add('active');
+            activeTag = tag;
+            tagRow.style.animationPlayState = 'paused';
+            isAnimationPaused = true;
+
+            setTimeout(() => {
+                if (isAnimationPaused) {
+                    tag.classList.remove('active');
+                    tagRow.style.animationPlayState = 'running';
+                    isAnimationPaused = false;
+                    activeTag = null;
+                }
+            }, 2000);
+        });
+
+        // Check for center position
+        function checkCenter() {
+            const container = document.querySelector('.tag-container');
+            if (!container) return;
+
+            const containerRect = container.getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+
+            document.querySelectorAll('.tag').forEach(tag => {
+                const rect = tag.getBoundingClientRect();
+                const tagCenter = rect.left + rect.width / 2;
+                if (Math.abs(tagCenter - centerX) < 50) {
+                    tag.classList.add('center');
+                } else {
+                    tag.classList.remove('center');
+                }
+            });
+        }
+
+        setInterval(checkCenter, 100);
+
+        tagRow.addEventListener('mouseenter', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'paused';
+            }
+        });
+
+        tagRow.addEventListener('mouseleave', () => {
+            if (!isAnimationPaused) {
+                tagRow.style.animationPlayState = 'running';
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', createTags);
+    } else {
+        createTags();
+    }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<body class="gradient-body">
+
+	<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each galleries}}
+					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<!-- Out of Town Patients -->
+					<li class="dropdown">
+						<a href="#" class="dropdown-link">Out of Town Patients <span
+								class="dropdown-arrow">&#9662;</span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+							<li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a>
+							</li>
+							<li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation
+									Process</a></li>
+							<li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels &
+									Accommodations</a></li>
+							<li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria
+									Attractions</a></li>
+						</ul>
+					</li>
+					<li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+					<li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+					<li><a href="/Finance" class="dropdown-link">Financing</a></li>
+					<li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+					<li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+
+
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/your_answer_is_here" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+
+	<!-- Mobile Modal -->
+	{{!-- <div id="mobileModal" class="modal2">
+		<div class="modal-content2 mobile-content">
+			<img class="arrow-mobile" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
+			<p>Welcome to our mobile site! Tap here for more..</p>
+		</div>
+	</div> --}}
+
+	<!-- Desktop Modal -->
+	{{!-- <div id="desktopModal" class="modal2">
+		<div class="modal-content2 desktop-content">
+			<div class="content-pair">
+				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
+				<p>Explore our site on desktop! Click here for more..</p>
+			</div>
+			<div class="content-pair">
+				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
+				<p>Explore our site on desktop! Click here for more..</p>
+			</div>
+			<div class="content-pair">
+				<img class="arrow-desktop" src="/images/65c7c174ef97c54ef9c5b00ccbd73434.png">
+				<p>Explore our site on desktop! Click here for more..</p>
+			</div>
+		</div>
+	</div> --}}
+
+
+
+	<div class="video-container">
+		<iframe width="100%" height="auto" src="{{Home.video_link}}" title="YouTube video player" frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+		</iframe>
+	</div>
+
+
+
+	<div class="search-container">
+        <div class="search-wrapper">
+            <div class="search-box">
+                <input type="text" id="categorySearch" placeholder="every question has an answers here..." onclick="handleSearchRedirect()">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<style>
+    .search-container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .search-wrapper {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-box {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+	.tag-container {
+			overflow: hidden;
+			position: relative;
+			height: 100px;
+			width: 80%;
+			max-width: 800px;
+			margin: 0 auto;
+			-webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+			mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+			transform: translateZ(0);
+			backface-visibility: hidden;
+			-webkit-font-smoothing: antialiased;
+	}
+
+	.tag-list {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+	}
+
+	.tag-row {
+			display: flex;
+			white-space: nowrap;
+			animation: scroll 80s linear infinite;
+			will-change: transform;
+			transform: translateZ(0);
+	}
+
+	.tag {
+			display: inline-flex;
+			align-items: center;
+			padding: 0.5rem 1rem;
+			margin: 0.375rem;
+			border-radius: 20px;
+			font-size: 0.875rem;
+			background-color: #e8e6e3;
+			color: #4a4a4a;
+			cursor: pointer;
+			transform-origin: center;
+			transition: all 0.5s ease;
+			user-select: none;
+			position: relative;
+			z-index: 1;
+	}
+
+	.tag::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border-radius: 20px;
+			background: white;
+			opacity: 0;
+			z-index: -1;
+			transition: opacity 0.5s ease;
+	}
+
+	.tag::after {
+			content: '';
+			position: absolute;
+			top: -10px;
+			left: -10px;
+			right: -10px;
+			bottom: -10px;
+			border-radius: 25px;
+			background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+			z-index: -2;
+			opacity: 0;
+			transition: opacity 0.5s ease;
+	}
+
+	.tag.center {
+			transform: translateY(-8px);
+			background-color: #ffffff;
+			color: #ff6b00;
+	}
+
+	.tag.center::before {
+			opacity: 1;
+	}
+
+	.tag.center::after {
+			opacity: 1;
+	}
+
+	@keyframes scroll {
+			from { transform: translateX(0); }
+			to { transform: translateX(-50%); }
+	}
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+	<div class="tag-container">
+			<div class="tag-list">
+					<div class="tag-row"></div>
+			</div>
+	</div>
+
+
+
+	<!-- infinite ends , start  -->
+	<div class="home-slider">
+		<h1 style="text-align: center;">{{Home.title}}</h1>
+		<div class="container1">
+
+			<div class="left1">
+				{{Home.description1}}
+
+			</div>
+
+			<div class="center1">{{Home.description2}}</div>
+			<div class="right1">{{Home.description3}}</div>
+		</div>
+
+
+
+		<div class="carousel1">
+			<div class="carousel-inner1">
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+				{{#each Home.images_bar}}<div class="carousel-item1">
+					<img class="carousel-image" src="/images/Home/{{this}}" class="d-block w-100" alt="Slide 1">
+				</div>{{/each}}
+
+			</div>
+		</div>
+
+
+
+	</div>
+	<!--  end of container -->
+
+		 <div style="margin-top: 35px;" class="section">
+			 <div class="container">
+				 <div class="row">
+					 <div class="col-12" data-aos="fade-up" data-aos-delay="0">
+						 <h2 class="heading mb-5">Featured Works</h2>
+					 </div>
+				 </div>
+
+				 <div class="row align-items-stretch" id="media-container">
+					 {{#each Offers}}
+					 <div class="col-6 col-sm-6 col-md-6 col-lg-3 media-entry" data-aos="fade-up" data-aos-delay="100">
+						 <div class="media-entry-inner group relative overflow-hidden rounded-lg">
+							 <a href="#" class="aspect-video block overflow-hidden">
+								 <iframe 
+									 class="vids w-full h-full transition-transform duration-500 group-hover:scale-105" 
+									 src="{{video_link}}"
+									 title="YouTube video player" 
+									 frameborder="0"
+									 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									 referrerpolicy="strict-origin-when-cross-origin" 
+									 allowfullscreen
+								 ></iframe>
+							 </a>
+							 <div class="bg-white m-body p-4">
+								 <h3 class="text-xl font-semibold mb-2">
+									 <a href="#" class="hover:text-primary transition-colors">{{title}}</a>
+								 </h3>
+								 <p class="text-gray-600 mb-4">{{description}}</p>
+								 <a href="#" class="more d-flex align-items-center float-start group" data-offer-id="{{@index}}">
+									 <span class="label mr-2">Read More</span>
+									 <span class="arrow transition-transform group-hover:translate-x-1">
+										 <span class="icon-keyboard_arrow_right"></span>
+									 </span>
+								 </a>
+							 </div>
+						 </div>
+					 </div>
+					 {{/each}}
+				 </div>
+
+				 <div class="text-center mt-4">
+					 <button id="show-more-btn" class="btn btn-primary">Show More</button>
+				 </div>
+			 </div>
+		 </div>
+
+		 <!-- The Modal -->
+		 <!-- The Modal -->
+<div id="offer-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modal-title"></h2>
+    <p id="modal-description"></p>
+  </div>
+</div>
+
+
+		 <script>
+		 document.addEventListener("DOMContentLoaded", function () {
+			 const mediaEntries = document.querySelectorAll(".media-entry");
+			 const showMoreBtn = document.getElementById("show-more-btn");
+			 const initialVisibleCount = 8;
+			 let currentlyVisibleCount = initialVisibleCount;
+			 const modal = document.getElementById("offer-modal");
+			 const modalTitle = document.getElementById("modal-title");
+			 const modalDescription = document.getElementById("modal-description");
+			 const closeBtn = document.querySelector(".close");
+			 const offers = {{{json Offers}}}; // Get the Offers data passed from Handlebars
+
+
+			 // Hide initial entries
+			 mediaEntries.forEach((entry, index) => {
+				 if (index >= initialVisibleCount) {
+					 entry.style.display = "none";
+				 }
+			 });
+
+			 // Show more handler
+			 showMoreBtn.addEventListener("click", function () {
+				 const hiddenEntries = Array.from(mediaEntries).filter(
+					 (entry) => entry.style.display === "none"
+				 );
+
+				 hiddenEntries.slice(0, initialVisibleCount).forEach((entry) => {
+					 entry.style.display = "";
+					 entry.setAttribute('data-aos-delay', '100');
+					 AOS.refresh();
+				 });
+
+				 currentlyVisibleCount += initialVisibleCount;
+
+				 if (currentlyVisibleCount >= mediaEntries.length) {
+					 showMoreBtn.style.display = "none";
+				 }
+			 });
+
+			 // "Read More" button functionality
+				 const readMoreLinks = document.querySelectorAll(".more");
+				 readMoreLinks.forEach((link, index) => {
+						 link.addEventListener("click", function (event) {
+								 event.preventDefault();
+								 const offerIndex = this.getAttribute("data-offer-id");
+								 const offer = offers[offerIndex];
+
+								 modalTitle.textContent = offer.title;
+								 modalDescription.textContent = offer.description;
+
+								 modal.style.display = "block";
+						 });
+				 });
+
+
+			 // Close the modal
+			 closeBtn.addEventListener("click", function () {
+				 modal.style.display = "none";
+			 });
+
+			 window.addEventListener("click", function (event) {
+				 if (event.target == modal) {
+					 modal.style.display = "none";
+				 }
+			 });
+		 });
+		 </script>
+
+		 <style>
+		 /* General styling */
+		 .section {
+				 margin-top: 35px;
+		 }
+
+		 .container {
+				 width: 100%;
+				 max-width: 1200px; /* Adjust as needed */
+				 margin: 0 auto;
+				 padding: 0 15px; /* Add some padding */
+		 }
+
+		 /* Media entry styling */
+		 .media-entry {
+				 transition: transform 0.3s ease;
+		 }
+
+		 .media-entry:hover {
+				 transform: translateY(-5px);
+		 }
+
+		 .media-entry-inner {
+				 border-radius: 12px;
+				 overflow: hidden;
+				 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				 display: flex;
+				 flex-direction: column;
+				 height: 100%; /* Ensure the inner container takes up the full height */
+		 }
+
+
+		 /* Video styling */
+		 .vids {
+				 border-radius: 12px 12px 0 0;
+				 aspect-ratio: 16/9;
+				 width: 100%;
+				 object-fit: cover; /* Make sure the video covers the area */
+		 }
+
+		 /* Content body styling */
+		 .m-body {
+				 border-radius: 0 0 12px 12px;
+				 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				 padding: 1rem;
+				 flex-grow: 1; /* Allow the content body to grow and fill the available space */
+				 display: flex;
+				 flex-direction: column;
+				 justify-content: space-between; /* Push the "Read More" link to the bottom */
+		 }
+			 /* Desktop spacing */
+@media (min-width: 992px) {
+    #media-container {
+        --bs-gutter-y: 3rem;
+    }
+}
+
+/* Mobile spacing */
+@media (max-width: 991.98px) {
+    #media-container {
+        --bs-gutter-y: 2rem;
+    }
+}
+
+			 /* Desktop (4 items per row) */
+.col-lg-3 { /* 25% width */ }
+
+/* Mobile (2 items per row) */
+.col-6 { /* 50% width */ }
+
+
+		 /* "Read More" link styling */
+		 .more {
+				 display: inline-flex;
+				 align-items: center;
+				 color: inherit;
+				 text-decoration: none;
+				 transition: color 0.3s ease;
+				 margin-top: auto; /* Push the "Read More" link to the bottom */
+		 }
+
+		 .more:hover {
+				 color: var(--primary-color);
+		 }
+
+		 .more .arrow {
+				 display: inline-block;
+				 transition: transform 0.3s ease;
+		 }
+
+		 .more:hover .arrow {
+				 transform: translateX(5px);
+		 }
+
+		 /* Modal styles */
+		 .modal {
+				 display: none; /* Hidden by default */
+				 position: fixed; /* Stay in place */
+				 z-index: 1; /* Sit on top */
+				 left: 0;
+				 top: 0;
+				 width: 100%; /* Full width */
+				 height: 100%; /* Full height */
+				 overflow: auto; /* Enable scroll if needed */
+				 background-color: rgba(0, 0, 0, 0.3); /* Black with opacity */
+		 }
+
+		 /* Modal Content/Box */
+		 .modal-content {
+				 background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+				 margin: 15% auto; /* 15% from the top and centered */
+				 padding: 20px;
+				 border: 1px solid #888;
+				 width: 30%; /* Could be more or less, depending on screen size */
+         height: 30%;
+				 border-radius: 15px; /* Rounded corners */
+				 position: relative;
+		 }
+
+		 /* The Close Button */
+		 .close {
+				 position: absolute;
+				 top: 0;
+				 right: 0;
+				 color: #aaa;
+				 font-size: 58px;
+				 font-weight: bold;
+				 padding: 10px;
+		 }
+
+		 .close:hover,
+		 .close:focus {
+				 color: black;
+				 text-decoration: none;
+				 cursor: pointer;
+		 }
+		 </style>
+
+
+	<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">59, Alexandria-Matruh st. , Ghalwash building, Agami, Alexandria, Egypt</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">+201-500-50-9000</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="js/tiny-slider.js"></script>
+	<script src="js/aos.js"></script>
+	<script src="js/navbar.js"></script>
+	<script src="js/counter.js"></script>
+	<script src="js/rellax.js"></script>
+	<script src="js/flatpickr.js"></script>
+	<script src="js/glightbox.min.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/hero-animations.js"></script>
+	<script>
+    function handleSearchRedirect() {
+        window.location.href = '/your_answer_is_here';
+    }
+
+    // Add click handler for the search icon as well
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchIcon = document.querySelector('.search-icon');
+        if (searchIcon) {
+            searchIcon.addEventListener('click', handleSearchRedirect);
+        }
+    });
+    </script>
+	<script>
+		const toggleButton = document.getElementById('toggle-button');
+		const menu = document.getElementById('menu');
+
+		// Toggle the menu visibility on button click
+		toggleButton.addEventListener('click', (event) => {
+			event.stopPropagation(); // Prevent click from propagating to the document
+			menu.classList.toggle('active');
+		});
+
+		// Close the menu when clicking outside of it
+		document.addEventListener('click', (event) => {
+			if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+				menu.classList.remove('active'); // Remove the active class if clicking outside
+			}
+		});
+
+		// Function to reset menu visibility for larger screens
+		const resetMenu = () => {
+			if (window.innerWidth > 768) {
+				menu.classList.remove('active'); // Remove the active class in desktop view
+			}
+		};
+
+		// Listen for window resize events
+		window.addEventListener('resize', resetMenu);
+
+		// Initial check to reset menu on page load
+		resetMenu();
+	</script>
+
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const mediaEntries = document.querySelectorAll(".media-entry");
+			const showMoreBtn = document.getElementById("show-more-btn");
+			const initialVisibleCount = 8; // Number of entries to show initially
+			let currentlyVisibleCount = initialVisibleCount;
+
+			// Hide all entries beyond the initial visible count
+			mediaEntries.forEach((entry, index) => {
+				if (index >= initialVisibleCount) {
+					entry.style.display = "none";
+				}
+			});
+
+			// Show more entries when the button is clicked
+			showMoreBtn.addEventListener("click", function () {
+				const hiddenEntries = Array.from(mediaEntries).filter(
+					(entry) => entry.style.display === "none"
+				);
+
+				hiddenEntries.slice(0, initialVisibleCount).forEach((entry) => {
+					entry.style.display = "";
+				});
+
+				currentlyVisibleCount += initialVisibleCount;
+
+				// Hide the button if all entries are visible
+				if (currentlyVisibleCount >= mediaEntries.length) {
+					showMoreBtn.style.display = "none";
+				}
+			});
+		});
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+	
+
+
+
+	{{!-- Carousel --}}
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const carousel = document.querySelector('.carousel1');
+			let isDragging = false, startX = 0, scrollLeft = 0;
+
+			// Start drag logic
+			const startDrag = (e) => {
+				isDragging = true;
+				startX = e.type === 'touchstart' ? e.touches[0].pageX : e.pageX;
+				scrollLeft = carousel.scrollLeft;
+				carousel.classList.add('dragging');
+			};
+
+			// Drag logic
+			const doDrag = (e) => {
+				if (!isDragging) return;
+				const x = e.type === 'touchmove' ? e.touches[0].pageX : e.pageX;
+				const distance = x - startX;
+				carousel.scrollLeft = scrollLeft - distance;
+			};
+
+			// Stop drag logic
+			const stopDrag = () => {
+				if (!isDragging) return;
+				isDragging = false;
+				carousel.classList.remove('dragging');
+			};
+
+			// Prevent image dragging inside the carousel
+			carousel.querySelectorAll('img').forEach((img) => {
+				img.setAttribute('draggable', false);
+			});
+
+			// Event listeners for drag interactions
+			carousel.addEventListener('mousedown', startDrag);
+			carousel.addEventListener('mousemove', doDrag);
+			carousel.addEventListener('mouseup', stopDrag);
+			carousel.addEventListener('mouseleave', stopDrag);
+
+			carousel.addEventListener('touchstart', startDrag);
+			carousel.addEventListener('touchmove', doDrag);
+			carousel.addEventListener('touchend', stopDrag);
+		});
+
+	</script>
+
+
+
+</body>
+
+</html>

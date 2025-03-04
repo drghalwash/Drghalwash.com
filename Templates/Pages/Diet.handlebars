@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="/favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/diet.css">
+	<link rel="stylesheet" href="/css/guidelines.css">
+	<link rel="stylesheet" href="css/header.css">
+
+
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	@media (max-width: 700px) {
+  .heading-pages h1 {
+    font-size: 29px; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 14px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 14px; /* Ensure link text matches breadcrumb size */
+  }
+}
+	/* Ensure images are sticky on larger screens */
+@media (min-width: 1001px) {
+  .scroll-image img, .scroll-image1 img {
+    position: sticky !important;
+    top: 10px !important;
+    z-index: 10; /* Optional, to keep them above overlapping elements */
+  }
+
+  /* Ensure the parent container does not interfere */
+  .scroll-container, .scroll-container1 {
+    overflow: visible !important;
+  }
+
+  /* Ensure all ancestor elements allow sticky positioning */
+  html, body, .scroll-container, .scroll-container1 {
+    overflow: unset !important;
+    position: relative !important;
+  }
+}
+
+/* Reset images for smaller screens */
+@media (max-width: 1000px) {
+  .scroll-image img, .scroll-image1 img {
+    position: static !important;
+  }
+}
+
+	 .photo-gallery {
+      display: flex; /* Enable flexbox for alignment */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      flex-direction: column; /* Stack content vertically */
+      text-align: center; /* Ensure text aligns centrally */
+      padding: 20px; /* Add some space inside the container */
+      position: relative; /* For further positioning if needed */
+    }
+    .custom-container {
+      display: flex; /* Enable flexbox for internal alignment */
+      flex-wrap: wrap; /* Allow items to wrap if necessary */
+      justify-content: center; /* Center horizontally inside the parent */
+      align-items: center; /* Center vertically inside the parent */
+      gap: 20px; /* Add space between child elements */
+    }
+    .icons {
+      height: 100% !important;
+      width: 90% !important;
+      padding-bottom: 20px;
+    }
+    .photo-gallery .custom-container{
+      width: 90%;
+    }
+    .diet-media-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 30px 0;
+    }
+    .responsive-media {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    @media (min-width: 768px) {
+        .diet-media-container {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .responsive-media {
+            max-width: 45%;
+            margin: 0 10px 20px;
+        }
+    }
+    @media (max-width: 767px) {
+        .responsive-media {
+            width: 100%;
+        }
+    }
+</style>
+	<title>Diet and Nutrition </title>
+</head>
+<body class="gradient-body">
+<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each galleries}}
+					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+       <!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+
+
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/your_answer_is_here" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+	<div class="content-wrapper">
+
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Diet and Nutrition</h2>
+            
+            <!-- Navigation Tabs -->
+            <div class="diet-nav-tabs">
+                <div class="nav-tab active" data-target="nutrition-guide">
+                    <img src="/images/icons/nutrition-icon.png" alt="" class="tab-icon">
+                    <span>Nutrition Guide</span>
+                </div>
+                <div class="nav-tab" data-target="healthy-diet">
+                    <img src="/images/icons/healthy-diet-icon.png" alt="" class="tab-icon">
+                    <span>Healthy Diet</span>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="nutrition-guide">
+                <div class="diet-media-container">
+                    <img src="/images/gallery/nutrition-guide.jpg" alt="Nutrition Guide" class="responsive-media">
+                    <div class="media-description">
+                        <h3>Nutrition Guidelines for Recovery</h3>
+                        <p>Our comprehensive guide provides a general overview of nutritional guidelines and dietary advice tailored to your specific needs and medical history. Consult with your surgeon or a registered dietitian for personalized recommendations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="healthy-diet">
+                <div class="diet-media-container">
+                    <img src="/images/gallery/healthy-diet.jpg" alt="Healthy Diet" class="responsive-media">
+                    <div class="media-description">
+                        <h3>Balanced Diet for Optimal Healing</h3>
+                        <p>A well-balanced diet should include plenty of protein from lean sources, fruits, vegetables, and healthy proteins to support optimal healing. These recommendations are tailored to enhance recovery and reduce complications following surgery.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                /* Tab Navigation Styling */
+                .diet-nav-tabs {
+                    display: flex;
+                    justify-content: center;
+                    margin: 30px 0 20px;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                }
+                
+                .nav-tab {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    border-radius: 30px;
+                    background-color: #f8f9fa;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                }
+                
+                .nav-tab.active {
+                    background-color: #2367ef;
+                    color: white;
+                }
+                
+                .tab-icon {
+                    width: 20px;
+                    height: 20px;
+                    object-fit: contain;
+                }
+                
+                /* Tab Content Styling */
+                .tab-content {
+                    display: none;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                
+                .tab-content.active {
+                    display: block;
+                    opacity: 1;
+                }
+                
+                /* Media Container Updates */
+                .diet-media-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 20px;
+                    margin: 20px 0 40px;
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                }
+                
+                .responsive-media {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    transition: transform 0.3s ease;
+                }
+                
+                .responsive-media:hover {
+                    transform: scale(1.02);
+                }
+                
+                .media-description {
+                    text-align: center;
+                    max-width: 90%;
+                }
+                
+                .media-description h3 {
+                    color: #2367ef;
+                    margin-bottom: 15px;
+                }
+                
+                @media (min-width: 768px) {
+                    .diet-media-container {
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                    }
+                    
+                    .responsive-media {
+                        max-width: 45%;
+                        margin: 0 10px;
+                    }
+                    
+                    .media-description {
+                        max-width: 100%;
+                        padding: 0 20px;
+                    }
+                }
+                
+                @media (max-width: 767px) {
+                    .responsive-media {
+                        width: 100%;
+                    }
+                    
+                    .nav-tab {
+                        padding: 8px 15px;
+                        font-size: 14px;
+                    }
+                }
+            </style>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Get all tabs and content
+                    const tabs = document.querySelectorAll('.nav-tab');
+                    const contents = document.querySelectorAll('.tab-content');
+                    
+                    // Add click handlers to tabs
+                    tabs.forEach(tab => {
+                        tab.addEventListener('click', function() {
+                            // Remove active class from all tabs and contents
+                            tabs.forEach(t => t.classList.remove('active'));
+                            contents.forEach(c => c.classList.remove('active'));
+                            
+                            // Add active class to clicked tab
+                            this.classList.add('active');
+                            
+                            // Show corresponding content
+                            const target = this.getAttribute('data-target');
+                            document.getElementById(target).classList.add('active');
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+
+
+	<div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Diet/diet3.jpg" alt="Descriptive Text" />
+
+			  </div>
+		<div class="text">
+			<h4 class="heading">Overview</h4>
+			<p  class="p" style="font-weight: 500;">Effective healing hinges on a balanced nutritional approach. Your diet impacts swelling, healing duration, bruising, scar development, and redness, particularly in the weeks leading up to and following surgery.  See tabs for more details.</p>
+			<p class="p">Proper nutrition plays a vital role in your recovery.  A well-planned diet supports your body's natural healing processes and can lead to a smoother recovery experience. </p>
+			<p class="p">This section provides a general overview of nutritional guidelines. For personalized dietary advice tailored to your specific needs and surgery, please consult with your surgeon or a registered dietitian.</p>
+            <p class="p">**Pre-surgery nutrition** (2-4 weeks before): Focus on increasing protein intake to approximately 1.5 grams per kilogram of body weight daily. Include plenty of vitamin C-rich foods like citrus fruits, bell peppers, and leafy greens to support collagen formation. Ensure adequate zinc intake through shellfish, meat, legumes, or a supplement if advised by your surgeon. Stay well-hydrated and minimize processed foods, alcohol, and excessive sugar.</p>
+              <p class="p">**Immediate pre-surgery** (48 hours before): Follow your surgeon's specific instructions regarding fasting. Generally, increase hydration (unless instructed otherwise), avoid alcohol completely, and eat easily digestible foods. Some surgeons recommend carbohydrate loading with complex carbs the day before surgery to support energy needs during recovery.</p>
+              <p class="p">**Post-surgery nutrition** (first week): Start with easily digestible proteins like broths, yogurt, and protein shakes if solid foods are difficult. Prevent constipation (common after anesthesia) with prune juice, adequate hydration, and fiber-rich foods as tolerated. Continue focusing on anti-inflammatory foods and adequate protein intake. Small, frequent meals may be easier to tolerate than three larger ones.</p>
+              <p class="p">**Extended recovery** (weeks 2-6): Gradually return to a balanced diet rich in whole foods. Protein remains important (around 1.2-1.5g/kg body weight), along with plenty of colorful fruits and vegetables. Vitamin E-rich foods like nuts, seeds, and their oils may support scar healing. Monitor your energy levels and adjust calorie intake accordingly—most patients require slightly increased calories during active healing.</p>
+              <p class="p" style="font-weight: 500;">Sample Meal Plan for Surgical Recovery</p>
+              <p class="p" style="font-weight: 500;">Healing-Optimized Daily Nutrition</p>
+
+
+            <div class="two-column-layout">
+                <!-- Left Column -->
+                <div class="column">
+                  <h3>Protein:</h3>
+                  <div class="section">
+                    <p class="section-title">Best choices:</p>
+                    <ul>
+                      <li>Fish</li>
+                      <li>Egg whites</li>
+                      <li>Turkey</li>
+                      <li>Chicken</li>
+                      <li>Soy</li>
+                    </ul>
+                    <p class="section-title">Fair choices:</p>
+                    <ul>
+                      <li>Lean red meat</li>
+                    </ul>
+                    <p class="section-title">Poor choices:</p>
+                    <ul>
+                      <li>Bacon</li>
+                      <li>Hot dogs</li>
+                      <li>Fatty meats</li>
+                      <li>Salami</li>
+                      <li>Sausage</li>
+                      <li>Cheeses</li>
+                    </ul>
+                    <p class="section-title">Favorable Carbohydrates:</p>
+                    <ul>
+                      <li>Certain raw vegetables</li>
+                      <li>Certain cooked vegetables</li>
+                      <li>Fruits</li>
+                    </ul>
+                    <p class="section-title">Unfavorable Carbohydrates:</p>
+                    <ul>
+                      <li><b>Certain cooked vegetables:</b></li>
+                      <li>Squash, carrots, beans, potatoes, peas, corn and others</li>
+                      <li><b>Certain fruits:</b></li>
+                      <li>Bananas, figs, dates, mango, papaya and others</li>
+                      <li>Grains and breads</li>
+                      <li>Fruit juices</li>
+                      <li>Alcohol</li>
+                      <li>Others</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="column">
+                  <h3>Fat:</h3>
+                  <div class="section">
+                    <p class="section-title">Best choices:</p>
+                    <ul>
+                      <li>Olive oil</li>
+                      <li>Avocado</li>
+                    </ul>
+                    <p class="section-title">Fair choices:</p>
+                    <ul>
+                      <li>Soybean oil</li>
+                      <li>Sesame oil</li>
+                    </ul>
+                    <p class="section-title">Poor choices:</p>
+                    <ul>
+                      <li>Mayonnaise</li>
+                      <li>Sour cream</li>
+                      <li>Butter</li>
+                      <li>Cream</li>
+                      <li>Cream cheese</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <p class="p">Protein is essential for healing!  Aim for a portion size roughly equivalent to the palm of your hand at each meal.</p>
+
+              <p class="p"><strong>Breakfast Options:</strong></p>
+            <ul class="p">
+                <li><strong>Protein-Rich Smoothie:</strong> Blend Greek yogurt, berries, spinach, ground flaxseed, and a small banana. Add a scoop of high-quality protein powder if additional protein is needed.</li>
+                <li><strong>Veggie Egg Scramble:</strong> Two eggs scrambled with sautéed bell peppers, spinach, and mushrooms. Serve with a slice of whole-grain toast and avocado.</li>
+                <li><strong>Overnight Chia Pudding:</strong> Mix chia seeds with milk (dairy or plant-based), add a touch of honey, vanilla, and top with fresh berries and chopped nuts in the morning.</li>
+            </ul>
+
+            <p class="p"><strong>Lunch Options:</strong></p>
+            <ul class="p">
+                <li><strong>Healing Grain Bowl:</strong> Combine quinoa or brown rice with roasted vegetables, salmon or chickpeas, avocado, and a drizzle of olive oil and lemon juice.</li>
+                <li><strong>Mediterranean Plate:</strong> Hummus, olives, cucumber slices, cherry tomatoes, feta cheese, and grilled chicken with a small whole-grain pita.</li>
+                <li><strong>Nourishing Soup:</strong> Vegetable or chicken broth-based soup with beans, leafy greens, carrots, and lean protein. Add turmeric and ginger for anti-inflammatory benefits.</li>
+            </ul>
+
+            <p class="p"><strong>Dinner Options:</strong></p>
+            <ul class="p">
+                <li><strong>Baked Fish with Roasted Vegetables:</strong> Salmon, trout, or cod baked with olive oil, lemon, and herbs. Serve with roasted sweet potatoes and broccoli.</li>
+                <li><strong>Turkey and Vegetable Stir-Fry:</strong> Lean ground turkey or sliced breast stir-fried with colorful vegetables in a small amount of olive oil. Season with ginger, garlic, and a splash of low-sodium soy sauce.</li>
+                <li><strong>Lentil and Vegetable Curry:</strong> Lentils cooked with anti-inflammatory spices like turmeric, cumin, and coriander plus a variety of vegetables. Serve with a small portion of brown rice.</li>
+            </ul>
+
+            <p class="p"><strong>Snack Ideas:</strong></p>
+            <ul class="p">
+                <li>Greek yogurt with berries and a drizzle of honey</li>
+                <li>Apple slices with almond butter</li>
+                <li>Handful of mixed nuts and dried fruit</li>
+                <li>Vegetable sticks with hummus</li>
+                <li>Small smoothie with protein</li>
+                <li>Hard-boiled egg with cherry tomatoes</li>
+            </ul>
+
+		</div>
+		</div>
+	  </div>
+
+
+
+
+	<div class="scroll-container">
+		<div class="inner-scroll-container">
+		<div class="text2">
+			<h4 class="heading">Practical Tips for Recovery</h4>
+
+			<p class="p">Recovery from surgery presents unique nutritional challenges. Many patients experience changes in appetite, taste preferences, or digestive comfort. Here are practical strategies to help you maintain optimal nutrition even when eating feels difficult:</p>
+
+            <div class="custom-table-container">
+                <div class="table-caption">Common Post-Surgery Challenges and Solutions</div>
+                <table class="custom-table">
+                  <tbody>
+                    <tr>
+                      <td><strong>Challenge</strong></td>
+                      <td><strong>Practical Solutions</strong></td>
+                    </tr>
+                    <tr>
+                      <td>Poor appetite</td>
+                      <td>
+                        • Eat smaller meals more frequently<br>
+                        • Focus on nutrient-dense foods<br>
+                        • Try liquid nutrition (smoothies, protein shakes)<br>
+                        • Schedule meals rather than waiting for hunger
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Nausea or digestive discomfort</td>
+                      <td>
+                        • Start with bland, easily digestible foods<br>
+                        • Try ginger tea or ginger chews<br>
+                        • Eat smaller portions more slowly<br>
+                        • Cold foods may be better tolerated than hot
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Constipation</td>
+                      <td>
+                        • Gradually increase fiber intake<br>
+                        • Stay well-hydrated<br>
+                        • Include prunes or prune juice<br>
+                        • Gentle physical activity as approved by your surgeon
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Fatigue affecting meal preparation</td>
+                      <td>
+                        • Prepare and freeze meals before surgery<br>
+                        • Use grocery delivery services<br>
+                        • Accept help from friends and family<br>
+                        • Keep nutritious, easy-to-prepare foods on hand
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="p" style="font-weight: 500;">Pre-Surgery Preparation</p>
+              <p class="p">The weeks before surgery offer an opportunity to optimize your nutritional status, which can significantly impact your recovery experience. Consider these preparatory steps:</p>
+
+              <ul class="p">
+                <li><strong>Kitchen preparation:</strong> Stock your pantry and freezer with nutritious, easy-to-prepare foods before surgery. Consider preparing and freezing several meals in advance.</li>
+                <li><strong>Supplement evaluation:</strong> Discuss current supplements with your surgeon, as some may need to be discontinued before surgery.</li>
+                <li><strong>Protein planning:</strong> Identify protein sources you enjoy and that are easy to prepare or consume, as protein needs increase during healing.</li>
+                <li><strong>Hydration strategy:</strong> Purchase a good water bottle and set up hydration stations around your recovery area.</li>
+                <li><strong>Support system:</strong> Arrange for help with grocery shopping and meal preparation, especially during the first week post-surgery.</li>
+              </ul>
+
+              <p class="p" style="font-weight: 500;">Long-Term Nutrition for Optimal Results</p>
+              <p class="p">While immediate post-surgery nutrition focuses on healing, long-term nutrition habits contribute to maintaining your surgical results. A balanced approach that includes adequate protein, healthy fats, complex carbohydrates, and plenty of fruits and vegetables supports tissue health, inflammation management, and overall wellbeing.</p>
+
+              <p class="p">Remember that good nutrition is just one component of a comprehensive approach to surgical recovery, alongside proper rest, gentle activity as recommended by your surgeon, and following all post-operative care instructions. Together, these elements create the optimal environment for your body to heal and for you to enjoy the best possible surgical outcome.</p>
+		</div>
+		<div class="scroll-image">
+		  <img class="scrollable" src="/images/Diet/diet-plan.jpg" alt="Descriptive Text" />
+
+		</div>
+		</div>
+	  </div>
+
+
+
+      <div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Diet/diet4.jpg" alt="Descriptive Text" />
+
+			  </div>
+		<div class="text">
+			<h4 class="heading">Practical Tips for Recovery</h4>
+			<p class="p" style="font-weight: 500;">Managing Nutrition After Surgery</p>
+            <p class="p">Recovery from surgery presents unique nutritional challenges. Many patients experience changes in appetite, taste preferences, or digestive comfort. Here are practical strategies to help you maintain optimal nutrition even when eating feels difficult:</p>
+
+            <div class="custom-table-container">
+                <div class="table-caption">Common Post-Surgery Challenges and Solutions</div>
+                <table class="custom-table">
+                  <tbody>
+                    <tr>
+                      <td><strong>Challenge</strong></td>
+                      <td><strong>Practical Solutions</strong></td>
+                    </tr>
+                    <tr>
+                      <td>Poor appetite</td>
+                      <td>
+                        • Eat smaller meals more frequently<br>
+                        • Focus on nutrient-dense foods<br>
+                        • Try liquid nutrition (smoothies, protein shakes)<br>
+                        • Schedule meals rather than waiting for hunger
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Nausea or digestive discomfort</td>
+                      <td>
+                        • Start with bland, easily digestible foods<br>
+                        • Try ginger tea or ginger chews<br>
+                        • Eat smaller portions more slowly<br>
+                        • Cold foods may be better tolerated than hot
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Constipation</td>
+                      <td>
+                        • Gradually increase fiber intake<br>
+                        • Stay well-hydrated<br>
+                        • Include prunes or prune juice<br>
+                        • Gentle physical activity as approved by your surgeon
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Fatigue affecting meal preparation</td>
+                      <td>
+                        • Prepare and freeze meals before surgery<br>
+                        • Use grocery delivery services<br>
+                        • Accept help from friends and family<br>
+                        • Keep nutritious, easy-to-prepare foods on hand
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="p" style="font-weight: 500;">Pre-Surgery Preparation</p>
+              <p class="p">The weeks before surgery offer an opportunity to optimize your nutritional status, which can significantly impact your recovery experience. Consider these preparatory steps:</p>
+
+              <ul class="p">
+                <li><strong>Kitchen preparation:</strong> Stock your pantry and freezer with nutritious, easy-to-prepare foods before surgery. Consider preparing and freezing several meals in advance.</li>
+                <li><strong>Supplement evaluation:</strong> Discuss current supplements with your surgeon, as some may need to be discontinued before surgery.</li>
+                <li><strong>Protein planning:</strong> Identify protein sources you enjoy and that are easy to prepare or consume, as protein needs increase during healing.</li>
+                <li><strong>Hydration strategy:</strong> Purchase a good water bottle and set up hydration stations around your recovery area.</li>
+                <li><strong>Support system:</strong> Arrange for help with grocery shopping and meal preparation, especially during the first week post-surgery.</li>
+              </ul>
+
+              <p class="p" style="font-weight: 500;">Long-Term Nutrition for Optimal Results</p>
+              <p class="p">While immediate post-surgery nutrition focuses on healing, long-term nutrition habits contribute to maintaining your surgical results. A balanced approach that includes adequate protein, healthy fats, complex carbohydrates, and plenty of fruits and vegetables supports tissue health, inflammation management, and overall wellbeing.</p>
+
+              <p class="p">Remember that good nutrition is just one component of a comprehensive approach to surgical recovery, alongside proper rest, gentle activity as recommended by your surgeon, and following all post-operative care instructions. Together, these elements create the optimal environment for your body to heal and for you to enjoy the best possible surgical outcome.</p>
+
+		</div>
+		</div>
+	  </div>
+
+
+      <div class="photo-gallery">
+        <div>
+    <h1>New Patient Information</h1>
+    </div>
+    <div class="custom-container">
+    <!-- First Row -->
+    <div class="custom-row first-row">
+
+	<div class="custom-div">
+			<img class="icons" src="/images/Public/camera.jpg">
+			 <a class="guidelines" href="/Guidelines">Photography Guidelines</a>
+			</div>
+      <div class="custom-div">
+        <img class="icons" src="/images/Public/laptop2.jpg">
+		<a class="guidelines" href="/Policies">Policies &  Guidelines</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/financial.jpg">
+		<a class="guidelines" href="/Finance">Financing</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/diet.jpg">
+		<a class="guidelines" href="/Diet">Diet And Nutrition</a>
+	</div>
+	  <div class="custom-div">
+		<img class="icons" src="/images/Public/blood.jpg">
+		<a class="guidelines" href="/Drain_Care">Drain Care</a>
+	</div>
+    </div>
+
+</div>
+
+    </div>
+
+
+
+	  <div class="moving-background2">
+		<div class="overlay"></div>
+		<div class="content-of-moving-background">
+		<h1>Get Started</h1>
+		<p>We’re here to answer your questions and guide you on your journey. Reach out to us today.</p>
+		<div class="button-of-moving-background">
+			<a href="/Contact">Contact Us</a>
+		</div>
+	</div>
+	</div>
+<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">59, Alexandria-Matruh st. , Ghalwash building, Agami, Alexandria, Egypt</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">01+201-500-50-9000</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/tiny-slider.js"></script>
+		<script src="/js/aos.js"></script>
+		<script src="/js/navbar.js"></script>
+		<script src="/js/counter.js"></script>
+		<script src="/js/rellax.js"></script>
+		<script src="/js/flatpickr.js"></script>
+		<script src="/js/glightbox.min.js"></script>
+		<script src="/js/custom.js"></script>
+		<script src="/https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="js/header.js"></script>
+<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+	</body>
+	</html>

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="/favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora">
+	<link rel="stylesheet" href="fonts/icomoon/style.css">
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="css/tiny-slider.css">
+	<link rel="stylesheet" href="css/aos.css">
+	<link rel="stylesheet" href="css/flatpickr.min.css">
+	<link rel="stylesheet" href="css/glightbox.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/guidelines.css">
+	<link rel="stylesheet" href="css/choose.css">
+	<link rel="stylesheet" href="css/header.css">
+
+
+    <!-- <link rel="stylesheet" href="css/photo-gallery.css"> -->
+
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	@media (max-width: 700px) {
+  .heading-pages h1 {
+    font-size: 29px; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 14px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 14px; /* Ensure link text matches breadcrumb size */
+  }
+}
+
+	/* Ensure images are sticky on larger screens */
+@media (min-width: 1001px) {
+  .scroll-image img, .scroll-image1 img {
+    position: sticky !important;
+    top: 10px !important;
+    z-index: 10; /* Optional, to keep them above overlapping elements */
+  }
+
+  /* Ensure the parent container does not interfere */
+  .scroll-container, .scroll-container1 {
+    overflow: visible !important;
+  }
+
+  /* Ensure all ancestor elements allow sticky positioning */
+  html, body, .scroll-container, .scroll-container1 {
+    overflow: unset !important;
+    position: relative !important;
+  }
+}
+
+/* Reset images for smaller screens */
+@media (max-width: 1000px) {
+  .scroll-image img, .scroll-image1 img {
+    position: static !important;
+  }
+}
+
+	 .h4{
+      font-family:Ubuntu, sans-serif;
+      color: #494949 !important;
+      font-size: 18px !important;
+      font-weight: bold !important;
+    }
+
+
+	 .photo-gallery {
+      display: flex; /* Enable flexbox for alignment */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      flex-direction: column; /* Stack content vertically */
+      text-align: center; /* Ensure text aligns centrally */
+      padding: 20px; /* Add some space inside the container */
+      position: relative; /* For further positioning if needed */
+    }
+    .custom-container {
+      display: flex; /* Enable flexbox for internal alignment */
+      flex-wrap: wrap; /* Allow items to wrap if necessary */
+      justify-content: center; /* Center horizontally inside the parent */
+      align-items: center; /* Center vertically inside the parent */
+      gap: 20px; /* Add space between child elements */
+    }
+    .icons {
+      height: 100% !important;
+      width: 90% !important;
+      padding-bottom: 20px;
+    }
+    .photo-gallery .custom-container{
+      width: 90%;
+    }
+
+	.heading{
+		    margin-top: 40px;
+	}
+</style>
+	<title>Policies & Guidelies </title>
+</head>
+<body class="gradient-body">
+
+<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each galleries}}
+					<li><a href="/galleries/{{slug}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+		 <!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+
+
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/your_answer_is_here" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+
+
+	<div class="content-wrapper">
+
+
+
+
+
+
+	<div class="scroll-container1">
+		<div class="inner-scroll-container">
+			<div class="scroll-image1">
+				<img class="scrollable" src="/images/Choose/choose3.jpg" alt="Descriptive Text" />
+
+			  </div>
+		<div class="text">
+			<h4 class="heading">Our Caring Policies & Guidelines</h4>
+			<h4 class="h4">Your Visit With Us</h4>
+			<p class="p">We're excited to welcome you to our practice! To help us create the best experience possible, please share as much information as you can when scheduling your appointment. This allows us to reserve the perfect amount of time just for you. We warmly welcome a supportive family member or friend to accompany you on your journey with us. For everyone's comfort and to ensure you receive our undivided attention, we kindly ask that arrangements be made for children. To secure your special time with us, a credit card number or check is needed when scheduling.</p>
+			<h4 class="h4">Schedule Changes</h4>
+			<p class="p">We understand that life can be unpredictable. Our team carefully prepares for your visit, and we value the time set aside especially for you. All appointments are secured with a credit card payment in advance. Should your plans change, we kindly request a 48-hour notice so we can offer your appointment time to another patient in need. This mutual respect helps us maintain our commitment to providing exceptional care to all our valued patients.</p>
+			<h4 class="h4">Creating a Focused Healing Environment</h4>
+			<p class="p">Your wellbeing is our priority, and we strive to create a peaceful, attentive environment during your visit. To ensure you receive our complete focus and care, we kindly ask that you arrange childcare before your appointment. This thoughtful consideration allows our team to dedicate their full attention to your needs and helps maintain a tranquil atmosphere for all patients.</p>
+			<h4 class="h4">We're Here For You</h4>
+			<p class="p">Our dedicated team is available 24/7 to support your needs!</p>
+			<h4 class="h4">Reaching Out To Us</h4>
+			<p class="p">We're always happy to hear from you! Our caring team answers calls during regular business hours at +201-500-50-9000. This number is also available for any urgent concerns after hours. For questions that might need a more personal touch or detailed discussion, we'd love to welcome you for a visit to our office where we can give you our complete attention.</p>
+			<h4 class="h4">Your Surgical Journey</h4>
+			<p class="p">To prepare for your surgical procedure, payment arrangements are completed three weeks prior to your special day. We offer multiple convenient payment options including Visa, MasterCard, Money-wallets, Instapay, cashier's checks, and cash. For patients seeking financial flexibility, we've partnered with CareCredit. Personal checks are warmly accepted when mailed 10 days in advance. Our patient counselor is always available to discuss any aspects of the professional fees with you.</p>
+			<h4 class="h4">Additional Service Fees</h4>
+			<p class="p">While our team provides estimates for operating room and anesthesia services, these are managed separately by the respective providers. We'll guide you through understanding these arrangements, which will be directly between you and the provider/hospital.</p>
+			<h4 class="h4">Non-Surgical Treatments</h4>
+			<p class="p">For your convenience, payment for injectables and other non-surgical services is collected on the day of your visit before your appointment. We'll always inform you in advance if a service requires a deposit, ensuring there are no surprises along your journey with us.</p>
+			<h4 class="h4">Insurance Guidance</h4>
+			<p class="p">While we don't have direct relationships with insurance companies, we're happy to support your insurance process. Understanding your coverage is an important part of your healthcare journey. As a courtesy when you book your procedure and secure your date with a deposit, our friendly staff will provide the information you need for your insurance submission. The relationship and all communications will be directly between you and your carrier, with any payments sent directly to you.</p>
+			<h4 class="h4">Your Privacy Matters</h4>
+			<p class="p">We honor the sacred trust you place in us. Your records and documents are only released with your written consent. We hold your privacy in the highest regard, ensuring all interactions with our office remain completely confidential and discreet. Your trust means everything to us.</p>
+
+		</div>
+
+		</div>
+	  </div>
+
+
+
+
+
+<div class="photo-gallery">
+    <div>
+<h1>New Patient Information</h1>
+</div>
+<div class="custom-container">
+    <!-- First Row -->
+    <div class="custom-row first-row">
+
+	<div class="custom-div">
+			<img class="icons" src="/images/Public/camera.jpg">
+			 <a class="guidelines" href="/Guidelines">Photography Guidelines</a>
+			</div>
+      <div class="custom-div">
+        <img class="icons" src="/images/Public/laptop2.jpg">
+		<a class="guidelines" href="/Policies">Policies &  Guidelines</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/financial.jpg">
+		<a class="guidelines" href="/Finance">Financing</a>
+	</div>
+      <div class="custom-div">
+		<img class="icons" src="/images/Public/diet.jpg">
+		<a class="guidelines" href="/Diet">Diet And Nutrition</a>
+	</div>
+	  <div class="custom-div">
+		<img class="icons" src="/images/Public/blood.jpg">
+		<a class="guidelines" href="/Drain_Care">Drain Care</a>
+	</div>
+    </div>
+
+</div>
+
+</div>
+
+
+<div class="moving-background2">
+	<div class="overlay"></div>
+	<div class="content-of-moving-background">
+    <h1>Get Started</h1>
+	<p>We’re here to answer your questions and guide you on your journey. Reach out to us today.</p>
+	<div class="button-of-moving-background">
+		<a href="/Contact">Contact Us</a>
+	</div>
+</div>
+</div>
+<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic & Reconstructive surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">59, Alexandria-Matruh st. , Ghalwash building, Agami, Alexandria, Egypt</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">+201-500-50-9000</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each galleries}}
+							<li><a href="/galleries/{{slug}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/tiny-slider.js"></script>
+		<script src="js/aos.js"></script>
+		<script src="js/navbar.js"></script>
+		<script src="js/counter.js"></script>
+		<script src="js/rellax.js"></script>
+		<script src="js/flatpickr.js"></script>
+		<script src="js/glightbox.min.js"></script>
+		<script src="js/custom.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+<script src="js/header.js"></script>
+<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+	</body>
+	</html>

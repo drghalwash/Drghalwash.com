@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="/favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/header.css">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	@media (max-width: 1000px) {
+
+
+  .moving-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+
+	@media (max-width: 700px) {
+  .heading-pages h1 {
+    font-size: 29px; /* Reduce font size for the main heading */
+    line-height: 1.2; /* Adjust line height for better spacing */
+  }
+
+  .heading-pages p {
+    font-size: 14px; /* Reduce breadcrumb font size */
+  }
+
+  .heading-pages a {
+    font-size: 14px; /* Ensure link text matches breadcrumb size */
+  }
+		  .align-items-center{
+	width: 100% !important;
+}
+}
+	.align-items-center{
+	width: 80%;
+}
+.container,.container4,.container5{
+	display: flex;
+	 justify-content: center;  
+    align-items: center ; 
+}
+
+.info {
+  opacity: 0; /* Initially hidden */
+  transform: translateX(100%); /* Off-screen to the left */
+  transition: all 1s ease-out;
+}
+.info.active {
+  opacity: 1; /* Fully visible */
+  transform: translateX(0); /* Move to its position */
+}
+
+	  .text-section p, .col-lg-5 p {
+    text-align: justify; /* Ensures even spacing between words */
+    text-justify: inter-word; /* Adds justification for better alignment */
+
+	font-size: 17px;
+	color: black;
+  }
+.accordion-item{
+	border: 1px solid #d3d3d3; 
+}
+</style>
+	<title>About Us Dr.Mohammed </title>
+</head>
+<body class="gradient-body">
+<nav class="unique-navbar">
+		<div class="distinct-logo"><a href="/Home"><img src="/images/new-logo.png"> </a></div>
+		<div class="menu-toggle" id="toggle-button">
+			<div class="toggle-lines">
+				<span style=" width: 15px; "></span>
+				<span style=" width: 20px;"></span>
+				<span style=" width: 15px;"></span>
+			</div>
+			<span class="menu-text">Menu</span>
+		</div>
+		<div class="rare-menu" id="menu">
+			<a href="/Home" class="uncommon-link">HOME</a>
+			<div class="dropdown">
+				<a id="about" href="#" class="uncommon-link">ABOUT US <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/About_Us/Dr_Khaled" class="dropdown-link">Meet Dr.Khaled</a></li>
+					<li><a href="/About_Us/Dr_Mohamed" class="dropdown-link">Meet Dr.Mohammed</a></li>
+					<li><a href="/Choose" class="dropdown-link">How to Choose A Plastic Surgeon</a></li>
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">PHOTO GALLERY <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					{{#each Photo_Gallary}}
+					<li><a href="/Photo_Gallary/{{_id}}" class="dropdown-link">{{name}}</a></li>
+					{{/each}}
+					<li><a href="/Guidelines" class="dropdown-link">Photography Guidelines</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+    <a href="#" class="uncommon-link">PAITENT INFO <span class="dropdown-arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+		<!-- Out of Town Patients -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-link">Out of Town Patients <span class="dropdown-arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/Out_of_town" class="dropdown-link">Out of Town</a></li>
+                <li><a href="/Out_of_town/Concierge_Services" class="dropdown-link">Concierge Services</a></li>
+                <li><a href="/Out_of_town/Consultation_Process" class="dropdown-link">Consultation Process</a></li>
+                <li><a href="/Out_of_town/Hotels_Accommodations" class="dropdown-link">Hotels & Accommodations</a></li>
+                <li><a href="/Out_of_town/Alexandria_Attractions" class="dropdown-link">Alexandria Attractions</a></li>
+            </ul>
+        </li>
+        <li><a href="/Diet" class="dropdown-link">Diet and Nutrition</a></li>
+        <li><a href="/Drain_Care" class="dropdown-link">Drain Care</a></li>
+        <li><a href="/Finance" class="dropdown-link">Financing</a></li>
+        <li><a href="/Meet_Our_Patients" class="dropdown-link">Meet Our Patients</a></li>
+        <li><a href="/Policies" class="dropdown-link">Policies & Guidelines</a></li>
+
+
+    </ul>
+</div>
+
+			<div class="dropdown">
+				<a href="#" class="uncommon-link">DISCUSSION CORNER <span class="dropdown-arrow">&#9662;</span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Blog" class="dropdown-link">Blog</a></li>
+					<li><a href="/your_answer_is_here" class="dropdown-link">Q&A</a></li>
+				</ul>
+			</div>
+
+			<a href="/Contact" class="uncommon-link">CONTACT US</a>
+		</div>
+	</nav>
+
+<div class="content-wrapper">
+
+
+
+
+
+
+
+
+<div class="section">
+	<div class="container">
+		<div class="row justify-content-between align-items-center">
+			<div class="col-lg-5 mb-4 mb-lg-0 order-lg-2" data-aos="fade-up">
+				<img src="/images/img-1.jpg" alt="Image" class="img-fluid">
+			</div>
+			<div style="  text-align: left;" class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
+				<div style="margin-bottom: 30px;"><span class="tag-title">Dr. Mohammed Ghalwash</span></div>
+				<h6 style="font-size: 20px;" class="heading mb-4">A Legacy of Surgical Innovation</h6>
+				<p><strong>Dr. Mohammed Ghalwash's pioneering vision began with a profound commitment: "Excellence in surgical care is not a privilege, but a right."</strong> Since 1964, this guiding principle has transformed countless lives through innovative surgical techniques and compassionate care.</p>
+
+				<p>His remarkable journey encompasses <strong>groundbreaking achievements in microsurgery</strong>, from establishing Saudi Arabia's first advanced hair restoration center to revolutionizing reconstructive surgery in Egypt. With <strong>over 8,800 successful procedures</strong>, including 2,300 complex replantations, his legacy stands as a testament to surgical precision and patient-centered innovation.</p>
+
+			</div>	
+		</div>
+	</div>
+</div>
+
+
+<div class="container4">
+	<div class="video-section">
+	  <video width="100%" controls>
+		<source src="/your-video.mp4" type="video/mp4">
+		Your browser does not support the video tag.
+	  </video>
+	</div>
+	<div class="text-section">
+	  <p>
+		As a pioneer in reconstructive surgery, Dr. Mohammed brings decades of expertise in microsurgery and hair restoration. His meticulous approach and dedication to surgical excellence have transformed countless lives through innovative techniques and compassionate care.	  </p>
+	</div>
+  </div>
+
+
+  <div class="container5">
+
+	<div class="text-section">
+	  <p>
+		Before surgery, Dr. Mohammed meets with his patients multiple times to plan every detail and anticipate every challenge. He has in-depth conversations about what the patient wants and carefully explains what can be achieved. Dr. Mohammed Ghalwash believes it is essential that patients do their research and consult with more than one surgeon before making a decision.	  </p>
+	</div>
+	<div class="image-section">
+		<div class="img-of-container5">
+	<img src="/images/hero_1.jpg">
+</div>
+	  </div>
+  </div>
+
+
+
+  <div class="moving-background">
+	<div class="overlay"></div>
+	<div class="content-of-moving-background">
+    <h1>Hear from Our Patients</h1>
+	<p>Dr. Mohammed – You changed my life. I stand in the mirror and smile. I have pride when I walk down the street. This is best thing in my life right now .</p>
+	<div class="button-of-moving-background">
+		<a href="">VIEW MORE TESTIMONAIALS</a>
+	</div>
+</div>
+</div>
+
+
+
+<div class="section">
+	<div class="container">
+		<div class="row justify-content-between align-items-center">
+			<div class="col-lg-5 mb-4 mb-lg-0">
+				<img style="height: 600px;" src="/images/doc.jpg" alt="Image" class="img-fluid2">
+			</div>
+			<div class="col-lg-5 mt-4 mt-lg-0"  data-aos="fade-up" data-aos-delay="100">
+
+				<div class="custom-accordion" id="accordion_1">
+					<div class="accordion-item">
+						<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Hard work and dedication</button>
+						</h2>
+
+						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion_1">
+							<div class="accordion-body">
+								From a modest beginning in Alexandria's wardian district, <strong>Dr. Ghalwash transformed a 55m² clinic into a 1000m² center of excellence</strong>. His facility introduced groundbreaking microsurgical techniques, including complex digit transfers and nerve reconstruction procedures that redefined possibilities in Egyptian healthcare.
+							</div>
+						</div>
+					</div> <!-- .accordion-item -->
+
+					<div class="accordion-item">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Board Certifications</button>
+						</h2>
+						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion_1">
+							<div class="accordion-body">
+								<strong>Leading the field in reconstructive surgery</strong>, Dr. Ghalwash holds distinguished certifications from egyptian and international surgical boards. His expertise spans microsurgery, aesthetic procedures, and advanced hair restoration techniques, backed by continuous research and innovation in surgical methodologies.
+							</div>
+						</div>
+					</div> <!-- .accordion-item -->
+					<div class="accordion-item">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Ethics & Safety</button>
+						</h2>
+
+						<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordion_1">
+							<div class="accordion-body">
+								<strong>Precision and patient safety stand at the core of Dr. Ghalwash's practice</strong>. Using microsurgical instruments of exceptional precision, he performs intricate procedures that restore both function and hope. His commitment to 24/7 emergency care and the motto "<strong>See the person, not just the procedure</strong>" reflects his dedication to comprehensive patient care.
+							</div>
+						</div>
+
+					</div> <!-- .accordion-item -->
+
+
+					<div class="accordion-item">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Personal</button>
+						</h2>
+
+						<div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordion_1">
+							<div class="accordion-body">
+								<strong>Excellence in surgery is a daily commitment</strong>. It's about precision, patience, and persistence—crafting results that transform not just appearances, but lives. Every procedure is approached with unwavering dedication to perfection and patient care.
+							</div>
+						</div>
+
+					</div> <!-- .accordion-item -->
+
+				</div>
+				<div class="info" id="info">
+					<p><strong>[Surgery isn't about miracles. It's about showing up—day after day, stitch after stitch—until the person in the mirror matches the one in their heart.]</strong></p>
+				  </div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<br>
+						<img style="max-height: 600px;max-width: 400px ;margin-top: -80px" class="footer-logo"
+							src="/images/footer-logo.png" alt="">
+						<p>Aesthetic surgery specialists based in Alexandria.</p>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+							</svg>
+							<p style="margin: 0;">59, Alexandria-Matruh st. , Ghalwash building, Agami, Alexandria, Egypt</p>
+						</div>
+						<div
+							style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;  font-size: 15px;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-whatsapp" viewBox="0 0 16 16">
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+							</svg><a href="" style="text-decoration: none; color: inherit;">
+								<p style="margin: 0;">+201-500-50-9000</p>
+							</a></div>
+					</div>
+
+				</div> <!-- /.col-lg-3 -->
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">About</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/About_Us/Dr_Khaled">Meet Dr.Khaled</a></li>
+							<li><a href="/About_Us/Dr_Mohamed">Meet Dr.Mohammed</a></li>
+							<li><a href="/Choose">How to Choose A Plastic Surgeon</a></li>
+							<li><a href="/Meet_Our_Patients">Meet Our Patients</a></li>
+							<li><a href="/Contact">Contact Us</a></li>
+							<li><a href="/Blog">Blog</a></li>
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">Procedures</h3>
+						<ul class="list-unstyled float-left links">
+							{{#each Photo_Gallary}}
+							<li><a href="/Photo_Gallary/{{_id}}">{{name}}</a></li>
+							{{/each}}
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div class="col-lg-2 ml-auto">
+					<div class="widget">
+						<h3 class="footer-headers">New Patient Info</h3>
+						<ul class="list-unstyled float-left links">
+							<li><a href="/Guidelines">Photography Guidelines</a></li>
+							<li><a href="/Policies">Policies & Guidelines</a></li>
+							<li><a href="/Finance">Financing</a></li>
+							<li><a href="/Diet">Diet and Nutrition</a></li>
+							<li><a href="/Drain_Care">Drain Care</a></li>
+
+
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+			</div> <!-- /.row -->
+
+
+			<!-- Preloader -->
+			<div id="overlayer"></div>
+			<div class="loader">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Copyright"> Copyright ©2025 Dr Khaled Mohammed Alexandria Plastic Surgery. All Right Reserved. </div>
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/js/tiny-slider.js"></script>
+	<script src="/js/aos.js"></script>
+	<script src="/js/navbar.js"></script>
+	<script src="/js/counter.js"></script>
+	<script src="/js/rellax.js"></script>
+	<script src="/js/flatpickr.js"></script>
+	<script src="/js/glightbox.min.js"></script>
+	<script src="/js/custom.js"></script>
+	<script src="/js/accordion-manager.js"></script>
+
+
+
+		<script src="js/header.js"></script>
+<script>
+  const toggleButton = document.getElementById('toggle-button');
+  const menu = document.getElementById('menu');
+
+  // Toggle the menu visibility on button click
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click from propagating to the document
+    menu.classList.toggle('active');
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !toggleButton.contains(event.target)) {
+      menu.classList.remove('active'); // Remove the active class if clicking outside
+    }
+  });
+
+  // Function to reset menu visibility for larger screens
+  const resetMenu = () => {
+    if (window.innerWidth > 768) {
+      menu.classList.remove('active'); // Remove the active class in desktop view
+    }
+  };
+
+  // Listen for window resize events
+  window.addEventListener('resize', resetMenu);
+
+  // Initial check to reset menu on page load
+  resetMenu();
+</script>
+		<script src="js/header.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".site-nav ");
+        const menuToggle = document.querySelector(".sticky-wrapper");
+        menuToggle.addEventListener("click", function () {
+          nav.classList.toggle("active"); // Toggle the class on the nav
+        });
+      });
+</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+			{{!-- for animation --}}
+<script>
+  // Select the element to be animated
+  const infoElement = document.getElementById('info');
+
+  // Create an Intersection Observer instance
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Add the active class when the element comes into view
+          entry.target.classList.add('active');
+          // Stop observing the element after the animation starts
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      root: null, // Use the viewport as the root
+      threshold: 0.1, // Trigger when 10% of the element is visible
+    }
+  );
+
+  // Start observing the element
+  observer.observe(infoElement);
+</script>
+</body>
+</html>

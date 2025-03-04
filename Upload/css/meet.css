@@ -1,0 +1,204 @@
+@media (max-width: 1000px) {
+  
+
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+	
+  /* Slider Container */
+  .slider-container {
+    position: relative;
+    max-width: 60%;
+    overflow: hidden;
+    border-radius: 10px;
+  
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+   height: auto;
+   margin-bottom: 30px;
+  }
+  
+  /* Slider */
+  .slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 300%;
+  }
+  
+  .slide {
+    flex: 1 0 100%;
+    position: relative;
+    text-align: center;
+  }
+  
+  .slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+  }
+  
+  .caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    text-align: center;
+  }
+ /* Navigation Arrows */
+  .prev,
+  .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color:transparent;
+    color: #4169E1  !important;
+    border: none;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  
+  .prev:hover,
+  .next:hover {
+    background-color: rgba(84, 62, 229, 0.8);
+    color: white  !important;
+  }
+  
+  .prev {
+    left: 10px;
+  }
+  
+  .next {
+    right: 10px;
+  }
+  
+  /* Navigation Dots */
+  .dots-container {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  
+  .dot {
+    height: 12px;
+    width: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: white;
+  }
+  
+
+
+.parent-div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
+    gap: 20px; /* Space between the child divs */
+    padding: 20px;
+ 
+    width: 100%;
+  }
+  
+  .child-div {
+    border: 1px solid #ddd; /* Optional border for visibility */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Inner spacing */
+    text-align: center; /* Center align the content */
+    border-radius: 10px;
+    background-color: #F0F5FF;  
+    width: 100%;
+    
+  }
+  
+  .child-div h3 {
+    margin: 0 0 10px; /* Spacing below the heading */
+    font-size: 18px; /* Adjust font size */
+    font-family: var(--theme-font-family);
+    color: #4169E1;
+  }
+  
+  .child-div p {
+    margin: 0;
+    font-size: 14px;
+    color: #555; /* Slightly darker color for text */
+  }
+  .blur-container {
+   
+    background-color: white; /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(30px); /* For Safari */
+    box-shadow: 0 0 10px rgba(27, 84, 255, 0.6); 
+    border-radius: 10px; /* Rounded corners (optional) */
+    padding: 20px 0; /* Space inside the div */
+    color: black; /* Text color */
+    text-align: center; /* Center-align the text */
+  }
+  
+  
+  @media (max-width: 768px) {
+    .parent-div {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns for tablet view */
+    }
+    .slider-container{
+      min-width: 85%;
+     
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .parent-div {
+      grid-template-columns: 1fr; /* 1 column for mobile view */
+    }
+   
+  }
+
+
+.img-fluid {
+    max-width: 90%;
+    height: auto;
+    border-radius: 10px;
+}
+  
+  .moving-background2 {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    overflow: hidden;
+    background-image: url('../images/before2.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensure the image covers the div */
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    background-repeat: no-repeat;
+    padding: 200px 20px;
+    
+  }

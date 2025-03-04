@@ -1,0 +1,331 @@
+@media (max-width: 1000px) {
+  
+
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure it contains the child */
+  }
+
+  .content-of-moving-background {
+    position: absolute; /* Ensure it’s positioned correctly within the parent */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center text and the button inside */
+  }
+
+  .button-of-moving-background {
+    display: inline-block; /* Ensure proper centering for the button */
+    margin-top: 10px;
+  }
+}
+	
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  justify-content: center !important; /* Horizontally center content */
+  align-items: center center !important; /* Vertically center content */
+  min-height: 100vh; /* Make body take full viewport height */
+}
+
+/* Normal View (Desktop) */
+.scroll-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F0F5FF;
+}
+
+.scroll-container > * {
+  width: 90%; /* Set 90% width for normal view */
+}
+
+.scroll-container1 {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  position: relative;
+  width: 70%;
+}
+
+.inner-scroll-container {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  justify-content: center !important; /* Horizontally center content */
+  padding: 10px 15px;
+}
+
+.scroll-image,
+.scroll-image1 {
+  position: sticky;
+  top: 0px; /* Distance from the top when scrolling */
+  width: 50%; /* 50% width of their container */
+}
+
+.scroll-image img,
+.scroll-image1 img {
+  max-width: 500px;
+  height: auto;
+  min-height: 300px;
+  max-height: 650px;
+  border-radius: 20px;
+  margin-top: 100px;
+}
+
+.text {
+  flex: 1;
+  padding-right: 30px;
+  width: 70%;
+  font-family: var(--theme-font-family);
+  margin-top: 100px;
+}
+
+.dotted-list {
+  list-style-type: none;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.dotted-list li {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.dotted-list li::before {
+  content: "●";
+  position: absolute;
+  left: -15px;
+  font-size: 12px;
+  color: black;
+}
+
+h3,
+h4,
+li {
+  font-family: var(--theme-font-family);
+}
+
+.moving-background2 {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  background-image: url('../images/choose-contact.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 200px 20px;
+}
+
+.two-column-layout {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  background-color: #F0F5FF;
+}
+
+.column {
+  flex: 1;
+  background-color: #F0F5FF;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.column h3 {
+  color: #2367ef;
+  margin-bottom: 0px;
+}
+
+.column ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.column ul li {
+  margin: 5px 0;
+}
+
+.section {
+  padding: 10px !important;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-top: 2px !important;
+  font-family: var(--theme-font-family) !important;
+}
+
+.custom-table-container {
+  margin: 0 auto;
+  border: 1px solid #f0eded;
+  border-radius: 2px;
+  background-color: transparent;
+  overflow: hidden;
+  color: #494949;
+  margin-bottom: 15px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #f0eded; /* Adds borders to each cell */
+}
+
+.custom-table th {
+  font-size: 14px;
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+.table-caption {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f0eded;
+  color: #494949;
+}
+
+ol {
+  margin-left: 30px;
+}
+.photo-gallery {
+  display: flex; /* Enable flexbox for alignment */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column; /* Stack content vertically */
+  text-align: center; /* Ensure text aligns centrally */
+  padding: 20px; /* Add some space inside the container */
+  position: relative; /* For further positioning if needed */
+ 
+}
+
+.custom-container {
+  display: flex; /* Enable flexbox for internal alignment */
+  flex-wrap: wrap; /* Allow items to wrap if necessary */
+  justify-content: center; /* Center horizontally inside the parent */
+  align-items: center; /* Center vertically inside the parent */
+  max-width: 1200px; /* Optional: Set a max width for the container */
+  width: 100%; /* Make the container responsive */
+  gap: 20px; /* Add space between child elements */
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  body {
+    display: flex !important;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center !important; /* Horizontally center content */
+    align-items: center !important; /* Vertically center content */
+    min-height: 100vh; /* Make body take full viewport height */
+  }
+
+  .scroll-container > * {
+    width: auto; /* Adjust width */
+    text-align: center !important; /* Optional: Center text if applicable */
+  }
+
+  .scroll-container1 {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    width: 100% !important;
+  }
+
+  .scroll-container {
+    padding-left: 50px;
+   
+  }
+.text2{
+  width: 85%;
+  text-align: left;
+}
+.scroll-container,.photo-gallery{
+  display: flex;
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+}
+  .inner-scroll-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .scroll-image img,
+  .scroll-image1 img {
+    width: 100%; /* Full width for mobile view */
+    height: auto;
+    border-radius: 20px;
+    margin-top: 10px !important;
+    margin-bottom: 70px;
+  }
+
+  .scroll-image,
+  .scroll-image1 {
+    width: 100%; /* Full width for mobile view */
+  }
+
+  .text {
+    flex: 1;
+    width: 100% !important;
+    font-family: var(--theme-font-family);
+    margin-top: 10px !important;
+  }
+
+  .two-column-layout {
+    flex-direction: column;
+  }
+
+  .column {
+    width: 100%;
+  }
+}
+
+@media (max-width: 411px) {
+  .scroll-image img,
+  .scroll-image1 img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    margin-top: -10px !important;
+  }
+
+  .text {
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+}
+
+	.photo-gallery {
+  display: flex; /* Enable flexbox for alignment */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column; /* Stack content vertically */
+  text-align: center; /* Ensure text aligns centrally */
+  padding: 20px; /* Add some space inside the container */
+  position: relative; /* For further positioning if needed */
+ 
+}
+
+.custom-container {
+  display: flex; /* Enable flexbox for internal alignment */
+  flex-wrap: wrap; /* Allow items to wrap if necessary */
+  justify-content: center; /* Center horizontally inside the parent */
+  align-items: center; /* Center vertically inside the parent */
+
+ 
+  gap: 20px; /* Add space between child elements */
+}

@@ -1,0 +1,465 @@
+
+@media (max-width: 1000px) {
+  .moving-background2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .content-of-moving-background {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .button-of-moving-background {
+    display: inline-block;
+    margin-top: 10px;
+  }
+}
+	
+.img-fluid{
+    height: 400px !important;
+    width: 500px;
+}
+
+.photo-gallery{
+   background-color: #F0F5FF;
+    width: 100%;
+    height: auto;
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Fix box-sizing for all elements in gallery */
+.photo-gallery *,
+.custom-container *,
+.custom-div,
+.custom-div-private {
+    box-sizing: border-box;
+}
+
+.photo-gallery h1{
+  color: #1B54FF;
+  font-family: var(--theme-font-family);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.0) !important;
+  font-size: 25px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto 30px;
+}
+
+/* Container for the gallery items */
+.custom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Row styling */
+.custom-container .custom-row {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Base styles for gallery items */
+.custom-container .custom-div,
+.custom-container .custom-div-private {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  min-height: 180px;
+  position: relative;
+}
+
+/* Row specific styles for proper spacing */
+.custom-container .row-five .custom-div,
+.custom-container .row-five .custom-div-private {
+  flex: 1;
+  width: calc(20% - 19.2px);
+}
+
+.custom-container .row-four .custom-div,
+.custom-container .row-four .custom-div-private {
+  flex: 1;
+  width: calc(25% - 18px);
+}
+
+.custom-container .row-three .custom-div,
+.custom-container .row-three .custom-div-private {
+  flex: 1;
+  width: calc(33.333% - 16px);
+}
+
+.custom-container .row-two .custom-div,
+.custom-container .row-two .custom-div-private {
+  flex: 1;
+  width: calc(50% - 12px);
+}
+
+.custom-container .row-one .custom-div,
+.custom-container .row-one .custom-div-private {
+  flex: 1;
+  width: 100%;
+}
+
+/* Hover effects */
+.custom-container .custom-div:hover {
+  border-bottom: 3px solid #1B54FF;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.custom-container .custom-div-private:hover {
+  border-bottom: 3px solid red;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Image styles */
+.icons {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+/* Text styles */
+.custom-div p,
+.custom-div-private p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: #4D4D4D;
+  font-weight: bold;
+  text-align: center;
+}
+
+.no-galleries-message {
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .custom-container {
+    width: 95%;
+    gap: 20px;
+  }
+  
+  .custom-container .custom-row {
+    gap: 20px;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-container {
+    width: 100%;
+    padding: 15px;
+    gap: 16px;
+  }
+  
+  .custom-container .custom-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  /* Make items 3 per row on mobile/tablet */
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private,
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private,
+  .custom-container .row-three .custom-div,
+  .custom-container .row-three .custom-div-private,
+  .custom-container .row-two .custom-div,
+  .custom-container .row-two .custom-div-private {
+    flex: 0 0 calc(33.333% - 8px);
+    width: calc(33.333% - 8px);
+    min-height: 160px;
+  }
+  
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .icons {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-gallery {
+    padding: 20px 10px;
+  }
+  
+  .photo-gallery h1 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+  }
+  
+  .custom-container {
+    gap: 10px;
+  }
+  
+  .custom-container .custom-row {
+    gap: 10px;
+  }
+  
+  /* Keep 3 items per row even on small mobile */
+  .custom-container .row-five .custom-div,
+  .custom-container .row-five .custom-div-private,
+  .custom-container .row-four .custom-div,
+  .custom-container .row-four .custom-div-private,
+  .custom-container .row-three .custom-div,
+  .custom-container .row-three .custom-div-private,
+  .custom-container .row-two .custom-div,
+  .custom-container .row-two .custom-div-private {
+    flex: 0 0 calc(33.333% - 7px);
+    width: calc(33.333% - 7px);
+    min-height: 130px;
+    padding: 10px 5px !important;
+  }
+  
+  .custom-container .row-one .custom-div,
+  .custom-container .row-one .custom-div-private {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  
+  .icons {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+  
+  .custom-div p,
+  .custom-div-private p {
+    font-size: 12px;
+  }
+}
+
+.moving-background2 {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background-image: url('../images/before2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 200px 20px;
+}
+
+.content {
+  height: 100vh;
+}
+
+.modal2 {
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.6); 
+  z-index: 3000 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.modal2 .logo a img {
+  width: 30px; 
+}
+
+.modal2 .modal-content {
+  background-color: transparent;
+  border: none;
+  border-radius: 7px; 
+}
+
+.modal2 .modal-content .modal-body {
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: #fff;
+  padding-left: 0px;
+  padding-right: 0px;
+  -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9); 
+}
+
+.modal2 .modal-content .modal-body h2 {
+  font-size: 18px; 
+}
+
+.modal2 .modal-content .modal-body p {
+  color: #777;
+  font-size: 14px; 
+}
+
+.modal2 .modal-content .modal-body h3 {
+  color: #000;
+  font-size: 22px; 
+}
+
+.modal2 .modal-content .modal-body .close-btn {
+  color: #000; 
+}
+
+.modal2 .modal-content .modal-body .promo-img {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 50%;
+  flex: 0 0 50%; 
+}
+
+.modal2 .modal-content .modal-body .promo-img .price {
+  top: 20px;
+  left: 20px;
+  position: absolute;
+  color: #fff; 
+}
+
+.modal2 .btn {
+  border-radius: 30px; 
+}
+
+.modal2 .warp-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  position: relative;
+  background: rgba(62, 100, 255, 0.05);
+  color: #3e64ff;
+  border-radius: 50%; 
+}
+
+.modal2 .warp-icon span {
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); 
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+  padding-right: 0; 
+}
+
+.form-control:active, .form-control:focus, .form-control:hover {
+  border-bottom: 1px solid #000;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none; 
+}
+
+.btn {
+  border-radius: 4px;
+  border: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px; 
+}
+
+.btn:active, .btn:focus {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important; 
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 20px; 
+}
+
+.close-btn span {
+  color: #ccc; 
+}
+
+.close-btn:hover span {
+  color: #000; 
+}
+
+.col-lg-5 p {
+  font-weight: 350;
+  font-size: 18px;
+  text-align: justify;
+  text-align-last: justify;
+  text-align: left !important;
+  word-wrap: break-word !important;
+}
+
+/* Fix empty space issues when images don't load */
+.photo-gallery .custom-div img, 
+.photo-gallery .custom-div-private img {
+  display: block;
+  min-height: 80px;
+}
+
+/* Always maintain consistent spacing regardless of icon presence */
+.photo-gallery .custom-div img[style*="display:none"],
+.photo-gallery .custom-div-private img[style*="display:none"] {
+  display: block !important;
+  visibility: hidden;
+}
+
+/* Clear fix for footer issues */
+.site-footer {
+  clear: both;
+  position: relative;
+  width: 99%;
+}
+
+/* Ensure proper container closing */
+.photo-gallery::after {
+  content: "";
+  display: table;
+  clear: both;
+}
