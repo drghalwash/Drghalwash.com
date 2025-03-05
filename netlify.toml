@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[[redirects]]
+  from = "/*"
+  to = "/server.js"
+  status = 200
+
+[functions]
+  directory = "functions"
+
+[dev]
+  command = "npm run dev"
