@@ -9851,7 +9851,8 @@ text-decoration: none; }
   color: #575c4b;
   padding: 50px 0; 
  
-  width: 100%;}
+  width: 100% !important;
+}
  .site-footer ol,
     .site-footer ul{
     color: #575c4b  !important;
