@@ -106,7 +106,7 @@
 
 		 // Update link colors
 		 links.forEach((link) => {
-			 link.style.color = "#0A6E87"; // Dark links for scrolled state
+			 link.style.color = "white"; // Dark links for scrolled state
 		 });
 
 		 // Update toggle span colors
@@ -122,7 +122,7 @@
 
 		 // Reset link colors to inherit the default color
 		 links.forEach((link) => {
-			 link.style.color = "#0A6E87";
+			 link.style.color = "white";
 		 });
 
 		 // Reset toggle span colors
