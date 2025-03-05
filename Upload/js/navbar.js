@@ -1,4 +1,3 @@
-
 (function(){
 
 	'use strict'
@@ -107,12 +106,12 @@
 
 		 // Update link colors
 		 links.forEach((link) => {
-			 link.style.color = "#OA6E87"; // Dark links for scrolled state
+			 link.style.color = "#0A6E87"; // Dark links for scrolled state
 		 });
 
 		 // Update toggle span colors
 		 toggleSpans.forEach((span) => {
-			 span.style.backgroundColor = "#OA6E87"; // Black for scrolled state
+			 span.style.backgroundColor = "#0A6E87"; // Black for scrolled state
 		 });
 	 } else {
 		 // Remove scrolled class when at the top of the page
@@ -123,12 +122,12 @@
 
 		 // Reset link colors to inherit the default color
 		 links.forEach((link) => {
-			 link.style.color = "#OA6E87";
+			 link.style.color = "#0A6E87";
 		 });
 
 		 // Reset toggle span colors
 		 toggleSpans.forEach((span) => {
-			 span.style.backgroundColor = "#OA6E87"; // White for default state
+			 span.style.backgroundColor = "#0A6E87"; // White for default state
 		 });
 	 }
  }

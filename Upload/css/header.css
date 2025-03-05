@@ -15,27 +15,32 @@
   flex-direction: column;
   gap: 5px;
   margin-right: 10px; /* Space between lines and text */
-  
+    color: #0A6E87; /* Line color */
+
 }
 
-.menu-toggle .toggle-lines span {
+.toggle-lines span {
   display: block;
   /* Adjust line width */
   height: 3px; /* Line thickness */
-  background-color: white; /* Line color */
+  background-color: #0A6E87; /* Line color */
   border-radius: 3px; /* Rounded edges */
+ color: #0A6E87;
 }
 
 .menu-toggle .menu-text {
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-  
+    background-color: #0A6E87; /* Line color */
+
 }
 
-.menu-toggle .toggle-lines span:first-child {
+.toggle-lines span:first-child {
   margin-left: auto; /* Align the first line to the right */
   width: 15px; /* Optional: Adjust the width of the first line */
+  background-color: #0A6E87; /* Line color */
+  color: #0A6E87;
 }
 
 /* Responsive Styling: Show Menu Toggle in Mobile View */
@@ -53,7 +58,7 @@
     align-items: center;
     padding: 0 120px;
     background-color: transparent !important;
-    color: white;
+    color: #0A6E87;
     width: 100%;
     height: 60px;
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
@@ -74,7 +79,7 @@
   align-items: center;
   padding: 0 100px;
   background-color: transparent; /* Transparent at the top */
- 
+     color: #0A6E87;
   width: 100%;
   height: 60px;
   transition: background-color 0.3s ease, color 0.3s ease;
