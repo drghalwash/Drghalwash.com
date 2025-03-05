@@ -106,7 +106,7 @@ app.use((err, req, res, next) => {
   console.error('Static file error:', err);
   next();
 });
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(serveStatic('Templates'));
 app.use(serveStatic('Upload'));
 app.use(serveStatic('Qapartials'));
