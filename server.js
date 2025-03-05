@@ -24,7 +24,7 @@ import Out_of_town_route from "./Routes/Out_of_town_route.js";
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-app.use(express.static(join(__dirname, 'public')));
+
 // Supabase Client Initialization
 import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
