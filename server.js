@@ -1,35 +1,18 @@
 import express from 'express';
-import path from 'path';
 import { engine } from 'express-handlebars';
 import Handlebars from 'handlebars';
 import dotenv from 'dotenv';
 dotenv.config();
 import methodOverride from 'method-override';
-import cookieParser from 'cookie-parser'; // Added cookie-parser
-
-import Home_route from "./Routes/Home_route.js";
-import Contact_route from "./Routes/Contact_route.js";
-import About_route from "./Routes/About_route.js";
-import Guidelines_route from "./Routes/Guidelines_route.js";
-import Choose_route from "./Routes/Choose_route.js";
-import Diet_route from "./Routes/Diet_route.js";
-import Drain_Care_route from "./Routes/Drain_Care_route.js";
-import Finance_route from "./Routes/Finance_route.js";
-import Meet_Our_Patients_route from "./Routes/Meet_Our_Patients_route.js";
-import Policies_route from "./Routes/Policies_route.js";
-import Questions_And_Answer_route from "./Routes/Questions_And_Answer_route.js";
-import Blog_route from "./Routes/Blog_route.js";
-import Read_More_route from "./Routes/Read_More_route.js";
-import gallery_route from "./Routes/gallery_route.js";
-import Out_of_town_route from "./Routes/Out_of_town_route.js";
-
+import cookieParser from 'cookie-parser';
+import session from 'express-session'; // Added for session management
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join } from 'path'; // Ensure path module is imported
 
 // Supabase Client Initialization
 import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.SUPABASE_URL || 'https://drwismqxtzpptshsqphb.supabase.co';
-const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyd2lzbXF4dHpwcHRzaHNxcGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3MTExNTIsImV4cCI6MjA1NTI4NzE1Mn0.V8C0Fk9u9PS_rc3Kc-X_n-KzStr--m14fKYw9b1BJSI';
+const supabaseKey = process.env.SUPABASE_KEY || 'your-supabase-key-here';
 const supabase = createClient(supabaseUrl, supabaseKey);
 console.log('[Supabase] Client initialized successfully');
 
@@ -41,8 +24,17 @@ const __dirname = dirname(__filename);
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.use(cookieParser()); // Initialize cookie-parser
+app.use(cookieParser());
 
+// Use a production-ready session store (e.g., Redis or a database)
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true if using HTTPS
+  })
+);
 
 // Handlebars Helpers
 Handlebars.registerHelper("hasQuestions", function (categories) {
@@ -95,24 +87,12 @@ app.set('view engine', 'handlebars');
 app.set('views', join(__dirname, 'Templates'));
 
 // Serve static files
-// Serve static files with proper error handling
-const serveStatic = (dir) => {
-  return express.static(join(__dirname, dir), {
-    fallthrough: true,
-    redirect: false
-  });
-};
+app.use(express.static(join(__dirname, 'public'))); // Ensure public directory is correctly referenced
+app.use(express.static(join(__dirname, 'Templates')));
+app.use(express.static(join(__dirname, 'Upload')));
+app.use(express.static(join(__dirname, 'Qapartials')));
 
-app.use((err, req, res, next) => {
-  console.error('Static file error:', err);
-  next();
-});
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(serveStatic('Templates'));
-app.use(serveStatic('Upload'));
-app.use(serveStatic('Qapartials'));
-
-// Handle 404 for static files
+// Handle missing static files
 app.use((req, res, next) => {
   if (req.path.includes('.')) {
     console.warn(`Static file not found: ${req.path}`);
@@ -128,6 +108,22 @@ app.use((req, res, next) => {
 });
 
 // Routes
+import Home_route from "./Routes/Home_route.js";
+import Contact_route from "./Routes/Contact_route.js";
+import About_route from "./Routes/About_route.js";
+import Guidelines_route from "./Routes/Guidelines_route.js";
+import Choose_route from "./Routes/Choose_route.js";
+import Diet_route from "./Routes/Diet_route.js";
+import Drain_Care_route from "./Routes/Drain_Care_route.js";
+import Finance_route from "./Routes/Finance_route.js";
+import Meet_Our_Patients_route from "./Routes/Meet_Our_Patients_route.js";
+import Policies_route from "./Routes/Policies_route.js";
+import Questions_And_Answer_route from "./Routes/Questions_And_Answer_route.js";
+import Blog_route from "./Routes/Blog_route.js";
+import Read_More_route from "./Routes/Read_More_route.js";
+import gallery_route from "./Routes/gallery_route.js";
+import Out_of_town_route from "./Routes/Out_of_town_route.js";
+
 app.use('/', Home_route);
 app.use('/Home', Home_route);
 app.use('/Contact', Contact_route);
