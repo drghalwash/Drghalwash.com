@@ -122,7 +122,7 @@
 
 		 // Reset link colors to inherit the default color
 		 links.forEach((link) => {
-			 link.style.color = "white";
+			 link.style.color = "#0A6E87";
 		 });
 
 		 // Reset toggle span colors
