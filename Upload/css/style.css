@@ -9850,6 +9850,7 @@ text-decoration: none; }
   font-size: 15px;
   color: #575c4b;
   padding: 50px 0; 
+ 
   width: 100%;}
  .site-footer ol,
     .site-footer ul{
@@ -9866,6 +9867,7 @@ text-decoration: none; }
     margin-bottom: 40px;
     display: block;
     position: relative;
+     padding-left: 20px;
     z-index: 1; }
      .site-footer .widget h3, .site-footer .widget .h3 {
       font-size: 20px;
@@ -9911,10 +9913,17 @@ text-decoration: none; }
     padding: 10px;
         }
  /* Ensure Contact header stays left-aligned on mobile */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+
+   
+   .site-footer .widget p{
+    text-align: center; }
+
+  .site-footer  .widget,
   .site-footer .widget h3, 
   .site-footer .widget .h3,
   .site-footer .widget ul{
+      position: center;
       text-align: left; /* Align text to the left */
       padding-left: 10px !important; /* Optional: adjust padding */
   }

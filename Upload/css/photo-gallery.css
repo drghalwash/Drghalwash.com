@@ -450,13 +450,6 @@
   visibility: hidden;
 }
 
-/* Clear fix for footer issues */
-.site-footer {
-  clear: both;
-  position: relative;
-  width: 99%;
-}
-
 /* Ensure proper container closing */
 .photo-gallery::after {
   content: "";
