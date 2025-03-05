@@ -1,7 +1,7 @@
 
 .gradient-body {
   background: 
-    linear-gradient(to bottom,#54b2d4, rgba(249,248,246,0) 200px), /* Top fade */
+    linear-gradient(to bottom,#F9F8F6, rgba(249,248,246,0) 200px), /* Top fade */
     linear-gradient(to top, #f9f8f6, rgba(249,248,246,0) 200px), /* Bottom fade */
     #ffffff; /* Base white */
   background-repeat: no-repeat;
