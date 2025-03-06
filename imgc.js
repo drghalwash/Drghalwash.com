@@ -1,22 +1,22 @@
-const fs = require('fs');
-const path = require('path');
+import { readdirSync, statSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 // Directory containing Handlebars files
 const handlebarsDir = './Templates/Pages';
 
 // Regex to match image paths
-const imageRegex = /\/images\/[\w/.-]+\.(jpg|jpeg|png|gif)/g;
+const imageRegex = /\/images\/[\w/.-]+\.(jpg|jpeg)/g;
 
 // Function to extract image references
 function extractImageReferences(dir) {
   let imageReferences = [];
-  fs.readdirSync(dir).forEach(file => {
-    const filePath = path.join(dir, file);
-    if (fs.statSync(filePath).isDirectory()) {
+  readdirSync(dir).forEach(file => {
+    const filePath = join(dir, file);
+    if (statSync(filePath).isDirectory()) {
       // Recursively process subdirectories
       imageReferences = imageReferences.concat(extractImageReferences(filePath));
     } else if (file.endsWith('.handlebars')) {
-      const content = fs.readFileSync(filePath, 'utf8');
+      const content = readFileSync(filePath, 'utf8');
       const matches = content.match(imageRegex);
       if (matches) {
         imageReferences = imageReferences.concat(matches);
@@ -26,7 +26,7 @@ function extractImageReferences(dir) {
   return imageReferences;
 }
 
-// Extract and count image references
+// Extract and log image references
 const imageReferences = extractImageReferences(handlebarsDir);
 console.log(`Total Images Found: ${imageReferences.length}`);
 console.log('Image References:', imageReferences);
