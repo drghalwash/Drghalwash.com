@@ -92,8 +92,8 @@
  const toggleSpans = document.querySelectorAll(".menu-toggle .toggle-lines span");
 
  // Paths for the original and scrolled state logos
- const originalLogoSrc = "/images/white-logo.png"; // Replace with the path to your original logo
- const scrolledLogoSrc = "/images/black-logo.png"; // Replace with the path to your scrolled state logo
+ const originalLogoSrc = "/images/white-logo.webp"; // Replace with the path to your original logo
+ const scrolledLogoSrc = "/images/black-logo.webp"; // Replace with the path to your scrolled state logo
 
  // Function to handle scroll behavior
  function handleScroll() {

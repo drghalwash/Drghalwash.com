@@ -1,0 +1,1136 @@
+{
+  "standardImages": [
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/A1.webp",
+      "file": "A"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/A2.webp",
+      "file": "A"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/A3.webp",
+      "file": "A"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/A4.webp",
+      "file": "A"
+    },
+    {
+      "originalPath": "/images/Choose/choose3.jpg",
+      "newPath": "/images/Choose1.webp",
+      "file": "Choose"
+    },
+    {
+      "originalPath": "/images/Choose/choose3.jpg",
+      "newPath": "/images/Choose2.webp",
+      "file": "Choose"
+    },
+    {
+      "originalPath": "/images/img-1.jpg",
+      "newPath": "/images/Contact1.webp",
+      "file": "Contact"
+    },
+    {
+      "originalPath": "/images/icons/nutrition-icon.png",
+      "newPath": "/images/Diet1.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/icons/healthy-diet-icon.png",
+      "newPath": "/images/Diet2.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/gallery/nutrition-guide.jpg",
+      "newPath": "/images/Diet3.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/gallery/healthy-diet.jpg",
+      "newPath": "/images/Diet4.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Diet/diet3.jpg",
+      "newPath": "/images/Diet5.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Diet/diet-plan.jpg",
+      "newPath": "/images/Diet6.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Diet/diet4.jpg",
+      "newPath": "/images/Diet7.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Drain_Care/drain-care.jpg",
+      "newPath": "/images/DrainCare1.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Drain_Care/drain-care2.jpg",
+      "newPath": "/images/DrainCare2.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Finance/finance.jpg",
+      "newPath": "/images/Finance1.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Finance/instapay.jpeg",
+      "newPath": "/images/Finance2.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Finance/paypal2.jpeg",
+      "newPath": "/images/Finance3.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Guidelines/photography.jpg",
+      "newPath": "/images/Guidelines1.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/img-1.jpg",
+      "newPath": "/images/MeetDrKhaled1.webp",
+      "file": "MeetDrKhaled"
+    },
+    {
+      "originalPath": "/images/hero_1.jpg",
+      "newPath": "/images/MeetDrKhaled2.webp",
+      "file": "MeetDrKhaled"
+    },
+    {
+      "originalPath": "/images/doc.jpg",
+      "newPath": "/images/MeetDrKhaled3.webp",
+      "file": "MeetDrKhaled"
+    },
+    {
+      "originalPath": "/images/img-1.jpg",
+      "newPath": "/images/MeetDrMohamed1.webp",
+      "file": "MeetDrMohamed"
+    },
+    {
+      "originalPath": "/images/hero_1.jpg",
+      "newPath": "/images/MeetDrMohamed2.webp",
+      "file": "MeetDrMohamed"
+    },
+    {
+      "originalPath": "/images/Meet our patients/thanks.jpg",
+      "newPath": "/images/Meetourpaitent1.webp",
+      "file": "Meetourpaitent"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/AlexandriaAttractions1.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alex1.png",
+      "newPath": "/images/AlexandriaAttractions2.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alex2.jpg",
+      "newPath": "/images/AlexandriaAttractions3.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alex3.jpg",
+      "newPath": "/images/AlexandriaAttractions4.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/ConciergeServices1.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/ConsultationProcess1.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/HotelsAccommodations1.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/alexandria-view.jpg",
+      "newPath": "/images/Outoftown1.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Choose/choose3.jpg",
+      "newPath": "/images/Policies1.webp",
+      "file": "Policies"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/index1.webp",
+      "file": "index"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/index2.webp",
+      "file": "index"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/index3.webp",
+      "file": "index"
+    },
+    {
+      "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+      "newPath": "/images/index4.webp",
+      "file": "index"
+    }
+  ],
+  "preservedImages": [
+    {
+      "originalPath": "/images/Public/camera.jpg",
+      "newPath": "/images/Public/camera.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Public/laptop2.jpg",
+      "newPath": "/images/Public/laptop2.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Public/financial.jpg",
+      "newPath": "/images/Public/financial.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Public/diet.jpg",
+      "newPath": "/images/Public/diet.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Public/blood.jpg",
+      "newPath": "/images/Public/blood.webp",
+      "file": "Diet"
+    },
+    {
+      "originalPath": "/images/Public/camera.jpg",
+      "newPath": "/images/Public/camera.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Public/laptop2.jpg",
+      "newPath": "/images/Public/laptop2.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Public/financial.jpg",
+      "newPath": "/images/Public/financial.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Public/diet.jpg",
+      "newPath": "/images/Public/diet.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Public/blood.jpg",
+      "newPath": "/images/Public/blood.webp",
+      "file": "DrainCare"
+    },
+    {
+      "originalPath": "/images/Public/camera.jpg",
+      "newPath": "/images/Public/camera.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Public/laptop2.jpg",
+      "newPath": "/images/Public/laptop2.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Public/financial.jpg",
+      "newPath": "/images/Public/financial.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Public/diet.jpg",
+      "newPath": "/images/Public/diet.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Public/blood.jpg",
+      "newPath": "/images/Public/blood.webp",
+      "file": "Finance"
+    },
+    {
+      "originalPath": "/images/Guidelines/face-position.jpg",
+      "newPath": "/images/Guidelines/face-position.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/face-position.jpg",
+      "newPath": "/images/Guidelines/face-position.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/face-position.jpg",
+      "newPath": "/images/Guidelines/face-position.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/face-position.jpg",
+      "newPath": "/images/Guidelines/face-position.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/face-position.jpg",
+      "newPath": "/images/Guidelines/face-position.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/width-img.jpg",
+      "newPath": "/images/Guidelines/width-img.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/width-img.jpg",
+      "newPath": "/images/Guidelines/width-img.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/width-img.jpg",
+      "newPath": "/images/Guidelines/width-img.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/width-img.jpg",
+      "newPath": "/images/Guidelines/width-img.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Guidelines/width-img.jpg",
+      "newPath": "/images/Guidelines/width-img.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Public/camera.jpg",
+      "newPath": "/images/Public/camera.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Public/laptop2.jpg",
+      "newPath": "/images/Public/laptop2.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Public/financial.jpg",
+      "newPath": "/images/Public/financial.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Public/diet.jpg",
+      "newPath": "/images/Public/diet.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/Public/blood.jpg",
+      "newPath": "/images/Public/blood.webp",
+      "file": "Guidelines"
+    },
+    {
+      "originalPath": "/images/doc.jpg",
+      "newPath": "/images/doc.webp",
+      "file": "MeetDrMohamed"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/Out of Town/Concierge Services.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/Out of Town/Consultation Process.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/photography.jpg",
+      "newPath": "/images/Out of Town/photography.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+      "file": "AlexandriaAttractions"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/Out of Town/Concierge Services.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/Out of Town/Consultation Process.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/photography.jpg",
+      "newPath": "/images/Out of Town/photography.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+      "file": "ConciergeServices"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/Out of Town/Concierge Services.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/Out of Town/Consultation Process.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/photography.jpg",
+      "newPath": "/images/Out of Town/photography.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+      "file": "ConsultationProcess"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/Out of Town/Concierge Services.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/Out of Town/Consultation Process.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/Out of Town/photography.jpg",
+      "newPath": "/images/Out of Town/photography.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+      "file": "HotelsAccommodations"
+    },
+    {
+      "originalPath": "/images/Out of Town/Concierge Services.png",
+      "newPath": "/images/Out of Town/Concierge Services.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Out of Town/Consultation Process.png",
+      "newPath": "/images/Out of Town/Consultation Process.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+      "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Out of Town/photography.jpg",
+      "newPath": "/images/Out of Town/photography.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+      "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+      "file": "Outoftown"
+    },
+    {
+      "originalPath": "/images/Public/camera.jpg",
+      "newPath": "/images/Public/camera.webp",
+      "file": "Policies"
+    },
+    {
+      "originalPath": "/images/Public/laptop2.jpg",
+      "newPath": "/images/Public/laptop2.webp",
+      "file": "Policies"
+    },
+    {
+      "originalPath": "/images/Public/financial.jpg",
+      "newPath": "/images/Public/financial.webp",
+      "file": "Policies"
+    },
+    {
+      "originalPath": "/images/Public/diet.jpg",
+      "newPath": "/images/Public/diet.webp",
+      "file": "Policies"
+    },
+    {
+      "originalPath": "/images/Public/blood.jpg",
+      "newPath": "/images/Public/blood.webp",
+      "file": "Policies"
+    }
+  ],
+  "byFile": {
+    "404": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "A": {
+      "standardImages": [
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/A1.webp",
+          "file": "A"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/A2.webp",
+          "file": "A"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/A3.webp",
+          "file": "A"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/A4.webp",
+          "file": "A"
+        }
+      ],
+      "preservedImages": []
+    },
+    "AboutUs": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "Blog": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "Choose": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Choose/choose3.jpg",
+          "newPath": "/images/Choose1.webp",
+          "file": "Choose"
+        },
+        {
+          "originalPath": "/images/Choose/choose3.jpg",
+          "newPath": "/images/Choose2.webp",
+          "file": "Choose"
+        }
+      ],
+      "preservedImages": []
+    },
+    "Contact": {
+      "standardImages": [
+        {
+          "originalPath": "/images/img-1.jpg",
+          "newPath": "/images/Contact1.webp",
+          "file": "Contact"
+        }
+      ],
+      "preservedImages": []
+    },
+    "Diet": {
+      "standardImages": [
+        {
+          "originalPath": "/images/icons/nutrition-icon.png",
+          "newPath": "/images/Diet1.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/icons/healthy-diet-icon.png",
+          "newPath": "/images/Diet2.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/gallery/nutrition-guide.jpg",
+          "newPath": "/images/Diet3.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/gallery/healthy-diet.jpg",
+          "newPath": "/images/Diet4.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Diet/diet3.jpg",
+          "newPath": "/images/Diet5.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Diet/diet-plan.jpg",
+          "newPath": "/images/Diet6.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Diet/diet4.jpg",
+          "newPath": "/images/Diet7.webp",
+          "file": "Diet"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Public/camera.jpg",
+          "newPath": "/images/Public/camera.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Public/laptop2.jpg",
+          "newPath": "/images/Public/laptop2.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Public/financial.jpg",
+          "newPath": "/images/Public/financial.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Public/diet.jpg",
+          "newPath": "/images/Public/diet.webp",
+          "file": "Diet"
+        },
+        {
+          "originalPath": "/images/Public/blood.jpg",
+          "newPath": "/images/Public/blood.webp",
+          "file": "Diet"
+        }
+      ]
+    },
+    "DrainCare": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Drain_Care/drain-care.jpg",
+          "newPath": "/images/DrainCare1.webp",
+          "file": "DrainCare"
+        },
+        {
+          "originalPath": "/images/Drain_Care/drain-care2.jpg",
+          "newPath": "/images/DrainCare2.webp",
+          "file": "DrainCare"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Public/camera.jpg",
+          "newPath": "/images/Public/camera.webp",
+          "file": "DrainCare"
+        },
+        {
+          "originalPath": "/images/Public/laptop2.jpg",
+          "newPath": "/images/Public/laptop2.webp",
+          "file": "DrainCare"
+        },
+        {
+          "originalPath": "/images/Public/financial.jpg",
+          "newPath": "/images/Public/financial.webp",
+          "file": "DrainCare"
+        },
+        {
+          "originalPath": "/images/Public/diet.jpg",
+          "newPath": "/images/Public/diet.webp",
+          "file": "DrainCare"
+        },
+        {
+          "originalPath": "/images/Public/blood.jpg",
+          "newPath": "/images/Public/blood.webp",
+          "file": "DrainCare"
+        }
+      ]
+    },
+    "Finance": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Finance/finance.jpg",
+          "newPath": "/images/Finance1.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Finance/instapay.jpeg",
+          "newPath": "/images/Finance2.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Finance/paypal2.jpeg",
+          "newPath": "/images/Finance3.webp",
+          "file": "Finance"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Public/camera.jpg",
+          "newPath": "/images/Public/camera.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Public/laptop2.jpg",
+          "newPath": "/images/Public/laptop2.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Public/financial.jpg",
+          "newPath": "/images/Public/financial.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Public/diet.jpg",
+          "newPath": "/images/Public/diet.webp",
+          "file": "Finance"
+        },
+        {
+          "originalPath": "/images/Public/blood.jpg",
+          "newPath": "/images/Public/blood.webp",
+          "file": "Finance"
+        }
+      ]
+    },
+    "Guidelines": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Guidelines/photography.jpg",
+          "newPath": "/images/Guidelines1.webp",
+          "file": "Guidelines"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Guidelines/face-position.jpg",
+          "newPath": "/images/Guidelines/face-position.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/face-position.jpg",
+          "newPath": "/images/Guidelines/face-position.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/face-position.jpg",
+          "newPath": "/images/Guidelines/face-position.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/face-position.jpg",
+          "newPath": "/images/Guidelines/face-position.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/face-position.jpg",
+          "newPath": "/images/Guidelines/face-position.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/width-img.jpg",
+          "newPath": "/images/Guidelines/width-img.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/width-img.jpg",
+          "newPath": "/images/Guidelines/width-img.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/width-img.jpg",
+          "newPath": "/images/Guidelines/width-img.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/width-img.jpg",
+          "newPath": "/images/Guidelines/width-img.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Guidelines/width-img.jpg",
+          "newPath": "/images/Guidelines/width-img.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Public/camera.jpg",
+          "newPath": "/images/Public/camera.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Public/laptop2.jpg",
+          "newPath": "/images/Public/laptop2.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Public/financial.jpg",
+          "newPath": "/images/Public/financial.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Public/diet.jpg",
+          "newPath": "/images/Public/diet.webp",
+          "file": "Guidelines"
+        },
+        {
+          "originalPath": "/images/Public/blood.jpg",
+          "newPath": "/images/Public/blood.webp",
+          "file": "Guidelines"
+        }
+      ]
+    },
+    "Learning": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "MeetDrKhaled": {
+      "standardImages": [
+        {
+          "originalPath": "/images/img-1.jpg",
+          "newPath": "/images/MeetDrKhaled1.webp",
+          "file": "MeetDrKhaled"
+        },
+        {
+          "originalPath": "/images/hero_1.jpg",
+          "newPath": "/images/MeetDrKhaled2.webp",
+          "file": "MeetDrKhaled"
+        },
+        {
+          "originalPath": "/images/doc.jpg",
+          "newPath": "/images/MeetDrKhaled3.webp",
+          "file": "MeetDrKhaled"
+        }
+      ],
+      "preservedImages": []
+    },
+    "MeetDrMohamed": {
+      "standardImages": [
+        {
+          "originalPath": "/images/img-1.jpg",
+          "newPath": "/images/MeetDrMohamed1.webp",
+          "file": "MeetDrMohamed"
+        },
+        {
+          "originalPath": "/images/hero_1.jpg",
+          "newPath": "/images/MeetDrMohamed2.webp",
+          "file": "MeetDrMohamed"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/doc.jpg",
+          "newPath": "/images/doc.webp",
+          "file": "MeetDrMohamed"
+        }
+      ]
+    },
+    "Meetourpaitent": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Meet our patients/thanks.jpg",
+          "newPath": "/images/Meetourpaitent1.webp",
+          "file": "Meetourpaitent"
+        }
+      ],
+      "preservedImages": []
+    },
+    "AlexandriaAttractions": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/AlexandriaAttractions1.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alex1.png",
+          "newPath": "/images/AlexandriaAttractions2.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alex2.jpg",
+          "newPath": "/images/AlexandriaAttractions3.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alex3.jpg",
+          "newPath": "/images/AlexandriaAttractions4.webp",
+          "file": "AlexandriaAttractions"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/Out of Town/Concierge Services.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/Out of Town/Consultation Process.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/photography.jpg",
+          "newPath": "/images/Out of Town/photography.webp",
+          "file": "AlexandriaAttractions"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+          "file": "AlexandriaAttractions"
+        }
+      ]
+    },
+    "ConciergeServices": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/ConciergeServices1.webp",
+          "file": "ConciergeServices"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/Out of Town/Concierge Services.webp",
+          "file": "ConciergeServices"
+        },
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/Out of Town/Consultation Process.webp",
+          "file": "ConciergeServices"
+        },
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+          "file": "ConciergeServices"
+        },
+        {
+          "originalPath": "/images/Out of Town/photography.jpg",
+          "newPath": "/images/Out of Town/photography.webp",
+          "file": "ConciergeServices"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+          "file": "ConciergeServices"
+        }
+      ]
+    },
+    "ConsultationProcess": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/ConsultationProcess1.webp",
+          "file": "ConsultationProcess"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/Out of Town/Concierge Services.webp",
+          "file": "ConsultationProcess"
+        },
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/Out of Town/Consultation Process.webp",
+          "file": "ConsultationProcess"
+        },
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+          "file": "ConsultationProcess"
+        },
+        {
+          "originalPath": "/images/Out of Town/photography.jpg",
+          "newPath": "/images/Out of Town/photography.webp",
+          "file": "ConsultationProcess"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+          "file": "ConsultationProcess"
+        }
+      ]
+    },
+    "HotelsAccommodations": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/HotelsAccommodations1.webp",
+          "file": "HotelsAccommodations"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/Out of Town/Concierge Services.webp",
+          "file": "HotelsAccommodations"
+        },
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/Out of Town/Consultation Process.webp",
+          "file": "HotelsAccommodations"
+        },
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+          "file": "HotelsAccommodations"
+        },
+        {
+          "originalPath": "/images/Out of Town/photography.jpg",
+          "newPath": "/images/Out of Town/photography.webp",
+          "file": "HotelsAccommodations"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+          "file": "HotelsAccommodations"
+        }
+      ]
+    },
+    "Outoftown": {
+      "standardImages": [
+        {
+          "originalPath": "/images/alexandria-view.jpg",
+          "newPath": "/images/Outoftown1.webp",
+          "file": "Outoftown"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Out of Town/Concierge Services.png",
+          "newPath": "/images/Out of Town/Concierge Services.webp",
+          "file": "Outoftown"
+        },
+        {
+          "originalPath": "/images/Out of Town/Consultation Process.png",
+          "newPath": "/images/Out of Town/Consultation Process.webp",
+          "file": "Outoftown"
+        },
+        {
+          "originalPath": "/images/Out of Town/Hotels & Accommodations.png",
+          "newPath": "/images/Out of Town/Hotels & Accommodations.webp",
+          "file": "Outoftown"
+        },
+        {
+          "originalPath": "/images/Out of Town/photography.jpg",
+          "newPath": "/images/Out of Town/photography.webp",
+          "file": "Outoftown"
+        },
+        {
+          "originalPath": "/images/Out of Town/Alexandria Attractions.png",
+          "newPath": "/images/Out of Town/Alexandria Attractions.webp",
+          "file": "Outoftown"
+        }
+      ]
+    },
+    "Policies": {
+      "standardImages": [
+        {
+          "originalPath": "/images/Choose/choose3.jpg",
+          "newPath": "/images/Policies1.webp",
+          "file": "Policies"
+        }
+      ],
+      "preservedImages": [
+        {
+          "originalPath": "/images/Public/camera.jpg",
+          "newPath": "/images/Public/camera.webp",
+          "file": "Policies"
+        },
+        {
+          "originalPath": "/images/Public/laptop2.jpg",
+          "newPath": "/images/Public/laptop2.webp",
+          "file": "Policies"
+        },
+        {
+          "originalPath": "/images/Public/financial.jpg",
+          "newPath": "/images/Public/financial.webp",
+          "file": "Policies"
+        },
+        {
+          "originalPath": "/images/Public/diet.jpg",
+          "newPath": "/images/Public/diet.webp",
+          "file": "Policies"
+        },
+        {
+          "originalPath": "/images/Public/blood.jpg",
+          "newPath": "/images/Public/blood.webp",
+          "file": "Policies"
+        }
+      ]
+    },
+    "QuestionsAndAnswer": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "ReadMore": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "gallery": {
+      "standardImages": [],
+      "preservedImages": []
+    },
+    "index": {
+      "standardImages": [
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/index1.webp",
+          "file": "index"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/index2.webp",
+          "file": "index"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/index3.webp",
+          "file": "index"
+        },
+        {
+          "originalPath": "/images/65c7c174ef97c54ef9c5b00ccbd73434.png",
+          "newPath": "/images/index4.webp",
+          "file": "index"
+        }
+      ],
+      "preservedImages": []
+    },
+    "subgallery": {
+      "standardImages": [],
+      "preservedImages": []
+    }
+  }
+}
