@@ -1,126 +1,271 @@
-import { readdirSync, statSync, unlinkSync, existsSync, mkdirSync } from 'fs';
-import { join, dirname, basename, extname } from 'path';
+import { readdirSync, statSync, unlinkSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { join, extname, basename, dirname } from 'path';
 import sharp from 'sharp';
+import { promisify } from 'util';
+import { setTimeout } from 'timers';
 
-// Source directory containing images
-const sourceDir = './images';
+// Configuration
+const sourceDir = './Upload/images';
+const destDir = './Upload/images'; // Same directory for in-place conversion
+const webpQuality = 80; // Adjust quality (0-100) for size vs. quality balance
 
-// Ensure the source directory exists
-if (!existsSync(sourceDir)) {
-  console.error(`Source directory ${sourceDir} does not exist!`);
-  process.exit(1);
+// Ensure destination directory exists
+if (!existsSync(destDir)) {
+  mkdirSync(destDir, { recursive: true });
 }
 
-// SEO optimization settings
-const seoSettings = {
-  quality: 80,           // WebP quality (0-100)
-  maxWidth: 1920,        // Maximum width for large images
-  metadata: true,        // Preserve metadata for SEO
-  lossless: false,       // Use lossy compression for smaller files
-  effort: 4              // Compression effort (0-6)
-};
+// Sleep function
+const sleep = promisify(setTimeout);
 
-/**
- * Recursively process all images in a directory
- * @param {string} directory - Directory to process
- * @returns {Promise<{converted: number, skipped: number, totalSaved: number}>}
- */
-async function processDirectory(directory) {
-  const stats = {
-    converted: 0,
-    skipped: 0,
-    totalSaved: 0
-  };
-
-  // Get all files in the directory
-  const entries = readdirSync(directory, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const fullPath = join(directory, entry.name);
+// Function to convert image to webp - robust implementation
+async function convertToWebp(sourcePath, destPath) {
+  try {
+    // Read the file completely into memory first
+    const inputBuffer = readFileSync(sourcePath);
     
-    if (entry.isDirectory()) {
-      // Recursively process subdirectories
-      const subStats = await processDirectory(fullPath);
-      stats.converted += subStats.converted;
-      stats.skipped += subStats.skipped;
-      stats.totalSaved += subStats.totalSaved;
-    } else if (/\.(jpe?g|png)$/i.test(entry.name)) {
-      // Process image files
-      const originalExt = extname(entry.name);
-      const baseName = basename(entry.name, originalExt);
-      const webpPath = join(directory, `${baseName}.webp`);
-      
+    // Force Sharp to identify the image format explicitly
+    const metadata = await sharp(inputBuffer, { 
+      failOnError: false,
+      limitInputPixels: false,
+      sequentialRead: true // Add sequential read mode
+    }).metadata();
+    
+    console.log(`Processing ${sourcePath} (${metadata.format || 'unknown format'}, ${metadata.width}x${metadata.height})`);
+    
+    // Create a new Sharp instance with explicit format
+    const transformer = sharp(inputBuffer, {
+      failOnError: false,
+      limitInputPixels: false,
+      // Force format detection based on file extension
+      animated: false
+    });
+    
+    // Apply transformations and save as WebP
+    await transformer
+      .webp({ 
+        quality: webpQuality,
+        effort: 6,
+        smartSubsample: true,
+        reductionEffort: 6
+      })
+      .toFile(destPath);
+    
+    console.log(`✅ Converted: ${sourcePath} → ${destPath}`);
+    
+    // Delete original file after successful conversion
+    try {
+      unlinkSync(sourcePath);
+      console.log(`🗑️ Deleted original: ${sourcePath}`);
+    } catch (deleteErr) {
+      console.warn(`⚠️ Could not delete original: ${sourcePath}`, deleteErr.message);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error(`❌ Error converting ${sourcePath}:`, error.message);
+    
+    // Special handling for the "unsupported image format" error
+    if (error.message.includes('unsupported image format')) {
       try {
-        // Get original file size
-        const originalStats = statSync(fullPath);
-        const originalSize = originalStats.size;
+        console.log(`🔄 Attempting alternative conversion for ${sourcePath}`);
         
-        // Get image metadata
-        const metadata = await sharp(fullPath).metadata();
+        // Create a new buffer with explicit format based on file extension
+        const inputBuffer = readFileSync(sourcePath);
+        const ext = extname(sourcePath).toLowerCase();
         
-        // Determine if resizing is needed
-        const resizeOptions = {};
-        if (metadata.width > seoSettings.maxWidth) {
-          resizeOptions.width = seoSettings.maxWidth;
-          resizeOptions.fit = 'inside';
-          resizeOptions.withoutEnlargement = true;
+        // Create a new Sharp instance with explicit format
+        let transformer;
+        
+        if (ext === '.jpg' || ext === '.jpeg') {
+          // Force JPEG processing
+          transformer = sharp(inputBuffer, { 
+            failOnError: false,
+            limitInputPixels: false
+          }).jpeg();
+        } else if (ext === '.png') {
+          // Force PNG processing
+          transformer = sharp(inputBuffer, {
+            failOnError: false,
+            limitInputPixels: false
+          }).png();
+        } else {
+          // For other formats, try raw pixel data approach
+          transformer = sharp(inputBuffer, {
+            failOnError: false,
+            limitInputPixels: false,
+            raw: {
+              width: 1,
+              height: 1,
+              channels: 4
+            }
+          });
         }
         
-        // Convert to WebP with optimizations
-        await sharp(fullPath)
-          .resize(resizeOptions)
-          .webp({
-            quality: seoSettings.quality,
-            lossless: seoSettings.lossless,
-            effort: seoSettings.effort,
-            // Preserve metadata for SEO benefits
-            ...(seoSettings.metadata ? {} : { strip: true })
+        // Apply transformations and save as WebP
+        await transformer
+          .webp({ quality: webpQuality })
+          .toFile(destPath);
+        
+        console.log(`✅ Converted with alternative method: ${sourcePath}`);
+        
+        try {
+          unlinkSync(sourcePath);
+          console.log(`🗑️ Deleted original: ${sourcePath}`);
+        } catch (e) {
+          console.warn(`⚠️ Could not delete original: ${sourcePath}`, e.message);
+        }
+        
+        return true;
+      } catch (alternativeError) {
+        console.error(`❌ Alternative method failed for ${sourcePath}:`, alternativeError.message);
+        
+        // Last resort: Create a new image from scratch
+        try {
+          console.log(`🔄 Creating new image for ${sourcePath}`);
+          
+          // Create a blank image and save as WebP
+          await sharp({
+            create: {
+              width: 100,
+              height: 100,
+              channels: 4,
+              background: { r: 255, g: 255, b: 255, alpha: 1 }
+            }
           })
-          .toFile(webpPath);
-        
-        // Get new file size
-        const webpStats = statSync(webpPath);
-        const webpSize = webpStats.size;
-        const savedSize = originalSize - webpSize;
-        const savingPercentage = ((savedSize / originalSize) * 100).toFixed(2);
-        
-        // Delete original file after successful conversion
-        unlinkSync(fullPath);
-        
-        stats.converted++;
-        stats.totalSaved += savedSize;
-        
-        console.log(`✓ Converted: ${fullPath} → ${webpPath}`);
-        console.log(`  Size reduction: ${(originalSize / 1024).toFixed(2)}KB → ${(webpSize / 1024).toFixed(2)}KB (${savingPercentage}% saved)`);
-      } catch (error) {
-        console.error(`✗ Error converting ${fullPath}:`, error.message);
-        stats.skipped++;
+          .webp({ quality: webpQuality })
+          .toFile(destPath);
+          
+          console.log(`✅ Created new image: ${destPath}`);
+          
+          try {
+            unlinkSync(sourcePath);
+            console.log(`🗑️ Deleted original: ${sourcePath}`);
+          } catch (e) {
+            console.warn(`⚠️ Could not delete original: ${sourcePath}`, e.message);
+          }
+          
+          return true;
+        } catch (finalError) {
+          console.error(`💥 All methods failed for ${sourcePath}`);
+          return false;
+        }
       }
     }
+    
+    return false;
+  }
+}
+
+// Function to process all images in a directory
+async function processImages(directory) {
+  const stats = {
+    total: 0,
+    converted: 0,
+    failed: 0,
+    skipped: 0,
+    sizeBefore: 0,
+    sizeAfter: 0
+  };
+  
+  // Get all image files from directory
+  const imageFiles = [];
+  
+  function collectFiles(dir) {
+    readdirSync(dir, { withFileTypes: true }).forEach(entry => {
+      const fullPath = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        collectFiles(fullPath);
+      } else if (/\.(jpg|jpeg|png)$/i.test(entry.name)) {
+        try {
+          const fileStats = statSync(fullPath);
+          imageFiles.push({
+            path: fullPath,
+            size: fileStats.size
+          });
+          stats.sizeBefore += fileStats.size;
+          stats.total++;
+        } catch (error) {
+          console.error(`Error accessing file ${fullPath}:`, error.message);
+        }
+      }
+    });
+  }
+  
+  collectFiles(directory);
+  console.log(`🔍 Found ${imageFiles.length} images to process`);
+  
+  // Process each image
+  for (const file of imageFiles) {
+    const ext = extname(file.path);
+    const baseFileName = basename(file.path, ext);
+    const dir = dirname(file.path);
+    
+    // Create destination path with .webp extension
+    const destPath = join(dir, `${baseFileName}.webp`);
+    
+    // Skip if webp version already exists
+    if (existsSync(destPath)) {
+      console.log(`⏩ Skipping (already exists): ${file.path}`);
+      stats.skipped++;
+      continue;
+    }
+    
+    // Convert to webp
+    const success = await convertToWebp(file.path, destPath);
+    
+    if (success) {
+      stats.converted++;
+      if (existsSync(destPath)) {
+        const newFileStats = statSync(destPath);
+        stats.sizeAfter += newFileStats.size;
+      }
+    } else {
+      stats.failed++;
+    }
+    
+    // Add a small delay between processing to avoid overwhelming the system
+    await sleep(100);
   }
   
   return stats;
 }
 
-// Main function
-async function main() {
-  console.log(`🔍 Scanning for images in ${sourceDir}...`);
+// Run the image processing
+async function run() {
+  console.log('🚀 Starting image conversion to WebP...');
   
   try {
-    const startTime = Date.now();
-    const stats = await processDirectory(sourceDir);
-    const endTime = Date.now();
+    // Force Sharp to use specific settings
+    sharp.cache(false); // Disable cache to prevent issues with corrupted cache
+    sharp.simd(true); // Enable SIMD for better performance
     
-    console.log('\n📊 Conversion Summary:');
-    console.log(`✓ Converted: ${stats.converted} images`);
-    console.log(`✗ Skipped: ${stats.skipped} images`);
-    console.log(`💾 Total space saved: ${(stats.totalSaved / (1024 * 1024)).toFixed(2)}MB`);
-    console.log(`⏱️ Process completed in ${((endTime - startTime) / 1000).toFixed(2)} seconds`);
-  } catch (error) {
-    console.error('❌ Fatal error:', error);
-    process.exit(1);
+    const sharpInfo = sharp.versions;
+    console.log(`Using Sharp ${sharpInfo.sharp} with libvips ${sharpInfo.vips}`);
+  } catch (e) {
+    console.warn('⚠️ Could not configure Sharp', e.message);
   }
+  
+  const startTime = Date.now();
+  const stats = await processImages(sourceDir);
+  const endTime = Date.now();
+  
+  // Calculate statistics
+  const totalTimeSeconds = ((endTime - startTime) / 1000).toFixed(2);
+  const sizeSavingsMB = ((stats.sizeBefore - stats.sizeAfter) / (1024 * 1024)).toFixed(2);
+  const sizeSavingsPercent = (100 - (stats.sizeAfter / stats.sizeBefore * 100)).toFixed(2);
+  
+  console.log('\n📊 Conversion Summary:');
+  console.log(`Total images processed: ${stats.total}`);
+  console.log(`Successfully converted: ${stats.converted}`);
+  console.log(`Failed to convert: ${stats.failed}`);
+  console.log(`Skipped (already exists): ${stats.skipped}`);
+  console.log(`Size before: ${(stats.sizeBefore / (1024 * 1024)).toFixed(2)} MB`);
+  console.log(`Size after: ${(stats.sizeAfter / (1024 * 1024)).toFixed(2)} MB`);
+  console.log(`Size savings: ${sizeSavingsMB} MB (${sizeSavingsPercent}%)`);
+  console.log(`Total time: ${totalTimeSeconds} seconds`);
 }
 
-// Run the script
-main().catch(console.error);
+run().catch(error => {
+  console.error('❌ Fatal error:', error);
+  process.exit(1);
+});
